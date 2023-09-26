@@ -23,5 +23,3 @@ yarn-debug.log*
 yarn-error.log*
 client/package-lock.json
 server/package-lock.json
-server/node_modules
-server/req.rest
