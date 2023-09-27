@@ -12,6 +12,7 @@ app.get("/message", (req, res) => {
 
 app.use("/auth", authRouter);
 
+
 app.listen(8000, () => {
   console.log(`Server is running on port 8000.`);
 });
