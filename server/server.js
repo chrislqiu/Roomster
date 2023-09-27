@@ -4,17 +4,16 @@ const authRouter = require("./auth");
 const app = express();
 
 var path = __dirname + '\\'
-app.use(express.static(path))
+//app.use(express.static(path))
 //app.use(express.urlencoded)
 app.use(cors());
 app.use(express.json());
 
-/*app.get("/message", (req, res) => {
+app.get("/message", (req, res) => {
   res.json({ message: "Hello from server!" });
-});*/
-var router = express.Router();
-app.use("/auth", authRouter);
+});
 
+app.use("/auth", authRouter);
 
 app.listen(8000, () => {
   console.log(`Server is running on port 8000.`);
