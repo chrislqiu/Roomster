@@ -6,8 +6,6 @@ const User = require('./models/user.js');
 
 const router = express.Router();
 
-// Simulated user database
-const users = [];
 
 router.get("/users", (req, res) => {
   User.find()
