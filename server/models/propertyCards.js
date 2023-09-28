@@ -23,5 +23,5 @@ const propertyCard = new Schema({
 });
 
 //looks for this collection in db (it's suppose to be singular and not "PropertyCards")
-const Card = mongoose.model('PropertyCard', propertyCard);
+const Card = mongoose.model('propertycards', propertyCard);
 module.exports = Card;
