@@ -1,20 +1,52 @@
-import React, { useState, useEffect } from "react";
+// import React, { useState, useEffect } from "react";
+import React from "react"
 import "./App.css";
+import MainPage from "./pages/MainPage";
+import GlobalStyles from "@mui/material/GlobalStyles";
+import { BrowserRouter, Routes, Route } from "react-router-dom"
+import { ThemeProvider, createTheme } from "@mui/material/styles";
 
-function App() {
-  const [message, setMessage] = useState("");
+  const theme = createTheme({
+    palette: {
+      background: {
+        default: "#F6EBE1"
+      }
+    }
+  });
 
-  useEffect(() => {
-    fetch("http://localhost:8000/message")
-      .then((res) => res.json())
-      .then((data) => setMessage(data.message));
-  }, []);
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { apiResponse: "" }
+  }
 
-  return (
-    <div className="App">
-      <h1>{message}</h1>
-    </div>
-  );
+  callServer() {
+    fetch('http://localhost:8000')
+      .then(res => res.text())
+      .then(res => this.setState({ apiResponse: res }))
+  }
+
+  componentDidMount() {
+    this.callServer();
+  }
+
+  render() {
+    return (
+     
+      // <ThemeProvider theme={theme}>
+      //   <GlobalStyles
+      //     sx={{
+      //       body: { backgroundColor: "#F6EBE1" }
+      //     }}
+      //   />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/Home" element={<MainPage />} />
+          </Routes>
+        </BrowserRouter>
+      /* </ThemeProvider> */
+   
+    );
+  }
 }
-
-export default App
+export default App;

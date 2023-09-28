@@ -3,6 +3,9 @@ const cors = require("cors");
 const authRouter = require("./auth"); 
 const app = express();
 
+var path = __dirname + '\\'
+//app.use(express.static(path))
+//app.use(express.urlencoded)
 app.use(cors());
 app.use(express.json());
 
