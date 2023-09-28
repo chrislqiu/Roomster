@@ -93,4 +93,18 @@ router.post("/delete", async (req, res) => {
 });
 
 
+router.get("/verify/:token", (req, res) => {
+  const {token} = req.params;
+
+  jwt.verify(token, 'key', function(err, decoded) {
+    if(err){
+      console.log(err);
+      res.send("Email verification failed");
+    } else {
+      res.send("Email verified");
+    }
+  });
+
+});
+
 module.exports = router;
