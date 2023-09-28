@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const PropertyCard = require('./models/propertyCards')
 const app = express();
 
+
 //connects to mongodb
 const dbURI = 'mongodb+srv://chrisqiu52:oe7O2bahWRmXJjOp@cluster0.xe4cgpv.mongodb.net/DB?retryWrites=true&w=majority';
 mongoose.connect(dbURI, {useNewUrlParser: true, useUnifiedTopology: true})
