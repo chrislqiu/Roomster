@@ -11,7 +11,7 @@ router.get("/users", (req, res) => {
   User.find()
   .then((result) => {
     res.send(result);
-  })
+  }) 
   .catch((err) => {
     console.log(err);
   });
@@ -68,5 +68,29 @@ router.post("/login", async (req, res) => {
     res.status(500).send("Error when logging in");
   }
 });
+
+router.post("/delete", async (req, res) => {
+  const user = await User.findOne({ username: req.body.username });
+
+  if (!user) {
+    return res.status(400).send("User does not exist");
+  }
+
+  try {
+    const isPasswordValid = await bcrypt.compare(req.body.password, user.password);
+
+    if (isPasswordValid) {
+      await User.deleteOne({ username: req.body.username }); 
+
+      return res.send("User deleted");
+    } else {
+      res.send("Incorrect user information");
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error deleting account");
+  }
+});
+
 
 module.exports = router;
