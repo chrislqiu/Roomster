@@ -11,12 +11,15 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import AdbIcon from "@mui/icons-material/Adb";
 import chicken from "/Users/tealazareto/Roomster-3/client/src/components/extras/chicken.png"
 
 const pages = ["Home", "Fav Coops", "Coopmates", "Log Out"];
 
 function RoomsterAppBar() {
+    /*
+     * TODO: 
+     * hide the login stuff with a "Log In/ Sign Up Button"
+     */
     const [anchorElNav, setAnchorElNav] = React.useState(null);
 
     const handleOpenNavMenu = (event) => {
