@@ -10,6 +10,7 @@ import Typography from '@mui/material/Typography';
 import { AspectRatio } from '@mui/joy';
 import Divider from '@mui/material/Divider';
 import { Stack } from '@mui/material';
+import {Link} from '@mui/material';
 
 /*
  * Popup Dialogue Page for the Property card
@@ -64,6 +65,7 @@ const PropertyViewMore = ({ text, data }) => {
                             width: "70%",
                             maxWidth: 750,
                             maxHeight: 500,
+                            backgroundColor: "#F6EBE1"
                         },
                     },
 
@@ -109,7 +111,7 @@ const PropertyViewMore = ({ text, data }) => {
                                     fontWeight: 300,
                                     fontSize: 16,
                                     fontStyle: 'italic',
-                                    marginTop: 1
+                                    marginTop: .5
                                 }}
                             >
                                 {data.addr}
@@ -120,7 +122,7 @@ const PropertyViewMore = ({ text, data }) => {
                                     fontSize: 16,
                                 }}
                             >
-                                {data.numBed} beds, {data.numBath} baths
+                                {data.numBed} {data.numBed > 1 ? 'beds' : 'bed'}, {data.numBath} {data.numBath > 1 ? 'baths' : 'bath'}
                             </Typography>
                             <Divider orientation='horizontal' width={200} sx={{ borderBottomWidth: 3, color: "#AB191F", backgroundColor: "#AB191F", marginY: 1 }} />
                             <Typography
@@ -179,15 +181,32 @@ const PropertyViewMore = ({ text, data }) => {
                             >
                                 Company Name {<br />}
                             </Typography>
+                            <Link href="#" underline="always" color="#AB191F">
+                                {'Link'}
+                            </Link>
                         </Box>
                     </Stack>
                 </DialogContent>
                 <DialogActions>
-                    <IconButton
+                    {/* {<IconButton
                         onClick={handleClose}
                     >
                         <CloseIcon />
-                    </IconButton>
+                    </IconButton>} */}
+                    <Button
+                        variant='contained'
+                        onClick={handleOpen}
+                        sx={{
+                            ":hover": {
+                                bgcolor: "#F6EBE1",
+                                color: "#AB191F"
+                            },
+                            backgroundColor: "#AB191F",
+                            color: "#F6EBE1"
+                        }}
+                    >
+                        ADD TO FAV
+                    </Button>
                 </DialogActions>
             </Dialog>
         </React.Fragment>
