@@ -4,6 +4,7 @@ import "./App.css";
 import MainPage from "./pages/MainPage";
 import RenterPage from "./pages/RenterPage";
 import PropertyManagerPage from "./pages/ProperyManagerPage";
+import LoginPage from "./pages/LoginPage"
 import GlobalStyles from "@mui/material/GlobalStyles";
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import { ThemeProvider, createTheme } from "@mui/material/styles";
@@ -33,7 +34,7 @@ import RoomsterAppBar from "./components/AppBar";
   const theme = createTheme({
     palette: {
       background: {
-        default: "#F6EBE1"
+        default: "#AB191F"
       }
     }
   });
@@ -81,6 +82,7 @@ class App extends React.Component {
             <Route path="/Home" element={<MainPage />} />
             <Route path="/RProfile" element={<RenterPage />} />
             <Route path="/MProfile" element={<PropertyManagerPage />} />
+            <Route path="/Login" element={<LoginPage />} />
           </Routes>
         </BrowserRouter>
       </body>  
