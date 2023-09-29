@@ -9,9 +9,18 @@ import CloseIcon from '@mui/icons-material/Close';
 import Typography from '@mui/material/Typography';
 import { AspectRatio } from '@mui/joy';
 import Divider from '@mui/material/Divider';
-import {Stack} from '@mui/material';
+import { Stack } from '@mui/material';
 
+/*
+ * Popup Dialogue Page for the Property card
+ * Parameters:
+ * (temporary until property cards) text: button text 
+ * data : The property data from the database
+ */
 const PropertyViewMore = ({ text, data }) => {
+    /*
+     * open, setOpen : controls the state of the dialogue popup
+     */
     const [open, setOpen] = React.useState(false)
     const handleOpen = () => {
         setOpen(true)
@@ -21,6 +30,12 @@ const PropertyViewMore = ({ text, data }) => {
     }
     return (
         <React.Fragment>
+            {
+                /*
+                 * Temporary button until card works
+                 * sx is the css properties of the button
+                 */
+            }
             <Button
                 variant='contained'
                 onClick={handleOpen}
@@ -35,6 +50,11 @@ const PropertyViewMore = ({ text, data }) => {
             >
                 {text}
             </Button>
+            {
+                /*
+                 * The dialogue box
+                 */
+            }
             <Dialog
                 open={open}
                 onClose={handleClose}
@@ -50,95 +70,116 @@ const PropertyViewMore = ({ text, data }) => {
                 }}
             >
                 <DialogContent>
+                    {
+                        /*
+                         * The dialogue box content
+                         * AspectRatio controls the size of the image
+                         */
+                    }
                     <AspectRatio minHeight={100} maxHeight={200} minWidth={300} maxWidth={400}>
-                            <img
-                                src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&w=350&dpr=2"
-                                srcSet="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&w=350&dpr=2 2x"
-                                alt=""
-                            />
-                        </AspectRatio>
-                    <Stack direction='row' spacing={5} sx={{marginTop: 2}}>
-                    <Box width='600'>
-                        <Typography
-                            sx={{
-                                fontWeight: 600, 
-                                marginTop: 1,
-                                fontSize: 20
-                            }}
-                        >
-                        {data.propertyName}
-                        </Typography>
-                        <Typography
-                            sx={{
-                                fontWeight: 300, 
-                                fontSize: 16,
-                                fontStyle: 'italic',
-                                marginTop: 1
-                            }}
-                        >
-                            {data.addr}
-                        </Typography>
-                        <Typography
-                            sx={{
-                                fontWeight: 300, 
-                                fontSize: 16,
-                            }}
-                        >
-                            {data.numBed} beds, {data.numBath} baths
-                        </Typography>
-                        <Divider orientation='horizontal' width={200} sx={{borderBottomWidth: 3, color:"#AB191F", backgroundColor:"#AB191F", marginY:1}}/>
-                        <Typography
-                            sx={{
-                                fontWeight: 500, 
-                                fontSize: 16,
-                                
-                            }}
-                        >
-                            ${data.cost} per month
-                        </Typography>
-                    </Box>
-                    <Divider orientation='verticle' width={3} sx={{borderBottomWidth: 3, color:"#AB191F", backgroundColor:"#AB191F", marginY:2}}/>
-                    <Box width={'100%'}>
-                    <Typography
-                            sx={{
-                                fontWeight: 600, 
-                                marginTop: 1,
-                                fontSize: 16
-                            }}
-                        >
-                        Amenities
-                        </Typography>
-                        <Typography
-                            sx={{
-                                fontWeight: 300, 
-                                fontSize: 16,
-                            }}
-                        >
-                            Parking {<br/>}
-                            Pets {<br/>}
-                            Furnished apartment {<br/>}
-                        </Typography>
-                    </Box>
-                    <Divider orientation='verticle' width={3} sx={{borderBottomWidth: 3, color:"#AB191F", backgroundColor:"#AB191F", marginY:2}}/>
-                    <Box width={'100%'}>
-                    <Typography
-                            sx={{
-                                fontWeight: 600, 
-                                marginTop: 1,
-                                fontSize: 16
-                            }}
-                        >
-                        Contact Information
-                        </Typography>
-                        <Typography
-                            sx={{
-                                fontWeight: 300, 
-                                fontSize: 16,
-                            }}
-                        >
-                            Company Name {<br/>}
-                        </Typography>
-                    </Box>
+                        <img
+                            src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&w=350&dpr=2"
+                            srcSet="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&w=350&dpr=2 2x"
+                            alt=""
+                        />
+                    </AspectRatio>
+                    {
+                        /*
+                         * Stack direction row has each text 'chunk'
+                         */
+                    }
+                    <Stack direction='row' spacing={5} sx={{ marginTop: 2 }}>
+                        <Box width='600'>
+                            <Typography
+                                sx={{
+                                    fontWeight: 600,
+                                    marginTop: 1,
+                                    fontSize: 20
+                                }}
+                            >
+                                {
+                                    /*
+                                     * When passing in values into MUI text components, use curly braces
+                                     */
+                                }
+                                {data.propertyName}
+                            </Typography>
+                            <Typography
+                                sx={{
+                                    fontWeight: 300,
+                                    fontSize: 16,
+                                    fontStyle: 'italic',
+                                    marginTop: 1
+                                }}
+                            >
+                                {data.addr}
+                            </Typography>
+                            <Typography
+                                sx={{
+                                    fontWeight: 300,
+                                    fontSize: 16,
+                                }}
+                            >
+                                {data.numBed} beds, {data.numBath} baths
+                            </Typography>
+                            <Divider orientation='horizontal' width={200} sx={{ borderBottomWidth: 3, color: "#AB191F", backgroundColor: "#AB191F", marginY: 1 }} />
+                            <Typography
+                                sx={{
+                                    fontWeight: 500,
+                                    fontSize: 16,
+
+                                }}
+                            >
+                                ${data.cost} per month
+                            </Typography>
+                        </Box>
+                        <Divider orientation='verticle' width={3} sx={{ borderBottomWidth: 3, color: "#AB191F", backgroundColor: "#AB191F", marginY: 2 }} />
+                        <Box width={'100%'}>
+                            <Typography
+                                sx={{
+                                    fontWeight: 600,
+                                    marginTop: 1,
+                                    fontSize: 16
+                                }}
+                            >
+                                Amenities
+                            </Typography>
+                            <Typography
+                                sx={{
+                                    fontWeight: 300,
+                                    fontSize: 16,
+                                }}
+                            >
+                                {
+                                    /*
+                                     * <br /> breaks to new lines
+                                     */
+                                }
+                                Parking {<br />}
+                                Pets {<br />}
+                                Furnished apartment {<br />}
+                            </Typography>
+                        </Box>
+                        <Divider orientation='verticle' width={3} sx={{ borderBottomWidth: 3, color: "#AB191F", backgroundColor: "#AB191F", marginY: 2 }} />
+                        <Box width={'100%'}>
+                            <Typography
+                                sx={{
+                                    fontWeight: 600,
+                                    marginTop: 1,
+                                    fontSize: 16
+                                }}
+                            >
+                                Contact Information
+                            </Typography>
+                            <Typography
+                                sx={{
+                                    fontWeight: 300,
+                                    fontSize: 16,
+                                }}
+                            >
+                                Company Name {<br />}
+                            </Typography>
+                        </Box>
                     </Stack>
                 </DialogContent>
                 <DialogActions>
