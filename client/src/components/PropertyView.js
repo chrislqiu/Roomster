@@ -2,6 +2,8 @@ import * as React from 'react';
 import Button from '@mui/material/Button';
 import { Box, Card, CardContent, CardMedia } from '@mui/material';
 import { CardActionArea } from '@mui/material';
+import { Box, Card, CardContent, CardMedia } from '@mui/material';
+import { CardActionArea } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
@@ -40,6 +42,14 @@ const PropertyViewMore = ({ text, data }) => {
         }
     }
 
+    
+    const styles = {
+        divider: {
+            borderTop: "3px solid #AB191F",
+            padding: "0"
+        }
+    }
+
     return (
         <React.Fragment>
             {
@@ -53,6 +63,9 @@ const PropertyViewMore = ({ text, data }) => {
                 onClick={handleOpen}
                 sx={{
                     ":hover": {
+                        bgcolor:"#AB191F",
+                        color:"#f5ebe0",
+                        cursor: "pointer"
                         bgcolor:"#AB191F",
                         color:"#f5ebe0",
                         cursor: "pointer"

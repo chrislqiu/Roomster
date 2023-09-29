@@ -55,6 +55,7 @@ class App extends React.Component {
   render() {
     return (
       
+      
       // <ThemeProvider theme={theme}>
       //   <GlobalStyles
       //     sx={{
@@ -75,6 +76,8 @@ class App extends React.Component {
             <Route path="/OProfile" element={<PropertyOwnerPage />} />
           </Routes>
         </BrowserRouter>
+      </body>  
+
       </body>  
 
       /* </ThemeProvider> */
