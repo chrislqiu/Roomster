@@ -202,7 +202,8 @@ const PropertyViewMore = ({ text, data }) => {
                                 color: "#AB191F"
                             },
                             backgroundColor: "#AB191F",
-                            color: "#F6EBE1"
+                            color: "#F6EBE1",
+                            m:1
                         }}
                     >
                         ADD TO FAV
