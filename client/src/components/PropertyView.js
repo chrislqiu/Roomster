@@ -42,14 +42,6 @@ const PropertyViewMore = ({ text, data }) => {
         }
     }
 
-    
-    const styles = {
-        divider: {
-            borderTop: "3px solid #AB191F",
-            padding: "0"
-        }
-    }
-
     return (
         <React.Fragment>
             {
@@ -63,9 +55,6 @@ const PropertyViewMore = ({ text, data }) => {
                 onClick={handleOpen}
                 sx={{
                     ":hover": {
-                        bgcolor:"#AB191F",
-                        color:"#f5ebe0",
-                        cursor: "pointer"
                         bgcolor:"#AB191F",
                         color:"#f5ebe0",
                         cursor: "pointer"

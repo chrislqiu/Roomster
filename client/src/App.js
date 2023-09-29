@@ -78,8 +78,6 @@ class App extends React.Component {
         </BrowserRouter>
       </body>  
 
-      </body>  
-
       /* </ThemeProvider> */
    
 
