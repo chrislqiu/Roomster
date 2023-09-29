@@ -7,6 +7,7 @@ import PropertyOwnerPage from "./pages/ProperyOwnerPage";
 import GlobalStyles from "@mui/material/GlobalStyles";
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import { ThemeProvider, createTheme } from "@mui/material/styles";
+import RoomsterAppBar from "./components/AppBar";
 
   const theme = createTheme({
     palette: {
@@ -34,22 +35,16 @@ class App extends React.Component {
 
   render() {
     return (
-     
-      // <ThemeProvider theme={theme}>
-      //   <GlobalStyles
-      //     sx={{
-      //       body: { backgroundColor: "#F6EBE1" }
-      //     }}
-      //   />
+
         <BrowserRouter>
+         <RoomsterAppBar/>
           <Routes>
             <Route path="/Home" element={<MainPage />} />
             <Route path="/TProfile" element={<TenantPage />} />
             <Route path="/OProfile" element={<PropertyOwnerPage />} />
           </Routes>
         </BrowserRouter>
-      /* </ThemeProvider> */
-   
+
     );
   }
 }
