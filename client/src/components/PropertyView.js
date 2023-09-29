@@ -32,11 +32,11 @@ const PropertyViewMore = ({ text, data }) => {
     const handleClose = () => {
         setOpen(false)
     }
-
+    
     const styles = {
-        media: {
-            borderRadius: "10px",
-            padding: "10px"
+        divider: {
+            borderTop: "3px solid #AB191F",
+            padding: "0"
         }
     }
 
@@ -62,22 +62,22 @@ const PropertyViewMore = ({ text, data }) => {
                     width: "250px",
                     height: "300px",
                     boxShadow: "0px 0px 3px 3px rgba(0, 0, 0, .1)"
-                }}
-            >
-                    <CardMedia
-                        component="img"
-                        height="140"
-                        image={imgExample}
-                        style={styles.media}
+                }}>
+                <CardActionArea>
+                        <CardMedia
+                            component="img"
+                            image={imgExample}
+                            height="140"
+                        />
+                        <CardContent>
+                          <Typography variant="h6" style={{margin: "-10px 0 0px 0"}}>Company Name</Typography>
+                          <Typography variant="body2" style={{margin: "0 0 10px 0"}}> 123 Address</Typography>
+                          <Typography variant="body2"> # bedroom</Typography>
+                          <Typography variant="body2"> # bathroom</Typography>
+                          <hr style={styles.divider}></hr>
                         
-                    />
-                    <CardContent>
-                        <Typography gutterBottom variant="h6" component="div">
-                            CompanyName
-                        </Typography>
                     </CardContent>
-                
-                {text}
+                </CardActionArea>
             </Card>
             {
                 /*
