@@ -2,6 +2,7 @@
 import React from "react"
 import "./App.css";
 import MainPage from "./pages/MainPage";
+import LoginPage from "./pages/LoginPage"
 import GlobalStyles from "@mui/material/GlobalStyles";
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import { ThemeProvider, createTheme } from "@mui/material/styles";
@@ -9,7 +10,7 @@ import { ThemeProvider, createTheme } from "@mui/material/styles";
   const theme = createTheme({
     palette: {
       background: {
-        default: "#F6EBE1"
+        default: "#AB191F"
       }
     }
   });
@@ -42,6 +43,7 @@ class App extends React.Component {
         <BrowserRouter>
           <Routes>
             <Route path="/Home" element={<MainPage />} />
+            <Route path="/Login" element={<LoginPage />} />
           </Routes>
         </BrowserRouter>
       /* </ThemeProvider> */
