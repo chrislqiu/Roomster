@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Button from '@mui/material/Button';
-import { Box } from '@mui/material';
+import { Box, Card, CardContent, CardMedia } from '@mui/material';
+import { CardActionArea } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
@@ -11,6 +12,7 @@ import { AspectRatio } from '@mui/joy';
 import Divider from '@mui/material/Divider';
 import { Stack } from '@mui/material';
 import {Link} from '@mui/material';
+import imgExample from "../images/apartment-pic.jpg"
 
 /*
  * Popup Dialogue Page for the Property card
@@ -22,6 +24,7 @@ const PropertyViewMore = ({ text, data }) => {
     /*
      * open, setOpen : controls the state of the dialogue popup
      */
+
     const [open, setOpen] = React.useState(false)
     const handleOpen = () => {
         setOpen(true)
@@ -29,6 +32,14 @@ const PropertyViewMore = ({ text, data }) => {
     const handleClose = () => {
         setOpen(false)
     }
+
+    const styles = {
+        media: {
+            borderRadius: "10px",
+            padding: "10px"
+        }
+    }
+
     return (
         <React.Fragment>
             {
@@ -37,20 +48,37 @@ const PropertyViewMore = ({ text, data }) => {
                  * sx is the css properties of the button
                  */
             }
-            <Button
+            <Card 
                 variant='contained'
                 onClick={handleOpen}
                 sx={{
                     ":hover": {
-                        bgcolor: "#F6EBE1",
-                        color: "#AB191F"
+                        bgcolor:"#AB191F",
+                        color:"#f5ebe0",
+                        cursor: "pointer"
                     },
-                    backgroundColor: "#AB191F",
-                    color: "#F6EBE1"
+                    backgroundColor:"#f5ebe0",
+                    color:"#AB191F",
+                    width: "250px",
+                    height: "300px",
+                    boxShadow: "0px 0px 3px 3px rgba(0, 0, 0, .1)"
                 }}
             >
+                    <CardMedia
+                        component="img"
+                        height="140"
+                        image={imgExample}
+                        style={styles.media}
+                        
+                    />
+                    <CardContent>
+                        <Typography gutterBottom variant="h6" component="div">
+                            CompanyName
+                        </Typography>
+                    </CardContent>
+                
                 {text}
-            </Button>
+            </Card>
             {
                 /*
                  * The dialogue box
