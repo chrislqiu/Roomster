@@ -2,8 +2,8 @@
 import React from "react"
 import "./App.css";
 import MainPage from "./pages/MainPage";
-import TenantPage from "./pages/RenterPage";
-import PropertyOwnerPage from "./pages/ProperyManagerPage";
+import RenterPage from "./pages/RenterPage";
+import PropertyManagerPage from "./pages/ProperyManagerPage";
 import GlobalStyles from "@mui/material/GlobalStyles";
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import { ThemeProvider, createTheme } from "@mui/material/styles";
@@ -77,8 +77,8 @@ class App extends React.Component {
           </div>
           <Routes>
             <Route path="/Home" element={<MainPage />} />
-            <Route path="/TProfile" element={<TenantPage />} />
-            <Route path="/OProfile" element={<PropertyOwnerPage />} />
+            <Route path="/RProfile" element={<RenterPage />} />
+            <Route path="/MProfile" element={<PropertyManagerPage />} />
           </Routes>
         </BrowserRouter>
       </body>  
