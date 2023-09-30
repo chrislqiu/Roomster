@@ -2,13 +2,13 @@
 import React from "react"
 import "./App.css";
 import MainPage from "./pages/MainPage";
-import TenantPage from "./pages/TenantPage";
-import PropertyOwnerPage from "./pages/ProperyOwnerPage";
+import TenantPage from "./pages/RenterPage";
+import PropertyOwnerPage from "./pages/ProperyManagerPage";
 import GlobalStyles from "@mui/material/GlobalStyles";
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { Divider, Box } from "@mui/material";
-import background from './images/theredthing.png'
+import theredthing from './images/theredthing.png'
 import logo from './images/logo.png'
 import RoomsterAppBar from "./components/AppBar";
 
@@ -17,17 +17,17 @@ import RoomsterAppBar from "./components/AppBar";
       position: "absolute",
       margin: "0",
       padding:"0",
-      backgroundImage: `url(${background})`,
       backgroundColor: "#f5ebe0",
-      backgroundPosition: 'cover',
-      backgroundSize: "100% 75%",
-      backgroundRepeat: "no-repeat",
-      height: '100vh',
-      width: "100%",
     },
     logo: {
+      margin: "0",
       width: '40%',
-      }
+    },
+    theredthing: {
+      position: "absolute",
+      width: "100%",
+
+    }
   };
 
   const theme = createTheme({
@@ -65,13 +65,16 @@ class App extends React.Component {
       //     }}
       //   />
       <body style={styles.background}>
-        <div style={{textAlign:"center"}}>
-          <img className="logo" src={logo} style={styles.logo}></img>
-        </div>
         
-
+        
+        <div>
+          <img className="theredthing" src={theredthing} style={styles.theredthing}></img>
+        </div>
         <BrowserRouter>
          <RoomsterAppBar/>
+          <div style={{textAlign:"center"}}>
+            <img className="logo" src={logo} style={styles.logo}></img>
+          </div>
           <Routes>
             <Route path="/Home" element={<MainPage />} />
             <Route path="/TProfile" element={<TenantPage />} />

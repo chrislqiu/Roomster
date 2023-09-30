@@ -22,6 +22,7 @@ const MainPage = () => {
     const styles = {
         feed: {
             display: "flex",
+            justifyContent: "center",
             maxWidth: "1200px",
             flexWrap: "wrap",
         },
