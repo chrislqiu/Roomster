@@ -2,8 +2,6 @@ import * as React from 'react';
 import Button from '@mui/material/Button';
 import { Box, Card, CardContent, CardMedia } from '@mui/material';
 import { CardActionArea } from '@mui/material';
-import { Box, Card, CardContent, CardMedia } from '@mui/material';
-import { CardActionArea } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
