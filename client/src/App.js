@@ -15,12 +15,14 @@ import RoomsterAppBar from "./components/AppBar";
   const styles = {
     background: {
       position: "absolute",
+      margin: "0",
+      padding:"0",
       backgroundImage: `url(${background})`,
       backgroundColor: "#f5ebe0",
       backgroundPosition: 'cover',
       backgroundSize: "100% 75%",
       backgroundRepeat: "no-repeat",
-      height: '100%',
+      height: '100vh',
       width: "100%",
     },
     logo: {
