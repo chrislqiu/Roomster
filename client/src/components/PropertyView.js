@@ -36,7 +36,8 @@ const PropertyViewMore = ({ text, data }) => {
     const styles = {
         divider: {
             borderTop: "3px solid #AB191F",
-            padding: "0"
+            padding: "0",
+            marginBottom: "10px"
         }
     }
 
@@ -48,7 +49,7 @@ const PropertyViewMore = ({ text, data }) => {
                  * sx is the css properties of the button
                  */
             }
-            <Card 
+            <Card
                 variant='contained'
                 onClick={handleOpen}
                 sx={{
@@ -61,7 +62,9 @@ const PropertyViewMore = ({ text, data }) => {
                     color:"#AB191F",
                     width: "250px",
                     height: "300px",
-                    boxShadow: "0px 0px 3px 3px rgba(0, 0, 0, .1)"
+                    boxShadow: "0px 0px 3px 3px rgba(0, 0, 0, .1)",
+                    marginBottom: "20px",
+                    marginRight: "20px"
                 }}>
                 <CardActionArea>
                         <CardMedia
@@ -71,10 +74,11 @@ const PropertyViewMore = ({ text, data }) => {
                         />
                         <CardContent>
                           <Typography variant="h6" style={{margin: "-10px 0 0px 0"}}>Company Name</Typography>
-                          <Typography variant="body2" style={{margin: "0 0 10px 0"}}> 123 Address</Typography>
+                          <Typography variant="body2" style={{margin: "0 0 5px 0"}}> 123 Address</Typography>
                           <Typography variant="body2"> # bedroom</Typography>
                           <Typography variant="body2"> # bathroom</Typography>
                           <hr style={styles.divider}></hr>
+                          <Typography variant="body1" style={{textAlign:"right", fontWeight:"500"}}> $700 per month</Typography>
                         
                     </CardContent>
                 </CardActionArea>

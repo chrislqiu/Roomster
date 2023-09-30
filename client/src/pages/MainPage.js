@@ -19,10 +19,18 @@ const MainPage = () => {
         }
         getPropertyInfo()
     }, [])
+    const styles = {
+        feed: {
+            display: "flex",
+            maxWidth: "1200px",
+            flexWrap: "wrap",
+        },
+        
+    }
     return (
         <Container sx={{ width: '100%' }}>
             {console.log(propertyInfo)}
-            <Box sx={{ m: 1 }}>
+            <Box sx={{ m: 1 }} style={styles.feed}>
                 {
                    /*
                     * Maps each Property Information object to its own "card"
