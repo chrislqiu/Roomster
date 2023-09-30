@@ -7,7 +7,28 @@ import PropertyOwnerPage from "./pages/ProperyOwnerPage";
 import GlobalStyles from "@mui/material/GlobalStyles";
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { Divider, Box } from "@mui/material";
+import background from './images/theredthing.png'
+import logo from './images/logo.png'
 import RoomsterAppBar from "./components/AppBar";
+
+  const styles = {
+    background: {
+      position: "absolute",
+      margin: "0",
+      padding:"0",
+      backgroundImage: `url(${background})`,
+      backgroundColor: "#f5ebe0",
+      backgroundPosition: 'cover',
+      backgroundSize: "100% 75%",
+      backgroundRepeat: "no-repeat",
+      height: '100vh',
+      width: "100%",
+    },
+    logo: {
+      width: '40%',
+      }
+  };
 
   const theme = createTheme({
     palette: {
@@ -35,6 +56,19 @@ class App extends React.Component {
 
   render() {
     return (
+      
+      
+      // <ThemeProvider theme={theme}>
+      //   <GlobalStyles
+      //     sx={{
+      //       body: { backgroundColor: "#F6EBE1" }
+      //     }}
+      //   />
+      <body style={styles.background}>
+        <div style={{textAlign:"center"}}>
+          <img className="logo" src={logo} style={styles.logo}></img>
+        </div>
+        
 
         <BrowserRouter>
          <RoomsterAppBar/>
@@ -44,6 +78,10 @@ class App extends React.Component {
             <Route path="/OProfile" element={<PropertyOwnerPage />} />
           </Routes>
         </BrowserRouter>
+      </body>  
+
+      /* </ThemeProvider> */
+   
 
     );
   }

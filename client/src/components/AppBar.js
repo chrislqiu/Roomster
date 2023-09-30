@@ -11,7 +11,7 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import chicken from "/Users/tealazareto/Roomster-3/client/src/components/extras/chicken.png"
+import chicken from "../images/profile-pic.png"
 
 const pages = ["Home", "Fav Coops", "Coopmates", "Log Out"];
 
