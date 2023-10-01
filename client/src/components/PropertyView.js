@@ -70,10 +70,16 @@ const PropertyViewMore = ({ text, data }) => {
                         <CardMedia
                             component="img"
                             image={imgExample}
-                            height="140"
+                            //height="140px"
+                            style={{
+                                height: "130px",
+                                width: "230px",
+                                margin: "10px",
+                                borderRadius: "5px"
+                            }}
                         />
                         <CardContent>
-                          <Typography variant="h6" style={{margin: "-10px 0 0px 0"}}>Company Name</Typography>
+                          <Typography variant="h6" style={{margin: "-20px 0 0px 0"}}>Company Name</Typography>
                           <Typography variant="body2" style={{margin: "0 0 5px 0"}}> 123 Address</Typography>
                           <Typography variant="body2"> # bedroom</Typography>
                           <Typography variant="body2"> # bathroom</Typography>
