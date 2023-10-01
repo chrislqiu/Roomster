@@ -5,13 +5,11 @@ import { CardActionArea } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
-import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
 import Typography from '@mui/material/Typography';
 import { AspectRatio } from '@mui/joy';
 import Divider from '@mui/material/Divider';
 import { Stack } from '@mui/material';
-import {Link} from '@mui/material';
+import { Link } from '@mui/material';
 import imgExample from "../images/apartment-pic.jpg"
 
 /*
@@ -20,7 +18,7 @@ import imgExample from "../images/apartment-pic.jpg"
  * (temporary until property cards) text: button text 
  * data : The property data from the database
  */
-const PropertyViewMore = ({ text, data }) => {
+const PropertyViewMore = ({ data }) => {
     /*
      * open, setOpen : controls the state of the dialogue popup
      */
@@ -32,7 +30,7 @@ const PropertyViewMore = ({ text, data }) => {
     const handleClose = () => {
         setOpen(false)
     }
-    
+
     const styles = {
         divider: {
             borderTop: "3px solid #AB191F",
@@ -54,12 +52,12 @@ const PropertyViewMore = ({ text, data }) => {
                 onClick={handleOpen}
                 sx={{
                     ":hover": {
-                        bgcolor:"#AB191F",
-                        color:"#f5ebe0",
+                        bgcolor: "#AB191F",
+                        color: "#f5ebe0",
                         cursor: "pointer"
                     },
-                    backgroundColor:"#f5ebe0",
-                    color:"#AB191F",
+                    backgroundColor: "#f5ebe0",
+                    color: "#AB191F",
                     width: "250px",
                     height: "300px",
                     boxShadow: "0px 0px 3px 3px rgba(0, 0, 0, .1)",
@@ -67,19 +65,19 @@ const PropertyViewMore = ({ text, data }) => {
                     marginRight: "20px"
                 }}>
                 <CardActionArea>
-                        <CardMedia
-                            component="img"
-                            image={imgExample}
-                            height="140"
-                        />
-                        <CardContent>
-                          <Typography variant="h6" style={{margin: "-10px 0 0px 0"}}>Company Name</Typography>
-                          <Typography variant="body2" style={{margin: "0 0 5px 0"}}> 123 Address</Typography>
-                          <Typography variant="body2"> # bedroom</Typography>
-                          <Typography variant="body2"> # bathroom</Typography>
-                          <hr style={styles.divider}></hr>
-                          <Typography variant="body1" style={{textAlign:"right", fontWeight:"500"}}> $700 per month</Typography>
-                        
+                    <CardMedia
+                        component="img"
+                        image={imgExample}
+                        height="140"
+                    />
+                    <CardContent>
+                        <Typography variant="h6" style={{ margin: "-10px 0 0px 0" }}>  {data.propertyName} </Typography>
+                        <Typography variant="body2" style={{ margin: "0 0 5px 0" }}> {data.addr} </Typography>
+                        <Typography variant="body2"> {data.numBed} {data.numBed > 1 ? 'beds' : 'bed'}</Typography>
+                        <Typography variant="body2"> {data.numBath} {data.numBath > 1 ? 'baths' : 'bath'} </Typography>
+                        <hr style={styles.divider}></hr>
+                        <Typography variant="body1" style={{ textAlign: "right", fontWeight: "500" }}> ${data.cost} per month </Typography>
+
                     </CardContent>
                 </CardActionArea>
             </Card>
@@ -100,7 +98,6 @@ const PropertyViewMore = ({ text, data }) => {
                             backgroundColor: "#F6EBE1"
                         },
                     },
-
                 }}
             >
                 <DialogContent>
@@ -122,13 +119,13 @@ const PropertyViewMore = ({ text, data }) => {
                          * Stack direction row has each text 'chunk'
                          */
                     }
-                    <Stack direction='row' spacing={5} sx={{ marginTop: 2 }}>
+                    <Stack direction={{'400px': "column", md: "row",lg: "row", xl: "row"}} spacing={5} sx={{ marginTop: 2, p: 1 }} >
                         <Box width='600'>
                             <Typography
                                 sx={{
                                     fontWeight: 600,
                                     marginTop: 1,
-                                    fontSize: 20
+                                    variant:"h6"
                                 }}
                             >
                                 {
@@ -141,7 +138,7 @@ const PropertyViewMore = ({ text, data }) => {
                             <Typography
                                 sx={{
                                     fontWeight: 300,
-                                    fontSize: 16,
+                                    variant:"body2",
                                     fontStyle: 'italic',
                                     marginTop: .5
                                 }}
@@ -151,7 +148,7 @@ const PropertyViewMore = ({ text, data }) => {
                             <Typography
                                 sx={{
                                     fontWeight: 300,
-                                    fontSize: 16,
+                                    variant:"body2",
                                 }}
                             >
                                 {data.numBed} {data.numBed > 1 ? 'beds' : 'bed'}, {data.numBath} {data.numBath > 1 ? 'baths' : 'bath'}
@@ -160,20 +157,20 @@ const PropertyViewMore = ({ text, data }) => {
                             <Typography
                                 sx={{
                                     fontWeight: 500,
-                                    fontSize: 16,
+                                    variant:"body2",
 
                                 }}
                             >
                                 ${data.cost} per month
                             </Typography>
                         </Box>
-                        <Divider orientation='verticle' width={3} sx={{ borderBottomWidth: 3, color: "#AB191F", backgroundColor: "#AB191F", marginY: 2 }} />
+                        <Divider orientation={{xs:'horizontal', md:'vertical', lg:'vertical', xl:'vertical'}} width={3} sx={{ borderBottomWidth: 3, color: "#AB191F", backgroundColor: "#AB191F", marginY: 2 }} />
                         <Box width={'100%'}>
                             <Typography
                                 sx={{
                                     fontWeight: 600,
                                     marginTop: 1,
-                                    fontSize: 16
+                                    variant:"body2"
                                 }}
                             >
                                 Amenities
@@ -181,7 +178,7 @@ const PropertyViewMore = ({ text, data }) => {
                             <Typography
                                 sx={{
                                     fontWeight: 300,
-                                    fontSize: 16,
+                                    variant:"body2",
                                 }}
                             >
                                 {
@@ -195,12 +192,12 @@ const PropertyViewMore = ({ text, data }) => {
                             </Typography>
                         </Box>
                         <Divider orientation='verticle' width={3} sx={{ borderBottomWidth: 3, color: "#AB191F", backgroundColor: "#AB191F", marginY: 2 }} />
-                        <Box width={'100%'}>
+                        <Box width={'100%'} sx={{paddingRight: 1}} >
                             <Typography
                                 sx={{
                                     fontWeight: 600,
                                     marginTop: 1,
-                                    fontSize: 16
+                                    variant:"body2",
                                 }}
                             >
                                 Contact Information
@@ -208,7 +205,7 @@ const PropertyViewMore = ({ text, data }) => {
                             <Typography
                                 sx={{
                                     fontWeight: 300,
-                                    fontSize: 16,
+                                    variant:"body2",
                                 }}
                             >
                                 Company Name {<br />}
@@ -220,11 +217,6 @@ const PropertyViewMore = ({ text, data }) => {
                     </Stack>
                 </DialogContent>
                 <DialogActions>
-                    {/* {<IconButton
-                        onClick={handleClose}
-                    >
-                        <CloseIcon />
-                    </IconButton>} */}
                     <Button
                         variant='contained'
                         onClick={handleOpen}
@@ -235,7 +227,7 @@ const PropertyViewMore = ({ text, data }) => {
                             },
                             backgroundColor: "#AB191F",
                             color: "#F6EBE1",
-                            m:1
+                            m: 1
                         }}
                     >
                         ADD TO FAV
