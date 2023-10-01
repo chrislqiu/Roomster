@@ -65,19 +65,25 @@ const PropertyViewMore = ({ data }) => {
                     marginRight: "20px"
                 }}>
                 <CardActionArea>
-                    <CardMedia
-                        component="img"
-                        image={imgExample}
-                        height="140"
-                    />
-                    <CardContent>
-                        <Typography variant="h6" style={{ margin: "-10px 0 0px 0" }}>  {data.propertyName} </Typography>
-                        <Typography variant="body2" style={{ margin: "0 0 5px 0" }}> {data.addr} </Typography>
-                        <Typography variant="body2"> {data.numBed} {data.numBed > 1 ? 'beds' : 'bed'}</Typography>
-                        <Typography variant="body2"> {data.numBath} {data.numBath > 1 ? 'baths' : 'bath'} </Typography>
-                        <hr style={styles.divider}></hr>
-                        <Typography variant="body1" style={{ textAlign: "right", fontWeight: "500" }}> ${data.cost} per month </Typography>
-
+                        <CardMedia
+                            component="img"
+                            image={imgExample}
+                            //height="140px"
+                            style={{
+                                height: "130px",
+                                width: "230px",
+                                margin: "10px",
+                                borderRadius: "5px"
+                            }}
+                        />
+                        <CardContent>
+                          <Typography variant="h6" style={{margin: "-20px 0 0px 0"}}>Company Name</Typography>
+                          <Typography variant="body2" style={{margin: "0 0 5px 0"}}> 123 Address</Typography>
+                          <Typography variant="body2"> # bedroom</Typography>
+                          <Typography variant="body2"> # bathroom</Typography>
+                          <hr style={styles.divider}></hr>
+                          <Typography variant="body1" style={{textAlign:"right", fontWeight:"500"}}> $700 per month</Typography>
+                        
                     </CardContent>
                 </CardActionArea>
             </Card>
