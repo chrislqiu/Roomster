@@ -108,16 +108,27 @@ const LoginView = ({ text}) => {
                             </Button>
                         </div>
 
-                    <Typography sx={{margin:1.5, marginLeft: "auto", marginTop: "10px", marginBottom: "-5px"}}>
+                    <Typography sx={{margin:1.5, marginLeft: "auto", marginTop: "15px", marginBottom: "-5px"}}>
                         Already have an account?
                     </Typography>
                     </Box>
+                    <Divider variant="middle" sx = {{textAlign: "center", borderBottomWidth: 3, color:"#AB191F", backgroundColor:"#AB191F", marginY:1, width: "100%", marginLeft: "auto", marginRight: "auto" }}/>
+
 
                     <Box>
-                        <Divider variant="middle" sx = {{textAlign: "center", borderBottomWidth: 3, color:"#AB191F", backgroundColor:"#AB191F", marginY:1, width: "100%", marginLeft: "auto", marginRight: "auto" }}/>
                         <div>
-                            <TextField fullWidth margin="dense" height="10px" id="email-textfield" label="Email" variant="outlined"/>
-                            <TextField fullWidth margin="dense" id="psw-textfield" label="Password" variant="outlined" />
+                            <TextField 
+                                label="Email" id="email-textfield" variant="outlined" fullWidth
+                                sx = {{
+                                    boxShadow:"3", margin:"dense", marginBottom:"15px"
+                                }}
+                            />
+                            <TextField 
+                                label="Password" id="psw-textfield" variant="outlined" fullWidth
+                                sx = {{
+                                    boxShadow:"3", margin:"dense", marginBottom:"15px"
+                                }}
+                            />
 
                             <Button 
                                     sx={{
@@ -132,15 +143,10 @@ const LoginView = ({ text}) => {
                                     }} 
                                     variant="outlined">LOGIN
                                 </Button>
-
                         </div>
                     </Box>
-
                 </DialogContent>
-                
-
             </Dialog>
-
         </React.Fragment>
     )
 } 
