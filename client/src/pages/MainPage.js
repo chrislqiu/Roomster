@@ -30,14 +30,13 @@ const MainPage = () => {
     }
     return (
         <Container sx={{ width: '100%' }}>
-            {console.log(propertyInfo)}
             <Box sx={{ m: 1 }} style={styles.feed}>
                 {
                    /*
                     * Maps each Property Information object to its own "card"
                     */
                     propertyInfo.map(cards => {
-                        return <PropertyViewMore text={"This is where the property card box will go"} data={cards} />
+                        return <PropertyViewMore data={cards} />
                         }
                     )
                 }

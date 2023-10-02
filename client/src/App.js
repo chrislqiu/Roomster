@@ -2,8 +2,8 @@
 import React from "react"
 import "./App.css";
 import MainPage from "./pages/MainPage";
-import TenantPage from "./pages/RenterPage";
-import PropertyOwnerPage from "./pages/ProperyManagerPage";
+import RenterPage from "./pages/RenterPage";
+import PropertyManagerPage from "./pages/ProperyManagerPage";
 import GlobalStyles from "@mui/material/GlobalStyles";
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import { ThemeProvider, createTheme } from "@mui/material/styles";
@@ -65,20 +65,22 @@ class App extends React.Component {
       //     }}
       //   />
       <body style={styles.background}>
-        
-        
         <div>
           <img className="theredthing" src={theredthing} style={styles.theredthing}></img>
         </div>
         <BrowserRouter>
-         <RoomsterAppBar/>
+          {
+            // if login is true (for now), app bar with login buttons will show
+            // if login is false, appbar only has login/signup button
+          }
+         <RoomsterAppBar login={false}/>
           <div style={{textAlign:"center"}}>
             <img className="logo" src={logo} style={styles.logo}></img>
           </div>
           <Routes>
             <Route path="/Home" element={<MainPage />} />
-            <Route path="/TProfile" element={<TenantPage />} />
-            <Route path="/OProfile" element={<PropertyOwnerPage />} />
+            <Route path="/RProfile" element={<RenterPage />} />
+            <Route path="/MProfile" element={<PropertyManagerPage />} />
           </Routes>
         </BrowserRouter>
       </body>  

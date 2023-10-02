@@ -15,7 +15,12 @@ import chicken from "../images/profile-pic.png"
 
 const pages = ["Home", "Fav Coops", "Coopmates", "Log Out"];
 
-function RoomsterAppBar() {
+/* 
+ * RoomsterAppBar
+ * login: boolean variable for now, keeps track if user is logged in or not
+ */
+const RoomsterAppBar = ({ login }) => {
+    console.log(login)
     /*
      * TODO: 
      * hide the login stuff with a "Log In/ Sign Up Button"
@@ -73,35 +78,69 @@ function RoomsterAppBar() {
                             ))}
                         </Menu>
                     </Box>
-                    <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-                        {pages.map((page) => {
-                            return (
-                                <Button
-                                    key={page}
-                                    onClick={handleCloseNavMenu}
-                                    sx={{
-                                        my: 2,
-                                        color: "#AB191F",
-                                        backgroundColor: "#F6EBE1",
-                                        display: "block",
-                                        mx: .5,
-                                        fontWeight: 600,
-                                        padding: 1,
-                                        boxShadow: true
-                                    }}
-                                >
-                                    {page}
-                                </Button>
-                            );
-                        })}
-                    </Box>
-                    <Box sx={{ flexGrow: 0 }}>
-                        <Tooltip title="Open Profile" sx={{ color: "#AB191F" }}>
-                            <IconButton sx={{ p: 0 }} >
-                                <Avatar alt="chickenpfp" src={chicken}  style={{ transform: `scale(1.70, 1.70)` }} />
-                            </IconButton>
-                        </Tooltip>
-                    </Box>
+                    {login === true ?
+                        <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+                            {pages.map((page) => {
+                                return (
+                                    <Button
+                                        key={page}
+                                        onClick={handleCloseNavMenu}
+                                        sx={{
+                                            my: 2,
+                                            ":hover": {
+                                                bgcolor: "#AB191F",
+                                                color: "#f5ebe0",
+                                                cursor: "pointer"
+                                            },
+                                            color: "#AB191F",
+                                            backgroundColor: "#F6EBE1",
+                                            display: "block",
+                                            mx: .5,
+                                            fontWeight: 600,
+                                            padding: 1,
+                                            boxShadow: "0px 0px 3px 3px rgba(0, 0, 0, .1)"
+                                        }}
+                                    >
+                                        {page}
+                                    </Button>
+                                );
+                            })}
+                        </Box>
+                        :
+                        <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+                        </Box>
+
+                    }
+                    {login ?
+                        <Box sx={{ flexGrow: 0 }}>
+                            <Tooltip title="Open Profile" sx={{ color: "#AB191F" }}>
+                                <IconButton sx={{ p: 0 }} >
+                                    <Avatar alt="chickenpfp" src={chicken} style={{ transform: `scale(1.70, 1.70)` }} />
+                                </IconButton>
+                            </Tooltip>
+                        </Box>
+                        :
+                        <Button
+                            onClick={handleCloseNavMenu}
+                            sx={{
+                                my: 2,
+                                ":hover": {
+                                    bgcolor: "#AB191F",
+                                    color: "#f5ebe0",
+                                    cursor: "pointer"
+                                },
+                                color: "#AB191F",
+                                backgroundColor: "#F6EBE1",
+                                display: "block",
+                                mx: .5,
+                                fontWeight: 600,
+                                padding: 1,
+                                boxShadow: "0px 0px 3px 3px rgba(0, 0, 0, .1)"
+                            }}
+                        >
+                            Login/Signup
+                        </Button>
+                    }
                 </Toolbar>
             </Container>
         </AppBar>
