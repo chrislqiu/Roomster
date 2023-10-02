@@ -34,7 +34,7 @@ import RoomsterAppBar from "./components/AppBar";
   const theme = createTheme({
     palette: {
       background: {
-        default: "#AB191F"
+        default: "#F6EBE1"
       }
     }
   });
