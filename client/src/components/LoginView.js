@@ -80,7 +80,7 @@ const LoginView = ({ text}) => {
                             Are you a...
                         </Typography>
 
-                        <div style = {{justifyContent: "center", display: "inline", marginLeft: "auto", marginRight: "auto"}}>
+                        <div style = {{justifyContent: "center", display: "inline", marginLeft:"70px", marginRight:"70px"}}>
                             <Button 
                                 sx={{
                                     ":hover": {
@@ -112,10 +112,9 @@ const LoginView = ({ text}) => {
                         Already have an account?
                     </Typography>
                     </Box>
-                    <Divider variant="middle" sx = {{textAlign: "center", borderBottomWidth: 3, color:"#AB191F", backgroundColor:"#AB191F", marginY:1, width: "100%", marginLeft: "auto", marginRight: "auto" }}/>
-
 
                     <Box>
+                        <Divider variant="middle" sx = {{textAlign: "center", borderBottomWidth: 3, color:"#AB191F", backgroundColor:"#AB191F", marginY:1, width: "100%", marginLeft: "auto", marginRight: "auto" }}/>
                         <div>
                             <TextField 
                                 label="Email" id="email-textfield" variant="outlined" fullWidth
@@ -126,6 +125,10 @@ const LoginView = ({ text}) => {
                             <TextField 
                                 label="Password" id="psw-textfield" variant="outlined" fullWidth
                                 sx = {{
+                                    ":focus": {
+                                        borderColor: "black"
+
+                                    },
                                     boxShadow:"3", margin:"dense", marginBottom:"15px"
                                 }}
                             />
