@@ -73,7 +73,7 @@ class App extends React.Component {
             // if login is true (for now), app bar with login buttons will show
             // if login is false, appbar only has login/signup button
           }
-         <RoomsterAppBar login={false}/>
+         <RoomsterAppBar login={true}/>
           <div style={{textAlign:"center"}}>
             <img className="logo" src={logo} style={styles.logo}></img>
           </div>
