@@ -125,10 +125,6 @@ const LoginView = ({ text}) => {
                             <TextField 
                                 label="Password" id="psw-textfield" variant="outlined" fullWidth
                                 sx = {{
-                                    ":focus": {
-                                        borderColor: "black"
-
-                                    },
                                     boxShadow:"3", margin:"dense", marginBottom:"15px"
                                 }}
                             />
