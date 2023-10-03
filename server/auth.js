@@ -2,7 +2,8 @@ const express = require("express");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const User = require('./models/user.js');
-const cookieParser = require("cookie-parser")
+const cookieParser = require("cookie-parser");
+const sendVerificationEmail = require("./emailVerify.js");
 
 
 const router = express.Router();
@@ -62,6 +63,14 @@ router.post("/signup", async (req, res) => {
 
     newUser.save()
     .then((result) => {
+      const verificationToken = jwt.sign(
+        {
+          username: req.body.username,
+        }, secretKey, { expiresIn: "10m" }
+      );
+
+      sendVerificationEmail(newUser.username, verificationToken);
+
       const token = jwt.sign({ username: req.body.username }, secretKey, { expiresIn: '1h' });
       return res
       .cookie("access_token", token, {
@@ -142,19 +151,30 @@ router.get("/logout", authorization, (req, res) => {
 });
 
 
-router.get("/verify/:token", (req, res) => {
+router.get("/verify/:token", async (req, res) => {
   const {token} = req.params;
+  console.log("Token:", token);
+  try {
+    const decoded = jwt.verify(token, secretKey);
+    console.log(decoded.username);
 
-  jwt.verify(token, 'key', function(err, decoded) {
-    if(err){
-      console.log(err);
-      res.send("Email verification failed");
-    } else {
-      res.send("Email verified");
+    const updatedUser = await User.findOneAndUpdate(
+      { username: decoded.username },
+      { isVerified: true },
+      { new: true }
+    );
+    console.log("Updated User:", updatedUser); 
+    if (!updatedUser) {
+      return res.status(404).send("User not found");
     }
-  });
 
+    return res.send("Email verified");
+  } catch (err) {
+    console.log(err);
+    return res.status(500).send("Email verification failed");
+  }
 });
+
 
 //only for testing purposes
 router.get("/clearUsers", async (req, res) => {

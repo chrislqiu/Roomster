@@ -10,10 +10,10 @@ const user = new Schema({
         type: String,
         required: true
     },
-    // isVerified: {
-    //     type: Boolean,
-    //     default: false
-    // }   
+    isVerified: {
+        type: Boolean,
+        default: false
+    }   
 });
 
 //looks for this collection in db (it's suppose to be singular and not "PropertyCards")
