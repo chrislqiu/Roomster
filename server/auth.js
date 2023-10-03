@@ -35,17 +35,26 @@ router.get("/secret", authorization, (req, res) => {
 
 router.get("/users", (req, res) => {
   User.find()
-  .then((result) => {
-    res.send(result);
-  }) 
-  .catch((err) => {
-    console.log(err);
-  });
-  });
-  
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
+const isEmailValid = (email) => {
+  const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+  return emailRegex.test(email);
+};
+
 
 router.post("/signup", async (req, res) => {
   const existingUser = await User.findOne({ username: req.body.username });
+
+  if (!isEmailValid(req.body.username)) {
+    return res.status(400).send("Invalid email format");
+  }
 
   if (existingUser) {
     return res.status(400).send("User already exists");
@@ -62,36 +71,32 @@ router.post("/signup", async (req, res) => {
     });
 
     newUser.save()
-    .then((result) => {
-      const verificationToken = jwt.sign(
-        {
-          username: req.body.username,
-        }, secretKey, { expiresIn: "10m" }
-      );
+      .then((result) => {
+        const verificationToken = jwt.sign(
+          {
+            username: req.body.username,
+          }, secretKey, { expiresIn: "10m" }
+        );
 
-      sendVerificationEmail(newUser.username, verificationToken);
+        sendVerificationEmail(newUser.username, verificationToken);
 
-      const token = jwt.sign({ username: req.body.username }, secretKey, { expiresIn: '1h' });
-      return res
-      .cookie("access_token", token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
+        const token = jwt.sign({ username: req.body.username }, secretKey, { expiresIn: '1h' });
+        return res
+          .cookie("access_token", token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+          })
+          .status(200)
+          .json({ message: "Account creation successful" });
       })
-      .status(200)
-      .json({ message: "Account creation successful"});
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-
-   
-
-
+      .catch((err) => {
+        console.log(err);
+      });
   } catch (err) {
-      console.log(err);
-      res.status(500).send("Error creating account");
-    }
-    
+    console.log(err);
+    res.status(500).send("Error creating account");
+  }
+
 });
 
 router.post("/login", async (req, res) => {
@@ -106,12 +111,12 @@ router.post("/login", async (req, res) => {
     if (isPasswordValid) {
       const token = jwt.sign({ username: req.body.username }, secretKey, { expiresIn: '1h' });
       return res
-      .cookie("access_token", token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-      })
-      .status(200)
-      .json({ message: "Access granted"});
+        .cookie("access_token", token, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+        })
+        .status(200)
+        .json({ message: "Access granted" });
     } else {
       res.send("Access denied");
     }
@@ -131,7 +136,7 @@ router.post("/delete", async (req, res) => {
     const isPasswordValid = await bcrypt.compare(req.body.password, user.password);
 
     if (isPasswordValid) {
-      await User.deleteOne({ username: req.body.username }); 
+      await User.deleteOne({ username: req.body.username });
 
       return res.send("User deleted");
     } else {
@@ -152,7 +157,7 @@ router.get("/logout", authorization, (req, res) => {
 
 
 router.get("/verify/:token", async (req, res) => {
-  const {token} = req.params;
+  const { token } = req.params;
   console.log("Token:", token);
   try {
     const decoded = jwt.verify(token, secretKey);
@@ -163,7 +168,7 @@ router.get("/verify/:token", async (req, res) => {
       { isVerified: true },
       { new: true }
     );
-    console.log("Updated User:", updatedUser); 
+    console.log("Updated User:", updatedUser);
     if (!updatedUser) {
       return res.status(404).send("User not found");
     }
