@@ -82,7 +82,7 @@ class App extends React.Component {
             <Route path="/Home" element={<MainPage />} />
             <Route path="/RProfile" element={<RenterPage />} />
             <Route path="/MProfile" element={<PropertyManagerPage />} />
-            <Route path="/Login" element={<LoginPage />} />
+            {/* {<Route path="/Login" element={<LoginPage />} />} */}
           </Routes>
         </BrowserRouter>
       </body>  
