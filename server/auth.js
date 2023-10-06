@@ -62,7 +62,7 @@ router.post("/login", async (req, res) => {
     if (isPasswordValid) {
       res.send("Access granted");
     } else {
-      res.send("Access denied");
+      res.status(401).send("Access denied");
     }
   } catch {
     res.status(500).send("Error when logging in");
