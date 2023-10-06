@@ -32,13 +32,13 @@ const LoginView = ({ text}) => {
     const [open, setOpen] = React.useState(false)
     const [email, setEmail] = React.useState('')
     const [password, setPassword] = React.useState('')
-    const [loginError, setLoginError] = React.useState(null)
+    const [loginStatus, setLoginStatus] = React.useState(null)
     const handleOpen = () => {
         setOpen(true)
     }
     const handleClose = () => {
         setOpen(false)
-        setLoginError(null)
+        setLoginStatus(null)
     }
 
     const handleLogin = async () => {
@@ -55,7 +55,7 @@ const LoginView = ({ text}) => {
                 console.log('Login successful');
                 handleClose();
             } else {
-                setLoginError('Incorrect username/password');
+                setLoginStatus('Incorrect username/password');
             }
         } catch (error) {
             console.error('Error during login:', error);
@@ -159,8 +159,8 @@ const LoginView = ({ text}) => {
                                 onChange={(e) => setPassword(e.target.value)}
                             />
 
-                            {loginError && (
-                                <p style={{ color: 'red', textAlign: 'center' }}>{loginError}</p>
+                            {loginStatus && (
+                                <p style={{ color: '#AB191F', textAlign: 'center' }}>{loginStatus}</p>
                             )}
 
                             <Button
