@@ -23,8 +23,8 @@ import RoomsterAppBar from "./components/AppBar";
 
     },
     logo: {
-      margin: "-20px",
-      width: '40%',
+      margin: "-30px",
+      width: '35%',
       zIndex: "0",
     },
     theredthing: {
@@ -78,7 +78,7 @@ class App extends React.Component {
           }
 
          <RoomsterAppBar login={true}/>
-          <div style={{textAlign:"center"}}>
+          <div style={{textAlign:"center", zIndex: "3", position: "relative", marginBottom:"50px"}}>
 
             <img className="logo" src={logo} style={styles.logo}></img>
           </div>
