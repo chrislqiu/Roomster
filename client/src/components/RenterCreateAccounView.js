@@ -9,6 +9,7 @@ import Divider from '@mui/material/Divider';
 import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 /**
  * Display for Renter Create Account Pop-up
  * Jillian Urgello 
@@ -50,25 +51,25 @@ const RenterCreateAccountView = ({ text }) => {
                     "& .MuiDialog-container": {
                         "& .MuiPaper-root": {
                           width: "100%",
+                          height: "100%",
                           maxWidth: "400px",  
-                          maxHeight: "1000px",
+                          maxHeight: "400px",
                           bgcolor: '#F6EBE1'
                         }
                     }
                   }}>
                 
                 <div sx={{justifyContent: "left"}}>
-                    <DialogTitle>
-                        <IconButton
-                            style={{ position: "absolute", top: "0", right: "0" }}
-                            onClick={() => setOpen(false)}
-                        >
-                            <CloseIcon />
-                        </IconButton>
-                    </DialogTitle>
+                    <IconButton
+                        style={{ position: "absolute", top: "0", right: "0" }}
+                        onClick={() => setOpen(false)}
+                    >
+                        <CloseIcon style={{color:"black"}} />
+                    </IconButton>
                     
-                    <DialogTitle sx={{fontWeight: 600, marginBottom: "-40px"}}> Welcome, </DialogTitle>
-                    <DialogTitle sx={{fontWeight: 600, marginBottom: "-20px"}}>Create Account</DialogTitle>
+                    
+                    <DialogTitle sx={{fontWeight: 600, fontSize:25, marginBottom: "-40px"}}> Welcome, </DialogTitle>
+                    <DialogTitle sx={{fontWeight: 600, fontSize:25, marginBottom: "-15px"}}>Create Account</DialogTitle>
                     <Divider variant="middle" sx = {{borderBottomWidth: 3, color:"#AB191F", backgroundColor:"#AB191F", marginY:1}}/>
                 </div>
                 <DialogContent sx={{maxWidth:"400px"}}>
@@ -110,14 +111,16 @@ const RenterCreateAccountView = ({ text }) => {
                             }} 
                             variant="outlined">SIGN UP
                         </Button>
+
+                        <IconButton
+                        style={{ position:"BottomLeft", top:35, left:0 }}
+                        onClick={() => setOpen(false)}
+                    >
+                        <ArrowBackIcon style={{color: "black"}} />
+                    </IconButton>
+
                     </div>
                 </DialogContent>
-
-                
-
-
-
-
             </Dialog>
 
         </React.Fragment>
