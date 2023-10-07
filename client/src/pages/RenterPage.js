@@ -1,4 +1,4 @@
-import { InputBase, Grid, Card, Container, Box, Typography, CardContent, Input, Divider, TextField, Link, Button } from "@mui/material";
+import { InputBase, Switch, Grid, Card, Container, Box, Typography, CardContent, Input, Divider, TextField, Link, Button } from "@mui/material";
 import React from "react"
 import profilePic from "../images/profile-pic-no-shadow.png"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -106,9 +106,14 @@ const RenterPage = () => {
                     <Button variant="contained" style={{backgroundColor: "#AB191F", float: "right", margin: "0 35px 0 0"}}>SAVE</Button>
                 </Box>
                 <Box width='100%' style={styles.column2}>
-                    <Typography style={styles.header}> 
-                        {"FINDING COOPMATES?"}
-                    </Typography >
+                    <Container style={styles.box}>
+                        <Typography style={styles.header}> 
+                            {"FINDING COOPMATES?"}
+                        </Typography >
+                        <Switch/>
+                    </Container>
+                    
+
                 </Box>
                 
                 </CardContent>
