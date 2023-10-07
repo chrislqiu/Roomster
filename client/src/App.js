@@ -4,6 +4,7 @@ import "./App.css";
 import MainPage from "./pages/MainPage";
 import RenterPage from "./pages/RenterPage";
 import PropertyManagerPage from "./pages/ProperyManagerPage";
+import RenterCreateAccountPage from "./pages/RenterCreateAccountPage";
 import LoginPage from "./pages/LoginPage"
 import GlobalStyles from "@mui/material/GlobalStyles";
 import { BrowserRouter, Routes, Route } from "react-router-dom"
@@ -83,6 +84,7 @@ class App extends React.Component {
             <Route path="/RProfile" element={<RenterPage />} />
             <Route path="/MProfile" element={<PropertyManagerPage />} />
             <Route path="/Login" element={<LoginPage />} />
+            <Route path="/RCreate" element={<RenterCreateAccountPage />} />
           </Routes>
         </BrowserRouter>
       </body>  
