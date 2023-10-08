@@ -84,7 +84,7 @@ router.post("/delete", async (req, res) => {
 
       return res.send("User deleted");
     } else {
-      res.send("Incorrect user information");
+      res.status(401).send("Incorrect user information");
     }
   } catch (err) {
     console.error(err);
