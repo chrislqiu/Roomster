@@ -25,7 +25,7 @@ import RenterCreateAccountPage from '../pages/RenterCreateAccountPage';
 
 
 const LoginView = ({ text}) => {
-    const [open, setOpen] = React.useState(false)
+    const [open, setOpen] = React.useState(true)
     const [isRCreateOpen, setRCreateOpen] = React.useState(false)
     const handleOpen = () => {
         setOpen(true)
@@ -101,7 +101,6 @@ const LoginView = ({ text}) => {
                                     }} 
                                     variant="outlined">RENTER
                                 </Button>
-                                {isRCreateOpen && <Box> <RenterCreateAccountPage></RenterCreateAccountPage></Box>}
                             
                             <Button 
                                 sx={{

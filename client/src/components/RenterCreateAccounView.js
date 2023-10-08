@@ -32,16 +32,9 @@ const RenterCreateAccountView = ({  }) => {
         setOpen(false)
     }
 
-    /*useEffect(() => {
-        // this check if "Login" appear in the url
-        if (/Login/.test(window.location.reload)) {
-          setOpen(true);
-        }
-      }, [open]);*/
-
-      const handleBackButton = () => {
-        return <LoginView text={"Login"}/>
-      }
+    const handleBackButton = () => {
+        window.location.replace("/Login")
+    }
 
     return (
         <React.Fragment>
@@ -131,6 +124,7 @@ const RenterCreateAccountView = ({  }) => {
 
                         <IconButton
                             style={{ position:"BottomLeft", top:35, left:0 }}
+                            onClick={() => handleBackButton()}
                             
                         >
                         <ArrowBackIcon 
