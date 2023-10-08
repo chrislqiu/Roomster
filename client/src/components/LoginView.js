@@ -7,6 +7,8 @@ import DialogContent from '@mui/material/DialogContent';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import TextField from '@mui/material/TextField';
+import RenterCreateAccountView from './RenterCreateAccounView';
+import RenterCreateAccountPage from '../pages/RenterCreateAccountPage';
 
 
 
@@ -24,6 +26,7 @@ import TextField from '@mui/material/TextField';
 
 const LoginView = ({ text}) => {
     const [open, setOpen] = React.useState(false)
+    const [isRCreateOpen, setRCreateOpen] = React.useState(false)
     const handleOpen = () => {
         setOpen(true)
     }
@@ -31,11 +34,12 @@ const LoginView = ({ text}) => {
         setOpen(false)
     }
 
-    function handleRCreate(event) {
+    const handleRCreate = event => {
+        //handleClose()
+        //setRCreateOpen(prev => !prev)   
         window.location.replace("/RCreate")
-        //console.log("Renter clicked")
+        //return <RenterCreateAccountView text={"hello"} />
     }
-    
     
     return (
         <React.Fragment>
@@ -85,7 +89,7 @@ const LoginView = ({ text}) => {
                            
                                 <Button
                                     type = "RCreate"
-                                    onClick={()=>handleRCreate()}
+                                    onClick={()=> handleRCreate()}
                                     sx={{
                                         ":hover": {
                                             borderColor:"black", bgcolor:"#AB191F", color:"#F6EBE1", 
@@ -97,7 +101,7 @@ const LoginView = ({ text}) => {
                                     }} 
                                     variant="outlined">RENTER
                                 </Button>
-                            
+                                {isRCreateOpen && <Box> <RenterCreateAccountPage></RenterCreateAccountPage></Box>}
                             
                             <Button 
                                 sx={{

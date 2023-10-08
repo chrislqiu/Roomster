@@ -13,6 +13,7 @@ import { Divider, Box } from "@mui/material";
 import theredthing from './images/theredthing.png'
 import logo from './images/logo.png'
 import RoomsterAppBar from "./components/AppBar";
+import RenterCreateAccountView from "./components/RenterCreateAccounView";
 
   const styles = {
     background: {
@@ -84,7 +85,7 @@ class App extends React.Component {
             <Route path="/RProfile" element={<RenterPage />} />
             <Route path="/MProfile" element={<PropertyManagerPage />} />
             <Route path="/Login" element={<LoginPage />} />
-            <Route path="/RCreate" element={<RenterCreateAccountPage />} />
+            <Route path="/RCreate" element={<RenterCreateAccountView />} />
           </Routes>
         </BrowserRouter>
       </body>  

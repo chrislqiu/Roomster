@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {useEffect, useState} from 'react';
 import Button from '@mui/material/Button';
 import { Box } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
@@ -10,6 +11,8 @@ import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import LoginView from './LoginView';
+import MainPage from '../pages/MainPage';
 /**
  * Display for Renter Create Account Pop-up
  * Jillian Urgello 
@@ -19,8 +22,9 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
  * yellow: #F6EBE1
  */
 
-const RenterCreateAccountView = ({ text }) => {
-    const [open, setOpen] = React.useState(false)
+const RenterCreateAccountView = ({  }) => {
+    const [open, setOpen] = React.useState(true)
+
     const handleOpen = () => {
         setOpen(true)
     }
@@ -28,8 +32,20 @@ const RenterCreateAccountView = ({ text }) => {
         setOpen(false)
     }
 
+    /*useEffect(() => {
+        // this check if "Login" appear in the url
+        if (/Login/.test(window.location.reload)) {
+          setOpen(true);
+        }
+      }, [open]);*/
+
+      const handleBackButton = () => {
+        return <LoginView text={"Login"}/>
+      }
+
     return (
         <React.Fragment>
+        
             <Button 
                 variant='contained'
                 onClick={handleOpen}
@@ -41,7 +57,7 @@ const RenterCreateAccountView = ({ text }) => {
                     backgroundColor:"#AB191F",
                     color:"#F6EBE1"
                 }} >
-                {text}
+                {}
             </Button>
 
             <Dialog
@@ -62,10 +78,11 @@ const RenterCreateAccountView = ({ text }) => {
                 <div sx={{justifyContent: "left"}}>
                     <IconButton
                         style={{ position: "absolute", top: "0", right: "0" }}
-                        onClick={() => setOpen(false)}
+                        onClick={() => handleClose()}
                     >
-                        <CloseIcon style={{color:"black"}} />
+                        <CloseIcon style={{color:"black"}}/>       
                     </IconButton>
+                    
                     
                     
                     <DialogTitle sx={{fontWeight: 600, fontSize:25, marginBottom: "-40px"}}> Welcome, </DialogTitle>
@@ -113,10 +130,12 @@ const RenterCreateAccountView = ({ text }) => {
                         </Button>
 
                         <IconButton
-                        style={{ position:"BottomLeft", top:35, left:0 }}
-                        onClick={() => setOpen(false)}
-                    >
-                        <ArrowBackIcon style={{color: "black"}} />
+                            style={{ position:"BottomLeft", top:35, left:0 }}
+                            
+                        >
+                        <ArrowBackIcon 
+                            style={{color: "black"}}
+                        />
                     </IconButton>
 
                     </div>
