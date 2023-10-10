@@ -26,6 +26,7 @@ const RenterCreateAccountView = ({ }) => {
     const [open, setOpen] = React.useState(true)
     const [email, setEmail] = React.useState("")
     const [password, setPassword] = React.useState("")
+    const [confirmedPassword, setConfirmedPassword] = React.useState("")
     const [signupStatus, setSignupStatus] = React.useState(null);
 
     const handleOpen = () => {
@@ -49,6 +50,11 @@ const RenterCreateAccountView = ({ }) => {
         if (!emailRegex.test(email)) {
             setSignupStatus("Please enter a valid Purdue email address");
             return;
+        }
+
+        if (password.localeCompare(confirmedPassword)) {
+            setSignupStatus("Please make sure your passwords match")
+            return
         }
 
         try {
@@ -99,7 +105,7 @@ const RenterCreateAccountView = ({ }) => {
                             width: "100%",
                             height: "100%",
                             maxWidth: "400px",
-                            maxHeight: "450px",
+                            maxHeight: "550px",
                             bgcolor: '#F6EBE1'
                         }
                     }
@@ -123,16 +129,16 @@ const RenterCreateAccountView = ({ }) => {
                     <div>
                         <TextField
                             label="Name" id="name-textfield" variant="outlined" fullWidth
-                            inputProps={{ style: { fontSize: 10 } }}
-                            inputLabelProps={{ style: { fontSize: 10 } }}
+                            inputProps={{ style: { fontSize: 15 } }}
+                            inputLabelProps={{ style: { fontSize: 15 } }}
                             sx={{
                                 boxShadow: "3", margin: "dense", marginBottom: "15px"
                             }}
                         />
                         <TextField
                             label="Purdue Email" id="email-textfield" variant="outlined" fullWidth
-                            inputProps={{ style: { fontSize: 10 } }}
-                            inputLabelProps={{ style: { fontSize: 10, marginBottom: "15px" } }}
+                            inputProps={{ style: { fontSize: 15 } }}
+                            inputLabelProps={{ style: { fontSize: 15, marginBottom: "15px" } }}
                             sx={{
                                 boxShadow: "3", margin: "dense", marginBottom: "15px",
                             }}
@@ -141,8 +147,8 @@ const RenterCreateAccountView = ({ }) => {
                         />
                         <TextField
                             label="Password" id="psw-textfield" variant="outlined" fullWidth
-                            inputProps={{ style: { fontSize: 10 } }}
-                            inputLabelProps={{ style: { fontSize: 10 } }}
+                            inputProps={{ style: { fontSize: 15 } }}
+                            inputLabelProps={{ style: { fontSize: 15 } }}
                             sx={{
                                 boxShadow: "3", margin: "dense", marginBottom: "15px"
                             }}
@@ -152,13 +158,13 @@ const RenterCreateAccountView = ({ }) => {
 
                         <TextField
                             label="Confirm Password" id="confirm-psw-textfield" variant="outlined" fullWidth
-                            inputProps={{ style: { fontSize: 10 } }}
-                            inputLabelProps={{ style: { fontSize: 10 } }}
+                            inputProps={{ style: { fontSize: 15 } }}
+                            inputLabelProps={{ style: { fontSize: 15 } }}
                             sx={{
                                 boxShadow: "3", margin: "dense", marginBottom: "15px"
                             }}
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
+                            value={confirmedPassword}
+                            onChange={(e) => setConfirmedPassword(e.target.value)}
                         />
 
                         {signupStatus && (
@@ -182,7 +188,7 @@ const RenterCreateAccountView = ({ }) => {
                         </Button>
 
                         <IconButton
-                            style={{ position: "BottomLeft", top: 25, left: 0 }}
+                            style={{ position: "BottomLeft", top: 70, left: 0 }}
                             onClick={() => handleBackButton()}
 
                         >
