@@ -150,6 +150,17 @@ const RenterCreateAccountView = ({ }) => {
                             onChange={(e) => setPassword(e.target.value)}
                         />
 
+                        <TextField
+                            label="Confirm Password" id="confirm-psw-textfield" variant="outlined" fullWidth
+                            inputProps={{ style: { fontSize: 10 } }}
+                            inputLabelProps={{ style: { fontSize: 10 } }}
+                            sx={{
+                                boxShadow: "3", margin: "dense", marginBottom: "15px"
+                            }}
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                        />
+
                         {signupStatus && (
                             <p style={{ color: '#AB191F', textAlign: 'center' }}>{signupStatus}</p>
                         )}
@@ -171,7 +182,7 @@ const RenterCreateAccountView = ({ }) => {
                         </Button>
 
                         <IconButton
-                            style={{ position: "BottomLeft", top: 35, left: 0 }}
+                            style={{ position: "BottomLeft", top: 25, left: 0 }}
                             onClick={() => handleBackButton()}
 
                         >
