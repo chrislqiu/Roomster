@@ -11,18 +11,19 @@ import Divider from '@mui/material/Divider';
 import { Stack } from '@mui/material';
 import { Link } from '@mui/material';
 import imgExample from "../images/apartment-pic.jpg"
+import StarIcon from '@mui/icons-material/Star';
 
-/*
- * Popup Dialogue Page for the Property card
+/* 
+ * Property Card (Rachel La)
+ * More Property Detail Dialogue for the Property card (Tea Lazareto)
  * Parameters:
  * (temporary until property cards) text: button text 
  * data : The property data from the database
  */
-const PropertyViewMore = ({ data }) => {
+const PropertyViewMore = ({ data, featured }) => {
     /*
      * open, setOpen : controls the state of the dialogue popup
      */
-
     const [open, setOpen] = React.useState(false)
     const handleOpen = () => {
         setOpen(true)
@@ -41,12 +42,6 @@ const PropertyViewMore = ({ data }) => {
 
     return (
         <React.Fragment>
-            {
-                /*
-                 * Temporary button until card works
-                 * sx is the css properties of the button
-                 */
-            }
             <Card
                 variant='contained'
                 onClick={handleOpen}
@@ -77,7 +72,10 @@ const PropertyViewMore = ({ data }) => {
                             }}
                         />
                         <CardContent>
-                          <Typography variant="h6" style={{margin: "-20px 0 0px 0"}}>Company Name</Typography>
+                        <div style={{ display: 'flex', alignItems: 'center', marginLeft: 0 }}>
+                          <Typography variant="h6" style={{margin: "-20px 0 0px 0"}}> Company Name </Typography>
+                          {featured === true ? <StarIcon style={{margin: "-20px 0 0px 2.5"}} /> : ''}
+                        </div>
                           <Typography variant="body2" style={{margin: "0 0 5px 0"}}> 123 Address</Typography>
                           <Typography variant="body2"> # bedroom</Typography>
                           <Typography variant="body2"> # bathroom</Typography>

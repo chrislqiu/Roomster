@@ -47,12 +47,19 @@ const LoginView = ({ text}) => {
                 variant='contained'
                 onClick={handleOpen}
                 sx={{
+                    my: 2,
                     ":hover": {
-                        bgcolor:"#F6EBE1",
-                        color:"#AB191F"
+                        bgcolor: "#AB191F",
+                        color: "#f5ebe0",
+                        cursor: "pointer"
                     },
-                    backgroundColor:"#AB191F",
-                    color:"#F6EBE1"
+                    color: "#AB191F",
+                    backgroundColor: "#F6EBE1",
+                    display: "block",
+                    mx: .5,
+                    fontWeight: 600,
+                    padding: 1,
+                    boxShadow: "0px 0px 3px 3px rgba(0, 0, 0, .1)"
                 }}
                 >
                 {text}

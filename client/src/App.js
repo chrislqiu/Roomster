@@ -21,15 +21,17 @@ import RenterCreateAccountView from "./components/RenterCreateAccounView";
       margin: "0",
       padding:"0",
       backgroundColor: "#f5ebe0",
+      zIndex: "-1",
+
     },
     logo: {
-      margin: "0",
+      margin: "-20px",
       width: '40%',
+      zIndex: "0",
     },
     theredthing: {
       position: "absolute",
       width: "100%",
-
     }
   };
 
@@ -68,7 +70,7 @@ class App extends React.Component {
       //     }}
       //   />
       <body style={styles.background}>
-        <div>
+        <div style={{zIndex: "0"}}>
           <img className="theredthing" src={theredthing} style={styles.theredthing}></img>
         </div>
         <BrowserRouter>
@@ -76,8 +78,10 @@ class App extends React.Component {
             // if login is true (for now), app bar with login buttons will show
             // if login is false, appbar only has login/signup button
           }
-         <RoomsterAppBar login={false}/>
+
+         <RoomsterAppBar login={true}/>
           <div style={{textAlign:"center"}}>
+
             <img className="logo" src={logo} style={styles.logo}></img>
           </div>
           <Routes>
