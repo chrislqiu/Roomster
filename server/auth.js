@@ -118,7 +118,7 @@ router.post("/login", async (req, res) => {
         .status(200)
         .json({ message: "Access granted" });
     } else {
-      res.send("Access denied");
+      res.status(401).send("Access denied");
     }
   } catch {
     res.status(500).send("Error when logging in");
@@ -140,7 +140,7 @@ router.post("/delete", async (req, res) => {
 
       return res.send("User deleted");
     } else {
-      res.send("Incorrect user information");
+      res.status(401).send("Incorrect user information");
     }
   } catch (err) {
     console.error(err);
