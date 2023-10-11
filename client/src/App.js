@@ -80,7 +80,6 @@ class App extends React.Component {
 
          <RoomsterAppBar login={true}/>
           <div style={{textAlign:"center"}}>
-
             <img className="logo" src={logo} style={styles.logo}></img>
           </div>
           <Routes>

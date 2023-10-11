@@ -14,6 +14,8 @@ import MenuItem from "@mui/material/MenuItem";
 import chicken from "../images/profile-pic.png"
 import LoginView from "./LoginView";
 import { useNavigate, useLocation } from "react-router-dom";
+import DoubleArrowIcon from '@mui/icons-material/DoubleArrow';
+import { Grow } from "@mui/material";
 
 const pages = ["Home", "Fav Coops", "Coopmates", "Log Out"];
 const routePage = ["/Home", "/FavCoops", "/Coopmates", "/Logout"]
@@ -38,8 +40,12 @@ const RoomsterAppBar = ({ login }) => {
     };
 
     const handleCloseNavMenu = () => {
-        
         setAnchorElNav(null);
+    };
+    const [isToolbarVisible, setIsToolbarVisible] = React.useState(true);
+
+    const toggleToolbarVisibility = () => {
+        setIsToolbarVisible(!isToolbarVisible);
     };
 
     return (
@@ -58,7 +64,7 @@ const RoomsterAppBar = ({ login }) => {
                             onClick={handleOpenNavMenu}
                             backgroundColor="#AB191F"
                         >
-                            <MenuIcon sx={{ color: "#AB191F" }} />
+                            <MenuIcon sx={{ color: "#F6EBE1" }} />
                         </IconButton>
                         <Menu
                             id="menu-appbar"
@@ -85,7 +91,18 @@ const RoomsterAppBar = ({ login }) => {
                             ))}
                         </Menu>
                     </Box>
+                    <IconButton
+                            size="large"
+                            aria-label="account of current user"
+                            aria-controls="menu-appbar"
+                            aria-haspopup="true"
+                            onClick={toggleToolbarVisibility}
+                            backgroundColor="#AB191F"
+                        >
+                            <DoubleArrowIcon sx={{ color: "#F6EBE1" }} />
+                     </IconButton>
                     {login === true ?
+                        <Grow orientation="horizontal" in={!isToolbarVisible}>
                         <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
                             {pages.map((page, i) => {
                                 return (
@@ -113,11 +130,11 @@ const RoomsterAppBar = ({ login }) => {
                                 );
                             })}
                         </Box>
+                        </Grow>
                         :
-                        <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-                        </Box>
-
+                        <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}></Box>
                     }
+                    <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}></Box>
                     {login ?
                         <Box sx={{ flexGrow: 0 }}>
                             <Tooltip title="Open Profile" sx={{ color: "#AB191F" }}>
