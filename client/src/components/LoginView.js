@@ -4,15 +4,11 @@ import { Box } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
-import DialogActions from '@mui/material/DialogActions';
-import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
 import Typography from '@mui/material/Typography';
-import ButtonGroup from '@mui/material/ButtonGroup';
 import Divider from '@mui/material/Divider';
-import { ThemeProvider, createTheme } from "@mui/material/styles";
-import { spacing } from '@mui/system';
 import TextField from '@mui/material/TextField';
+import RenterCreateAccountView from './RenterCreateAccounView';
+import RenterCreateAccountPage from '../pages/RenterCreateAccountPage';
 
 
 
@@ -28,8 +24,9 @@ import TextField from '@mui/material/TextField';
 
 
 
-const LoginView = ({ text }) => {
-    const [open, setOpen] = React.useState(false)
+const LoginView = ({ text}) => {
+    const [open, setOpen] = React.useState(true)
+    const [isRCreateOpen, setRCreateOpen] = React.useState(false)
     const handleOpen = () => {
         setOpen(true)
     }
@@ -37,6 +34,13 @@ const LoginView = ({ text }) => {
         setOpen(false)
     }
 
+    const handleRCreate = event => {
+        //handleClose()
+        //setRCreateOpen(prev => !prev)   
+        window.location.replace("/RCreate")
+        //return <RenterCreateAccountView text={"hello"} />
+    }
+    
     return (
         <React.Fragment>
             <Button 
@@ -76,8 +80,8 @@ const LoginView = ({ text }) => {
                   }}
             >
                 <div sx={{justifyContent: "left"}}>
-                    <DialogTitle sx={{fontWeight: 600, marginBottom: "-40px"}}> Welcome, </DialogTitle>
-                    <DialogTitle sx={{fontWeight: 600, marginBottom: "-20px"}}>Create Account</DialogTitle>
+                    <DialogTitle sx={{fontWeight: 600, fontSize:25, marginBottom: "-40px"}}> Welcome, </DialogTitle>
+                    <DialogTitle sx={{fontWeight: 600, fontSize:25, marginBottom: "-15px"}}>Create Account</DialogTitle>
                     <Divider variant="middle" sx = {{borderBottomWidth: 3, color:"#AB191F", backgroundColor:"#AB191F", marginY:1}}/>
                 </div>
                 
@@ -88,18 +92,23 @@ const LoginView = ({ text }) => {
                         </Typography>
 
                         <div style = {{justifyContent: "center", display: "inline", marginLeft:"70px", marginRight:"70px"}}>
-                            <Button 
-                                sx={{
-                                    ":hover": {
-                                        borderColor:"black", bgcolor:"#AB191F", color:"#F6EBE1", 
-                                        borderWidth: 1.5, width:"45%", fontWeight:600
-                                    },
-                                    borderColor:"black", bgcolor:"#F6EBE1", color:"black", 
-                                    borderWidth: 1.5, width:"45%", fontWeight:600, 
-                                    boxShadow: 5, justifyContent: "center", maxWidth:"95px", maxHeight: "50px"
-                                }} 
-                                variant="outlined">RENTER
-                            </Button>
+                            
+                           
+                                <Button
+                                    type = "RCreate"
+                                    onClick={()=> handleRCreate()}
+                                    sx={{
+                                        ":hover": {
+                                            borderColor:"black", bgcolor:"#AB191F", color:"#F6EBE1", 
+                                            borderWidth: 1.5, width:"45%", fontWeight:600
+                                        },
+                                        borderColor:"black", bgcolor:"#F6EBE1", color:"black", 
+                                        borderWidth: 1.5, width:"45%", fontWeight:600, 
+                                        boxShadow: 5, justifyContent: "center", maxWidth:"95px", maxHeight: "50px"
+                                    }} 
+                                    variant="outlined">RENTER
+                                </Button>
+                            
                             <Button 
                                 sx={{
                                     ":hover": {

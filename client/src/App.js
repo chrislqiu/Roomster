@@ -4,6 +4,7 @@ import "./App.css";
 import MainPage from "./pages/MainPage";
 import RenterPage from "./pages/RenterPage";
 import PropertyManagerPage from "./pages/ProperyManagerPage";
+import RenterCreateAccountPage from "./pages/RenterCreateAccountPage";
 import LoginPage from "./pages/LoginPage"
 import GlobalStyles from "@mui/material/GlobalStyles";
 import { BrowserRouter, Routes, Route } from "react-router-dom"
@@ -12,6 +13,7 @@ import { Divider, Box } from "@mui/material";
 import theredthing from './images/theredthing.png'
 import logo from './images/logo.png'
 import RoomsterAppBar from "./components/AppBar";
+import RenterCreateAccountView from "./components/RenterCreateAccounView";
 
   const styles = {
     background: {
@@ -86,7 +88,8 @@ class App extends React.Component {
             <Route path="/Home" element={<MainPage />} />
             <Route path="/RProfile" element={<RenterPage />} />
             <Route path="/MProfile" element={<PropertyManagerPage />} />
-            {/* {<Route path="/Login" element={<LoginPage />} />} */}
+            <Route path="/Login" element={<LoginPage />} />
+            <Route path="/RCreate" element={<RenterCreateAccountView />} />
           </Routes>
         </BrowserRouter>
       </body>  

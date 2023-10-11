@@ -52,9 +52,9 @@ const isEmailValid = (email) => {
 router.post("/signup", async (req, res) => {
   const existingUser = await User.findOne({ username: req.body.username });
 
-  if (!isEmailValid(req.body.username)) {
-    return res.status(400).send("Invalid email format");
-  }
+  // if (!isEmailValid(req.body.username)) {
+  //   return res.status(400).send("Invalid email format");
+  // }
 
   if (existingUser) {
     return res.status(400).send("User already exists");
