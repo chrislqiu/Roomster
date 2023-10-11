@@ -13,8 +13,10 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import chicken from "../images/profile-pic.png"
 import LoginView from "./LoginView";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const pages = ["Home", "Fav Coops", "Coopmates", "Log Out"];
+const routePage = ["/Home", "/FavCoops", "/Coopmates", "/Logout"]
 
 /* 
  * RoomsterAppBar
@@ -22,6 +24,9 @@ const pages = ["Home", "Fav Coops", "Coopmates", "Log Out"];
  */
 const RoomsterAppBar = ({ login }) => {
     console.log(login)
+    let location = useLocation();
+    console.log(location.pathname)
+    let navigate = useNavigate();
     /*
      * TODO: 
      * hide the login stuff with a "Log In/ Sign Up Button"
@@ -33,6 +38,7 @@ const RoomsterAppBar = ({ login }) => {
     };
 
     const handleCloseNavMenu = () => {
+        
         setAnchorElNav(null);
     };
 
@@ -81,11 +87,11 @@ const RoomsterAppBar = ({ login }) => {
                     </Box>
                     {login === true ?
                         <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-                            {pages.map((page) => {
+                            {pages.map((page, i) => {
                                 return (
                                     <Button
                                         key={page}
-                                        onClick={handleCloseNavMenu}
+                                        onClick={() => navigate(`${routePage[i]}`)}
                                         sx={{
                                             my: 2,
                                             ":hover": {

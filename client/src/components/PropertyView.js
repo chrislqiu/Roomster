@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Button from '@mui/material/Button';
-import { Box, Card, CardContent, CardMedia } from '@mui/material';
+import { Box, Card, CardContent, CardMedia, IconButton, Tooltip } from '@mui/material';
 import { CardActionArea } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
@@ -12,6 +12,9 @@ import { Stack } from '@mui/material';
 import { Link } from '@mui/material';
 import imgExample from "../images/apartment-pic.jpg"
 import StarIcon from '@mui/icons-material/Star';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+
 
 /* 
  * Property Card (Rachel La)
@@ -19,8 +22,10 @@ import StarIcon from '@mui/icons-material/Star';
  * Parameters:
  * (temporary until property cards) text: button text 
  * data : The property data from the database
+ * featured : Boolean to determine whether the card is featured or not
+ * favCoops : Boolean to determine if card is on favCoops page
  */
-const PropertyViewMore = ({ data, featured }) => {
+const PropertyViewMore = ({ data, featured, favCoops }) => {
     /*
      * open, setOpen : controls the state of the dialogue popup
      */
@@ -31,6 +36,9 @@ const PropertyViewMore = ({ data, featured }) => {
     const handleClose = () => {
         setOpen(false)
     }
+
+    console.log(favCoops)
+    const [active, setActive]= React.useState(favCoops === true ? true : false)
 
     const styles = {
         divider: {
@@ -75,6 +83,7 @@ const PropertyViewMore = ({ data, featured }) => {
                         <div style={{ display: 'flex', alignItems: 'center', marginLeft: 0 }}>
                           <Typography variant="h6" style={{margin: "-20px 0 0px 0"}}> Company Name </Typography>
                           {featured === true ? <StarIcon style={{margin: "-20px 0 0px 2.5"}} /> : ''}
+                          {favCoops === true ? <FavoriteIcon style={{margin: "-20px 0 0px 2.5"}} sx={{color: "#AB191F", ":hover": {color: "#F6EBE1",},}}/> : ''}
                         </div>
                           <Typography variant="body2" style={{margin: "0 0 5px 0"}}> 123 Address</Typography>
                           <Typography variant="body2"> # bedroom</Typography>
@@ -221,7 +230,7 @@ const PropertyViewMore = ({ data, featured }) => {
                     </Stack>
                 </DialogContent>
                 <DialogActions>
-                    <Button
+                    {/* <Button
                         variant='contained'
                         onClick={handleOpen}
                         sx={{
@@ -235,7 +244,16 @@ const PropertyViewMore = ({ data, featured }) => {
                         }}
                     >
                         ADD TO FAV
-                    </Button>
+                    </Button> */}
+                    <Tooltip title="Add to FAV COOPS">
+                        <IconButton size="large" onClick={e => {
+                            setActive(!active)
+                            //add onclick function for db, and to hide if property owner, or to replace with edit if property owner needs
+                            // to edit
+                        }}>
+                            {active ? <FavoriteIcon sx={{ color: "#AB191F" }} /> : <FavoriteBorderIcon sx={{ color: "#AB191F" }} />}
+                        </IconButton>
+                    </Tooltip>
                 </DialogActions>
             </Dialog>
         </React.Fragment>
