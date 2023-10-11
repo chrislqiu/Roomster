@@ -1,4 +1,5 @@
 import PropertyViewMore from "../components/PropertyView";
+import FeaturedProperties from "../components/FeaturedProperties";
 import React from "react"
 
 import { Container, Box } from "@mui/material";
@@ -30,6 +31,10 @@ const MainPage = () => {
     }
     return (
         <Container sx={{ width: '100%' }}>
+            <Box sx={{ m: 4 }} style={styles.feed}>
+                <FeaturedProperties data={propertyInfo} style={styles.feed}/>
+            </Box>
+           
             <Box sx={{ m: 1 }} style={styles.feed}>
                 {
                    /*

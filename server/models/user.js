@@ -9,7 +9,11 @@ const user = new Schema({
     password: {
         type: String,
         required: true
-    }
+    },
+    isVerified: {
+        type: Boolean,
+        default: false
+    }   
 });
 
 //looks for this collection in db (it's suppose to be singular and not "PropertyCards")

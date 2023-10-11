@@ -12,6 +12,7 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import chicken from "../images/profile-pic.png"
+import LoginView from "./LoginView";
 
 const pages = ["Home", "Fav Coops", "Coopmates", "Log Out"];
 
@@ -120,26 +121,7 @@ const RoomsterAppBar = ({ login }) => {
                             </Tooltip>
                         </Box>
                         :
-                        <Button
-                            onClick={handleCloseNavMenu}
-                            sx={{
-                                my: 2,
-                                ":hover": {
-                                    bgcolor: "#AB191F",
-                                    color: "#f5ebe0",
-                                    cursor: "pointer"
-                                },
-                                color: "#AB191F",
-                                backgroundColor: "#F6EBE1",
-                                display: "block",
-                                mx: .5,
-                                fontWeight: 600,
-                                padding: 1,
-                                boxShadow: "0px 0px 3px 3px rgba(0, 0, 0, .1)"
-                            }}
-                        >
-                            Login/Signup
-                        </Button>
+                        <LoginView text={"Login/Signup"}/>
                     }
                 </Toolbar>
             </Container>

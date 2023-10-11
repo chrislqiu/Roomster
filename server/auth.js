@@ -2,24 +2,59 @@ const express = require("express");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const User = require('./models/user.js');
+const cookieParser = require("cookie-parser");
+const sendVerificationEmail = require("./emailVerify.js");
 
 
 const router = express.Router();
+router.use(cookieParser())
+
+const secretKey = "E.3AvP1]&r7;-vBSAL|3AyetV%H*fIEy";
+
+const authorization = (req, res, next) => {
+  const token = req.cookies.access_token;
+
+  if (!token) {
+    return res.sendStatus(401); // Unauthorized
+  }
+
+  jwt.verify(token, secretKey, (err, user) => {
+    if (err) {
+      return res.sendStatus(403); // Forbidden
+    }
+
+    req.user = user;
+    next();
+  });
+};
+
+router.get("/secret", authorization, (req, res) => {
+  return res.send("Super secret page");
+});
 
 
 router.get("/users", (req, res) => {
   User.find()
-  .then((result) => {
-    res.send(result);
-  }) 
-  .catch((err) => {
-    console.log(err);
-  });
-  });
-  
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
+const isEmailValid = (email) => {
+  const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+  return emailRegex.test(email);
+};
+
 
 router.post("/signup", async (req, res) => {
   const existingUser = await User.findOne({ username: req.body.username });
+
+  // if (!isEmailValid(req.body.username)) {
+  //   return res.status(400).send("Invalid email format");
+  // }
 
   if (existingUser) {
     return res.status(400).send("User already exists");
@@ -36,18 +71,32 @@ router.post("/signup", async (req, res) => {
     });
 
     newUser.save()
-    .then((result) => {
-      res.send(result);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+      .then((result) => {
+        const verificationToken = jwt.sign(
+          {
+            username: req.body.username,
+          }, secretKey, { expiresIn: "10m" }
+        );
 
+        sendVerificationEmail(newUser.username, verificationToken);
+
+        const token = jwt.sign({ username: req.body.username }, secretKey, { expiresIn: '1h' });
+        return res
+          .cookie("access_token", token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+          })
+          .status(200)
+          .json({ message: "Account creation successful" });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   } catch (err) {
-      console.log(err);
-      res.status(500).send("Error creating account");
-    }
-    
+    console.log(err);
+    res.status(500).send("Error creating account");
+  }
+
 });
 
 router.post("/login", async (req, res) => {
@@ -60,7 +109,14 @@ router.post("/login", async (req, res) => {
     const isPasswordValid = await bcrypt.compare(req.body.password, user.password);
 
     if (isPasswordValid) {
-      res.send("Access granted");
+      const token = jwt.sign({ username: req.body.username }, secretKey, { expiresIn: '1h' });
+      return res
+        .cookie("access_token", token, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+        })
+        .status(200)
+        .json({ message: "Access granted" });
     } else {
       res.status(401).send("Access denied");
     }
@@ -80,7 +136,7 @@ router.post("/delete", async (req, res) => {
     const isPasswordValid = await bcrypt.compare(req.body.password, user.password);
 
     if (isPasswordValid) {
-      await User.deleteOne({ username: req.body.username }); 
+      await User.deleteOne({ username: req.body.username });
 
       return res.send("User deleted");
     } else {
@@ -92,19 +148,48 @@ router.post("/delete", async (req, res) => {
   }
 });
 
+router.get("/logout", authorization, (req, res) => {
+  return res
+    .clearCookie("access_token")
+    .status(200)
+    .json({ message: "Logged out" });
+});
 
-router.get("/verify/:token", (req, res) => {
-  const {token} = req.params;
 
-  jwt.verify(token, 'key', function(err, decoded) {
-    if(err){
-      console.log(err);
-      res.send("Email verification failed");
-    } else {
-      res.send("Email verified");
+router.get("/verify/:token", async (req, res) => {
+  const { token } = req.params;
+  console.log("Token:", token);
+  try {
+    const decoded = jwt.verify(token, secretKey);
+    console.log(decoded.username);
+
+    const updatedUser = await User.findOneAndUpdate(
+      { username: decoded.username },
+      { isVerified: true },
+      { new: true }
+    );
+    console.log("Updated User:", updatedUser);
+    if (!updatedUser) {
+      return res.status(404).send("User not found");
     }
-  });
 
+    return res.send("Email verified");
+  } catch (err) {
+    console.log(err);
+    return res.status(500).send("Email verification failed");
+  }
+});
+
+
+//only for testing purposes
+router.get("/clearUsers", async (req, res) => {
+  try {
+    await User.deleteMany({});
+    res.send("All users deleted");
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error clearing users");
+  }
 });
 
 module.exports = router;
