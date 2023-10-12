@@ -11,7 +11,12 @@ mongoose.connect(dbURI, {useNewUrlParser: true, useUnifiedTopology: true})
   .then((result) => app.listen(3000))
   .catch((err) => console.log(err));
 
-app.use(cors());
+  const corsOptions = {
+    origin: 'http://localhost:3001',
+    credentials: true,
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 app.get("/message", (req, res) => {

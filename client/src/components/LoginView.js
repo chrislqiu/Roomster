@@ -44,18 +44,24 @@ const LoginView = ({ text}) => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
+                credentials: 'include',
                 body: JSON.stringify({ username: email, password }),
             });
 
+            console.log(response)
+
             if (response.ok) {
                 console.log('Login successful');
-                handleClose();
+                // handleClose();
+                window.location.reload();
             } else {
                 setLoginStatus('Incorrect username/password');
             }
         } catch (error) {
             console.error('Error during login:', error);
         }
+
+        
     }
 
     const handleRCreate = event => {

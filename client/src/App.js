@@ -43,10 +43,16 @@ import Settings from "./pages/Settings"
     }
   });
 
+//write function to print "hello"
+const printHello = () => {
+  console.log("hello");
+};
+
+
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { apiResponse: "" }
+    this.state = { apiResponse: "", isAuthenticated: false }
   }
 
   callServer() {
@@ -55,11 +61,34 @@ class App extends React.Component {
       .then(res => this.setState({ apiResponse: res }))
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     this.callServer();
+    this.checkAuthentication();
   }
 
+  checkAuthentication = async () => {
+    try {
+      const response = await fetch('http://localhost:8000/auth/authorize', {
+        method: 'GET',
+        credentials: 'include',
+      });
+
+      if (response.ok) {
+        this.setState({ isAuthenticated: true });
+      } else {
+        console.log('Authentication check failed');
+      }
+    } catch (error) {
+      console.error('Error during authentication check:', error);
+    }
+  };
+
+  
+  
+
   render() {
+    const { isAuthenticated } = this.state;
+
     return (
       
       
@@ -79,7 +108,8 @@ class App extends React.Component {
             // if login is false, appbar only has login/signup button
           }
 
-         <RoomsterAppBar login={true}/>
+
+         <RoomsterAppBar login={isAuthenticated}/>
           <div style={{textAlign:"center"}}>
 
             <img className="logo" src={logo} style={styles.logo}></img>
@@ -101,4 +131,5 @@ class App extends React.Component {
     );
   }
 }
+
 export default App;
