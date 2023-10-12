@@ -108,10 +108,10 @@ const LoginView = ({ text}) => {
                                     onClick={()=> handleRCreate()}
                                     sx={{
                                         ":hover": {
-                                            borderColor:"black", bgcolor:"#AB191F", color:"#F6EBE1", 
+                                            borderColor:"#AB191F", bgcolor:"#AB191F", color:"#F6EBE1", 
                                             borderWidth: 1.5, width:"45%", fontWeight:600
                                         },
-                                        borderColor:"black", bgcolor:"#F6EBE1", color:"black", 
+                                        borderColor:"#F6EBE1", bgcolor:"#F6EBE1", color:"#AB191F", 
                                         borderWidth: 1.5, width:"45%", fontWeight:600, 
                                         boxShadow: 5, justifyContent: "center", maxWidth:"95px", maxHeight: "50px"
                                     }} 
@@ -121,10 +121,10 @@ const LoginView = ({ text}) => {
                             <Button 
                                 sx={{
                                     ":hover": {
-                                        borderColor:"black", bgcolor:"#AB191F", color:"#F6EBE1", 
+                                        borderColor:"#AB191F", bgcolor:"#AB191F", color:"#F6EBE1", 
                                         borderWidth: 1.5, width:"45%", fontWeight:600
                                     },
-                                    borderColor:"black", bgcolor:"#F6EBE1", color:"black", 
+                                    borderColor:"#F6EBE1", bgcolor:"#F6EBE1", color:"#AB191F", 
                                     borderWidth: 1.5, width:"45%", fontWeight:600, lineHeight:"15px",
                                     boxShadow: 5, marginLeft: "15px", maxWidth:"95px", maxHeight: "50px"
 
@@ -157,10 +157,10 @@ const LoginView = ({ text}) => {
                             <Button 
                                     sx={{
                                         ":hover": {
-                                            borderColor:"black", bgcolor:"#F6EBE1", color:"black", 
+                                            borderColor:"#F6EBE1", bgcolor:"#F6EBE1", color:"#AB191F", 
                                             borderWidth: 1.5, width:"45%", fontWeight:600
                                         },
-                                        borderColor:"black", bgcolor:"#AB191F", color:"#F6EBE1", 
+                                        borderColor:"#AB191F", bgcolor:"#AB191F", color:"#F6EBE1", 
                                         borderWidth: 1.5, width:"45%", fontWeight:600, maxWidth:"15px",
                                         boxShadow: 5, justifyContent: "center", float:"right"
 
