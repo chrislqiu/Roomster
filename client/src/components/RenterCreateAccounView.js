@@ -24,6 +24,7 @@ import MainPage from '../pages/MainPage';
 
 const RenterCreateAccountView = ({ }) => {
     const [open, setOpen] = React.useState(true)
+    const [name, setName] = React.useState("")
     const [email, setEmail] = React.useState("")
     const [password, setPassword] = React.useState("")
     const [confirmedPassword, setConfirmedPassword] = React.useState("")
@@ -34,9 +35,11 @@ const RenterCreateAccountView = ({ }) => {
     }
     const handleClose = () => {
         setOpen(false)
+        setName(null)
         setEmail(null)
         setPassword(null)
         setSignupStatus(null)
+        window.location.replace("/Home")
     }
 
     const handleBackButton = () => {
@@ -47,6 +50,11 @@ const RenterCreateAccountView = ({ }) => {
 
         const emailRegex = /^[a-zA-Z0-9._-]+@purdue\.edu$/;
 
+        if (name === "") {
+            setSignupStatus("Please enter your name")
+            return
+        }
+
         if (!emailRegex.test(email)) {
             setSignupStatus("Please enter a valid Purdue email address");
             return;
@@ -54,6 +62,11 @@ const RenterCreateAccountView = ({ }) => {
 
         if (password.localeCompare(confirmedPassword)) {
             setSignupStatus("Please make sure your passwords match")
+            return
+        }
+
+        if (password.length < 9) {
+            setSignupStatus("Please make sure your password is at least 8 characters")
             return
         }
 
@@ -70,7 +83,7 @@ const RenterCreateAccountView = ({ }) => {
                 console.log('Signup successful');
                 handleClose();
             } else if (response.status === 400) {
-                setSignupStatus('User already exists');
+                setSignupStatus('User already exists. Please login to your account');
             } else {
                 setSignupStatus('Error creating account');
             }
@@ -134,6 +147,7 @@ const RenterCreateAccountView = ({ }) => {
                             sx={{
                                 boxShadow: "3", margin: "dense", marginBottom: "15px"
                             }}
+                            onChange={(e) => setName(e.target.value)}
                         />
                         <TextField
                             label="Purdue Email" id="email-textfield" variant="outlined" fullWidth
@@ -175,11 +189,11 @@ const RenterCreateAccountView = ({ }) => {
                             sx={{
                                 ":hover": {
                                     borderColor: "#F6EBE1", bgcolor: "#F6EBE1", color: "#AB191F",
-                                    borderWidth: 1.5, width: "45%", fontWeight: 600
+                                    borderWidth: 1.5, width: "45%", fontWeight: 600, position:"sticky"
                                 },
                                 borderColor: "#AB191F", bgcolor: "#AB191F", color: "#F6EBE1",
                                 borderWidth: 1.5, width: "45%", fontWeight: 600, maxWidth: "100px",
-                                boxShadow: 5, justifyContent: "center", float: "right"
+                                boxShadow: 5, justifyContent: "center", float: "right", position:"sticky"
 
                             }}
                             variant="outlined"
@@ -188,7 +202,7 @@ const RenterCreateAccountView = ({ }) => {
                         </Button>
 
                         <IconButton
-                            style={{ position: "BottomLeft", top: 70, left: 0 }}
+                            style={{ position: "BottomLeft", position: "sticky", top: 70, left: 0 }}
                             onClick={() => handleBackButton()}
 
                         >
