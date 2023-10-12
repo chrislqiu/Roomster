@@ -160,7 +160,7 @@ const RenterCreateAccountView = ({ }) => {
                             onChange={(e) => setEmail(e.target.value)}
                         />
                         <TextField
-                            label="Password" id="psw-textfield" variant="outlined" fullWidth
+                            label="Password" id="psw-textfield" variant="outlined" type="password" fullWidth
                             inputProps={{ style: { fontSize: 15 } }}
                             inputLabelProps={{ style: { fontSize: 15 } }}
                             sx={{
@@ -171,7 +171,7 @@ const RenterCreateAccountView = ({ }) => {
                         />
 
                         <TextField
-                            label="Confirm Password" id="confirm-psw-textfield" variant="outlined" fullWidth
+                            label="Confirm Password" id="confirm-psw-textfield" variant="outlined" type="password" fullWidth
                             inputProps={{ style: { fontSize: 15 } }}
                             inputLabelProps={{ style: { fontSize: 15 } }}
                             sx={{
