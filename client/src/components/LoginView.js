@@ -7,6 +7,8 @@ import DialogContent from '@mui/material/DialogContent';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import TextField from '@mui/material/TextField';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
 import RenterCreateAccountView from './RenterCreateAccounView';
 import RenterCreateAccountPage from '../pages/RenterCreateAccountPage';
 
@@ -32,6 +34,7 @@ const LoginView = ({ text}) => {
     }
     const handleClose = () => {
         setOpen(false)
+        window.location.replace("/Home")
     }
 
     const handleRCreate = event => {
@@ -80,6 +83,12 @@ const LoginView = ({ text}) => {
                   }}
             >
                 <div sx={{justifyContent: "left"}}>
+                    <IconButton
+                        style={{ position: "absolute", top: "0", right: "0" }}
+                        onClick={() => handleClose()}
+                    >
+                        <CloseIcon style={{ color: "black" }} />
+                    </IconButton>
                     <DialogTitle sx={{fontWeight: 600, fontSize:25, marginBottom: "-40px"}}> Welcome, </DialogTitle>
                     <DialogTitle sx={{fontWeight: 600, fontSize:25, marginBottom: "-15px"}}>Create Account</DialogTitle>
                     <Divider variant="middle" sx = {{borderBottomWidth: 3, color:"#AB191F", backgroundColor:"#AB191F", marginY:1}}/>
