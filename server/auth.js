@@ -52,9 +52,9 @@ const isEmailValid = (email) => {
 router.post("/signup", async (req, res) => {
   const existingUser = await User.findOne({ username: req.body.username });
 
-  if (!isEmailValid(req.body.username)) {
-    return res.status(400).send("Invalid email format");
-  }
+  // if (!isEmailValid(req.body.username)) {
+  //   return res.status(400).send("Invalid email format");
+  // }
 
   if (existingUser) {
     return res.status(400).send("User already exists");
@@ -118,7 +118,7 @@ router.post("/login", async (req, res) => {
         .status(200)
         .json({ message: "Access granted" });
     } else {
-      res.send("Access denied");
+      res.status(401).send("Access denied");
     }
   } catch {
     res.status(500).send("Error when logging in");
@@ -140,7 +140,7 @@ router.post("/delete", async (req, res) => {
 
       return res.send("User deleted");
     } else {
-      res.send("Incorrect user information");
+      res.status(401).send("Incorrect user information");
     }
   } catch (err) {
     console.error(err);
