@@ -18,7 +18,7 @@ import DoubleArrowIcon from '@mui/icons-material/DoubleArrow';
 import { Grow } from "@mui/material";
 
 const pages = ["Home", "Fav Coops", "Coopmates", "Log Out"];
-const routePage = ["/Home", "/FavCoops", "/Coopmates", "/Logout"]
+//const routePage = ["/Home", "/FavCoops", "/Coopmates", "/Logout"]
 
 /* 
  * RoomsterAppBar
@@ -137,9 +137,9 @@ const RoomsterAppBar = ({ login }) => {
                                         //onClick={() => navigate(`${routePage[i]}`)}
                                         onClick={() => {
                                             if (page === "Home") {
-                                                //home
+                                                navigate("/Home")
                                             } else if (page === "Fav Coops") {
-                                                //fav coops
+                                                navigate("/FavCoops")
                                             } else if (page === "Coopmates") {
                                                 //coopmates
                                             } else if (page === "Log Out") {

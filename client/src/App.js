@@ -92,8 +92,6 @@ class App extends React.Component {
     const { isAuthenticated } = this.state;
 
     return (
-      
-      
       // <ThemeProvider theme={theme}>
       //   <GlobalStyles
       //     sx={{
@@ -109,8 +107,6 @@ class App extends React.Component {
             // if login is true (for now), app bar with login buttons will show
             // if login is false, appbar only has login/signup button
           }
-
-
          <RoomsterAppBar login={isAuthenticated}/>
           <div style={{textAlign:"center"}}>
             <img className="logo" src={logo} style={styles.logo}></img>
