@@ -96,7 +96,7 @@ router.post("/signup", async (req, res) => {
           .cookie("access_token", token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
-            sameSite: "None",
+            // sameSite: "None",
           })
           .status(200)
           .json({ message: "Account creation successful" });
@@ -126,7 +126,7 @@ router.post("/login", async (req, res) => {
         .cookie("access_token", token, {
           httpOnly: true,
           secure: process.env.NODE_ENV === "production",
-          sameSite: "None",
+          // sameSite: "None",
         })
         .status(200)
         .json({ message: "Access granted" });
@@ -168,6 +168,40 @@ router.get("/logout", authorization, (req, res) => {
     .json({ message: "Logged out" });
 });
 
+router.post("/change-password", authorization, async (req, res) => {
+  const user = await User.findOne({ username: req.user.username });
+
+  if (!user) {
+    return res.status(400).send("User does not exist");
+  }
+
+  try {
+    const isPasswordValid = await bcrypt.compare(req.body.currentPassword, user.password);
+
+    if (isPasswordValid) {
+      const salt = await bcrypt.genSalt();
+      const hashedNewPassword = await bcrypt.hash(req.body.newPassword, salt);
+
+      await User.updateOne({ username: req.user.username }, { password: hashedNewPassword });
+
+      const newToken = jwt.sign({ username: req.user.username }, secretKey, { expiresIn: '1h' });
+
+      res.cookie("access_token", newToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        // sameSite: "None",
+      });
+
+      return res.status(200).json({ message: "Password changed successfully" });
+    } else {
+      res.status(401).send("Incorrect current password");
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error changing password");
+  }
+});
+
 
 router.get("/verify/:token", async (req, res) => {
   const { token } = req.params;
@@ -186,7 +220,8 @@ router.get("/verify/:token", async (req, res) => {
       return res.status(404).send("User not found");
     }
 
-    return res.send("Email verified");
+    return res.redirect("http://localhost:3001/VerifyPage");
+    // return res.send("Email verified");
   } catch (err) {
     console.log(err);
     return res.status(500).send("Email verification failed");

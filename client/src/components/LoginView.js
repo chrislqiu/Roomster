@@ -24,7 +24,7 @@ import RenterCreateAccountPage from '../pages/RenterCreateAccountPage';
 
 
 
-const LoginView = ({ text}) => {
+const LoginView = ({ text }) => {
     const [open, setOpen] = React.useState(false)
     const [email, setEmail] = React.useState('')
     const [password, setPassword] = React.useState('')
@@ -51,17 +51,29 @@ const LoginView = ({ text}) => {
             console.log(response)
 
             if (response.ok) {
-                console.log('Login successful');
+                setLoginStatus({
+                    message: 'Logging in...',
+                    color: 'green',
+                });
                 // handleClose();
-                window.location.reload();
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1000);
             } else {
-                setLoginStatus('Incorrect username/password');
+                setLoginStatus({
+                    message: 'Incorrect username/password',
+                    color: '#AB191F',
+                });
+
             }
         } catch (error) {
-            console.error('Error during login:', error);
+            setLoginStatus({
+                message: 'Error logging in',
+                color: '#AB191F',
+            });
         }
 
-        
+
     }
 
     const handleRCreate = event => {
@@ -70,7 +82,7 @@ const LoginView = ({ text}) => {
         window.location.replace("/RCreate")
         //return <RenterCreateAccountView text={"hello"} />
     }
-    
+
     return (
         <React.Fragment>
             <Button
@@ -109,10 +121,10 @@ const LoginView = ({ text}) => {
                     }
                 }}
             >
-                <div sx={{justifyContent: "left"}}>
-                    <DialogTitle sx={{fontWeight: 600, fontSize:25, marginBottom: "-40px"}}> Welcome, </DialogTitle>
-                    <DialogTitle sx={{fontWeight: 600, fontSize:25, marginBottom: "-15px"}}>Create Account</DialogTitle>
-                    <Divider variant="middle" sx = {{borderBottomWidth: 3, color:"#AB191F", backgroundColor:"#AB191F", marginY:1}}/>
+                <div sx={{ justifyContent: "left" }}>
+                    <DialogTitle sx={{ fontWeight: 600, fontSize: 25, marginBottom: "-40px" }}> Welcome, </DialogTitle>
+                    <DialogTitle sx={{ fontWeight: 600, fontSize: 25, marginBottom: "-15px" }}>Create Account</DialogTitle>
+                    <Divider variant="middle" sx={{ borderBottomWidth: 3, color: "#AB191F", backgroundColor: "#AB191F", marginY: 1 }} />
                 </div>
 
                 <DialogContent sx={{ maxWidth: "400px" }}>
@@ -121,25 +133,25 @@ const LoginView = ({ text}) => {
                             Are you a...
                         </Typography>
 
-                        <div style = {{justifyContent: "center", display: "inline", marginLeft:"70px", marginRight:"70px"}}>
-                            
-                           
-                                <Button
-                                    type = "RCreate"
-                                    onClick={()=> handleRCreate()}
-                                    sx={{
-                                        ":hover": {
-                                            borderColor:"black", bgcolor:"#AB191F", color:"#F6EBE1", 
-                                            borderWidth: 1.5, width:"45%", fontWeight:600
-                                        },
-                                        borderColor:"black", bgcolor:"#F6EBE1", color:"black", 
-                                        borderWidth: 1.5, width:"45%", fontWeight:600, 
-                                        boxShadow: 5, justifyContent: "center", maxWidth:"95px", maxHeight: "50px"
-                                    }} 
-                                    variant="outlined">RENTER
-                                </Button>
-                            
-                            <Button 
+                        <div style={{ justifyContent: "center", display: "inline", marginLeft: "70px", marginRight: "70px" }}>
+
+
+                            <Button
+                                type="RCreate"
+                                onClick={() => handleRCreate()}
+                                sx={{
+                                    ":hover": {
+                                        borderColor: "black", bgcolor: "#AB191F", color: "#F6EBE1",
+                                        borderWidth: 1.5, width: "45%", fontWeight: 600
+                                    },
+                                    borderColor: "black", bgcolor: "#F6EBE1", color: "black",
+                                    borderWidth: 1.5, width: "45%", fontWeight: 600,
+                                    boxShadow: 5, justifyContent: "center", maxWidth: "95px", maxHeight: "50px"
+                                }}
+                                variant="outlined">RENTER
+                            </Button>
+
+                            <Button
                                 sx={{
                                     ":hover": {
                                         borderColor: "black", bgcolor: "#AB191F", color: "#F6EBE1",
@@ -181,7 +193,9 @@ const LoginView = ({ text}) => {
                             />
 
                             {loginStatus && (
-                                <p style={{ color: '#AB191F', textAlign: 'center' }}>{loginStatus}</p>
+                                <p style={{ color: loginStatus.color, textAlign: 'center' }}>
+                                    {loginStatus.message}
+                                </p>
                             )}
 
                             <Button

@@ -10,6 +10,7 @@ import TextField from '@mui/material/TextField';
 
 const ChangePasswordView = ({ text }) => {
     const [open, setOpen] = React.useState(false);
+    const [currentPassword, setCurrentPassword] = React.useState('');
     const [newPassword, setNewPassword] = React.useState('');
     const [confirmPassword, setConfirmPassword] = React.useState('');
     const [passwordChangeStatus, setPasswordChangeStatus] = React.useState(null);
@@ -24,25 +25,45 @@ const ChangePasswordView = ({ text }) => {
     };
 
     const handleChangePassword = async () => {
-        //change password
-        // try {
-        //     const response = await fetch('http://localhost:8000/auth/changePassword', {
-        //         method: 'POST',
-        //         headers: {
-        //             'Content-Type': 'application/json',
-        //         },
-        //         body: JSON.stringify({ newPassword, confirmPassword }),
-        //     });
+        if (newPassword !== confirmPassword) {
+            setPasswordChangeStatus({
+                message: 'New password and confirm password do not match',
+                color: '#AB191F',
+            });
+            return;
+        }
 
-        //     if (response.ok) {
-        //         setPasswordChangeStatus('Password changed successfully');
-        //         handleClose();
-        //     } else {
-        //         setPasswordChangeStatus('Error changing password');
-        //     }
-        // } catch (error) {
-        //     console.error('Error changing password:', error);
-        // }
+        try {
+            const response = await fetch('http://localhost:8000/auth/change-password', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: JSON.stringify({ currentPassword, newPassword, confirmPassword }),
+            });
+
+            if (response.ok) {
+                setPasswordChangeStatus({
+                    message: 'Password changed successfully',
+                    color: 'green',
+                });
+
+                setTimeout(() => {
+                    handleClose();
+                }, 2000); 
+            } else {
+                setPasswordChangeStatus({
+                    message: 'Current password is incorrect',
+                    color: '#AB191F', 
+                });
+            }
+        } catch (error) {
+            setPasswordChangeStatus({
+                message: 'Error changing password',
+                color: '#AB191F', 
+            });
+        }
     };
 
     return (
@@ -86,6 +107,20 @@ const ChangePasswordView = ({ text }) => {
                 <DialogContent sx={{ maxWidth: "400px" }}>
                     <Box style={{ maxWidth: "400px", justifyContent: "center" }} >
                         <TextField
+                            label="Current Password"
+                            id="current-password-textfield"
+                            variant="outlined"
+                            fullWidth
+                            sx={{
+                                boxShadow: "3",
+                                margin: "dense",
+                                marginBottom: "15px",
+                            }}
+                            type="password"
+                            value={currentPassword}
+                            onChange={(e) => setCurrentPassword(e.target.value)}
+                        />
+                        <TextField
                             label="New Password"
                             id="new-password-textfield"
                             variant="outlined"
@@ -115,7 +150,9 @@ const ChangePasswordView = ({ text }) => {
                         />
 
                         {passwordChangeStatus && (
-                            <p style={{ color: '#AB191F', textAlign: 'center' }}>{passwordChangeStatus}</p>
+                            <p style={{ color: passwordChangeStatus.color, textAlign: 'center' }}>
+                                {passwordChangeStatus.message}
+                            </p>
                         )}
 
                         <Button

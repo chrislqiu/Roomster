@@ -35,14 +35,25 @@ const DeleteAccountView = ({ text }) => {
             });
 
             if (response.ok) {
-                setAccountDeletionStatus('Account deleted successfully');
-                // handleClose();
-                window.location.href = 'http://localhost:3001/Home';
+                setAccountDeletionStatus({
+                    message: 'Account deleted successfully',
+                    color: 'green',
+                });
+                setTimeout(() => {
+                    window.location.href = 'http://localhost:3001/Home';
+                }, 2000);
+
             } else {
-                setAccountDeletionStatus('Incorrect username/password');
+                setAccountDeletionStatus({
+                    message: 'Incorrect username/password',
+                    color: '#AB191F',
+                });
             }
         } catch (error) {
-            console.error('Error deleting account:', error);
+            setAccountDeletionStatus({
+                message: 'Error deleting account',
+                color: '#AB191F',
+            });
         }
     };
 
@@ -116,8 +127,9 @@ const DeleteAccountView = ({ text }) => {
                         />
 
                         {accountDeletionStatus && (
-                            <p style={{ color: '#AB191F', textAlign: 'center' }}>{accountDeletionStatus}</p>
-                        )}
+                            <p style={{ color: accountDeletionStatus.color, textAlign: 'center' }}>
+                                {accountDeletionStatus.message}
+                            </p>)}
 
                         <Button
                             onClick={handleDeleteAccount}
