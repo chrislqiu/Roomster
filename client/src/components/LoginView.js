@@ -7,8 +7,11 @@ import DialogContent from '@mui/material/DialogContent';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import TextField from '@mui/material/TextField';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
 import RenterCreateAccountView from './RenterCreateAccounView';
 import RenterCreateAccountPage from '../pages/RenterCreateAccountPage';
+import ManagerCreateAccountView from './PropertyManagerCreateAccountView';
 
 
 
@@ -24,13 +27,13 @@ import RenterCreateAccountPage from '../pages/RenterCreateAccountPage';
 
 
 
-const LoginView = ({ text }) => {
-    const [open, setOpen] = React.useState(false)
-    const [email, setEmail] = React.useState('')
-    const [password, setPassword] = React.useState('')
-    const [loginStatus, setLoginStatus] = React.useState(null)
+const LoginView = ({ text}) => {
+    const [open, setOpen] = React.useState(true)
+    const [rCreateOpen, setRCreateOpen] = React.useState(false)
+    const [mCreateOpen, setMCreateOpen] = React.useState(false)
     const handleOpen = () => {
         setOpen(true)
+        //setMCreateOpen(false)
     }
     const handleClose = () => {
         setOpen(false)
@@ -121,10 +124,16 @@ const LoginView = ({ text }) => {
                     }
                 }}
             >
-                <div sx={{ justifyContent: "left" }}>
-                    <DialogTitle sx={{ fontWeight: 600, fontSize: 25, marginBottom: "-40px" }}> Welcome, </DialogTitle>
-                    <DialogTitle sx={{ fontWeight: 600, fontSize: 25, marginBottom: "-15px" }}>Create Account</DialogTitle>
-                    <Divider variant="middle" sx={{ borderBottomWidth: 3, color: "#AB191F", backgroundColor: "#AB191F", marginY: 1 }} />
+                <div sx={{justifyContent: "left"}}>
+                    <IconButton
+                        style={{ position: "absolute", top: "0", right: "0" }}
+                        onClick={() => handleClose()}
+                    >
+                        <CloseIcon style={{ color: "black" }} />
+                    </IconButton>
+                    <DialogTitle sx={{fontWeight: 600, fontSize:25, marginBottom: "-40px"}}> Welcome, </DialogTitle>
+                    <DialogTitle sx={{fontWeight: 600, fontSize:25, marginBottom: "-15px"}}>Create Account</DialogTitle>
+                    <Divider variant="middle" sx = {{borderBottomWidth: 3, color:"#AB191F", backgroundColor:"#AB191F", marginY:1}}/>
                 </div>
 
                 <DialogContent sx={{ maxWidth: "400px" }}>
@@ -133,37 +142,40 @@ const LoginView = ({ text }) => {
                             Are you a...
                         </Typography>
 
-                        <div style={{ justifyContent: "center", display: "inline", marginLeft: "70px", marginRight: "70px" }}>
-
-
-                            <Button
-                                type="RCreate"
-                                onClick={() => handleRCreate()}
+                        <div style = {{justifyContent: "center", display: "inline", marginLeft:"70px", marginRight:"70px"}}>
+                            
+                           
+                                <Button
+                                    type = "RCreate"
+                                    onClick={()=> setRCreateOpen(true)}
+                                    sx={{
+                                        ":hover": {
+                                            borderColor:"#AB191F", bgcolor:"#AB191F", color:"#F6EBE1", 
+                                            borderWidth: 1.5, width:"45%", fontWeight:600
+                                        },
+                                        borderColor:"#F6EBE1", bgcolor:"#F6EBE1", color:"#AB191F", 
+                                        borderWidth: 1.5, width:"45%", fontWeight:600, 
+                                        boxShadow: 5, justifyContent: "center", maxWidth:"95px", maxHeight: "50px"
+                                    }} 
+                                    variant="outlined">RENTER
+                                </Button>
+                            
+                            <Button 
+                                onClick={()=> setMCreateOpen(true)}
                                 sx={{
                                     ":hover": {
-                                        borderColor: "black", bgcolor: "#AB191F", color: "#F6EBE1",
-                                        borderWidth: 1.5, width: "45%", fontWeight: 600
+                                        borderColor:"#AB191F", bgcolor:"#AB191F", color:"#F6EBE1", 
+                                        borderWidth: 1.5, width:"45%", fontWeight:600
                                     },
-                                    borderColor: "black", bgcolor: "#F6EBE1", color: "black",
-                                    borderWidth: 1.5, width: "45%", fontWeight: 600,
-                                    boxShadow: 5, justifyContent: "center", maxWidth: "95px", maxHeight: "50px"
-                                }}
-                                variant="outlined">RENTER
-                            </Button>
-
-                            <Button
-                                sx={{
-                                    ":hover": {
-                                        borderColor: "black", bgcolor: "#AB191F", color: "#F6EBE1",
-                                        borderWidth: 1.5, width: "45%", fontWeight: 600
-                                    },
-                                    borderColor: "black", bgcolor: "#F6EBE1", color: "black",
-                                    borderWidth: 1.5, width: "45%", fontWeight: 600, lineHeight: "15px",
-                                    boxShadow: 5, marginLeft: "15px", maxWidth: "95px", maxHeight: "50px"
+                                    borderColor:"#F6EBE1", bgcolor:"#F6EBE1", color:"#AB191F", 
+                                    borderWidth: 1.5, width:"45%", fontWeight:600, lineHeight:"15px",
+                                    boxShadow: 5, marginLeft: "15px", maxWidth:"95px", maxHeight: "50px"
 
                                 }}
                                 variant="outlined">PROPERTY MANAGER
                             </Button>
+                            {rCreateOpen && <RenterCreateAccountView/>}
+                            {mCreateOpen && <ManagerCreateAccountView/>}
                         </div>
 
                         <Typography sx={{ margin: 1.5, marginLeft: "auto", marginTop: "15px", marginBottom: "-5px" }}>

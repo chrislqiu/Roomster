@@ -13,8 +13,9 @@ import CloseIcon from '@mui/icons-material/Close';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import LoginView from './LoginView';
 import MainPage from '../pages/MainPage';
+
 /**
- * Display for Renter Create Account Pop-up
+ * Display for Property Manager Create Account Pop-up
  * Jillian Urgello 
  * 
  * Colors:
@@ -22,20 +23,23 @@ import MainPage from '../pages/MainPage';
  * yellow: #F6EBE1
  */
 
-const RenterCreateAccountView = ({ }) => {
+const ManagerCreateAccountView = ({ }) => {
     const [open, setOpen] = React.useState(true)
     const [name, setName] = React.useState("")
+    const [address, setAddress] = React.useState("")
     const [email, setEmail] = React.useState("")
     const [password, setPassword] = React.useState("")
     const [confirmedPassword, setConfirmedPassword] = React.useState("")
     const [signupStatus, setSignupStatus] = React.useState(null);
 
     const handleOpen = () => {
-        setOpen(true)
+        setOpen(true) 
     }
+
     const handleClose = () => {
         setOpen(false)
         setName(null)
+        setAddress(null)
         setEmail(null)
         setPassword(null)
         setSignupStatus(null)
@@ -48,15 +52,20 @@ const RenterCreateAccountView = ({ }) => {
 
     const handleSignUp = async () => {
 
-        const emailRegex = /^[a-zA-Z0-9._-]+@purdue\.edu$/;
+        const emailRegex = /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/
 
         if (name === "") {
-            setSignupStatus("Please enter your name")
+            setSignupStatus("Please enter your company name")
+            return
+        }
+
+        if (address === "") {
+            setSignupStatus("Please enter your company address")
             return
         }
 
         if (!emailRegex.test(email)) {
-            setSignupStatus("Please enter a valid Purdue email address");
+            setSignupStatus("Please enter a valid email address");
             return;
         }
 
@@ -76,14 +85,12 @@ const RenterCreateAccountView = ({ }) => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                credentials: 'include',
                 body: JSON.stringify({ username: email, password }),
             });
 
             if (response.ok) {
                 console.log('Signup successful');
-                // handleClose();
-                window.location.href = 'http://localhost:3001/Home';
+                handleClose();
             } else if (response.status === 400) {
                 setSignupStatus('User already exists. Please login to your account');
             } else {
@@ -96,31 +103,16 @@ const RenterCreateAccountView = ({ }) => {
 
     return (
         <React.Fragment>
-
-            {/*<Button
-                variant='contained'
-                onClick={handleOpen}
-                sx={{
-                    ":hover": {
-                        bgcolor: "#F6EBE1",
-                        color: "#AB191F"
-                    },
-                    backgroundColor: "#AB191F",
-                    color: "#F6EBE1"
-                }} >
-                { }
-            </Button>*/}
-
+            
             <Dialog
-                open={open}
+                open={true}
                 onClose={handleClose}
                 sx={{
                     "& .MuiDialog-container": {
                         "& .MuiPaper-root": {
                             width: "100%",
-                            height: "100%",
                             maxWidth: "400px",
-                            maxHeight: "550px",
+                            maxHeight: "600px",
                             bgcolor: '#F6EBE1'
                         }
                     }
@@ -143,7 +135,7 @@ const RenterCreateAccountView = ({ }) => {
                 <DialogContent sx={{ maxWidth: "400px" }}>
                     <div>
                         <TextField
-                            label="Name" id="name-textfield" variant="outlined" fullWidth
+                            label="Company Name" id="name-textfield" variant="outlined" fullWidth
                             inputProps={{ style: { fontSize: 15 } }}
                             inputLabelProps={{ style: { fontSize: 15 } }}
                             sx={{
@@ -152,7 +144,16 @@ const RenterCreateAccountView = ({ }) => {
                             onChange={(e) => setName(e.target.value)}
                         />
                         <TextField
-                            label="Purdue Email" id="email-textfield" variant="outlined" fullWidth
+                            label="Company address" id="addr-textfield" variant="outlined" fullWidth
+                            inputProps={{ style: { fontSize: 15 } }}
+                            inputLabelProps={{ style: { fontSize: 15 } }}
+                            sx={{
+                                boxShadow: "3", margin: "dense", marginBottom: "15px"
+                            }}
+                            onChange={(e) => setAddress(e.target.value)}
+                        />
+                        <TextField
+                            label="Company Email" id="email-textfield" variant="outlined" fullWidth
                             inputProps={{ style: { fontSize: 15 } }}
                             inputLabelProps={{ style: { fontSize: 15, marginBottom: "15px" } }}
                             sx={{
@@ -206,18 +207,15 @@ const RenterCreateAccountView = ({ }) => {
                         <IconButton
                             style={{ position: "BottomLeft", position: "sticky", top: 70, left: 0 }}
                             onClick={() => handleBackButton()}
-
                         >
                             <ArrowBackIcon
                                 style={{ color: "black" }}
                             />
                         </IconButton>
-
                     </div>
                 </DialogContent>
             </Dialog>
-
         </React.Fragment>
     )
 }
-export default RenterCreateAccountView
+export default ManagerCreateAccountView

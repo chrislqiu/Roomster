@@ -18,6 +18,8 @@ import FavCoopsPage from "./pages/FavCoopsPage";
 import Settings from "./pages/Settings"
 import VerifyPage from "./pages/VerifyPage"
 
+import RenterCreateAccountView from "./components/RenterCreateAccounView";
+import ManagerCreateAccountView from "./components/PropertyManagerCreateAccountView";
 
   const styles = {
     background: {
@@ -122,10 +124,10 @@ class App extends React.Component {
             <Route path="/FavCoops" element={<FavCoopsPage />} />
             <Route path="/MyCoops" element={<MyCoopsPage />} />
             <Route path="/Login" element={<LoginPage />} />
+            <Route path="/RCreate" element={<RenterCreateAccountView />} />
+            <Route path="/MCreate" element={<ManagerCreateAccountView/>}/>
             <Route path="/Settings" element={<Settings />} />
-            <Route path="/RCreate" element={<RenterCreateAccountPage />} />
             <Route path="/VerifyPage" element={<VerifyPage />} />
-            {/* {<Route path="/Login" element={<LoginPage />} />} */}
           </Routes>
         </BrowserRouter>
       </body>  
