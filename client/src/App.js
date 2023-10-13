@@ -14,6 +14,7 @@ import theredthing from './images/theredthing.png'
 import logo from './images/logo.png'
 import RoomsterAppBar from "./components/AppBar";
 import RenterCreateAccountView from "./components/RenterCreateAccounView";
+import ManagerCreateAccountView from "./components/PropertyManagerCreateAccountView";
 
   const styles = {
     background: {
@@ -90,6 +91,7 @@ class App extends React.Component {
             <Route path="/MProfile" element={<PropertyManagerPage />} />
             <Route path="/Login" element={<LoginPage />} />
             <Route path="/RCreate" element={<RenterCreateAccountView />} />
+            <Route path="/MCreate" element={<ManagerCreateAccountView/>}/>
           </Routes>
         </BrowserRouter>
       </body>  
