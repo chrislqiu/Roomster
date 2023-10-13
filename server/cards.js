@@ -7,7 +7,7 @@ router.get('/add-card', (req, res) => {
   const card = new PropertyCard({
     image: 'filler link',
     propertyName: 'The Barracks',
-    addr: '123 Daddy Daniels Blvd',
+    addr: '123 Daniels Blvd',
     numBed: 3,
     numBath: 2.5,
     cost: 700

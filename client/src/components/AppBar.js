@@ -13,8 +13,13 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import chicken from "../images/profile-pic.png"
 import LoginView from "./LoginView";
+import { useNavigate, useLocation } from "react-router-dom";
+import DoubleArrowIcon from '@mui/icons-material/DoubleArrow';
+import { Grow } from "@mui/material";
+import Settings from "../pages/Settings"
 
 const pages = ["Home", "Fav Coops", "Coopmates", "Log Out"];
+//const routePage = ["/Home", "/FavCoops", "/Coopmates", "/Logout"]
 
 /* 
  * RoomsterAppBar
@@ -22,6 +27,9 @@ const pages = ["Home", "Fav Coops", "Coopmates", "Log Out"];
  */
 const RoomsterAppBar = ({ login }) => {
     console.log(login)
+    let location = useLocation();
+    console.log(location.pathname)
+    let navigate = useNavigate();
     /*
      * TODO: 
      * hide the login stuff with a "Log In/ Sign Up Button"
@@ -35,6 +43,39 @@ const RoomsterAppBar = ({ login }) => {
     const handleCloseNavMenu = () => {
         setAnchorElNav(null);
     };
+    const [isToolbarVisible, setIsToolbarVisible] = React.useState(true);
+
+    const toggleToolbarVisibility = () => {
+        setIsToolbarVisible(!isToolbarVisible);
+    };
+
+    const [settingsOpen, setSettingsOpen] = React.useState(false);
+
+    const handleCloseSettings = () => {
+        setSettingsOpen(false);
+    };
+
+    const handleLogout = async () => {
+        const logout = async () => {
+            try {
+              const response = await fetch('http://localhost:8000/auth/logout', {
+                method: 'GET',
+                credentials: 'include',
+              });
+      
+              if (response.ok) {
+                console.log('Logout successful');
+                window.location.href = 'http://localhost:3001/Home';
+              } else {
+                console.log('Logout failed');
+              }
+            } catch (error) {
+              console.error('Error during logout:', error);
+            }
+          };
+
+          logout();
+      };
 
     return (
         <AppBar
@@ -52,7 +93,7 @@ const RoomsterAppBar = ({ login }) => {
                             onClick={handleOpenNavMenu}
                             backgroundColor="#AB191F"
                         >
-                            <MenuIcon sx={{ color: "#AB191F" }} />
+                            <MenuIcon sx={{ color: "#F6EBE1" }} />
                         </IconButton>
                         <Menu
                             id="menu-appbar"
@@ -79,13 +120,40 @@ const RoomsterAppBar = ({ login }) => {
                             ))}
                         </Menu>
                     </Box>
+                    { login === true ? 
+                    <IconButton
+                            size="large"
+                            aria-label="account of current user"
+                            aria-controls="menu-appbar"
+                            aria-haspopup="true"
+                            onClick={toggleToolbarVisibility}
+                            backgroundColor="#AB191F"
+                        >
+                            <DoubleArrowIcon sx={{ color: "#F6EBE1" }} />
+                     </IconButton>
+                     :
+                     ''
+                    }
                     {login === true ?
+                        <Grow orientation="horizontal" in={!isToolbarVisible}>
                         <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-                            {pages.map((page) => {
+                            {pages.map((page, i) => {
                                 return (
                                     <Button
                                         key={page}
-                                        onClick={handleCloseNavMenu}
+                                        //onClick={() => navigate(`${routePage[i]}`)}
+                                        onClick={() => {
+                                            if (page === "Home") {
+                                                navigate("/Home")
+                                            } else if (page === "Fav Coops") {
+                                                navigate("/FavCoops")
+                                            } else if (page === "Coopmates") {
+                                                //coopmates
+                                            } else if (page === "Log Out") {
+                                                handleLogout();
+                                            }
+                                            handleCloseNavMenu();
+                                          }}
                                         sx={{
                                             my: 2,
                                             ":hover": {
@@ -107,22 +175,26 @@ const RoomsterAppBar = ({ login }) => {
                                 );
                             })}
                         </Box>
+                        </Grow>
                         :
-                        <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-                        </Box>
-
+                        <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}></Box>
                     }
+                    <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}></Box>
                     {login ?
-                        <Box sx={{ flexGrow: 0 }}>
-                            <Tooltip title="Open Profile" sx={{ color: "#AB191F" }}>
-                                <IconButton sx={{ p: 0 }} >
-                                    <Avatar alt="chickenpfp" src={chicken} style={{ transform: `scale(1.70, 1.70)` }} />
-                                </IconButton>
-                            </Tooltip>
-                        </Box>
-                        :
-                        <LoginView text={"Login/Signup"}/>
-                    }
+            <Box sx={{ flexGrow: 0 }}>
+              <Tooltip title="Open Profile" sx={{ color: "#AB191F" }}>
+                <IconButton sx={{ p: 0, mr: 1 }}>
+                  <Avatar alt="chickenpfp" src={chicken} style={{ transform: `scale(1.70, 1.70)` }} />
+                </IconButton>
+              </Tooltip>
+            </Box>
+            :
+            <LoginView text={"Login/Signup"} />
+          }
+
+          {login && (
+            <Settings open={settingsOpen} handleClose={handleCloseSettings} />
+          )}
                 </Toolbar>
             </Container>
         </AppBar>

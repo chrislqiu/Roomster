@@ -4,10 +4,16 @@ const jwt = require("jsonwebtoken");
 const User = require('./models/user.js');
 const cookieParser = require("cookie-parser");
 const sendVerificationEmail = require("./emailVerify.js");
-
+const cors = require('cors');
 
 const router = express.Router();
 router.use(cookieParser())
+const corsOptions = {
+    origin: 'http://localhost:3001',
+    credentials: true,
+};
+
+router.use(cors(corsOptions));
 
 const secretKey = "E.3AvP1]&r7;-vBSAL|3AyetV%H*fIEy";
 
@@ -27,6 +33,11 @@ const authorization = (req, res, next) => {
     next();
   });
 };
+
+router.get("/authorize", authorization, (req, res) => {
+  res.status(200).json({ message: 'Authorized', user: req.user });
+});
+
 
 router.get("/secret", authorization, (req, res) => {
   return res.send("Super secret page");
@@ -85,6 +96,7 @@ router.post("/signup", async (req, res) => {
           .cookie("access_token", token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
+            // sameSite: "None",
           })
           .status(200)
           .json({ message: "Account creation successful" });
@@ -114,11 +126,12 @@ router.post("/login", async (req, res) => {
         .cookie("access_token", token, {
           httpOnly: true,
           secure: process.env.NODE_ENV === "production",
+          // sameSite: "None",
         })
         .status(200)
         .json({ message: "Access granted" });
     } else {
-      res.send("Access denied");
+      res.status(401).send("Access denied");
     }
   } catch {
     res.status(500).send("Error when logging in");
@@ -137,10 +150,10 @@ router.post("/delete", async (req, res) => {
 
     if (isPasswordValid) {
       await User.deleteOne({ username: req.body.username });
-
+      res.clearCookie("access_token");
       return res.send("User deleted");
     } else {
-      res.send("Incorrect user information");
+      res.status(401).send("Incorrect user information");
     }
   } catch (err) {
     console.error(err);
@@ -153,6 +166,40 @@ router.get("/logout", authorization, (req, res) => {
     .clearCookie("access_token")
     .status(200)
     .json({ message: "Logged out" });
+});
+
+router.post("/change-password", authorization, async (req, res) => {
+  const user = await User.findOne({ username: req.user.username });
+
+  if (!user) {
+    return res.status(400).send("User does not exist");
+  }
+
+  try {
+    const isPasswordValid = await bcrypt.compare(req.body.currentPassword, user.password);
+
+    if (isPasswordValid) {
+      const salt = await bcrypt.genSalt();
+      const hashedNewPassword = await bcrypt.hash(req.body.newPassword, salt);
+
+      await User.updateOne({ username: req.user.username }, { password: hashedNewPassword });
+
+      const newToken = jwt.sign({ username: req.user.username }, secretKey, { expiresIn: '1h' });
+
+      res.cookie("access_token", newToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        // sameSite: "None",
+      });
+
+      return res.status(200).json({ message: "Password changed successfully" });
+    } else {
+      res.status(401).send("Incorrect current password");
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error changing password");
+  }
 });
 
 
@@ -173,7 +220,8 @@ router.get("/verify/:token", async (req, res) => {
       return res.status(404).send("User not found");
     }
 
-    return res.send("Email verified");
+    return res.redirect("http://localhost:3001/VerifyPage");
+    // return res.send("Email verified");
   } catch (err) {
     console.log(err);
     return res.status(500).send("Email verification failed");
