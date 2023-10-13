@@ -182,7 +182,7 @@ const RoomsterAppBar = ({ login }) => {
                     <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}></Box>
                     {login ?
             <Box sx={{ flexGrow: 0 }}>
-              <Tooltip title="Open Profile" sx={{ color: "#AB191F" }}>
+              <Tooltip title="Open Profile" sx={{ color: "#AB191F" }}  onClick={() => {navigate("/RProfile")}}> 
                 <IconButton sx={{ p: 0, mr: 1 }}>
                   <Avatar alt="chickenpfp" src={chicken} style={{ transform: `scale(1.70, 1.70)` }} />
                 </IconButton>
