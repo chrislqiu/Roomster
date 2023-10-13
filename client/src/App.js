@@ -28,6 +28,8 @@ import Settings from "./pages/Settings"
     logo: {
       margin: "-30px",
       width: '35%',
+      margin: "-30px",
+      width: '35%',
       zIndex: "0",
     },
     theredthing: {
