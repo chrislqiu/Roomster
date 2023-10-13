@@ -43,6 +43,10 @@ const LoginView = ({ text}) => {
         window.location.replace("/RCreate")
         //return <RenterCreateAccountView text={"hello"} />
     }
+
+    const handleMCreate = event => {
+        window.location.replace("/MCreate")
+    }
     
     return (
         <React.Fragment>
@@ -119,6 +123,7 @@ const LoginView = ({ text}) => {
                                 </Button>
                             
                             <Button 
+                                onClick={()=> handleMCreate()}
                                 sx={{
                                     ":hover": {
                                         borderColor:"#AB191F", bgcolor:"#AB191F", color:"#F6EBE1", 
