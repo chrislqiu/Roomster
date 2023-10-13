@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const cardRoutes = require('./cards');
 const saveMProfileRoutes = require('./sendManagerProfile') 
 const managerProfile = require('./models/managerProfile')
+const renterProfile = require('./models/renterProfile')
 const app = express();
 
 const dbURI = 'mongodb+srv://chrisqiu52:oe7O2bahWRmXJjOp@cluster0.xe4cgpv.mongodb.net/DB?retryWrites=true&w=majority';
@@ -32,6 +33,20 @@ app.post('/sendManagerProfile', async (req, res) => {
   const newManagerProfile = new managerProfile(data);
   newManagerProfile.save()
   .then((result) => {
+    res.send(result);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+})
+
+app.post('/sendRenterProfile', async (req,res) => {
+  const data = req.body;
+  console.log(data)
+  const newRenterProfile = new renterProfile(data);
+  newRenterProfile.save()
+  .then((result) => {
+    console.log(result)
     res.send(result);
   })
   .catch((err) => {

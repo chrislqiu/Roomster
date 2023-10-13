@@ -11,6 +11,7 @@ import blackChicken from "../images/chickens/black.png"
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMars } from '@fortawesome/free-solid-svg-icons'
+import { purple } from "@mui/material/colors";
 
 const RenterPage = () => {
 
@@ -118,12 +119,56 @@ const RenterPage = () => {
     const [noPet, setNoPet] = React.useState(false);
     const [doesSmoke, setDoesSmoke] = React.useState(false);
     const [doesNotSmoke, setDoesNotSmoke] = React.useState(false);
-    const [open, setOpen] = React.useState(false)
+    const [open, setOpen] = React.useState(false);
+    const [openMessage, setOpenMessage] = React.useState(false);
+    const [email, setEmail] = React.useState('');
+    const [phone, setPhone] = React.useState('');
+    const [profileImg, setProfileImg] = React.useState('');
+    const [saveStatus1, setSaveStatus1] = React.useState(null);
+
+    const handleSaveLeft = () => {
+        const emailRegex = /^[a-zA-Z0-9._-]+@purdue\.edu$/;
+
+        if (!emailRegex.test(email)) {
+            setSaveStatus1("Please enter a valid Purdue email address");
+            return;
+        } else {
+            setSaveStatus1("Save Success!")
+        }
+
+        const dataToSend = {
+            profilePic: profileImg,
+            purdueEmail: email,
+            phone: phone
+        }
+        fetch('http://localhost:8000/sendRenterProfile', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(dataToSend),
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('DATA SAVEDDDD: ', data.message);
+        })
+        .catch(error => {
+            console.error('ERRORRR: ', error);
+        });
+
+    }
     const handleOpen = () => {
         setOpen(true)
     }
     const handleClose = () => {
         setOpen(false)
+    }
+
+    const handleOpenMessage = () => {
+        setOpenMessage(true)
+    }
+    const handleCloseMessage = () => {
+        setOpenMessage(false)
     }
 
     const setChicken = (chicken) => {
@@ -145,7 +190,7 @@ const RenterPage = () => {
                     </Typography >
                     <Container style={styles.box}>
                         <Box sx={{ flexGrow: 0, margin: "15px 50px 20px 20px"}}>
-                            <Tooltip title="Change Profile Picture" sx={{color: "#AB191F"}} onClick={handleOpen}>
+                            <Tooltip title="Change Profile Picture" sx={{color: "#AB191F"}} onClick={handleOpen} >
                                 <IconButton sx={{ p: 0, }} >
                                     <Avatar alt="chickenpfp" src={profilePic} style={{transform: `scale(1.90, 1.90)` }} />
                                 </IconButton>
@@ -163,9 +208,9 @@ const RenterPage = () => {
                     <Typography style={styles.subheader}> 
                         {"Contact info"}
                     </Typography >
-                    <InputBase placeholder="Purdue Email" id="email-textfield" sx={inputBaseSX}/>
-                    <InputBase placeholder="Phone number" id="number-textfield" sx={inputBaseSX}/>
-                    <Button variant="contained" style={{backgroundColor: "#AB191F", float: "right", margin: "0 35px 0 0"}}>SAVE</Button>
+                    <InputBase placeholder="Purdue Email" id="email-textfield" sx={inputBaseSX}onChange={(e) => setEmail(e.target.value)}/>
+                    <InputBase placeholder="Phone number" id="number-textfield" sx={inputBaseSX}onChange={(e) => setPhone(e.target.value)}/>
+                    <Button variant="contained" style={{backgroundColor: "#AB191F", float: "right", margin: "0 35px 0 0"}} onClick={handleSaveLeft}>SAVE</Button>
                 </Box>
                 <Box width='100%' style={styles.column2}>
                     <Container style={styles.box}>
@@ -285,8 +330,30 @@ const RenterPage = () => {
                 </Box>
                 
                 </CardContent>
+                {saveStatus1 && ( <Container sx={{position:"relative", display:"-ms-flexbox", marginTop:"290px", textAlign:"center"}}>
+                <p style={{color: '#AB191F'}}>{saveStatus1}</p></Container>
+            )}
             </Card>
-            
+            <Dialog
+                open={openMessage}
+                onClose={handleCloseMessage}
+                sx={{
+                    "& .MuiDialog-container": {
+                        "& .MuiPaper-root": {
+                            width: "600px",
+                            height: "200px",
+                            backgroundColor: "#F6EBE1"
+                        },
+                    },
+                }}
+                
+            ><DialogContent>{saveStatus1 && ( 
+                <Typography style={{fontWeight: "600", fontSize: "15pt", color: "#AB191F", textAlign:"center", margin:"10px 0 -10px 0"}}> 
+                        {saveStatus1}
+                    </Typography >
+                
+            )}</DialogContent></Dialog>
+
             <Dialog
                 open={open}
                 onClose={handleClose}
@@ -306,32 +373,32 @@ const RenterPage = () => {
                     </Typography >
                 <Container sx={{display:"inline-flex", marginTop:"50px"}}>
                         <Tooltip onClick={() => setChicken(blackChicken)}>
-                            <IconButton sx={{ p: 0, marginRight:"50px"} } >
+                            <IconButton sx={{ p: 0, marginRight:"50px"} } onClick={() => setProfileImg(blackChicken)}>
                                     <Avatar alt="blackChicken" src={blackChicken} style={{transform: `scale(1.90, 1.90)` }} />
                             </IconButton>
                         </Tooltip>
                         <Tooltip onClick={() => setChicken(greenChicken)}>
-                            <IconButton sx={{ p: 0, marginRight:"50px"}} >
+                            <IconButton sx={{ p: 0, marginRight:"50px"}} onClick={() => setProfileImg(greenChicken)}>
                                 <Avatar alt="greenChicken" src={greenChicken} style={{transform: `scale(1.90, 1.90)` }} />
                             </IconButton>
                         </Tooltip>
                         <Tooltip onClick={() => setChicken(orangeChicken)}>
-                            <IconButton sx={{ p: 0, marginRight:"50px"}} >
+                            <IconButton sx={{ p: 0, marginRight:"50px"}} onClick={() => setProfileImg(orangeChicken)}>
                                 <Avatar alt="orangeChicken" src={orangeChicken} style={{transform: `scale(1.90, 1.90)` }} />
                             </IconButton>
                         </Tooltip>
                         <Tooltip onClick={() => setChicken(purpleChicken)}>
-                            <IconButton sx={{ p: 0, marginRight:"50px"}} >
+                            <IconButton sx={{ p: 0, marginRight:"50px"}} onClick={() => setProfileImg(purpleChicken)}>
                                 <Avatar alt="purpleChicken" src={purpleChicken} style={{transform: `scale(1.90, 1.90)` }} />
                             </IconButton>
                         </Tooltip>
                         <Tooltip onClick={() => setChicken(redChicken)}>
-                            <IconButton sx={{ p: 0, marginRight:"50px"}} >
+                            <IconButton sx={{ p: 0, marginRight:"50px"}} onClick={() => setProfileImg(redChicken)}>
                                 <Avatar alt="redChicken" src={redChicken} style={{transform: `scale(1.90, 1.90)` }} />
                             </IconButton>
                         </Tooltip>
                         <Tooltip onClick={() => setChicken(yellowChicken)}>
-                            <IconButton sx={{ p: 0}} >
+                            <IconButton sx={{ p: 0}} onClick={() => setProfileImg(yellowChicken)}>
                                 <Avatar alt="yellowChicken" src={yellowChicken} style={{transform: `scale(1.90, 1.90)` }} />
                             </IconButton>
                         </Tooltip>
