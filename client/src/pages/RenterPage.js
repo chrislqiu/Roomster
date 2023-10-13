@@ -125,10 +125,48 @@ const RenterPage = () => {
     const [phone, setPhone] = React.useState('');
     const [profileImg, setProfileImg] = React.useState('');
     const [saveStatus1, setSaveStatus1] = React.useState(null);
+    const [timeStart, setTimeStart] = React.useState('')
+    const [timeEnd, setTimeEnd] = React.useState('')
+
+    const handleSaveRight = () => {
+        const emailRegex = /^[a-zA-Z0-9._-]+@purdue\.edu$/;
+        if (!emailRegex.test(email)) {
+            setSaveStatus1("Please enter a valid Purdue email address");
+            return;
+        } else if (timeStart === "" || timeEnd === "" || hasPet === noPet || doesSmoke === doesNotSmoke || email == "" || phone == "") {
+            setSaveStatus1("One or more fields is empty!");
+            return
+        } else {
+            setSaveStatus1("Save Success!")
+        }
+        var pets = hasPet === true ? true : false;
+        var smoke = doesSmoke === true ? true : false;
+        const dataToSend = {
+            profilePic: profileImg,
+            purdueEmail: email,
+            phone: phone,
+            pets: pets,
+            smoke: smoke
+        }
+        fetch('http://localhost:8000/sendRenterProfile', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(dataToSend),
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('DATA SAVEDDDD: ', data.message);
+        })
+        .catch(error => {
+            console.error('ERRORRR: ', error);
+        });
+    }
 
     const handleSaveLeft = () => {
         const emailRegex = /^[a-zA-Z0-9._-]+@purdue\.edu$/;
-
+        console.log(timeStart)
         if (!emailRegex.test(email)) {
             setSaveStatus1("Please enter a valid Purdue email address");
             return;
@@ -240,6 +278,7 @@ const RenterPage = () => {
                                     <Checkbox style={{}}
                                     checked={hasPet}
                                     onChange={() => setHasPet(!hasPet)}
+                                    disabled={noPet === true ? true : false}
                                     inputProps={{ 'aria-label': 'controlled' }}
                                     sx={{color:"#AB191F",
                                         '&.Mui-checked': {
@@ -250,6 +289,7 @@ const RenterPage = () => {
                                 <FormControlLabel label="No" control={
                                     <Checkbox style={{}}
                                     checked={noPet}
+                                    disabled={hasPet === true ? true : false}
                                     onChange={() => setNoPet(!noPet)}
                                     inputProps={{ 'aria-label': 'controlled' }}
                                     sx={{color:"#AB191F",
@@ -263,6 +303,7 @@ const RenterPage = () => {
                                 <FormControlLabel label="Yes" control={
                                     <Checkbox style={{}}
                                     checked={doesSmoke}
+                                    disabled={doesNotSmoke === true ? true : false}
                                     onChange={() => setDoesSmoke(!doesSmoke)}
                                     inputProps={{ 'aria-label': 'controlled' }}
                                     sx={{color:"#AB191F",
@@ -274,6 +315,7 @@ const RenterPage = () => {
                                 <FormControlLabel label="No" control={
                                     <Checkbox style={{}}
                                     checked={doesNotSmoke}
+                                    disabled={doesSmoke === true ? true : false}
                                     onChange={() => setDoesNotSmoke(!doesNotSmoke)}
                                     inputProps={{ 'aria-label': 'controlled' }}
                                     sx={{color:"#AB191F",
@@ -320,10 +362,10 @@ const RenterPage = () => {
                             />
                             </Container>
                             <Container style={{marginLeft: "-15px", marginTop:"-5px", width: "150px", display:"flex"}}>
-                                <InputBase placeholder="From" id="from-textfield" style={{marginLeft:"-25px"}}sx={sleepScheduleSX}/>
-                                <InputBase placeholder="To" id="to-textfield" sx={sleepScheduleSX}/>
+                                <InputBase placeholder="From" onChange={(e)=>{setTimeStart(e.target.value)}} id="from-textfield" style={{marginLeft:"-25px"}}sx={sleepScheduleSX}/>
+                                <InputBase placeholder="To" onChange={(e)=>{setTimeEnd(e.target.value)}} id="to-textfield" sx={sleepScheduleSX}/>
                             </Container>
-                            <Button variant="contained" style={{backgroundColor: "#AB191F", float: "right", margin: "0 0 0 0"}}>SAVE</Button>
+                            <Button variant="contained" onClick={() => handleSaveRight()} style={{backgroundColor: "#AB191F", float: "right", margin: "0 0 0 0"}}>SAVE</Button>
 
                         </Container>
                     </Container>
