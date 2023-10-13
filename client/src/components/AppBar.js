@@ -18,7 +18,7 @@ import DoubleArrowIcon from '@mui/icons-material/DoubleArrow';
 import { Grow } from "@mui/material";
 import Settings from "../pages/Settings"
 
-const pages = ["Home", "Fav Coops", "Coopmates", "Log Out"];
+const pages = ["Home", "Fav Coops", "My Coops", "Coopmates", "Log Out"];
 //const routePage = ["/Home", "/FavCoops", "/Coopmates", "/Logout"]
 
 /* 
@@ -146,7 +146,11 @@ const RoomsterAppBar = ({ login }) => {
                                             if (page === "Home") {
                                                 navigate("/Home")
                                             } else if (page === "Fav Coops") {
+                                                //Hide Fav Coops once we separate the User types
                                                 navigate("/FavCoops")
+                                            } else if (page == "My Coops") {
+                                                //Hide My Coops once we separate the User types
+                                                navigate("/MyCoops")
                                             } else if (page === "Coopmates") {
                                                 //coopmates
                                             } else if (page === "Log Out") {
