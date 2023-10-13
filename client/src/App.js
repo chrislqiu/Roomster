@@ -95,8 +95,6 @@ class App extends React.Component {
     const { isAuthenticated } = this.state;
 
     return (
-      
-      
       // <ThemeProvider theme={theme}>
       //   <GlobalStyles
       //     sx={{
