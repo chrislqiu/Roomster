@@ -16,6 +16,7 @@ import logo from './images/logo.png'
 import RoomsterAppBar from "./components/AppBar";
 import FavCoopsPage from "./pages/FavCoopsPage";
 import Settings from "./pages/Settings"
+import VerifyPage from "./pages/VerifyPage"
 
 
   const styles = {
@@ -25,6 +26,7 @@ import Settings from "./pages/Settings"
       padding:"0",
       backgroundColor: "#f5ebe0",
       zIndex: "-1",
+      width: "100vw"
 
     },
     logo: {
@@ -48,10 +50,7 @@ import Settings from "./pages/Settings"
     }
   });
 
-//write function to print "hello"
-const printHello = () => {
-  console.log("hello");
-};
+
 
 
 class App extends React.Component {
@@ -125,6 +124,7 @@ class App extends React.Component {
             <Route path="/Login" element={<LoginPage />} />
             <Route path="/Settings" element={<Settings />} />
             <Route path="/RCreate" element={<RenterCreateAccountPage />} />
+            <Route path="/VerifyPage" element={<VerifyPage />} />
             {/* {<Route path="/Login" element={<LoginPage />} />} */}
           </Routes>
         </BrowserRouter>
