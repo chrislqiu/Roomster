@@ -4,10 +4,16 @@ const jwt = require("jsonwebtoken");
 const User = require('./models/user.js');
 const cookieParser = require("cookie-parser");
 const sendVerificationEmail = require("./emailVerify.js");
-
+const cors = require('cors');
 
 const router = express.Router();
 router.use(cookieParser())
+const corsOptions = {
+    origin: 'http://localhost:3001',
+    credentials: true,
+};
+
+router.use(cors(corsOptions));
 
 const secretKey = "E.3AvP1]&r7;-vBSAL|3AyetV%H*fIEy";
 
@@ -27,6 +33,11 @@ const authorization = (req, res, next) => {
     next();
   });
 };
+
+router.get("/authorize", authorization, (req, res) => {
+  res.status(200).json({ message: 'Authorized', user: req.user });
+});
+
 
 router.get("/secret", authorization, (req, res) => {
   return res.send("Super secret page");
@@ -52,9 +63,9 @@ const isEmailValid = (email) => {
 router.post("/signup", async (req, res) => {
   const existingUser = await User.findOne({ username: req.body.username });
 
-  if (!isEmailValid(req.body.username)) {
-    return res.status(400).send("Invalid email format");
-  }
+  // if (!isEmailValid(req.body.username)) {
+  //   return res.status(400).send("Invalid email format");
+  // }
 
   if (existingUser) {
     return res.status(400).send("User already exists");
@@ -85,6 +96,7 @@ router.post("/signup", async (req, res) => {
           .cookie("access_token", token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
+            sameSite: "None",
           })
           .status(200)
           .json({ message: "Account creation successful" });
@@ -114,11 +126,12 @@ router.post("/login", async (req, res) => {
         .cookie("access_token", token, {
           httpOnly: true,
           secure: process.env.NODE_ENV === "production",
+          sameSite: "None",
         })
         .status(200)
         .json({ message: "Access granted" });
     } else {
-      res.send("Access denied");
+      res.status(401).send("Access denied");
     }
   } catch {
     res.status(500).send("Error when logging in");
@@ -140,7 +153,7 @@ router.post("/delete", async (req, res) => {
 
       return res.send("User deleted");
     } else {
-      res.send("Incorrect user information");
+      res.status(401).send("Incorrect user information");
     }
   } catch (err) {
     console.error(err);
