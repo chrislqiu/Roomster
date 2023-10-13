@@ -9,8 +9,18 @@ const PropertyManagerPage = () => {
     const [bio, setBio] = useState('');
     const [addr, setAddr] = useState('');
     const [officeNum, setOfficeNum] = useState('');
+    const [saveStatus, setSaveStatus] = useState(null)
 
     const handleSave = () => {
+
+        const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9]+\.[a-zA-Z]+$/;
+
+        if (!emailRegex.test(email)) {
+            setSaveStatus("Please enter a valid email address");
+            return;
+        } else {
+            setSaveStatus("Save Success!")
+        }
         
         const dataToSend ={
             phoneNum: phoneNumber,
@@ -43,9 +53,9 @@ const PropertyManagerPage = () => {
                    backgroundColor: "#f5ebe0",
                     color: "#AB191F",
                     width: "800px",
-                    height: "355px",
+                    height: "385px",
                     boxShadow: "0px 0px 3px 3px rgba(0, 0, 0, .1)",
-                    marginBottom: "250px",
+                    marginBottom: "225px",
                     marginTop: "50px",
                     marginLeft: "150px"
                     }}>
@@ -182,7 +192,7 @@ const PropertyManagerPage = () => {
                         <Link href="##" underline="always" color="#AB191F" fontWeight={600} >
                                 {'Leasing Site'}
                         </Link>
-                        <Box marginLeft={28} marginY={7}>
+                        <Box marginLeft={28} marginY={12}>
                         <Button 
                             variant='contained'
                             sx={{
@@ -200,9 +210,13 @@ const PropertyManagerPage = () => {
                         </Button>
                         </Box>
                 </Box>
-                <Divider orientation="vertical" width={3} sx={{ borderBottomWidth: 3, color: "#AB191F", backgroundColor: "#AB191F", marginX: 48, marginY:-43, height: 270}} />
+                <Divider orientation="vertical" width={3} sx={{ borderBottomWidth: 3, color: "#AB191F", backgroundColor: "#AB191F", marginX: 48, marginY:-52, height: 270}} />
                 </CardContent>
+                {saveStatus && (
+                <p style={{color: '#AB191F', marginLeft: "290px", marginTop: "328px"}}>{saveStatus}</p>
+            )}
             </Card>
+            
         </Container>
     )
 }
