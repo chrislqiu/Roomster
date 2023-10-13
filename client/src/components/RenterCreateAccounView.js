@@ -63,12 +63,14 @@ const RenterCreateAccountView = ({ }) => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
+                credentials: 'include',
                 body: JSON.stringify({ username: email, password }),
             });
 
             if (response.ok) {
                 console.log('Signup successful');
-                handleClose();
+                // handleClose();
+                window.location.href = 'http://localhost:3001/Home';
             } else if (response.status === 400) {
                 setSignupStatus('User already exists');
             } else {

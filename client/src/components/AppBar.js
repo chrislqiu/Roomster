@@ -46,7 +46,7 @@ const RoomsterAppBar = ({ login }) => {
       
               if (response.ok) {
                 console.log('Logout successful');
-                window.location.reload();
+                window.location.href = 'http://localhost:3001/Home';
               } else {
                 console.log('Logout failed');
               }
