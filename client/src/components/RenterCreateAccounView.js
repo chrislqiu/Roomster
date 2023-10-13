@@ -95,7 +95,7 @@ const RenterCreateAccountView = ({ }) => {
     return (
         <React.Fragment>
 
-            <Button
+            {/*<Button
                 variant='contained'
                 onClick={handleOpen}
                 sx={{
@@ -107,7 +107,7 @@ const RenterCreateAccountView = ({ }) => {
                     color: "#F6EBE1"
                 }} >
                 { }
-            </Button>
+            </Button>*/}
 
             <Dialog
                 open={open}
