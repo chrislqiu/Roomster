@@ -30,7 +30,7 @@ const FeaturedProperties = ({ data, style }) => {
             </Box>
            
             <List component={Stack} direction="row" sx={{ overflow: 'auto' }} maxWidth='xl' spacing={-4}>
-                {data.map(featuredCards => {
+                {data.filter(property => property.featured == true).map(featuredCards => {
                     return <ListItem>
                         <PropertyViewMore data={featuredCards} featured={true} />
                     </ListItem>
