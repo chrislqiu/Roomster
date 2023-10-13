@@ -5,6 +5,7 @@ import MainPage from "./pages/MainPage";
 import RenterPage from "./pages/RenterPage";
 import PropertyManagerPage from "./pages/ProperyManagerPage";
 import RenterCreateAccountPage from "./pages/RenterCreateAccountPage";
+import MyCoopsPage from "./pages/MyCoopsPage";
 import LoginPage from "./pages/LoginPage"
 import GlobalStyles from "@mui/material/GlobalStyles";
 import { BrowserRouter, Routes, Route } from "react-router-dom"
@@ -27,8 +28,10 @@ import Settings from "./pages/Settings"
 
     },
     logo: {
-      margin: "-20px",
-      width: '40%',
+      margin: "-30px",
+      width: '35%',
+      margin: "-30px",
+      width: '35%',
       zIndex: "0",
     },
     theredthing: {
@@ -107,19 +110,22 @@ class App extends React.Component {
             // if login is true (for now), app bar with login buttons will show
             // if login is false, appbar only has login/signup button
           }
+
          <RoomsterAppBar login={isAuthenticated}/>
-          <div style={{textAlign:"center"}}>
+          <div style={{textAlign:"center", zIndex: "3", position: "relative", marginBottom:"50px"}}>
+
             <img className="logo" src={logo} style={styles.logo}></img>
           </div>
           <Routes>
             <Route path="/Home" element={<MainPage />} />
             <Route path="/RProfile" element={<RenterPage />} />
             <Route path="/MProfile" element={<PropertyManagerPage />} />
-            {/* {<Route path="/Login" element={<LoginPage />} />} */}
             <Route path="/FavCoops" element={<FavCoopsPage />} />
+            <Route path="/MyCoops" element={<MyCoopsPage />} />
             <Route path="/Login" element={<LoginPage />} />
             <Route path="/Settings" element={<Settings />} />
             <Route path="/RCreate" element={<RenterCreateAccountPage />} />
+            {/* {<Route path="/Login" element={<LoginPage />} />} */}
           </Routes>
         </BrowserRouter>
       </body>  
