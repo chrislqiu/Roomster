@@ -10,7 +10,8 @@ router.get('/add-card', (req, res) => {
     addr: '123 Daniels Blvd',
     numBed: 3,
     numBath: 2.5,
-    cost: 700
+    cost: 700,
+    featured: true
   });
 
   card.save()

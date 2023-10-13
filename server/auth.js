@@ -202,6 +202,24 @@ router.post("/change-password", authorization, async (req, res) => {
   }
 });
 
+router.get("/check-verify", authorization, async (req, res) => {
+  try {
+    const user = await User.findOne({ username: req.user.username });
+
+    if (!user) {
+      return res.status(404).send("User not found");
+    }
+
+    if (user.isVerified) {
+      return res.status(200).json({user});
+    } 
+  } catch (err) {
+    console.error(err);
+    return res.status(500).send("Error checking user verification");
+  }
+});
+
+
 
 router.get("/verify/:token", async (req, res) => {
   const { token } = req.params;

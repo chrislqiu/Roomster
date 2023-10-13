@@ -17,7 +17,7 @@ import RoomsterAppBar from "./components/AppBar";
 import FavCoopsPage from "./pages/FavCoopsPage";
 import Settings from "./pages/Settings"
 import VerifyPage from "./pages/VerifyPage"
-
+import Popup from "./components/Popup";
 import RenterCreateAccountView from "./components/RenterCreateAccounView";
 import ManagerCreateAccountView from "./components/PropertyManagerCreateAccountView";
 
@@ -58,7 +58,12 @@ import ManagerCreateAccountView from "./components/PropertyManagerCreateAccountV
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { apiResponse: "", isAuthenticated: false }
+    this.state = {
+      apiResponse: "",
+      isAuthenticated: false,
+      isPopupOpen: false,
+      popupMessage: "",
+    };
   }
 
   callServer() {
@@ -70,6 +75,8 @@ class App extends React.Component {
   async componentDidMount() {
     this.callServer();
     this.checkAuthentication();
+    this.checkVerification();
+
   }
 
   checkAuthentication = async () => {
@@ -89,12 +96,41 @@ class App extends React.Component {
     }
   };
 
+  // checkVerification = async () => {
+  //   try {
+  //     const response = await fetch('http://localhost:8000/auth/check-verify', {
+  //       method: 'GET',
+  //       credentials: 'include',
+  //     });
+  
+  //     if (response.ok) {
+  //       const data = await response.json();
+  //       // console.log(data.user.isVerified);
+  //       if (data.user && data.user.isVerified) {
+  //         // this.setState({ popupMessage: 'User is verified' });
+  //       } else {
+  //         this.setState({ popupMessage: 'You are not verified, please check your email' });
+  //       }
+  //     } else {
+  //       // this.setState({ popupMessage: 'Error during verification check' });
+  //     }
+  //       this.setState({ isPopupOpen: true });
+
+      
+  //   } catch (error) {
+  //     this.setState({ isPopupOpen: true });
+
+  //     // this.setState({ popupMessage: 'Error during verification check' });
+  //     // this.setState({ isPopupOpen: true });
+  //   }
+  // };
+  
+  
   
   
 
   render() {
-    const { isAuthenticated } = this.state;
-
+    const { isAuthenticated, isPopupOpen, popupMessage } = this.state;
     return (
       // <ThemeProvider theme={theme}>
       //   <GlobalStyles
@@ -103,6 +139,7 @@ class App extends React.Component {
       //     }}
       //   />
       <body style={styles.background}>
+        <Popup openPopup={isPopupOpen} message={popupMessage}></Popup>
         <div style={{zIndex: "0"}}>
           <img className="theredthing" src={theredthing} style={styles.theredthing}></img>
         </div>
