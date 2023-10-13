@@ -37,6 +37,8 @@ const PropertyViewMore = ({ data, featured, favCoops, login }) => {
         setOpen(false)
     }
 
+    //need user information for favCoops
+    //if renter user and user.favCoops contains property then set favCoops to true
     console.log(favCoops)
     const [active, setActive]= React.useState(favCoops === true ? true : false)
 
