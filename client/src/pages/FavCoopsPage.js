@@ -4,7 +4,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import PropertyView from "../components/PropertyView";
 
-const FavCoopPage = () => {
+const FavCoopPage = ({login}) => {
     const [propertyInfo, setPropertyInfo] = React.useState([])
     /* TODO:
      *  change this so it only gets the users favorite coops from the db
@@ -40,7 +40,7 @@ const FavCoopPage = () => {
                          * make it so the card doesnt show/page refreshes when 
                          * fav coops is unfavorited
                          */
-                        return <PropertyView data={cards} favCoops={true} />
+                        return <PropertyView data={cards} favCoops={true} login={login}/>
                         }
                     )
                 }

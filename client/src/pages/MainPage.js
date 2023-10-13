@@ -6,7 +6,7 @@ import { Container, Box } from "@mui/material";
 /*
  * Main Page View with the property cards
  */
-const MainPage = () => {
+const MainPage = ({login}) => {
     /*
      * propertyInfo, setPropertyInfo to hold the card information from the server
      */
@@ -32,7 +32,7 @@ const MainPage = () => {
     return (
         <Container sx={{ width: '100%' }}>
             <Box sx={{ m: 4 }} style={styles.feed}>
-                <FeaturedProperties data={propertyInfo} style={styles.feed}/>
+                <FeaturedProperties data={propertyInfo} style={styles.feed} login={login}/>
             </Box>
            
             <Box sx={{ m: 1 }} style={styles.feed}>
@@ -41,7 +41,7 @@ const MainPage = () => {
                     * Maps each Property Information object to its own "card"
                     */
                     propertyInfo.map(cards => {
-                        return <PropertyViewMore data={cards} />
+                        return <PropertyViewMore data={cards} login={login}/>
                         }
                     )
                 }

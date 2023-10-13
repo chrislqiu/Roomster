@@ -6,7 +6,7 @@ import PropertyViewMore from './PropertyView';
 
 
 
-const FeaturedProperties = ({ data, style }) => {
+const FeaturedProperties = ({ data, style, login }) => {
     const styles = {
         divider: {
             borderTop: "3px solid #AB191F",
@@ -32,7 +32,7 @@ const FeaturedProperties = ({ data, style }) => {
             <List component={Stack} direction="row" sx={{ overflow: 'auto' }} maxWidth='xl' spacing={-4}>
                 {data.map(featuredCards => {
                     return <ListItem>
-                        <PropertyViewMore data={featuredCards} featured={true} />
+                        <PropertyViewMore data={featuredCards} featured={true} login={login} />
                     </ListItem>
                 }
                 )

@@ -117,12 +117,13 @@ class App extends React.Component {
             <img className="logo" src={logo} style={styles.logo}></img>
           </div>
           <Routes>
-            <Route path="/Home" element={<MainPage />} />
+            <Route path="/" element={<MainPage />} />
+            <Route path="/Home" element={<MainPage login={isAuthenticated}/>} />
             <Route path="/RProfile" element={<RenterPage />} />
             <Route path="/MProfile" element={<PropertyManagerPage />} />
-            <Route path="/FavCoops" element={<FavCoopsPage />} />
+            <Route path="/FavCoops" element={<FavCoopsPage login={isAuthenticated}/>} />
             <Route path="/MyCoops" element={<MyCoopsPage />} />
-            <Route path="/Login" element={<LoginPage />} />
+            <Route path="/Login" element={<MainPage />} />
             <Route path="/Settings" element={<Settings />} />
             <Route path="/RCreate" element={<RenterCreateAccountPage />} />
             {/* {<Route path="/Login" element={<LoginPage />} />} */}
