@@ -16,6 +16,7 @@ import LoginView from "./LoginView";
 import { useNavigate, useLocation } from "react-router-dom";
 import DoubleArrowIcon from '@mui/icons-material/DoubleArrow';
 import { Grow } from "@mui/material";
+import Settings from "../pages/Settings"
 
 const pages = ["Home", "Fav Coops", "Coopmates", "Log Out"];
 //const routePage = ["/Home", "/FavCoops", "/Coopmates", "/Logout"]
@@ -46,6 +47,12 @@ const RoomsterAppBar = ({ login }) => {
 
     const toggleToolbarVisibility = () => {
         setIsToolbarVisible(!isToolbarVisible);
+    };
+
+    const [settingsOpen, setSettingsOpen] = React.useState(false);
+
+    const handleCloseSettings = () => {
+        setSettingsOpen(false);
     };
 
     const handleLogout = async () => {
@@ -174,16 +181,20 @@ const RoomsterAppBar = ({ login }) => {
                     }
                     <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}></Box>
                     {login ?
-                        <Box sx={{ flexGrow: 0 }}>
-                            <Tooltip title="Open Profile" sx={{ color: "#AB191F" }}>
-                                <IconButton sx={{ p: 0 }} >
-                                    <Avatar alt="chickenpfp" src={chicken} style={{ transform: `scale(1.70, 1.70)` }} />
-                                </IconButton>
-                            </Tooltip>
-                        </Box>
-                        :
-                        <LoginView text={"Login/Signup"}/>
-                    }
+            <Box sx={{ flexGrow: 0 }}>
+              <Tooltip title="Open Profile" sx={{ color: "#AB191F" }}>
+                <IconButton sx={{ p: 0, mr: 1 }}>
+                  <Avatar alt="chickenpfp" src={chicken} style={{ transform: `scale(1.70, 1.70)` }} />
+                </IconButton>
+              </Tooltip>
+            </Box>
+            :
+            <LoginView text={"Login/Signup"} />
+          }
+
+          {login && (
+            <Settings open={settingsOpen} handleClose={handleCloseSettings} />
+          )}
                 </Toolbar>
             </Container>
         </AppBar>

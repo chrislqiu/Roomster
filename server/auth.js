@@ -150,7 +150,7 @@ router.post("/delete", async (req, res) => {
 
     if (isPasswordValid) {
       await User.deleteOne({ username: req.body.username });
-
+      res.clearCookie("access_token");
       return res.send("User deleted");
     } else {
       res.status(401).send("Incorrect user information");
