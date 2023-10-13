@@ -36,6 +36,28 @@ const RoomsterAppBar = ({ login }) => {
         setAnchorElNav(null);
     };
 
+    const handleLogout = async () => {
+        const logout = async () => {
+            try {
+              const response = await fetch('http://localhost:8000/auth/logout', {
+                method: 'GET',
+                credentials: 'include',
+              });
+      
+              if (response.ok) {
+                console.log('Logout successful');
+                window.location.reload();
+              } else {
+                console.log('Logout failed');
+              }
+            } catch (error) {
+              console.error('Error during logout:', error);
+            }
+          };
+
+          logout();
+      };
+
     return (
         <AppBar
             position="static"
@@ -85,7 +107,18 @@ const RoomsterAppBar = ({ login }) => {
                                 return (
                                     <Button
                                         key={page}
-                                        onClick={handleCloseNavMenu}
+                                        onClick={() => {
+                                            if (page === "Home") {
+                                                //home
+                                            } else if (page === "Fav Coops") {
+                                                //fav coops
+                                            } else if (page === "Coopmates") {
+                                                //coopmates
+                                            } else if (page === "Log Out") {
+                                                handleLogout();
+                                            }
+                                            handleCloseNavMenu();
+                                          }}
                                         sx={{
                                             my: 2,
                                             ":hover": {
