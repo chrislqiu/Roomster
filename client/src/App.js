@@ -75,8 +75,6 @@ class App extends React.Component {
   async componentDidMount() {
     this.callServer();
     this.checkAuthentication();
-    this.checkVerification();
-
   }
 
   checkAuthentication = async () => {
@@ -130,7 +128,7 @@ class App extends React.Component {
   
 
   render() {
-    const { isAuthenticated, isPopupOpen, popupMessage } = this.state;
+    const { isAuthenticated } = this.state;
     return (
       // <ThemeProvider theme={theme}>
       //   <GlobalStyles
@@ -139,7 +137,6 @@ class App extends React.Component {
       //     }}
       //   />
       <body style={styles.background}>
-        <Popup openPopup={isPopupOpen} message={popupMessage}></Popup>
         <div style={{zIndex: "0"}}>
           <img className="theredthing" src={theredthing} style={styles.theredthing}></img>
         </div>
