@@ -85,12 +85,13 @@ const ManagerCreateAccountView = ({ }) => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
+                credentials: 'include',
                 body: JSON.stringify({ username: email, password }),
             });
 
             if (response.ok) {
                 console.log('Signup successful');
-                handleClose();
+                window.location.href = 'http://localhost:3001/Home';
             } else if (response.status === 400) {
                 setSignupStatus('User already exists. Please login to your account');
             } else {
@@ -204,14 +205,14 @@ const ManagerCreateAccountView = ({ }) => {
                         >SIGN UP
                         </Button>
 
-                        <IconButton
+                        {/* <IconButton
                             style={{ position: "BottomLeft", position: "sticky", top: 70, left: 0 }}
                             onClick={() => handleBackButton()}
                         >
                             <ArrowBackIcon
                                 style={{ color: "black" }}
                             />
-                        </IconButton>
+                        </IconButton> */}
                     </div>
                 </DialogContent>
             </Dialog>

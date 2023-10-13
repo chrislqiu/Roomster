@@ -82,7 +82,6 @@ const RenterCreateAccountView = ({ }) => {
 
             if (response.ok) {
                 console.log('Signup successful');
-                // handleClose();
                 window.location.href = 'http://localhost:3001/Home';
             } else if (response.status === 400) {
                 setSignupStatus('User already exists. Please login to your account');
@@ -203,7 +202,7 @@ const RenterCreateAccountView = ({ }) => {
                         >SIGN UP
                         </Button>
 
-                        <IconButton
+                        {/* <IconButton
                             style={{ position: "BottomLeft", position: "sticky", top: 70, left: 0 }}
                             onClick={() => handleBackButton()}
 
@@ -211,7 +210,7 @@ const RenterCreateAccountView = ({ }) => {
                             <ArrowBackIcon
                                 style={{ color: "black" }}
                             />
-                        </IconButton>
+                        </IconButton> */}
 
                     </div>
                 </DialogContent>
