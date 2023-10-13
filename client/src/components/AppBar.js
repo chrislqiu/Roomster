@@ -13,8 +13,12 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import chicken from "../images/profile-pic.png"
 import LoginView from "./LoginView";
+import { useNavigate, useLocation } from "react-router-dom";
+import DoubleArrowIcon from '@mui/icons-material/DoubleArrow';
+import { Grow } from "@mui/material";
 
 const pages = ["Home", "Fav Coops", "Coopmates", "Log Out"];
+const routePage = ["/Home", "/FavCoops", "/Coopmates", "/Logout"]
 
 /* 
  * RoomsterAppBar
@@ -22,6 +26,9 @@ const pages = ["Home", "Fav Coops", "Coopmates", "Log Out"];
  */
 const RoomsterAppBar = ({ login }) => {
     console.log(login)
+    let location = useLocation();
+    console.log(location.pathname)
+    let navigate = useNavigate();
     /*
      * TODO: 
      * hide the login stuff with a "Log In/ Sign Up Button"
@@ -34,6 +41,11 @@ const RoomsterAppBar = ({ login }) => {
 
     const handleCloseNavMenu = () => {
         setAnchorElNav(null);
+    };
+    const [isToolbarVisible, setIsToolbarVisible] = React.useState(true);
+
+    const toggleToolbarVisibility = () => {
+        setIsToolbarVisible(!isToolbarVisible);
     };
 
     const handleLogout = async () => {
@@ -74,7 +86,7 @@ const RoomsterAppBar = ({ login }) => {
                             onClick={handleOpenNavMenu}
                             backgroundColor="#AB191F"
                         >
-                            <MenuIcon sx={{ color: "#AB191F" }} />
+                            <MenuIcon sx={{ color: "#F6EBE1" }} />
                         </IconButton>
                         <Menu
                             id="menu-appbar"
@@ -101,12 +113,28 @@ const RoomsterAppBar = ({ login }) => {
                             ))}
                         </Menu>
                     </Box>
+                    { login === true ? 
+                    <IconButton
+                            size="large"
+                            aria-label="account of current user"
+                            aria-controls="menu-appbar"
+                            aria-haspopup="true"
+                            onClick={toggleToolbarVisibility}
+                            backgroundColor="#AB191F"
+                        >
+                            <DoubleArrowIcon sx={{ color: "#F6EBE1" }} />
+                     </IconButton>
+                     :
+                     ''
+                    }
                     {login === true ?
+                        <Grow orientation="horizontal" in={!isToolbarVisible}>
                         <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-                            {pages.map((page) => {
+                            {pages.map((page, i) => {
                                 return (
                                     <Button
                                         key={page}
+                                        //onClick={() => navigate(`${routePage[i]}`)}
                                         onClick={() => {
                                             if (page === "Home") {
                                                 //home
@@ -140,11 +168,11 @@ const RoomsterAppBar = ({ login }) => {
                                 );
                             })}
                         </Box>
+                        </Grow>
                         :
-                        <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-                        </Box>
-
+                        <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}></Box>
                     }
+                    <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}></Box>
                     {login ?
                         <Box sx={{ flexGrow: 0 }}>
                             <Tooltip title="Open Profile" sx={{ color: "#AB191F" }}>
