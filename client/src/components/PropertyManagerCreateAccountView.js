@@ -13,6 +13,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import LoginView from './LoginView';
 import MainPage from '../pages/MainPage';
+
 /**
  * Display for Property Manager Create Account Pop-up
  * Jillian Urgello 
@@ -32,8 +33,9 @@ const ManagerCreateAccountView = ({ }) => {
     const [signupStatus, setSignupStatus] = React.useState(null);
 
     const handleOpen = () => {
-        setOpen(true)
+        setOpen(true) 
     }
+
     const handleClose = () => {
         setOpen(false)
         setName(null)
@@ -50,7 +52,6 @@ const ManagerCreateAccountView = ({ }) => {
 
     const handleSignUp = async () => {
 
-        //const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z]\.com$/;
         const emailRegex = /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/
 
         if (name === "") {
@@ -102,21 +103,7 @@ const ManagerCreateAccountView = ({ }) => {
 
     return (
         <React.Fragment>
-
-            {/*<Button
-                variant='contained'
-                onClick={handleOpen}
-                sx={{
-                    ":hover": {
-                        bgcolor: "#F6EBE1",
-                        color: "#AB191F"
-                    },
-                    backgroundColor: "#AB191F",
-                    color: "#F6EBE1"
-                }} >
-                { }
-            </Button>*/}
-
+            
             <Dialog
                 open={true}
                 onClose={handleClose}
@@ -124,7 +111,6 @@ const ManagerCreateAccountView = ({ }) => {
                     "& .MuiDialog-container": {
                         "& .MuiPaper-root": {
                             width: "100%",
-                            height: "100%",
                             maxWidth: "400px",
                             maxHeight: "600px",
                             bgcolor: '#F6EBE1'
@@ -226,11 +212,9 @@ const ManagerCreateAccountView = ({ }) => {
                                 style={{ color: "black" }}
                             />
                         </IconButton>
-
                     </div>
                 </DialogContent>
             </Dialog>
-
         </React.Fragment>
     )
 }

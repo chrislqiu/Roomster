@@ -11,6 +11,7 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import RenterCreateAccountView from './RenterCreateAccounView';
 import RenterCreateAccountPage from '../pages/RenterCreateAccountPage';
+import ManagerCreateAccountView from './PropertyManagerCreateAccountView';
 
 
 
@@ -28,26 +29,19 @@ import RenterCreateAccountPage from '../pages/RenterCreateAccountPage';
 
 const LoginView = ({ text}) => {
     const [open, setOpen] = React.useState(true)
-    const [isRCreateOpen, setRCreateOpen] = React.useState(false)
+    const [rCreateOpen, setRCreateOpen] = React.useState(false)
+    const [mCreateOpen, setMCreateOpen] = React.useState(false)
     const handleOpen = () => {
         setOpen(true)
+        //setMCreateOpen(false)
     }
     const handleClose = () => {
         setOpen(false)
+        setRCreateOpen(false)
+        setMCreateOpen(false)
         window.location.replace("/Home")
     }
 
-    const handleRCreate = event => {
-        //handleClose()
-        //setRCreateOpen(prev => !prev)   
-        window.location.replace("/RCreate")
-        //return <RenterCreateAccountView text={"hello"} />
-    }
-
-    const handleMCreate = event => {
-        window.location.replace("/MCreate")
-    }
-    
     return (
         <React.Fragment>
             <Button 
@@ -73,14 +67,14 @@ const LoginView = ({ text}) => {
             </Button>
             
             <Dialog
-                open = {open} 
+                open = {handleOpen} 
                 onClose = {handleClose}
                 sx = {{
                     "& .MuiDialog-container": {
                         "& .MuiPaper-root": {
                           width: "100%",
                           maxWidth: "400px",  
-                          maxHeight: "1000px",
+                          maxHeight: "450px",
                           bgcolor: '#F6EBE1'
                         }
                     }
@@ -109,7 +103,7 @@ const LoginView = ({ text}) => {
                            
                                 <Button
                                     type = "RCreate"
-                                    onClick={()=> handleRCreate()}
+                                    onClick={()=> setRCreateOpen(true)}
                                     sx={{
                                         ":hover": {
                                             borderColor:"#AB191F", bgcolor:"#AB191F", color:"#F6EBE1", 
@@ -123,7 +117,7 @@ const LoginView = ({ text}) => {
                                 </Button>
                             
                             <Button 
-                                onClick={()=> handleMCreate()}
+                                onClick={()=> setMCreateOpen(true)}
                                 sx={{
                                     ":hover": {
                                         borderColor:"#AB191F", bgcolor:"#AB191F", color:"#F6EBE1", 
@@ -136,6 +130,8 @@ const LoginView = ({ text}) => {
                                 }} 
                                 variant="outlined">PROPERTY MANAGER
                             </Button>
+                            {rCreateOpen && <RenterCreateAccountView/>}
+                            {mCreateOpen && <ManagerCreateAccountView/>}
                         </div>
 
                     <Typography sx={{margin:1.5, marginLeft: "auto", marginTop: "15px", marginBottom: "-5px"}}>
