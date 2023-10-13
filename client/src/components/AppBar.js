@@ -91,6 +91,7 @@ const RoomsterAppBar = ({ login }) => {
                             ))}
                         </Menu>
                     </Box>
+                    { login === true ? 
                     <IconButton
                             size="large"
                             aria-label="account of current user"
@@ -101,6 +102,9 @@ const RoomsterAppBar = ({ login }) => {
                         >
                             <DoubleArrowIcon sx={{ color: "#F6EBE1" }} />
                      </IconButton>
+                     :
+                     ''
+                    }
                     {login === true ?
                         <Grow orientation="horizontal" in={!isToolbarVisible}>
                         <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>

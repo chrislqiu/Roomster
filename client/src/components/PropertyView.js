@@ -85,11 +85,11 @@ const PropertyViewMore = ({ data, featured, favCoops }) => {
                           {featured === true ? <StarIcon style={{margin: "-20px 0 0px 2.5"}} /> : ''}
                           {favCoops === true ? <FavoriteIcon style={{margin: "-20px 0 0px 2.5"}} sx={{color: "#AB191F", ":hover": {color: "#F6EBE1",},}}/> : ''}
                         </div>
-                          <Typography variant="body2" style={{margin: "0 0 5px 0"}}> 123 Address</Typography>
-                          <Typography variant="body2"> # bedroom</Typography>
-                          <Typography variant="body2"> # bathroom</Typography>
+                          <Typography variant="body2" style={{margin: "0 0 5px 0"}}>{data.addr}</Typography>
+                          <Typography variant="body2">{data.numBed} bedroom </Typography>
+                          <Typography variant="body2">{data.numBath} bathroom</Typography>
                           <hr style={styles.divider}></hr>
-                          <Typography variant="body1" style={{textAlign:"right", fontWeight:"500"}}> $700 per month</Typography>
+                          <Typography variant="body1" style={{textAlign:"right", fontWeight:"500"}}> ${data.cost} per month</Typography>
                         
                     </CardContent>
                 </CardActionArea>
