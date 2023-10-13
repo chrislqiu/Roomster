@@ -25,7 +25,7 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
  * featured : Boolean to determine whether the card is featured or not
  * favCoops : Boolean to determine if card is on favCoops page
  */
-const PropertyViewMore = ({ data, featured, favCoops }) => {
+const PropertyViewMore = ({ data, featured, favCoops, login }) => {
     /*
      * open, setOpen : controls the state of the dialogue popup
      */
@@ -230,22 +230,9 @@ const PropertyViewMore = ({ data, featured, favCoops }) => {
                     </Stack>
                 </DialogContent>
                 <DialogActions>
-                    {/* <Button
-                        variant='contained'
-                        onClick={handleOpen}
-                        sx={{
-                            ":hover": {
-                                bgcolor: "#F6EBE1",
-                                color: "#AB191F"
-                            },
-                            backgroundColor: "#AB191F",
-                            color: "#F6EBE1",
-                            m: 1
-                        }}
-                    >
-                        ADD TO FAV
-                    </Button> */}
-                    <Tooltip title="Add to FAV COOPS">
+
+                    {login == true 
+                        ? <Tooltip title="Add to FAV COOPS">
                         <IconButton size="large" onClick={e => {
                             setActive(!active)
                             //add onclick function for db, and to hide if property owner, or to replace with edit if property owner needs
@@ -254,6 +241,8 @@ const PropertyViewMore = ({ data, featured, favCoops }) => {
                             {active ? <FavoriteIcon sx={{ color: "#AB191F" }} /> : <FavoriteBorderIcon sx={{ color: "#AB191F" }} />}
                         </IconButton>
                     </Tooltip>
+                    :
+                    ''}
                 </DialogActions>
             </Dialog>
         </React.Fragment>
