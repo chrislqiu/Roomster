@@ -1,10 +1,16 @@
-import { InputBase, Slider, Checkbox, Grid, Card, Container, Box, Typography, CardContent, Input, Divider, TextField, Link, Button, FormControlLabel } from "@mui/material";
+import { Dialog, DialogContent, DialogActions, Tooltip, IconButton, Avatar, InputBase, Slider, Checkbox, Grid, Card, Container, Box, Typography, CardContent, Input, Divider, TextField, Link, Button, FormControlLabel } from "@mui/material";
 import Switch from '@mui/joy/Switch'
 import React from "react"
 import profilePic from "../images/profile-pic-no-shadow.png"
+import greenChicken from "../images/chickens/green.png"
+import redChicken from "../images/chickens/red.png"
+import orangeChicken from "../images/chickens/orange.png"
+import purpleChicken from "../images/chickens/purple.png"
+import yellowChicken from "../images/chickens/yellow.png"
+import blackChicken from "../images/chickens/black.png"
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMars } from '@fortawesome/free-solid-svg-icons'
-import { faEnvelope } from '@fortawesome/free-solid-svg-icons'
 
 const RenterPage = () => {
 
@@ -112,6 +118,19 @@ const RenterPage = () => {
     const [noPet, setNoPet] = React.useState(false);
     const [doesSmoke, setDoesSmoke] = React.useState(false);
     const [doesNotSmoke, setDoesNotSmoke] = React.useState(false);
+    const [open, setOpen] = React.useState(false)
+    const handleOpen = () => {
+        setOpen(true)
+    }
+    const handleClose = () => {
+        setOpen(false)
+    }
+
+    const setChicken = (chicken) => {
+        profilePic = chicken;
+        setOpen(false);
+    }
+
 
     return (
         
@@ -125,18 +144,13 @@ const RenterPage = () => {
                         {"USER INFORMATION"}
                     </Typography >
                     <Container style={styles.box}>
-                        <Box
-                            component="img"
-                            sx={{
-                                width: "25%",
-                                marginRight: "20px",
-                                "&:hover": {
-                                    border: "2px solid #AB191F",
-                                    boxShadow:"0px 0px 3px 3px rgba(0, 0, 0, .1)", 
-                                }
-                            }}
-                            src={profilePic}
-                            />
+                        <Box sx={{ flexGrow: 0, margin: "15px 50px 20px 20px"}}>
+                            <Tooltip title="Change Profile Picture" sx={{color: "#AB191F"}} onClick={handleOpen}>
+                                <IconButton sx={{ p: 0, }} >
+                                    <Avatar alt="chickenpfp" src={profilePic} style={{transform: `scale(1.90, 1.90)` }} />
+                                </IconButton>
+                            </Tooltip>
+                        </Box>
 
                         <Typography style={Object.assign(styles.name, styles.boxPadding, {marginTop: "20px"})}> 
                             {"John Doe"}
@@ -272,8 +286,72 @@ const RenterPage = () => {
                 
                 </CardContent>
             </Card>
+            
+            <Dialog
+                open={open}
+                onClose={handleClose}
+                sx={{
+                    "& .MuiDialog-container": {
+                        "& .MuiPaper-root": {
+                            width: "600px",
+                            height: "200px",
+                            backgroundColor: "#F6EBE1"
+                        },
+                    },
+                }}
+                
+            ><DialogContent>
+                <Typography style={{fontWeight: "600", fontSize: "15pt", color: "#AB191F", textAlign:"center", margin:"10px 0 -10px 0"}}> 
+                        {"CHOOSE YOUR CHICKEN"}
+                    </Typography >
+                <Container sx={{display:"inline-flex", marginTop:"50px"}}>
+                        <Tooltip onClick={() => setChicken(blackChicken)}>
+                            <IconButton sx={{ p: 0, marginRight:"50px"} } >
+                                    <Avatar alt="blackChicken" src={blackChicken} style={{transform: `scale(1.90, 1.90)` }} />
+                            </IconButton>
+                        </Tooltip>
+                        <Tooltip onClick={() => setChicken(greenChicken)}>
+                            <IconButton sx={{ p: 0, marginRight:"50px"}} >
+                                <Avatar alt="greenChicken" src={greenChicken} style={{transform: `scale(1.90, 1.90)` }} />
+                            </IconButton>
+                        </Tooltip>
+                        <Tooltip onClick={() => setChicken(orangeChicken)}>
+                            <IconButton sx={{ p: 0, marginRight:"50px"}} >
+                                <Avatar alt="orangeChicken" src={orangeChicken} style={{transform: `scale(1.90, 1.90)` }} />
+                            </IconButton>
+                        </Tooltip>
+                        <Tooltip onClick={() => setChicken(purpleChicken)}>
+                            <IconButton sx={{ p: 0, marginRight:"50px"}} >
+                                <Avatar alt="purpleChicken" src={purpleChicken} style={{transform: `scale(1.90, 1.90)` }} />
+                            </IconButton>
+                        </Tooltip>
+                        <Tooltip onClick={() => setChicken(redChicken)}>
+                            <IconButton sx={{ p: 0, marginRight:"50px"}} >
+                                <Avatar alt="redChicken" src={redChicken} style={{transform: `scale(1.90, 1.90)` }} />
+                            </IconButton>
+                        </Tooltip>
+                        <Tooltip onClick={() => setChicken(yellowChicken)}>
+                            <IconButton sx={{ p: 0}} >
+                                <Avatar alt="yellowChicken" src={yellowChicken} style={{transform: `scale(1.90, 1.90)` }} />
+                            </IconButton>
+                        </Tooltip>
+                        
+                        
+                        
+                        
+                        
+                </Container>
+                
+            </DialogContent>
+        <DialogActions>
+            
+        </DialogActions>
+        </Dialog>
         </Grid>
+        
+        
     )
+    
 }
 
 export default RenterPage;
