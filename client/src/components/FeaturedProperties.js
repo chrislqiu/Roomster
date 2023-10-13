@@ -30,7 +30,7 @@ const FeaturedProperties = ({ data, style, login }) => {
             </Box>
            
             <List component={Stack} direction="row" sx={{ overflow: 'auto' }} maxWidth='xl' spacing={-4}>
-                {data.map(featuredCards => {
+                {data.filter(property => property.featured == true).map(featuredCards => {
                     return <ListItem>
                         <PropertyViewMore data={featuredCards} featured={true} login={login} />
                     </ListItem>
@@ -38,7 +38,15 @@ const FeaturedProperties = ({ data, style, login }) => {
                 )
                 }
             </List>
-
+            {(data.filter(property => property.featured == true).length == 0)
+                && <Typography
+                    variant="h5"
+                    color="#AB191F"
+                    sx={{ m: 10, textAlign: 'center' }}
+                    fontWeight={500}
+                >
+                    No Featured Properties
+                </Typography>}
         </Box>
     )
 }
