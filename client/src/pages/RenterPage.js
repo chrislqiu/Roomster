@@ -372,33 +372,33 @@ const RenterPage = () => {
                         {"CHOOSE YOUR CHICKEN"}
                     </Typography >
                 <Container sx={{display:"inline-flex", marginTop:"50px"}}>
-                        <Tooltip onClick={() => setChicken(blackChicken)}>
-                            <IconButton sx={{ p: 0, marginRight:"50px"} } onClick={() => setProfileImg(blackChicken)}>
+                        <Tooltip onClick={() => {setChicken(blackChicken); setProfileImg(blackChicken)}}>
+                            <IconButton sx={{ p: 0, marginRight:"50px"} } >
                                     <Avatar alt="blackChicken" src={blackChicken} style={{transform: `scale(1.90, 1.90)` }} />
                             </IconButton>
                         </Tooltip>
-                        <Tooltip onClick={() => setChicken(greenChicken)}>
-                            <IconButton sx={{ p: 0, marginRight:"50px"}} onClick={() => setProfileImg(greenChicken)}>
+                        <Tooltip onClick={() => {setChicken(greenChicken); setProfileImg(greenChicken)}}>
+                            <IconButton sx={{ p: 0, marginRight:"50px"}} >
                                 <Avatar alt="greenChicken" src={greenChicken} style={{transform: `scale(1.90, 1.90)` }} />
                             </IconButton>
                         </Tooltip>
-                        <Tooltip onClick={() => setChicken(orangeChicken)}>
-                            <IconButton sx={{ p: 0, marginRight:"50px"}} onClick={() => setProfileImg(orangeChicken)}>
+                        <Tooltip onClick={() => {setChicken(orangeChicken); setProfileImg(orangeChicken)}}>
+                            <IconButton sx={{ p: 0, marginRight:"50px"}} >
                                 <Avatar alt="orangeChicken" src={orangeChicken} style={{transform: `scale(1.90, 1.90)` }} />
                             </IconButton>
                         </Tooltip>
-                        <Tooltip onClick={() => setChicken(purpleChicken)}>
-                            <IconButton sx={{ p: 0, marginRight:"50px"}} onClick={() => setProfileImg(purpleChicken)}>
+                        <Tooltip onClick={() => {setChicken(purpleChicken); setProfileImg(purpleChicken)}}>
+                            <IconButton sx={{ p: 0, marginRight:"50px"}} >
                                 <Avatar alt="purpleChicken" src={purpleChicken} style={{transform: `scale(1.90, 1.90)` }} />
                             </IconButton>
                         </Tooltip>
-                        <Tooltip onClick={() => setChicken(redChicken)}>
-                            <IconButton sx={{ p: 0, marginRight:"50px"}} onClick={() => setProfileImg(redChicken)}>
+                        <Tooltip onClick={() => {setChicken(redChicken); setProfileImg(redChicken)}}>
+                            <IconButton sx={{ p: 0, marginRight:"50px"}} >
                                 <Avatar alt="redChicken" src={redChicken} style={{transform: `scale(1.90, 1.90)` }} />
                             </IconButton>
                         </Tooltip>
-                        <Tooltip onClick={() => setChicken(yellowChicken)}>
-                            <IconButton sx={{ p: 0}} onClick={() => setProfileImg(yellowChicken)}>
+                        <Tooltip onClick={() => {setChicken(yellowChicken); setProfileImg(yellowChicken)}}>
+                            <IconButton sx={{ p: 0}} >
                                 <Avatar alt="yellowChicken" src={yellowChicken} style={{transform: `scale(1.90, 1.90)` }} />
                             </IconButton>
                         </Tooltip>
