@@ -223,7 +223,7 @@ const PropertyViewMore = ({ data, featured, favCoops, login }) => {
                             >
                                 Company Name {<br />}
                             </Typography>
-                            <Link href="#" underline="always" color="#AB191F">
+                            <Link href="https://riseonchauncey.com/" underline="always" color="#AB191F">
                                 {'Link'}
                             </Link>
                         </Box>
