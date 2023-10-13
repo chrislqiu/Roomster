@@ -74,7 +74,7 @@ const ManagerCreateAccountView = ({ }) => {
             return
         }
 
-        if (password.length < 9) {
+        if (password.length < 8) {
             setSignupStatus("Please make sure your password is at least 8 characters")
             return
         }

@@ -28,9 +28,13 @@ import ManagerCreateAccountView from './PropertyManagerCreateAccountView';
 
 
 const LoginView = ({ text}) => {
-    const [open, setOpen] = React.useState(true)
+    const [open, setOpen] = React.useState(false)
     const [rCreateOpen, setRCreateOpen] = React.useState(false)
     const [mCreateOpen, setMCreateOpen] = React.useState(false)
+    const [email, setEmail] = React.useState('')
+    const [password, setPassword] = React.useState('')
+    const [loginStatus, setLoginStatus] = React.useState(null)
+
     const handleOpen = () => {
         setOpen(true)
         //setMCreateOpen(false)
