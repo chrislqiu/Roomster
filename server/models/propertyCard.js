@@ -19,7 +19,11 @@ const propertyCard = new Schema({
         required: true
     },
     numBath: mongoose.Schema.Types.Mixed,
-    cost: mongoose.Schema.Types.Mixed
+    cost: mongoose.Schema.Types.Mixed,
+    featured: {
+        type: Boolean,
+        default: false
+    }
 });
 
 //looks for this collection in db (it's suppose to be singular and not "PropertyCards")
