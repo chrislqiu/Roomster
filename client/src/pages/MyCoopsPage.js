@@ -34,7 +34,7 @@ const MyCoopsPage = () => {
                     * Maps each Property Information object to its own "card"
                     */
                     propertyInfo.map(cards => {
-                        return <PropertyViewMore data={cards} />
+                        return <PropertyViewMore data={cards} myCoops={true}/>
                         }
                     )
                 }
