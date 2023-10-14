@@ -12,7 +12,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom"
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { Divider, Box } from "@mui/material";
 import theredthing from './images/theredthing.png'
-import logo from './images/logo.png'
+import logo from './images/logo2.png'
 import RoomsterAppBar from "./components/AppBar";
 import FavCoopsPage from "./pages/FavCoopsPage";
 import Settings from "./pages/Settings"
@@ -23,18 +23,13 @@ import ManagerCreateAccountView from "./components/PropertyManagerCreateAccountV
 
   const styles = {
     background: {
-      position: "absolute",
       margin: "0",
       padding:"0",
       backgroundColor: "#f5ebe0",
       zIndex: "-1",
-      width: "100vw"
-
     },
     logo: {
-      margin: "-30px",
-      width: '35%',
-      margin: "-30px",
+      marginTop: "-50px",
       width: '35%',
       zIndex: "0",
     },

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Box, Paper, List, ListItem } from '@mui/material';
+import { Box, Paper, List, ListItem, Container } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { Stack, Divider } from '@mui/material';
 import PropertyViewMore from './PropertyView';
@@ -13,23 +13,32 @@ const FeaturedProperties = ({ data, style, login }) => {
             padding: "0",
             marginBottom: "10px",
             width: '1100px',
+        },
+        box: {
+            backgroundColor: "#f5ebe0", 
+            boxShadow: "0px 0px 3px 2px rgba(0, 0, 0, .1)",
+            margin: "-30px 0 0 0",
+            padding: "0",
+            width: "1250px",
+            //borderRadius: "10px",
+            overflow: "hidden"
+            
         }
     }
     return (
-        <Box component={Paper} maxWidth='1000px' sx={{ backgroundColor: "#eddece" }} style={style}>
-            <Box>
+        <Container sx={{}} style={styles.box}>
+            <Container style={{}}>
                 <Typography
-                    variant="h3"
-                    color="#AB191F"
-                    sx={{ marginTop: 2, fontStyle: 'italic', textAlign:'center' }}
-                    fontWeight={600}
+d                    color="#AB191F"
+                    sx={{ marginTop: 1, textAlign: "center", fontWeight: "600", fontSize:"20pt"}}
                     >
-                    Featured Properties
+                    FEATURED PROPERTIES
                 </Typography>
-                <hr style={styles.divider}/>
-            </Box>
-           
-            <List component={Stack} direction="row" sx={{ overflow: 'auto' }} maxWidth='xl' spacing={-4}>
+            </Container>
+            
+            
+
+            <List component={Stack} direction="row" sx={{ overflow: 'auto', marginTop: -1}} maxWidth='xl' spacing={-4}>
                 {data.filter(property => property.featured == true).map(featuredCards => {
                     return <ListItem>
                         <PropertyViewMore data={featuredCards} featured={true} login={login} />
@@ -38,6 +47,7 @@ const FeaturedProperties = ({ data, style, login }) => {
                 )
                 }
             </List>
+            
             {(data.filter(property => property.featured == true).length == 0)
                 && <Typography
                     variant="h5"
@@ -47,7 +57,8 @@ const FeaturedProperties = ({ data, style, login }) => {
                 >
                     No Featured Properties
                 </Typography>}
-        </Box>
+            
+        </Container>
     )
 }
 export default FeaturedProperties;
