@@ -177,7 +177,8 @@ const RenterPage = () => {
         const dataToSend = {
             profilePic: profileImg,
             purdueEmail: email,
-            phone: phone
+            phone: phone,
+            looking: toggleOn
         }
         fetch('http://localhost:8000/sendRenterProfile', {
             method: 'POST',

@@ -10,7 +10,8 @@ const renterProfile = new Schema({
     studious: Number,
     cleanliness: Number,
     guestFreq: Number,
-    sleep: String
+    sleep: String,
+    looking: Boolean
 })
 
 const renterProfileInfo = mongoose.model('renterProfileInfo', renterProfile);
