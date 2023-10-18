@@ -39,7 +39,7 @@ const PropertyViewMore = ({ data, featured, favCoops, login }) => {
 
     //need user information for favCoops
     //if renter user and user.favCoops contains property then set favCoops to true
-    console.log(favCoops)
+    //console.log(favCoops)
     const [active, setActive]= React.useState(favCoops === true ? true : false)
 
     const styles = {
@@ -83,7 +83,7 @@ const PropertyViewMore = ({ data, featured, favCoops, login }) => {
                         />
                         <CardContent>
                         <div style={{ display: 'flex', alignItems: 'center', marginLeft: 0 }}>
-                          <Typography variant="h6" style={{margin: "-20px 0 0px 0"}}> Company Name </Typography>
+                          <Typography variant="h6" style={{margin: "-20px 0 0px 0"}}> {data.propertyName.split(":")[0]} </Typography>
                           {featured === true ? <StarIcon style={{margin: "-20px 0 0px 2.5"}} /> : ''}
                           {favCoops === true ? <FavoriteIcon style={{margin: "-20px 0 0px 2.5"}} sx={{color: "#AB191F", ":hover": {color: "#F6EBE1",},}}/> : ''}
                         </div>
