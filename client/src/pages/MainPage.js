@@ -1,8 +1,10 @@
 import PropertyViewMore from "../components/PropertyView";
 import FeaturedProperties from "../components/FeaturedProperties";
 import React from "react"
+import SearchBar from "../components/SearchBar";
 
 import { Container, Box } from "@mui/material";
+
 /*
  * Main Page View with the property cards
  */
@@ -11,6 +13,8 @@ const MainPage = ({login}) => {
      * propertyInfo, setPropertyInfo to hold the card information from the server
      */
     const [propertyInfo, setPropertyInfo] = React.useState([])
+    const [filteredPropertyInfo, setFilteredPropertyInfo] = React.useState([]);
+
     React.useEffect(() => {
         const getPropertyInfo = async () => {
             const res = await fetch('http://localhost:8000/cards/all-cards')
@@ -20,6 +24,14 @@ const MainPage = ({login}) => {
         }
         getPropertyInfo()
     }, [])
+
+    const [input, setInput] = React.useState('')
+    React.useEffect(() => {
+        const filteredPropertyInfo = propertyInfo.filter((property) => {
+          return property.propertyName.toLowerCase().includes(input.toLowerCase());
+        });
+        setFilteredPropertyInfo(filteredPropertyInfo);
+      }, [input, propertyInfo]);
     const styles = {
         feed: {
             display: "flex",
@@ -31,6 +43,9 @@ const MainPage = ({login}) => {
     }
     return (
         <Container sx={{ width: '100%' }}>
+
+            <SearchBar data={propertyInfo} setInput={setInput}/>
+            {console.log(input)}
             <Box sx={{ m: 4 }} style={styles.feed}>
                 <FeaturedProperties data={propertyInfo} style={styles.feed} login={login}/>
             </Box>
@@ -40,7 +55,8 @@ const MainPage = ({login}) => {
                    /*
                     * Maps each Property Information object to its own "card"
                     */
-                    propertyInfo.map(cards => {
+                    //propertyInfo.map(cards => {
+                    filteredPropertyInfo.map((cards) => {
                         return <PropertyViewMore data={cards} login={login}/>
                         }
                     )
