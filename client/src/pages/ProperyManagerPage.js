@@ -10,6 +10,7 @@ const PropertyManagerPage = () => {
     const [addr, setAddr] = useState('');
     const [officeNum, setOfficeNum] = useState('');
     const [saveStatus, setSaveStatus] = useState(null)
+    const [disableButton, setDisableButton] = useState(true)
 
     const handleSave = () => {
 
@@ -46,28 +47,28 @@ const PropertyManagerPage = () => {
         });
     };
     return (
-        <Container sx={{ width: '600' }}>
             <Card
                 variant='contained'
                 sx={{
-                   backgroundColor: "#f5ebe0",
+                    backgroundColor: "#f5ebe0",
                     color: "#AB191F",
                     width: "800px",
                     height: "385px",
                     boxShadow: "0px 0px 3px 3px rgba(0, 0, 0, .1)",
                     marginBottom: "225px",
                     marginTop: "50px",
-                    marginLeft: "150px"
+                    marginLeft: "300px"
                     }}>
                 <CardContent>
-                <Box width='100%' marginLeft={5}>
+                <Box width='45%' marginLeft={5}>
                         <Typography 
                         sx={{
                             fontWeight: 600,
                             fontSize: 24,
                             marginTop: 2,
                             variant: "h1",
-                            color: "black"
+                            color: "black",
+                            width: "310px",
                         }}>
                             {"John Doe"}
                         </Typography >
@@ -75,15 +76,16 @@ const PropertyManagerPage = () => {
                         sx={{
                             fontWeight: 600,
                             fontSize: 15,
-                            marginTop: 1
+                            marginTop: 1,
+                            width: "300px",
                         }}>
                             {"Contact Info:"}
                         </Typography>
                         <Box sx={{
                             fontWeight: 600,
                             fontSize: 12,
-                            
-                            fontFamily: 'Raleway'
+                            width: "300px",
+                            fontFamily: 'Raleway',
                         }}>
                             <Input 
                             type="text"
@@ -91,14 +93,15 @@ const PropertyManagerPage = () => {
                             placeholder="Phone Number" style={{width:200}}
                             value={phoneNumber}
                             onChange={(e) => setPhoneNumber(e.target.value)}
-                            
+                            disabled={disableButton}
                             />
                         </Box>
                         <Box sx={{
                             fontWeight: 600,
                             fontSize: 12,
                             marginTop: 2,
-                            fontFamily: 'Raleway'
+                            fontFamily: 'Raleway',
+                            width: "300px",
                         }}>
                             <Input 
                             type="text"
@@ -106,16 +109,15 @@ const PropertyManagerPage = () => {
                             placeholder="Email Address" style={{width:200}} 
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            
+                            disabled={disableButton}
                             />
-                            
-    
                         </Box>
                         <Typography
                         sx={{
                             fontWeight: 600,
                             fontSize: 15,
-                            marginTop: 1
+                            marginTop: 1,
+                            width:"300px",
                         }}>
                             {"Bio:"}
                         </Typography>
@@ -123,7 +125,8 @@ const PropertyManagerPage = () => {
                             fontWeight: 600,
                             fontSize: 12,
                             marginTop: 1,
-                            fontFamily: 'Raleway'
+                            fontFamily: 'Raleway',
+                            width:"300px",
                         }}>
                             <TextField 
                             type="text"
@@ -131,11 +134,12 @@ const PropertyManagerPage = () => {
                             value={bio}
                             onChange={(e) => setBio(e.target.value)}
                             multiline rows={4} maxRows={4} style={{width:300}}
+                            disabled={disableButton}
                             />
                         </Box>
                 </Box>
             
-                <Box width='100%' marginLeft={57} marginY={-39}>
+                <Box width='40%' marginLeft={57} marginY={-39}>
                     <Typography 
                         sx={{
                             fontWeight: 600,
@@ -165,6 +169,7 @@ const PropertyManagerPage = () => {
                             placeholder="" style={{width:200}} 
                             value={addr}
                             onChange={(e) => setAddr(e.target.value)}
+                            disabled={disableButton}
                             />
                         </Box>
                         <Typography
@@ -187,12 +192,13 @@ const PropertyManagerPage = () => {
                             placeholder="" style={{width:200}} 
                             value={officeNum}
                             onChange={(e) => setOfficeNum(e.target.value)}
+                            disabled={disableButton}
                             />
                         </Box>
                         <Link href="##" underline="always" color="#AB191F" fontWeight={600} >
                                 {'Leasing Site'}
                         </Link>
-                        <Box marginLeft={28} marginY={12}>
+                        <Box marginLeft={28} marginY={12} width={"200px"}>
                         <Button 
                             variant='contained'
                             sx={{
@@ -204,20 +210,35 @@ const PropertyManagerPage = () => {
                                 color: "#F6EBE1",
                                 m: 1
                             }}
-                            onClick={handleSave}
+                            onClick={() => {handleSave(); setDisableButton(true)}}
                             >
                                 Save
                         </Button>
                         </Box>
+                        <Box marginLeft={16} marginY={-18.5} width={"90px"} >
+                        <Button 
+                            variant='contained'
+                            sx={{
+                                ":hover":{
+                                    bgcolor: "#F6EBE1",
+                                    color: "#AB191F"
+                                },
+                                backgroundColor: "#AB191F",
+                                color: "#F6EBE1",
+                                m: 1
+                            }}
+                            onClick={() => setDisableButton(!disableButton)}
+                            >
+                                {disableButton ? 'Edit' : 'Cancel'}
+                        </Button>
+                        </Box>
                 </Box>
-                <Divider orientation="vertical" width={3} sx={{ borderBottomWidth: 3, color: "#AB191F", backgroundColor: "#AB191F", marginX: 48, marginY:-52, height: 270}} />
+                <Divider orientation="vertical" width={3} sx={{ borderBottomWidth: 3, color: "#AB191F", backgroundColor: "#AB191F", marginX: 48, marginY:-40, height: 270}} />
                 </CardContent>
                 {saveStatus && (
                 <p style={{color: '#AB191F', marginLeft: "290px", marginTop: "328px"}}>{saveStatus}</p>
             )}
             </Card>
-            
-        </Container>
     )
 }
 
