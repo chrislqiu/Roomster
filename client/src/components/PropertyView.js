@@ -37,9 +37,6 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
     const handleClose = () => {
         setOpen(false)
     }
-
-    
-
     //need user information for favCoops
     //if renter user and user.favCoops contains property then set favCoops to true
     //console.log(favCoops)

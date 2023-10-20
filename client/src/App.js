@@ -20,6 +20,7 @@ import VerifyPage from "./pages/VerifyPage"
 import Popup from "./components/Popup";
 import RenterCreateAccountView from "./components/RenterCreateAccounView";
 import ManagerCreateAccountView from "./components/PropertyManagerCreateAccountView";
+import CoopmatesPage from "./pages/CoopmatesPage";
 
   const styles = {
     background: {
@@ -121,8 +122,6 @@ class App extends React.Component {
   // };
   
   
-  
-  
 
   render() {
     const { isAuthenticated } = this.state;
@@ -160,6 +159,7 @@ class App extends React.Component {
             <Route path="/MCreate" element={<ManagerCreateAccountView/>}/>
             <Route path="/Settings" element={<Settings />} />
             <Route path="/VerifyPage" element={<VerifyPage />} />
+            <Route path="/Coopmates" element={<CoopmatesPage />} />
           </Routes>
         </BrowserRouter>
       </body>  
