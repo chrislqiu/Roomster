@@ -115,6 +115,7 @@ router.post("/signup", async (req, res) => {
 
 });
 
+
 router.post("/login", async (req, res) => {
   const user = await User.findOne({ username: req.body.username });
 
@@ -249,6 +250,7 @@ router.get("/verify/:token", async (req, res) => {
     return res.status(500).send("Email verification failed");
   }
 });
+
 
 
 //only for testing purposes
