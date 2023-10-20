@@ -29,6 +29,10 @@ const authorization = (req, res, next) => {
       return res.sendStatus(403); // Forbidden
     }
 
+    if (req.body.username && req.body.username !== user.username) {
+      return res.status(401).send("Unauthorized");
+    }
+
     req.user = user;
     next();
   });
@@ -138,7 +142,7 @@ router.post("/login", async (req, res) => {
   }
 });
 
-router.post("/delete", async (req, res) => {
+router.post("/delete", authorization, async (req, res) => {
   const user = await User.findOne({ username: req.body.username });
 
   if (!user) {
