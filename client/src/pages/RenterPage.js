@@ -16,6 +16,9 @@ import { purple } from "@mui/material/colors";
 const RenterPage = () => {
 
     const styles = {
+        background: {
+            backgroundColor: "#f5ebe0",
+        },
         card: {
             backgroundColor: "#f5ebe0",
             color: "#AB191F",
@@ -86,6 +89,7 @@ const RenterPage = () => {
         }
     }
     const inputBaseSX = {
+        color: "black",
         margin: "0 0 10px 25px", 
         width:"300px", 
         height: "35px",
@@ -247,10 +251,20 @@ const RenterPage = () => {
                     <Typography style={styles.subheader}> 
                         {"Contact info"}
                     </Typography >
-                    <InputBase placeholder="Purdue Email" id="email-textfield" sx={inputBaseSX}onChange={(e) => setEmail(e.target.value)}/>
-                    <InputBase placeholder="Phone number" id="number-textfield" sx={inputBaseSX}onChange={(e) => setPhone(e.target.value)}/>
-                    <Button variant="contained" style={{backgroundColor: "#AB191F", float: "right", margin: "0 35px 0 0"}} onClick={handleSaveLeft}>SAVE</Button>
+                    <TextField 
+                        disabled
+                        placeholder="Purdue Email" id="email-textfield"
+                        sx={{"& fieldset": { border: 'none' }}}
+                        onChange={(e) => setEmail(e.target.value)}/>
+                    <TextField 
+                        placeholder="Phone number" id="number-textfield" 
+                        InputProps={{ readOnly: true, }}
+                        sx={Object.assign(inputBaseSX, {"&fieldset":{border: 'none'}})}
+                        onChange={(e) => setPhone(e.target.value)}/>
+                    <Button variant="contained" style={{backgroundColor: "#AB191F", float: "right", margin: "0 35px 0 0"}} onClick={handleSaveLeft}>EDIT</Button>
                 </Box>
+
+
                 <Box width='100%' style={styles.column2}>
                     <Container style={styles.box}>
                         <Typography style={styles.header}> 
