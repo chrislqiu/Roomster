@@ -23,6 +23,8 @@ import ManagerCreateAccountView from "./components/PropertyManagerCreateAccountV
 
   const styles = {
     background: {
+      position: "absolute",
+      width: "100%",
       margin: "0",
       padding:"0",
       backgroundColor: "#f5ebe0",
