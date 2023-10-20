@@ -42,7 +42,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
 
     //need user information for favCoops
     //if renter user and user.favCoops contains property then set favCoops to true
-    console.log(favCoops)
+    //console.log(favCoops)
     const [active, setActive]= React.useState(favCoops === true ? true : false)
     const [hovered, setHovered] = React.useState(false);
     const handleHovered = () => {
@@ -97,10 +97,15 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
                         />
                         <CardContent>
                         <div style={{ display: 'flex', alignItems: 'center', marginLeft: 0 }}>
-                          <Typography variant="h6" style={{fontSize: "13pt", margin: "-20px 0 0px 0"}}> Property Name </Typography>
+
+                          <Typography variant="h6" style={{margin: "-20px 0 0px 0"}}> {data.propertyName.split(":")[0]} </Typography>
+                         {/* {featured === true ? <StarIcon style={{margin: "-20px 0 0px 2.5"}} /> : ''} */}
+                          {/* {favCoops === true ? <FavoriteIcon style={{margin: "-20px 0 0px 2.5"}} sx={{color: "#AB191F", ":hover": {color: "#F6EBE1",},}}/> : ''} */}
+                          {/* <Typography variant="h6" style={{fontSize: "13pt", margin: "-20px 0 0px 0"}}> Property Name </Typography> */}
                           {featured === true ? <StarIcon style={{margin: "-22px 0 0 5px", fontSize:"15pt"}} /> : ''}
                           {favCoops === true ? <FavoriteIcon style={{margin: "-22px 0 0 5px", fontSize: "15pt"}} sx={{color: "#AB191F", ":hover": {color: "#F6EBE1",},}}/> : ''}
                           {myCoops === true ? <BookmarkIcon style={{margin: "-22px 0 0 5px", fontSize: "15pt"}} sx={{color: "#AB191F", ":hover": {color: "#F6EBE1",},}}/> : ''}
+
                         </div>
                           <Typography variant="body2" style={{margin: "0 0 5px 0"}}>{data.addr}</Typography>
                           <Typography variant="body2">{data.numBed} bedroom </Typography>

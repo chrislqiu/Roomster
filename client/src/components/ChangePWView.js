@@ -25,6 +25,14 @@ const ChangePasswordView = ({ text }) => {
     };
 
     const handleChangePassword = async () => {
+        if (newPassword.length < 8) {
+            setPasswordChangeStatus({
+                message: 'Please make sure your password is at least 8 characters',
+                color: '#AB191F',
+            });
+            return;
+        }
+
         if (newPassword !== confirmPassword) {
             setPasswordChangeStatus({
                 message: 'New password and confirm password do not match',
