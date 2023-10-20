@@ -10,7 +10,6 @@ const PropertyManagerPage = () => {
     const [bio, setBio] = useState('');
     const [addr, setAddr] = useState('');
     const [officeNum, setOfficeNum] = useState('');
-    const [saveStatus, setSaveStatus] = useState(null)
     const [disableButton, setDisableButton] = useState(true)
 
     const inputBaseSX = {
@@ -26,17 +25,22 @@ const PropertyManagerPage = () => {
         }
     }
 
+    const customToastStyles = {
+        color: 'white', // Set the desired text color
+      };
+
     const handleSave = () => {
 
         const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9]+\.[a-zA-Z]+$/;
-
-        if (!emailRegex.test(email)) {
-            setSaveStatus("Please enter a valid email address");
-            toast.error("Please enter a valid email address")
+        
+        if (phoneNumber === '' || email === '' || addr === '' || officeNum === '') {
+            toast.error("Please fill in the necessary fields!", {style: customToastStyles})
+            return;
+        } else if (!emailRegex.test(email)) {
+            toast.error("Please enter a valid email address", {style: customToastStyles})
             return;
         } else {
-            setSaveStatus("Save Success!")
-            toast.success("Save Success!")
+            toast.success("Save Success!", {style: customToastStyles})
         }
         
         const dataToSend ={
@@ -57,11 +61,9 @@ const PropertyManagerPage = () => {
         .then(response => response.json())
         .then(data => {
             console.log('DATA SAVEDDDD: ', data.message);
-            toast.success('Save Success!');
         })
         .catch(error => {
             console.error('ERRORRR: ', error);
-            toast.error('Error: Save Failed');
         });
     };
     return (
