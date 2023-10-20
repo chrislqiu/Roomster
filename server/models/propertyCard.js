@@ -1,28 +1,46 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const Company = require('./company');
 
 const propertyCard = new Schema({
-    image: {
-        type: String,
-        required: true
+    propertyInfo: {
+        image: {
+            type: String,
+            required: true
+        },
+        propertyName: {
+            type: String,
+            required: true
+        },
+        addr: {
+            type: String,
+            required: true
+        },
+        numBed: {
+            type: Number,
+            required: true
+        },
+        numBath: Schema.Types.Mixed,
+        cost: Schema.Types.Mixed,
+        featured: {
+            type: Boolean,
+            default: false
+        },
+        saves: {
+            type: Number,
+            default: 0
+        },
+        amenities: {
+            type: [String],
+            required: true
+        },
+        sqft: Schema.Types.Mixed,
+        distance: Schema.Types.Mixed
     },
-    propertyName: {
-        type: String,
+    companyInfo: { //TODO: fix obj ref
+        type: Schema.Types.ObjectId,
+        ref: 'Company.companyInfo',
         required: true
-    },
-    addr: {
-        type: String,
-        required: true
-    },
-    numBed: {
-        type: Number,
-        required: true
-    },
-    numBath: mongoose.Schema.Types.Mixed,
-    cost: mongoose.Schema.Types.Mixed,
-    featured: {
-        type: Boolean,
-        default: false
     }
 });
 

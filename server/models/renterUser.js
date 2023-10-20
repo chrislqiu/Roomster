@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
-const propertyCard = require('./propertyCard');
 const Schema = mongoose.Schema;
+const Property = require('./propertyCard');
 
 const renterUser = new Schema({
     username: {
@@ -15,7 +15,11 @@ const renterUser = new Schema({
         type: Boolean,
         default: false
     },
-    userInformation: {
+    findingCoopmates: {
+        type: Boolean,
+        default: false
+    },
+    userInfo: {
         name: {
             type: String,
             required: true
@@ -29,66 +33,70 @@ const renterUser = new Schema({
             enum: ['Male', 'Female', 'Intersex', 'Non-Binary', 'Agender', 'Genderfluid'],
             required: false
         },
-        contactInfo: {
-            email: {
-                type: String,
-                match: ['^[a-zA-Z]\w{0,11}@purdue\.edu$', 'invalid email'],
+        email: {
+            type: String,
+            required: true
+        },
+        phone: {
+            type: String,
+            required: true
+        },
+        bio: {
+            type: String,
+            default: "Hi! I'm a property manager here!"
+        },
+        pfp: {
+            type: String,
+            default: "og pfp"
+        },
+        livingPreferences: {
+            pets: {
+                type: Boolean,
                 required: true
             },
-            phone: {
-                type: String,
-                match: ['^(\+\d{1,2}\s?)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$', 'invalid phone number'],
-                required: false
-            }
-        }
-    },
-    findingCoopmates: {
-        type: Boolean,
-        default: false
-    },
-    livingPreferences: {
-        pets: {
-            type: Boolean,
-            required: true
-        },
-        smoke: {
-            type: Boolean,
-            required: true
-        },
-        studious: {
-            type: Number,
-            min: 0,
-            max: 5
-        },
-        cleanliness: {
-            type: Number,
-            min: 0,
-            max: 5
-        },
-        weeklyVisitors: {
-            type: Number,
-            min: 0,
-            max: 5
-        },
-        sleepSchedule: {
-            asleep: {
-                type: Number,
-                min: 0,
-                max: 23
+            smoke: {
+                type: Boolean,
+                required: true
             },
-            awake: {
+            studious: {
                 type: Number,
                 min: 0,
-                max: 23
+                max: 5
+            },
+            cleanliness: {
+                type: Number,
+                min: 0,
+                max: 5
+            },
+            guestFreq: {
+                type: Number,
+                min: 0,
+                max: 5
+            },
+            sleepSchedule: {
+                asleep: {
+                    type: Number,
+                    min: 0,
+                    max: 23
+                },
+                awake: {
+                    type: Number,
+                    min: 0,
+                    max: 23
+                }
             }
+        },
+        favCoops: {
+            type: [Property.schema],
+            default: {}
         }
     },
-    favCoops: {
-        type: [propertyCard.schema],
-        required: false
+    coopmates: { //TODO: fix obj ref
+        type: Schema.Types.ObjectId,
+        ref: 'renterUser.userInfo',
+        default: {}
     }
 });
 
-//looks for this collection in db (it's suppose to be singular and not "PropertyCards")
 const RUser = mongoose.model('renterusers', renterUser);
 module.exports = RUser;
