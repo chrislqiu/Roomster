@@ -12,6 +12,9 @@ import CloseIcon from '@mui/icons-material/Close';
 import RenterCreateAccountView from './RenterCreateAccounView';
 import RenterCreateAccountPage from '../pages/RenterCreateAccountPage';
 import ManagerCreateAccountView from './PropertyManagerCreateAccountView';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 
 
@@ -39,11 +42,14 @@ const LoginView = ({ text }) => {
 
     const handleResetPasswordOpen = () => {
         setResetPasswordOpen(true);
+        handleClose();
+
     };
 
     const handleResetPasswordClose = () => {
         setResetPasswordOpen(false);
         setResetPasswordUsername('');
+        setOpen(true);
     };
 
 
@@ -94,12 +100,26 @@ const LoginView = ({ text }) => {
     }
 
     const handleResetPassword = () => {
-        setResetPasswordOpen(true);
+        toast.success('Reset email sent', {
+            position: toast.POSITION.TOP_CENTER,
+            autoClose: 3000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: false,
+            style: {
+                background: "#F6EBE1", 
+              },
+        });
+        handleResetPasswordClose();
         handleClose();
     };
 
+
+
     return (
         <React.Fragment>
+            <ToastContainer />
             <Button
                 variant='contained'
                 onClick={handleOpen}
@@ -238,7 +258,7 @@ const LoginView = ({ text }) => {
                             </Button>
                             <Typography
                                 sx={{ margin: 1.5, marginLeft: "auto", marginTop: "15px", color: "#AB191F", cursor: "pointer" }}
-                                onClick={handleResetPassword}
+                                onClick={handleResetPasswordOpen}
                             >
                                 Reset Password
                             </Typography>
