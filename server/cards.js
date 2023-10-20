@@ -56,7 +56,7 @@ router.get('/add-card', (req, res) => {
 
     newCompanyInfo.save();
     newCompany.save();
-    newPropertyInfo.save;
+    newPropertyInfo.save();
     newProperty.save()
     .then((result) => {
         res.send(result);
