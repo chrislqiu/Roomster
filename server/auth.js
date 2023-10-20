@@ -1,7 +1,7 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const User = require('./models/user.js');
+const User = require('./models/user.js'); //TODO: remove user
 const cookieParser = require("cookie-parser");
 const sendVerificationEmail = require("./emailVerify.js");
 const cors = require('cors');
@@ -44,7 +44,7 @@ router.get("/secret", authorization, (req, res) => {
 });
 
 
-router.get("/users", (req, res) => {
+router.get("/users", (req, res) => { //TODO: replace with renter or manager
   User.find()
     .then((result) => {
       res.send(result);
@@ -60,7 +60,7 @@ const isEmailValid = (email) => {
 };
 
 
-router.post("/signup", async (req, res) => {
+router.post("/signup", async (req, res) => { //TODO: create one for renter and one for manager
   const existingUser = await User.findOne({ username: req.body.username });
 
   // if (!isEmailValid(req.body.username)) {
@@ -111,7 +111,7 @@ router.post("/signup", async (req, res) => {
 
 });
 
-router.post("/login", async (req, res) => {
+router.post("/login", async (req, res) => { //TODO: replace User
   const user = await User.findOne({ username: req.body.username });
 
   if (!user) {
@@ -138,7 +138,7 @@ router.post("/login", async (req, res) => {
   }
 });
 
-router.post("/delete", async (req, res) => {
+router.post("/delete", async (req, res) => { //TODO: replace User
   const user = await User.findOne({ username: req.body.username });
 
   if (!user) {
@@ -168,7 +168,7 @@ router.get("/logout", authorization, (req, res) => {
     .json({ message: "Logged out" });
 });
 
-router.post("/change-password", authorization, async (req, res) => {
+router.post("/change-password", authorization, async (req, res) => { //TODO: replace User
   const user = await User.findOne({ username: req.user.username });
 
   if (!user) {
@@ -202,7 +202,7 @@ router.post("/change-password", authorization, async (req, res) => {
   }
 });
 
-router.get("/check-verify", authorization, async (req, res) => {
+router.get("/check-verify", authorization, async (req, res) => { //TODO: replace User
   try {
     const user = await User.findOne({ username: req.user.username });
 
@@ -228,7 +228,7 @@ router.get("/verify/:token", async (req, res) => {
     const decoded = jwt.verify(token, secretKey);
     console.log(decoded.username);
 
-    const updatedUser = await User.findOneAndUpdate(
+    const updatedUser = await User.findOneAndUpdate( //TODO: replace User
       { username: decoded.username },
       { isVerified: true },
       { new: true }
@@ -248,7 +248,7 @@ router.get("/verify/:token", async (req, res) => {
 
 
 //only for testing purposes
-router.get("/clearUsers", async (req, res) => {
+router.get("/clearUsers", async (req, res) => { //TODO: replace User
   try {
     await User.deleteMany({});
     res.send("All users deleted");

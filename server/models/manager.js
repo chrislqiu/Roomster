@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const Company = require('./company');
 
-const propertyManagerUser = new Schema({
+const manager = new Schema({
     username: {
         type: String,
         required: true
@@ -37,5 +37,5 @@ const propertyManagerUser = new Schema({
     }
 });
 
-const PMUser = mongoose.model('propertymanagerusers', propertyManagerUser);
-module.exports = PMUser;
+const Manager = mongoose.model('managers', manager);
+module.exports = Manager;

@@ -3,16 +3,16 @@ const Schema = mongoose.Schema;
 const PropertyInfo = require('./propertyInfo');
 const CompanyInfo = require('./companyInfo');
 
-const company = new Schema({
+const property = new Schema({
+    propertyInfo: {
+        type: PropertyInfo.schema,
+        require: true
+    },
     companyInfo: {
         type: CompanyInfo.schema,
         required: true
-    },
-    myCoops: {
-        type: [PropertyInfo.schema],
-        required: false
     }
 });
 
-const Company = mongoose.model('companies', company);
-module.exports = Company;
+const Property = mongoose.model('properties', property);
+module.exports = Property;
