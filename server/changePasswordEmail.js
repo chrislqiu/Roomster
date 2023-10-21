@@ -9,13 +9,12 @@ const transporter = nodemailer.createTransport({
     }
 });
 
-const sendPasswordEmail = (userEmail, verificationToken) => {
+const changePasswordEmail = (userEmail, verificationToken) => {
     const mailDetails = {
         from: 'roomster.auth@gmail.com',
         to: userEmail,
-        subject: 'Verify your Roomster Account',
-        html: '<p>Change password</p>'
-        // html: '<p>Thank you for choosing Roomster!<br>To verify your account, please click "Verify Account" below. This link will expire in 10 minutes.</p><a href="http://localhost:8000/auth/verify/' + verificationToken + '">Verify Account</a>'
+        subject: 'Reset your Roomster Account Password',
+        html: '<p>Please click the link below to reset your password. If you did not request to change your password, do not click the link. This link will expire in 10 minutes.</p><a href="http://localhost:8000/auth/change-password-email/' + verificationToken + '">Reset Password</a>'
     };
 
     transporter.sendMail(mailDetails, function(err, data) {
@@ -27,7 +26,7 @@ const sendPasswordEmail = (userEmail, verificationToken) => {
     });
 };
 
-module.exports = sendPasswordEmail;
+module.exports = changePasswordEmail;
 
 
  

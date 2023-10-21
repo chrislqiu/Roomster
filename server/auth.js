@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 const User = require('./models/user.js');
 const cookieParser = require("cookie-parser");
 const sendVerificationEmail = require("./emailVerify.js");
+const changePasswordEmail = require("./changePasswordEmail.js")
 const cors = require('cors');
 
 const router = express.Router();
@@ -222,6 +223,25 @@ router.get("/check-verify", authorization, async (req, res) => {
     console.error(err);
     return res.status(500).send("Error checking user verification");
   }
+});
+
+router.post("/change-password-email", async (req, res) => {
+  const user = await User.findOne({ username: req.body.username });
+
+  if (!user) {
+    return res.status(400).send("User does not exist");
+  }
+
+  const verificationToken = jwt.sign(
+    {
+      username: req.body.username,
+    }, secretKey, { expiresIn: "10m" }
+  );
+
+  changePasswordEmail(req.body.username, verificationToken);
+
+  return res.status(200).send("Email sent");
+
 });
 
 

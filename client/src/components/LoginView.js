@@ -99,20 +99,54 @@ const LoginView = ({ text }) => {
         }
     }
 
-    const handleResetPassword = () => {
-        toast.success('Reset email sent', {
-            position: toast.POSITION.TOP_CENTER,
-            autoClose: 3000,
-            hideProgressBar: true,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: false,
-            style: {
-                background: "#F6EBE1", 
-              },
-        });
-        handleResetPasswordClose();
-        handleClose();
+    const handleResetPassword = async () => {
+        try {
+            const response = await fetch('http://localhost:8000/auth/change-password-email', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                // credentials: 'include',
+                body: JSON.stringify({ username: resetPasswordUsername }),
+            });
+
+            console.log(response)
+
+            if (response.ok) {
+                toast.success('Reset email sent', {
+                    position: toast.POSITION.TOP_CENTER,
+                    autoClose: 3000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: false,
+                    style: {
+                        background: "#F6EBE1", 
+                      },
+                });
+                handleResetPasswordClose();
+                handleClose();
+            } else {
+                toast.error('User does not exist', {
+                    position: toast.POSITION.TOP_CENTER,
+                    autoClose: 3000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: false,
+                    style: {
+                        background: "#F6EBE1", 
+                      },
+                });
+
+            }
+        } catch (error) {
+            setLoginStatus({
+                message: 'Error logging in',
+                color: '#AB191F',
+            });
+        }
+        
     };
 
 
