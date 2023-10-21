@@ -1,13 +1,13 @@
-import { Dialog, DialogContent, DialogActions, Tooltip, IconButton, Avatar, InputBase, Slider, Checkbox, Grid, Card, Container, Box, Typography, CardContent, Input, Divider, TextField, Link, Button, FormControlLabel } from "@mui/material";
+import { Dialog, DialogContent, DialogActions, Tooltip, IconButton, Avatar, InputBase, Slider, InputLabel, Select, MenuItem, Grid, Card, Container, Box, Typography, CardContent, Radio, Button, TextField, RadioGroup, FormControl, FormControlLabel } from "@mui/material";
 import Switch from '@mui/joy/Switch'
 import React from "react"
 import profilePic from "../images/profile-pic-no-shadow.png"
-import greenChicken from "../images/chickens/green.png"
-import redChicken from "../images/chickens/red.png"
-import orangeChicken from "../images/chickens/orange.png"
-import purpleChicken from "../images/chickens/purple.png"
-import yellowChicken from "../images/chickens/yellow.png"
-import blackChicken from "../images/chickens/black.png"
+import horse from "../images/chickens/horse.png"
+import duck from "../images/chickens/duck.png"
+import goose from "../images/chickens/goose.png"
+import cow from "../images/chickens/cow.png"
+import chicken from "../images/chickens/chicken.png"
+import sheep from "../images/chickens/sheep.png"
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMars } from '@fortawesome/free-solid-svg-icons'
@@ -112,7 +112,27 @@ const RenterPage = () => {
         "& input::placeholder": {
             fontSize: "11pt"
         }
-        
+    }
+    const radioSX = {
+        color: "#AB191F",
+        '&.Mui-checked': {
+        color: "#AB191F",
+        },
+    }
+    const selectSX = {
+        width: 90, height: 30, fontSize:"11pt", 
+        '.MuiOutlinedInput-notchedOutline': {
+            border:"2px solid #AB191F"
+        },
+        '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+            border:"2px solid #AB191F"
+        },
+        '&:hover .MuiOutlinedInput-notchedOutline': {
+            border:"2px solid #AB191F"
+        },
+        '.MuiSvgIcon-root ': {
+        fill: "#AB191F",
+        }
     }
     const [toggleOn, setToggleOn] = React.useState(false);
     const [hasPet, setHasPet] = React.useState(false);
@@ -128,7 +148,14 @@ const RenterPage = () => {
     const [timeStart, setTimeStart] = React.useState('')
     const [timeEnd, setTimeEnd] = React.useState('')
     const [disableButton, setDisableButton] = React.useState(true);
-
+    const [sleepFrom, setSleepFrom] = React.useState('');
+    const [sleepTo, setSleepTo] = React.useState('');
+    const handleSleepFrom = (event) => {
+      setSleepFrom(event.target.value);
+    };
+    const handleSleepTo = (event) => {
+        setSleepTo(event.target.value);
+      };
     const handleSaveRight = () => {
         const emailRegex = /^[a-zA-Z0-9._-]+@purdue\.edu$/;
         if (!emailRegex.test(email)) {
@@ -286,58 +313,20 @@ const RenterPage = () => {
                             <Typography style={styles.livingHabit}>{"Sleep schedule"}</Typography>
                         </Container>
                         <Container style={{float: "right", width: "45%"}}>
-                            <Container style={{display:"inline-flex", justifyContent:"center"}}>
-                                <FormControlLabel label="Yes" control={
-                                    <Checkbox style={{}}
-                                    checked={hasPet}
-                                    onChange={() => setHasPet(!hasPet)}
-                                    disabled={noPet === true ? true : false}
-                                    inputProps={{ 'aria-label': 'controlled' }}
-                                    sx={{color:"#AB191F",
-                                        '&.Mui-checked': {
-                                            color: "#AB191F",
-                                        },}}
-                                    />}
-                                />
-                                <FormControlLabel label="No" control={
-                                    <Checkbox style={{}}
-                                    checked={noPet}
-                                    disabled={hasPet === true ? true : false}
-                                    onChange={() => setNoPet(!noPet)}
-                                    inputProps={{ 'aria-label': 'controlled' }}
-                                    sx={{color:"#AB191F",
-                                        '&.Mui-checked': {
-                                            color: "#AB191F",
-                                        },}}
-                                    />}
-                                />
-                            </Container>
-                            <Container style={{display:"inline-flex", justifyContent:"center", marginTop:"-8px"}}>
-                                <FormControlLabel label="Yes" control={
-                                    <Checkbox style={{}}
-                                    checked={doesSmoke}
-                                    disabled={doesNotSmoke === true ? true : false}
-                                    onChange={() => setDoesSmoke(!doesSmoke)}
-                                    inputProps={{ 'aria-label': 'controlled' }}
-                                    sx={{color:"#AB191F",
-                                        '&.Mui-checked': {
-                                            color: "#AB191F",
-                                        },}}
-                                    />}
-                                />
-                                <FormControlLabel label="No" control={
-                                    <Checkbox style={{}}
-                                    checked={doesNotSmoke}
-                                    disabled={doesSmoke === true ? true : false}
-                                    onChange={() => setDoesNotSmoke(!doesNotSmoke)}
-                                    inputProps={{ 'aria-label': 'controlled' }}
-                                    sx={{color:"#AB191F",
-                                        '&.Mui-checked': {
-                                            color: "#AB191F",
-                                        },}}
-                                    />}
-                                />
-                            </Container>
+                            <FormControl style={{marginLeft:"-25px", marginBottom:"-7px"}} disabled={disableButton}>
+                                <RadioGroup row name="pets" style={{width: "150px", display: "flex", justifyContent:"center"}} > 
+                                    <FormControlLabel value="yes" control={<Radio sx={radioSX}/>} label="Yes" />
+                                    <FormControlLabel value="no" control={<Radio sx={radioSX}/>} label="No" 
+                                    />
+                                </RadioGroup>
+                            </FormControl>
+                            <FormControl style={{marginLeft:"-25px", marginBottom: "-7px"}} disabled={disableButton}>
+                                <RadioGroup row name="smoke" style={{width: "150px", display: "flex", justifyContent:"center"}} > 
+                                    <FormControlLabel value="yes" control={<Radio sx={radioSX}/>} label="Yes" />
+                                    <FormControlLabel value="no" control={<Radio sx={radioSX}/>} label="No" 
+                                    />
+                                </RadioGroup>
+                            </FormControl>
                             <Container>
                             <Slider
                                 size="small"
@@ -377,9 +366,34 @@ const RenterPage = () => {
                                 disabled={disableButton}
                             />
                             </Container>
-                            <Container style={{marginLeft: "-15px", marginTop:"-5px", width: "150px", display:"flex"}}>
-                                <InputBase placeholder="From" onChange={(e)=>{setTimeStart(e.target.value)}} id="from-textfield" style={{marginLeft:"-25px"}}sx={sleepScheduleSX}/>
-                                <InputBase placeholder="To" onChange={(e)=>{setTimeEnd(e.target.value)}} id="to-textfield" sx={sleepScheduleSX}/>
+                            <Container style={{display: "flex", gap: "1rem", width: "200px", margin:"0 0 10px -20px", padding:"0"}}>
+                                <Select displayEmpty value={sleepFrom} onChange={handleSleepFrom} sx={selectSX} disabled={disableButton}>
+                                    <MenuItem value=""> <em>From</em> </MenuItem>
+                                    <MenuItem value={1}>1</MenuItem> <MenuItem value={2}>2</MenuItem> <MenuItem value={3}>3</MenuItem>
+                                    <MenuItem value={4}>4</MenuItem> <MenuItem value={5}>5</MenuItem> <MenuItem value={6}>6</MenuItem>
+                                    <MenuItem value={7}>7</MenuItem> <MenuItem value={8}>8</MenuItem> <MenuItem value={9}>9</MenuItem>
+                                    <MenuItem value={10}>10</MenuItem> <MenuItem value={11}>11</MenuItem> <MenuItem value={12}>12</MenuItem>
+                                    <MenuItem value={13}>13</MenuItem> <MenuItem value={14}>14</MenuItem> <MenuItem value={15}>15</MenuItem>
+                                    <MenuItem value={16}>16</MenuItem> <MenuItem value={17}>17</MenuItem> <MenuItem value={18}>18</MenuItem>
+                                    <MenuItem value={19}>19</MenuItem> <MenuItem value={20}>20</MenuItem> <MenuItem value={21}>21</MenuItem>
+                                    <MenuItem value={22}>22</MenuItem> <MenuItem value={23}>23</MenuItem> <MenuItem value={24}>24</MenuItem>
+                                </Select>
+                            
+                            
+                                <Select displayEmpty value={sleepTo} onChange={handleSleepTo} sx={selectSX} disabled={disableButton}>
+                                    <MenuItem value="">
+                                        <em>To</em>
+                                    </MenuItem>
+                                    <MenuItem value=""> <em>From</em> </MenuItem>
+                                    <MenuItem value={1}>1</MenuItem> <MenuItem value={2}>2</MenuItem> <MenuItem value={3}>3</MenuItem>
+                                    <MenuItem value={4}>4</MenuItem> <MenuItem value={5}>5</MenuItem> <MenuItem value={6}>6</MenuItem>
+                                    <MenuItem value={7}>7</MenuItem> <MenuItem value={8}>8</MenuItem> <MenuItem value={9}>9</MenuItem>
+                                    <MenuItem value={10}>10</MenuItem> <MenuItem value={11}>11</MenuItem> <MenuItem value={12}>12</MenuItem>
+                                    <MenuItem value={13}>13</MenuItem> <MenuItem value={14}>14</MenuItem> <MenuItem value={15}>15</MenuItem>
+                                    <MenuItem value={16}>16</MenuItem> <MenuItem value={17}>17</MenuItem> <MenuItem value={18}>18</MenuItem>
+                                    <MenuItem value={19}>19</MenuItem> <MenuItem value={20}>20</MenuItem> <MenuItem value={21}>21</MenuItem>
+                                    <MenuItem value={22}>22</MenuItem> <MenuItem value={23}>23</MenuItem> <MenuItem value={24}>24</MenuItem>
+                                </Select>
                             </Container>
                             <Button variant="contained" style={{backgroundColor: "#AB191F", float: "right", margin: "0 0 0 0"}}
                                 onClick={() => {
@@ -440,37 +454,37 @@ const RenterPage = () => {
                 
             ><DialogContent>
                 <Typography style={{fontWeight: "600", fontSize: "15pt", color: "#AB191F", textAlign:"center", margin:"10px 0 -10px 0"}}> 
-                        {"CHOOSE YOUR CHICKEN"}
+                        {"SELECT YOUR PROFILE PICTURE"}
                     </Typography >
                 <Container sx={{display:"inline-flex", marginTop:"50px"}}>
-                        <Tooltip onClick={() => {setChicken(blackChicken); setProfileImg(blackChicken)}}>
-                            <IconButton sx={{ p: 0, marginRight:"50px"} } >
-                                    <Avatar alt="blackChicken" src={blackChicken} style={{transform: `scale(1.90, 1.90)` }} />
+                        <Tooltip onClick={() => {setChicken(sheep); setProfileImg(sheep)}}>
+                            <IconButton sx={{ p: 0, marginRight:"50px",} } >
+                                    <Avatar alt="sheep" src={sheep} style={{transform: `scale(1.90, 1.90)`}} />
                             </IconButton>
                         </Tooltip>
-                        <Tooltip onClick={() => {setChicken(greenChicken); setProfileImg(greenChicken)}}>
+                        <Tooltip onClick={() => {setChicken(horse); setProfileImg(horse)}}>
                             <IconButton sx={{ p: 0, marginRight:"50px"}} >
-                                <Avatar alt="greenChicken" src={greenChicken} style={{transform: `scale(1.90, 1.90)` }} />
+                                <Avatar alt="horse" src={horse} style={{transform: `scale(1.90, 1.90)` }} />
                             </IconButton>
                         </Tooltip>
-                        <Tooltip onClick={() => {setChicken(orangeChicken); setProfileImg(orangeChicken)}}>
+                        <Tooltip onClick={() => {setChicken(goose); setProfileImg(goose)}}>
                             <IconButton sx={{ p: 0, marginRight:"50px"}} >
-                                <Avatar alt="orangeChicken" src={orangeChicken} style={{transform: `scale(1.90, 1.90)` }} />
+                                <Avatar alt="goose" src={goose} style={{transform: `scale(1.90, 1.90)` }} />
                             </IconButton>
                         </Tooltip>
-                        <Tooltip onClick={() => {setChicken(purpleChicken); setProfileImg(purpleChicken)}}>
+                        <Tooltip onClick={() => {setChicken(cow); setProfileImg(cow)}}>
                             <IconButton sx={{ p: 0, marginRight:"50px"}} >
-                                <Avatar alt="purpleChicken" src={purpleChicken} style={{transform: `scale(1.90, 1.90)` }} />
+                                <Avatar alt="cow" src={cow} style={{transform: `scale(1.90, 1.90)` }} />
                             </IconButton>
                         </Tooltip>
-                        <Tooltip onClick={() => {setChicken(redChicken); setProfileImg(redChicken)}}>
+                        <Tooltip onClick={() => {setChicken(duck); setProfileImg(duck)}}>
                             <IconButton sx={{ p: 0, marginRight:"50px"}} >
-                                <Avatar alt="redChicken" src={redChicken} style={{transform: `scale(1.90, 1.90)` }} />
+                                <Avatar alt="duck" src={duck} style={{transform: `scale(1.90, 1.90)` }} />
                             </IconButton>
                         </Tooltip>
-                        <Tooltip onClick={() => {setChicken(yellowChicken); setProfileImg(yellowChicken)}}>
+                        <Tooltip onClick={() => {setChicken(chicken); setProfileImg(chicken)}}>
                             <IconButton sx={{ p: 0}} >
-                                <Avatar alt="yellowChicken" src={yellowChicken} style={{transform: `scale(1.90, 1.90)` }} />
+                                <Avatar alt="chicken" src={chicken} style={{transform: `scale(1.90, 1.90)` }} />
                             </IconButton>
                         </Tooltip>
                         
