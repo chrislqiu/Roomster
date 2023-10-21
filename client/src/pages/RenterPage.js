@@ -1,4 +1,4 @@
-import { Dialog, DialogContent, DialogActions, Tooltip, IconButton, Avatar, InputBase, Slider, Checkbox, Grid, Card, Container, Box, Typography, CardContent, Input, Divider, TextField, Link, Button, FormControlLabel } from "@mui/material";
+import { Dialog, DialogContent, DialogActions, Tooltip, IconButton, Avatar, InputBase, Slider, InputLabel, Select, MenuItem, Grid, Card, Container, Box, Typography, CardContent, Radio, Button, TextField, RadioGroup, FormControl, FormControlLabel } from "@mui/material";
 import Switch from '@mui/joy/Switch'
 import React from "react"
 import profilePic from "../images/profile-pic-no-shadow.png"
@@ -112,7 +112,27 @@ const RenterPage = () => {
         "& input::placeholder": {
             fontSize: "11pt"
         }
-        
+    }
+    const radioSX = {
+        color: "#AB191F",
+        '&.Mui-checked': {
+        color: "#AB191F",
+        },
+    }
+    const selectSX = {
+        width: 90, height: 30, fontSize:"11pt", 
+        '.MuiOutlinedInput-notchedOutline': {
+            border:"2px solid #AB191F"
+        },
+        '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+            border:"2px solid #AB191F"
+        },
+        '&:hover .MuiOutlinedInput-notchedOutline': {
+            border:"2px solid #AB191F"
+        },
+        '.MuiSvgIcon-root ': {
+        fill: "#AB191F",
+        }
     }
     const [toggleOn, setToggleOn] = React.useState(false);
     const [hasPet, setHasPet] = React.useState(false);
@@ -128,7 +148,14 @@ const RenterPage = () => {
     const [timeStart, setTimeStart] = React.useState('')
     const [timeEnd, setTimeEnd] = React.useState('')
     const [disableButton, setDisableButton] = React.useState(true);
-
+    const [sleepFrom, setSleepFrom] = React.useState('');
+    const [sleepTo, setSleepTo] = React.useState('');
+    const handleSleepFrom = (event) => {
+      setSleepFrom(event.target.value);
+    };
+    const handleSleepTo = (event) => {
+        setSleepTo(event.target.value);
+      };
     const handleSaveRight = () => {
         const emailRegex = /^[a-zA-Z0-9._-]+@purdue\.edu$/;
         if (!emailRegex.test(email)) {
@@ -286,58 +313,20 @@ const RenterPage = () => {
                             <Typography style={styles.livingHabit}>{"Sleep schedule"}</Typography>
                         </Container>
                         <Container style={{float: "right", width: "45%"}}>
-                            <Container style={{display:"inline-flex", justifyContent:"center"}}>
-                                <FormControlLabel label="Yes" control={
-                                    <Checkbox style={{}}
-                                    checked={hasPet}
-                                    onChange={() => setHasPet(!hasPet)}
-                                    disabled={noPet === true ? true : false}
-                                    inputProps={{ 'aria-label': 'controlled' }}
-                                    sx={{color:"#AB191F",
-                                        '&.Mui-checked': {
-                                            color: "#AB191F",
-                                        },}}
-                                    />}
-                                />
-                                <FormControlLabel label="No" control={
-                                    <Checkbox style={{}}
-                                    checked={noPet}
-                                    disabled={hasPet === true ? true : false}
-                                    onChange={() => setNoPet(!noPet)}
-                                    inputProps={{ 'aria-label': 'controlled' }}
-                                    sx={{color:"#AB191F",
-                                        '&.Mui-checked': {
-                                            color: "#AB191F",
-                                        },}}
-                                    />}
-                                />
-                            </Container>
-                            <Container style={{display:"inline-flex", justifyContent:"center", marginTop:"-8px"}}>
-                                <FormControlLabel label="Yes" control={
-                                    <Checkbox style={{}}
-                                    checked={doesSmoke}
-                                    disabled={doesNotSmoke === true ? true : false}
-                                    onChange={() => setDoesSmoke(!doesSmoke)}
-                                    inputProps={{ 'aria-label': 'controlled' }}
-                                    sx={{color:"#AB191F",
-                                        '&.Mui-checked': {
-                                            color: "#AB191F",
-                                        },}}
-                                    />}
-                                />
-                                <FormControlLabel label="No" control={
-                                    <Checkbox style={{}}
-                                    checked={doesNotSmoke}
-                                    disabled={doesSmoke === true ? true : false}
-                                    onChange={() => setDoesNotSmoke(!doesNotSmoke)}
-                                    inputProps={{ 'aria-label': 'controlled' }}
-                                    sx={{color:"#AB191F",
-                                        '&.Mui-checked': {
-                                            color: "#AB191F",
-                                        },}}
-                                    />}
-                                />
-                            </Container>
+                            <FormControl style={{marginLeft:"-25px", marginBottom:"-7px"}} disabled={disableButton}>
+                                <RadioGroup row name="pets" style={{width: "150px", display: "flex", justifyContent:"center"}} > 
+                                    <FormControlLabel value="yes" control={<Radio sx={radioSX}/>} label="Yes" />
+                                    <FormControlLabel value="no" control={<Radio sx={radioSX}/>} label="No" 
+                                    />
+                                </RadioGroup>
+                            </FormControl>
+                            <FormControl style={{marginLeft:"-25px", marginBottom: "-7px"}} disabled={disableButton}>
+                                <RadioGroup row name="smoke" style={{width: "150px", display: "flex", justifyContent:"center"}} > 
+                                    <FormControlLabel value="yes" control={<Radio sx={radioSX}/>} label="Yes" />
+                                    <FormControlLabel value="no" control={<Radio sx={radioSX}/>} label="No" 
+                                    />
+                                </RadioGroup>
+                            </FormControl>
                             <Container>
                             <Slider
                                 size="small"
@@ -377,9 +366,34 @@ const RenterPage = () => {
                                 disabled={disableButton}
                             />
                             </Container>
-                            <Container style={{marginLeft: "-15px", marginTop:"-5px", width: "150px", display:"flex"}}>
-                                <InputBase placeholder="From" onChange={(e)=>{setTimeStart(e.target.value)}} id="from-textfield" style={{marginLeft:"-25px"}}sx={sleepScheduleSX}/>
-                                <InputBase placeholder="To" onChange={(e)=>{setTimeEnd(e.target.value)}} id="to-textfield" sx={sleepScheduleSX}/>
+                            <Container style={{display: "flex", gap: "1rem", width: "200px", margin:"0 0 10px -20px", padding:"0"}}>
+                                <Select displayEmpty value={sleepFrom} onChange={handleSleepFrom} sx={selectSX} disabled={disableButton}>
+                                    <MenuItem value=""> <em>From</em> </MenuItem>
+                                    <MenuItem value={1}>1</MenuItem> <MenuItem value={2}>2</MenuItem> <MenuItem value={3}>3</MenuItem>
+                                    <MenuItem value={4}>4</MenuItem> <MenuItem value={5}>5</MenuItem> <MenuItem value={6}>6</MenuItem>
+                                    <MenuItem value={7}>7</MenuItem> <MenuItem value={8}>8</MenuItem> <MenuItem value={9}>9</MenuItem>
+                                    <MenuItem value={10}>10</MenuItem> <MenuItem value={11}>11</MenuItem> <MenuItem value={12}>12</MenuItem>
+                                    <MenuItem value={13}>13</MenuItem> <MenuItem value={14}>14</MenuItem> <MenuItem value={15}>15</MenuItem>
+                                    <MenuItem value={16}>16</MenuItem> <MenuItem value={17}>17</MenuItem> <MenuItem value={18}>18</MenuItem>
+                                    <MenuItem value={19}>19</MenuItem> <MenuItem value={20}>20</MenuItem> <MenuItem value={21}>21</MenuItem>
+                                    <MenuItem value={22}>22</MenuItem> <MenuItem value={23}>23</MenuItem> <MenuItem value={24}>24</MenuItem>
+                                </Select>
+                            
+                            
+                                <Select displayEmpty value={sleepTo} onChange={handleSleepTo} sx={selectSX} disabled={disableButton}>
+                                    <MenuItem value="">
+                                        <em>To</em>
+                                    </MenuItem>
+                                    <MenuItem value=""> <em>From</em> </MenuItem>
+                                    <MenuItem value={1}>1</MenuItem> <MenuItem value={2}>2</MenuItem> <MenuItem value={3}>3</MenuItem>
+                                    <MenuItem value={4}>4</MenuItem> <MenuItem value={5}>5</MenuItem> <MenuItem value={6}>6</MenuItem>
+                                    <MenuItem value={7}>7</MenuItem> <MenuItem value={8}>8</MenuItem> <MenuItem value={9}>9</MenuItem>
+                                    <MenuItem value={10}>10</MenuItem> <MenuItem value={11}>11</MenuItem> <MenuItem value={12}>12</MenuItem>
+                                    <MenuItem value={13}>13</MenuItem> <MenuItem value={14}>14</MenuItem> <MenuItem value={15}>15</MenuItem>
+                                    <MenuItem value={16}>16</MenuItem> <MenuItem value={17}>17</MenuItem> <MenuItem value={18}>18</MenuItem>
+                                    <MenuItem value={19}>19</MenuItem> <MenuItem value={20}>20</MenuItem> <MenuItem value={21}>21</MenuItem>
+                                    <MenuItem value={22}>22</MenuItem> <MenuItem value={23}>23</MenuItem> <MenuItem value={24}>24</MenuItem>
+                                </Select>
                             </Container>
                             <Button variant="contained" style={{backgroundColor: "#AB191F", float: "right", margin: "0 0 0 0"}}
                                 onClick={() => {
