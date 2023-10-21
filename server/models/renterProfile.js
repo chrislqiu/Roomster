@@ -10,7 +10,8 @@ const renterProfile = new Schema({
     studious: Number,
     cleanliness: Number,
     guestFreq: Number,
-    sleep: String,
+    sleepFrom: Number,
+    sleepTo: Number,
     looking: Boolean
 })
 

@@ -34,7 +34,7 @@ const PropertyManagerPage = () => {
         const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9]+\.[a-zA-Z]+$/;
         
         if (phoneNumber === '' || email === '' || addr === '' || officeNum === '') {
-            toast.error("Please fill in the necessary fields!", {style: customToastStyles})
+            toast.error("Please fill in all the fields!", {style: customToastStyles})
             return;
         } else if (!emailRegex.test(email)) {
             toast.error("Please enter a valid email address", {style: customToastStyles})

@@ -1,4 +1,4 @@
-import { Dialog, DialogContent, DialogActions, Tooltip, IconButton, Avatar, InputBase, Slider, InputLabel, Select, MenuItem, Grid, Card, Container, Box, Typography, CardContent, Radio, Button, TextField, RadioGroup, FormControl, FormControlLabel } from "@mui/material";
+import { Dialog, DialogContent, DialogActions, Tooltip, IconButton, Avatar, InputBase, Slider, Select, MenuItem, Grid, Card, Container, Box, Typography, CardContent, Radio, Button, RadioGroup, FormControl, FormControlLabel } from "@mui/material";
 import Switch from '@mui/joy/Switch'
 import React from "react"
 import profilePic from "../images/profile-pic-no-shadow.png"
@@ -8,12 +8,15 @@ import goose from "../images/chickens/goose.png"
 import cow from "../images/chickens/cow.png"
 import chicken from "../images/chickens/chicken.png"
 import sheep from "../images/chickens/sheep.png"
+import toast, { Toaster } from 'react-hot-toast';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMars } from '@fortawesome/free-solid-svg-icons'
-import { purple } from "@mui/material/colors";
 
 const RenterPage = () => {
+    const customToastStyles = {
+        color: 'white', // Set the desired text color
+      };
 
     const styles = {
         card: {
@@ -135,18 +138,13 @@ const RenterPage = () => {
         }
     }
     const [toggleOn, setToggleOn] = React.useState(false);
-    const [hasPet, setHasPet] = React.useState(false);
-    const [noPet, setNoPet] = React.useState(false);
-    const [doesSmoke, setDoesSmoke] = React.useState(false);
-    const [doesNotSmoke, setDoesNotSmoke] = React.useState(false);
+    const [hasPet, setHasPet] = React.useState(null);
+    const [doesSmoke, setDoesSmoke] = React.useState(null);
     const [open, setOpen] = React.useState(false);
     const [openMessage, setOpenMessage] = React.useState(false);
     const [email, setEmail] = React.useState('');
     const [phone, setPhone] = React.useState('');
     const [profileImg, setProfileImg] = React.useState('');
-    const [saveStatus1, setSaveStatus1] = React.useState(null);
-    const [timeStart, setTimeStart] = React.useState('')
-    const [timeEnd, setTimeEnd] = React.useState('')
     const [disableButton, setDisableButton] = React.useState(true);
     const [sleepFrom, setSleepFrom] = React.useState('');
     const [sleepTo, setSleepTo] = React.useState('');
@@ -158,23 +156,25 @@ const RenterPage = () => {
       };
     const handleSaveRight = () => {
         const emailRegex = /^[a-zA-Z0-9._-]+@purdue\.edu$/;
-        if (!emailRegex.test(email)) {
-            setSaveStatus1("Please enter a valid Purdue email address");
-            return;
-        } else if (timeStart === "" || timeEnd === "" || hasPet === noPet || doesSmoke === doesNotSmoke || email === "" || phone === "") {
-            setSaveStatus1("One or more fields is empty!");
+
+        if (sleepFrom === '' || sleepTo === '' || email === '' || phone === '' || hasPet === null || doesSmoke === null) {
+            toast.error("Please fill in all the fields!", {style: customToastStyles});
             return
+        } else if (!emailRegex.test(email)) {
+            toast.error("Please enter a valid Purdue email address", {style: customToastStyles});
+            return;
         } else {
-            setSaveStatus1("Save Success!")
+            toast.success("Save Success!", {style: customToastStyles})
         }
-        var pets = hasPet === true ? true : false;
-        var smoke = doesSmoke === true ? true : false;
+
         const dataToSend = {
             profilePic: profileImg,
             purdueEmail: email,
             phone: phone,
-            pets: pets,
-            smoke: smoke
+            pets: hasPet,
+            smoke: doesSmoke,
+            sleepFrom: sleepFrom,
+            sleepTo: sleepTo
         }
         fetch('http://localhost:8000/sendRenterProfile', {
             method: 'POST',
@@ -194,12 +194,15 @@ const RenterPage = () => {
 
     const handleSaveLeft = () => {
         const emailRegex = /^[a-zA-Z0-9._-]+@purdue\.edu$/;
-        console.log(timeStart)
-        if (!emailRegex.test(email)) {
-            setSaveStatus1("Please enter a valid Purdue email address");
+
+        if (email === '' || phone === '') {
+            toast.error("Please fill in all the fields!"+sleepFrom, {style: customToastStyles})
+            return;
+        }   else if (!emailRegex.test(email)) {
+            toast.error("Please enter a valid Purdue email address", {style: customToastStyles});
             return;
         } else {
-            setSaveStatus1("Save Success!")
+            toast.success("Save Success!", {style: customToastStyles})
         }
 
         const dataToSend = {
@@ -315,15 +318,15 @@ const RenterPage = () => {
                         <Container style={{float: "right", width: "45%"}}>
                             <FormControl style={{marginLeft:"-25px", marginBottom:"-7px"}} disabled={disableButton}>
                                 <RadioGroup row name="pets" style={{width: "150px", display: "flex", justifyContent:"center"}} > 
-                                    <FormControlLabel value="yes" control={<Radio sx={radioSX}/>} label="Yes" />
-                                    <FormControlLabel value="no" control={<Radio sx={radioSX}/>} label="No" 
+                                    <FormControlLabel value="yes" control={<Radio sx={radioSX}/>} label="Yes" onChange={() => setHasPet(true)}/>
+                                    <FormControlLabel value="no" control={<Radio sx={radioSX}/>} label="No" onChange={() => setHasPet(false)}
                                     />
                                 </RadioGroup>
                             </FormControl>
                             <FormControl style={{marginLeft:"-25px", marginBottom: "-7px"}} disabled={disableButton}>
                                 <RadioGroup row name="smoke" style={{width: "150px", display: "flex", justifyContent:"center"}} > 
-                                    <FormControlLabel value="yes" control={<Radio sx={radioSX}/>} label="Yes" />
-                                    <FormControlLabel value="no" control={<Radio sx={radioSX}/>} label="No" 
+                                    <FormControlLabel value="yes" control={<Radio sx={radioSX}/>} label="Yes" onChange={() => setDoesSmoke(true)}/>
+                                    <FormControlLabel value="no" control={<Radio sx={radioSX}/>} label="No" onChange={() => setDoesSmoke(false)}
                                     />
                                 </RadioGroup>
                             </FormControl>
@@ -367,7 +370,7 @@ const RenterPage = () => {
                             />
                             </Container>
                             <Container style={{display: "flex", gap: "1rem", width: "200px", margin:"0 0 10px -20px", padding:"0"}}>
-                                <Select displayEmpty value={sleepFrom} onChange={handleSleepFrom} sx={selectSX} disabled={disableButton}>
+                                <Select displayEmpty value={sleepFrom} onChange={handleSleepFrom} sx={selectSX} disabled={disableButton} >
                                     <MenuItem value=""> <em>From</em> </MenuItem>
                                     <MenuItem value={1}>1</MenuItem> <MenuItem value={2}>2</MenuItem> <MenuItem value={3}>3</MenuItem>
                                     <MenuItem value={4}>4</MenuItem> <MenuItem value={5}>5</MenuItem> <MenuItem value={6}>6</MenuItem>
@@ -380,11 +383,8 @@ const RenterPage = () => {
                                 </Select>
                             
                             
-                                <Select displayEmpty value={sleepTo} onChange={handleSleepTo} sx={selectSX} disabled={disableButton}>
-                                    <MenuItem value="">
-                                        <em>To</em>
-                                    </MenuItem>
-                                    <MenuItem value=""> <em>From</em> </MenuItem>
+                                <Select displayEmpty value={sleepTo} onChange={handleSleepTo} sx={selectSX} disabled={disableButton} >
+                                    <MenuItem value=""> <em>To</em> </MenuItem>
                                     <MenuItem value={1}>1</MenuItem> <MenuItem value={2}>2</MenuItem> <MenuItem value={3}>3</MenuItem>
                                     <MenuItem value={4}>4</MenuItem> <MenuItem value={5}>5</MenuItem> <MenuItem value={6}>6</MenuItem>
                                     <MenuItem value={7}>7</MenuItem> <MenuItem value={8}>8</MenuItem> <MenuItem value={9}>9</MenuItem>
@@ -415,30 +415,20 @@ const RenterPage = () => {
                 </Box>
                 
                 </CardContent>
-                {saveStatus1 && ( <Container sx={{position:"relative", display:"-ms-flexbox", marginTop:"290px", textAlign:"center"}}>
-                <p style={{color: '#AB191F'}}>{saveStatus1}</p></Container>
-            )}
-            </Card>
-            <Dialog
-                open={openMessage}
-                onClose={handleCloseMessage}
-                sx={{
-                    "& .MuiDialog-container": {
-                        "& .MuiPaper-root": {
-                            width: "600px",
-                            height: "200px",
-                            backgroundColor: "#F6EBE1"
+                <Toaster
+                    toastOptions={{
+                        success: {
+                        style: {
+                            background: 'green',
                         },
-                    },
-                }}
-                
-            ><DialogContent>{saveStatus1 && ( 
-                <Typography style={{fontWeight: "600", fontSize: "15pt", color: "#AB191F", textAlign:"center", margin:"10px 0 -10px 0"}}> 
-                        {saveStatus1}
-                    </Typography >
-                
-            )}</DialogContent></Dialog>
-
+                        },
+                        error: {
+                        style: {
+                            background: 'red',
+                        },
+                        },
+                    }}/>
+            </Card>
             <Dialog
                 open={open}
                 onClose={handleClose}
@@ -487,10 +477,6 @@ const RenterPage = () => {
                                 <Avatar alt="chicken" src={chicken} style={{transform: `scale(1.90, 1.90)` }} />
                             </IconButton>
                         </Tooltip>
-                        
-                        
-                        
-                        
                         
                 </Container>
                 
