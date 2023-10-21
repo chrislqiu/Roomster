@@ -127,13 +127,14 @@ const RenterPage = () => {
     const [saveStatus1, setSaveStatus1] = React.useState(null);
     const [timeStart, setTimeStart] = React.useState('')
     const [timeEnd, setTimeEnd] = React.useState('')
+    const [disableButton, setDisableButton] = React.useState(true);
 
     const handleSaveRight = () => {
         const emailRegex = /^[a-zA-Z0-9._-]+@purdue\.edu$/;
         if (!emailRegex.test(email)) {
             setSaveStatus1("Please enter a valid Purdue email address");
             return;
-        } else if (timeStart === "" || timeEnd === "" || hasPet === noPet || doesSmoke === doesNotSmoke || email == "" || phone == "") {
+        } else if (timeStart === "" || timeEnd === "" || hasPet === noPet || doesSmoke === doesNotSmoke || email === "" || phone === "") {
             setSaveStatus1("One or more fields is empty!");
             return
         } else {
@@ -247,9 +248,21 @@ const RenterPage = () => {
                     <Typography style={styles.subheader}> 
                         {"Contact info"}
                     </Typography >
-                    <InputBase placeholder="Purdue Email" id="email-textfield" sx={inputBaseSX}onChange={(e) => setEmail(e.target.value)}/>
-                    <InputBase placeholder="Phone number" id="number-textfield" sx={inputBaseSX}onChange={(e) => setPhone(e.target.value)}/>
-                    <Button variant="contained" style={{backgroundColor: "#AB191F", float: "right", margin: "0 35px 0 0"}} onClick={handleSaveLeft}>SAVE</Button>
+                    <InputBase placeholder="Purdue Email" id="email-textfield" sx={inputBaseSX}onChange={(e) => setEmail(e.target.value)}disabled={disableButton}/>
+                    <InputBase placeholder="Phone number" id="number-textfield" sx={inputBaseSX}onChange={(e) => setPhone(e.target.value)}disabled={disableButton}/>
+                    <Button variant="contained" style={{backgroundColor: "#AB191F", float: "right", margin: "0 35px 0 0", visibility: toggleOn ? "hidden" : "visible"}} 
+                        onClick={() => {
+                            if (disableButton) {
+                            // Enable edit mode
+                            setDisableButton(false);
+                            } else {
+                            // Save changes and disable edit mode
+                            handleSaveLeft();
+                            setDisableButton(true);
+                            }  
+                        }}>
+                        {disableButton ? 'Edit' : 'Save'}
+                    </Button>
                 </Box>
                 <Box width='100%' style={styles.column2}>
                     <Container style={styles.box}>
@@ -259,7 +272,7 @@ const RenterPage = () => {
                         <Switch style={{verticalAlign:"center", marginTop:"2px"}}
                             color={toggleOn ? 'danger' : 'neutral'}
                             checked={toggleOn}
-                            onChange={() => setToggleOn(!toggleOn)}
+                            onChange={() => {setToggleOn(!toggleOn); setDisableButton(true)}}
                         />
                     </Container>
                     {toggleOn &&
@@ -335,6 +348,7 @@ const RenterPage = () => {
                                 min={0}
                                 max={5}
                                 sx={{color:"#AB191F", width: "100px", height: "5px", marginLeft: "-40px"}}
+                                disabled={disableButton}
                             />
                             </Container>
                             <Container>
@@ -347,6 +361,7 @@ const RenterPage = () => {
                                 min={0}
                                 max={5}
                                 sx={{color:"#AB191F", width: "100px", height: "5px", marginLeft: "-40px"}}
+                                disabled={disableButton}
                             />
                             </Container>
                             <Container>
@@ -359,13 +374,26 @@ const RenterPage = () => {
                                 min={0}
                                 max={5}
                                 sx={{color:"#AB191F", width: "100px", height: "5px", marginLeft: "-40px"}}
+                                disabled={disableButton}
                             />
                             </Container>
                             <Container style={{marginLeft: "-15px", marginTop:"-5px", width: "150px", display:"flex"}}>
                                 <InputBase placeholder="From" onChange={(e)=>{setTimeStart(e.target.value)}} id="from-textfield" style={{marginLeft:"-25px"}}sx={sleepScheduleSX}/>
                                 <InputBase placeholder="To" onChange={(e)=>{setTimeEnd(e.target.value)}} id="to-textfield" sx={sleepScheduleSX}/>
                             </Container>
-                            <Button variant="contained" onClick={() => handleSaveRight()} style={{backgroundColor: "#AB191F", float: "right", margin: "0 0 0 0"}}>SAVE</Button>
+                            <Button variant="contained" style={{backgroundColor: "#AB191F", float: "right", margin: "0 0 0 0"}}
+                                onClick={() => {
+                                    if (disableButton) {
+                                    // Enable edit mode
+                                    setDisableButton(false);
+                                    } else {
+                                    // Save changes and disable edit mode
+                                    handleSaveRight();
+                                    setDisableButton(true);
+                                    }  
+                                }}>
+                                {disableButton ? 'Edit' : 'Save'}  
+                            </Button>
 
                         </Container>
                     </Container>
