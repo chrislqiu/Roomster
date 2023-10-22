@@ -15,6 +15,7 @@ import StarIcon from '@mui/icons-material/Star';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
+import { useNavigate } from 'react-router-dom';
 
 
 /* 
@@ -95,7 +96,8 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
                         <CardContent>
                         <div style={{ display: 'flex', alignItems: 'center', marginLeft: 0 }}>
 
-                          <Typography variant="h6" style={{margin: "-20px 0 0px 0"}}> {data.propertyName.split(":")[0]} </Typography>
+                          <Typography variant="h6" style={{margin: "-20px 0 0px 0"}}
+                          > {data.propertyName.split(":")[0]} </Typography>
                          {/* {featured === true ? <StarIcon style={{margin: "-20px 0 0px 2.5"}} /> : ''} */}
                           {/* {favCoops === true ? <FavoriteIcon style={{margin: "-20px 0 0px 2.5"}} sx={{color: "#AB191F", ":hover": {color: "#F6EBE1",},}}/> : ''} */}
                           {/* <Typography variant="h6" style={{fontSize: "13pt", margin: "-20px 0 0px 0"}}> Property Name </Typography> */}
@@ -153,20 +155,11 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
                     }
                     <Stack direction={{'400px': "column", md: "row",lg: "row", xl: "row"}} spacing={5} sx={{ marginTop: 2, p: 1 }} >
                         <Box width='600'>
-                            <Typography
-                                sx={{
-                                    fontWeight: 600,
-                                    marginTop: 1,
-                                    variant:"h6"
-                                }}
-                            >
-                                {
-                                    /*
-                                     * When passing in values into MUI text components, use curly braces
-                                     */
-                                }
+                            <Tooltip title="Go to Company Page">
+                            <Link href="/CompanyPage" underline="none" color="black" sx={{fontWeight: 600}}>
                                 {data.propertyName}
-                            </Typography>
+                            </Link>
+                            </Tooltip>
                             <Typography
                                 sx={{
                                     fontWeight: 300,
