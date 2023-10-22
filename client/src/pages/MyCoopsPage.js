@@ -1,5 +1,8 @@
 import React from "react"
 import PropertyViewMore from "../components/PropertyView"
+import Button from '@mui/material/Button';
+import AddHomeIcon from '@mui/icons-material/AddHome';
+import IconButton from '@mui/material/IconButton';
 import { Container, Box } from "@mui/material";
 
 const MyCoopsPage = () => {
@@ -27,6 +30,13 @@ const MyCoopsPage = () => {
     }
     return (
         <Container sx={{ width: '100%' }}>
+            <Box style={{justifyContent:"center"}}>
+                <IconButton
+                    style={{ position: 'Center', justifyContent: "center" }}>
+                    <AddHomeIcon
+                        style={{ color: "#AB191F", fontSize:"Large", justifyContent:"center" }} />
+                </IconButton>
+            </Box>
            
             <Box sx={{ m: 1 }} style={styles.feed}>
                 {
