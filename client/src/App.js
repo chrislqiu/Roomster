@@ -15,11 +15,12 @@ import theredthing from './images/theredthing.png'
 import logo from './images/logo2.png'
 import RoomsterAppBar from "./components/AppBar";
 import FavCoopsPage from "./pages/FavCoopsPage";
-import Settings from "./pages/Settings"
+import Settings from "./pages/Settings"  
 import VerifyPage from "./pages/VerifyPage"
 import Popup from "./components/Popup";
 import RenterCreateAccountView from "./components/RenterCreateAccounView";
 import ManagerCreateAccountView from "./components/PropertyManagerCreateAccountView";
+import ResetPWPage from "./pages/ResetPWPage"
 
   const styles = {
     background: {
@@ -158,6 +159,7 @@ class App extends React.Component {
             <Route path="/MCreate" element={<ManagerCreateAccountView/>}/>
             <Route path="/Settings" element={<Settings />} />
             <Route path="/VerifyPage" element={<VerifyPage />} />
+            <Route path="/ResetPW/:token" element={<ResetPWPage />} />
           </Routes>
         </BrowserRouter>
       </body>  
