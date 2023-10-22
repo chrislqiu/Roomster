@@ -9,7 +9,7 @@ const Renter = require('./models/renter');
 const router = express.Router();
 
 // Route to add a card
-router.get('/add-card', (req, res) => {
+router.get('/add-card', async (req, res) => {
     const newCompanyInfo = new CompanyInfo({
         name: "RISE",
         address: "100 S Chauncey Ave",
@@ -52,18 +52,36 @@ router.get('/add-card', (req, res) => {
         companyInfo: newCompanyInfo
     });
 
-    newCompany.myCoops.push(newPropertyInfo);
-
-    newCompanyInfo.save();
-    newCompany.save();
-    newPropertyInfo.save();
-    newProperty.save()
-    .then((result) => {
-        res.send(result);
-    })
-    .catch((err) => {
-        console.log(err);
-    });
+    //TODO: fix duplicate property additions
+    const existingCompany = await Company.findOne({'companyInfo.name': 'RISE'});
+    if (existingCompany) {
+        newProperty.companyInfo = existingCompany.companyInfo;
+        const addedProp = existingCompany.myCoops.addToSet(newPropertyInfo);
+        if (addedProp.length === 1) {
+            newPropertyInfo.save();
+            newProperty.save()
+            .then((result) => {
+                res.send(result);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+        } else {
+            console.log("not new prop");
+        }
+    } else {
+        newCompany.myCoops.addToSet(newPropertyInfo);
+        newCompanyInfo.save();
+        newCompany.save();
+        newPropertyInfo.save();
+        newProperty.save()
+        .then((result) => {
+            res.send(result);
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+    }
 });
 
 // Route to get all cards
@@ -79,7 +97,7 @@ router.get('/all-cards', (req, res) => {
 
 // Route to get featured cards
 router.get('/featured-cards', (req, res) => {
-    Property.find({ propertyInfo: {featured: true} })
+    Property.find({'propertyInfo.featured': true} })
     .then((result) => {
         res.send(result);
     })
@@ -90,7 +108,7 @@ router.get('/featured-cards', (req, res) => {
 
 // Route to get my coops cards
 router.get('/my-coops-cards', (req, res) => {
-    Manager.find({ company: {myCoops: {}} })
+    Manager.find({'company.myCoops': {}})
     .then((result) => {
         res.send(result);
     })
@@ -101,7 +119,7 @@ router.get('/my-coops-cards', (req, res) => {
 
 // Route to get fav coops cards
 router.get('/fav-coops-cards', (req, res) => {
-    Renter.find({ renterInfo: {favCoops: {}} })
+    Renter.find({'renterInfo.favCoops': {}})
     .then((result) => {
         res.send(result);
     })
