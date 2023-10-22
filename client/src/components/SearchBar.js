@@ -41,7 +41,7 @@ const SearchBar = ({ data, setInput }) => {
                           padding: '0 20px',
                         },
                     }}
-                    
+                    onChange={handleInput}
                 />
                 <Box style={{float:"right", marginTop:"7px"}}>
                     <Button style={styles.buttons}>
