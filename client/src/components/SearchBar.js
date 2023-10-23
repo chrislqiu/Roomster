@@ -12,7 +12,7 @@ const SearchBar = ({ data, setInput }) => {
             disablePortal
             id="combo-box-demo"
             disableClearable={true}
-            options={data.map(property=>property.propertyName)}
+            options={data.map(property=>property.propertyInfo.propertyName)}
             onSelect={handleInput}
             sx={{
                 '&.MuiInputBase-root:focus': {
