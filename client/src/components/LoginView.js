@@ -9,7 +9,7 @@ import Divider from '@mui/material/Divider';
 import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
-import RenterCreateAccountView from './RenterCreateAccounView';
+import RenterCreateAccountView from './RenterCreateAccountView';
 import RenterCreateAccountPage from '../pages/RenterCreateAccountPage';
 import ManagerCreateAccountView from './PropertyManagerCreateAccountView';
 
