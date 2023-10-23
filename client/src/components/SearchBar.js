@@ -1,36 +1,60 @@
-import { Typography, Box, TextField, Autocomplete } from '@mui/material'
+import { Typography, Box, TextField, Button } from '@mui/material'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faMagnifyingGlass, faCaretDown } from '@fortawesome/free-solid-svg-icons'
 
 const SearchBar = ({ data, setInput }) => {
     const handleInput = (e) => {
         console.log(e.target.value)
         setInput(e.target.value.toLowerCase())
       }
+    
+    const styles = {
+        search: {
+            margin: "-30px 0 60px 0",
+            display: "flex",
+            justifyContent:"center",
+        },
+        searchBox: {
+            width: "500px", 
+            height: "50px",
+            border: "3px solid #AB191F",
+            borderRadius: "25px",
+        },
+        buttons: {
+            color:"#AB191F", 
+            fontSize:"22px", 
+        }
+    }
 
+    return <Box style={styles.search}>
+            <Box style={styles.searchBox}>
+                <TextField
+                    placeholder='Search'
+                    sx={{
+                        "& fieldset": { border: 'none', },
+                        width: "350px", 
+                        height: "50px"
+                    }} 
+                    inputProps={{
+                        style: {
+                          height: "50px",
+                          padding: '0 20px',
+                        },
+                    }}
+                    onChange={handleInput}
+                />
+                <Box style={{float:"right", marginTop:"7px"}}>
+                    <Button style={styles.buttons}>
+                        <FontAwesomeIcon icon={faCaretDown}/>
+                    </Button>
+                    <Button style={styles.buttons}>
+                        <FontAwesomeIcon icon={faMagnifyingGlass}/>
+                    </Button>
+                </Box>
+                
+            </Box>
+            
 
-    return <Box>
-        <Autocomplete
-            disablePortal
-            id="combo-box-demo"
-            disableClearable={true}
-            options={data.map(property=>property.propertyInfo.propertyName)}
-            onSelect={handleInput}
-            sx={{
-                '&.MuiInputBase-root:focus': {
-                    borderColor: '#AB191F',
-                  },
-            }}
-            renderInput={(params) => 
-            <TextField {...params}
-                label="Search "
-                sx={{
-                    width: 1100,
-                    margin: '1px auto',
-                    '&.MuiInputBase-root:focus': {
-                        borderColor: "#AB191F",
-                      },
-                }} 
-            />}
-        />
     </Box>
 
 }

@@ -1,4 +1,5 @@
-import { Container, Card, Box, Typography, CardContent, Input, Divider, TextField, Link, Button } from "@mui/material";
+import { InputBase, Card, Box, Typography, CardContent, Input, Divider, TextField, Link, Button } from "@mui/material";
+import toast, { Toaster } from 'react-hot-toast';
 import React from "react"
 import { useState } from 'react';
 
@@ -9,17 +10,37 @@ const PropertyManagerPage = () => {
     const [bio, setBio] = useState('');
     const [addr, setAddr] = useState('');
     const [officeNum, setOfficeNum] = useState('');
-    const [saveStatus, setSaveStatus] = useState(null)
+    const [disableButton, setDisableButton] = useState(true)
+
+    const inputBaseSX = {
+        margin: "5 0 10px 0px", 
+        width:"300px", 
+        height: "35px",
+        borderRadius: "5px",
+        border: "2px solid #AB191F",
+        padding: "5px",
+        "&:hover": {
+            border: "2px solid #AB191F",
+            boxShadow:"0px 0px 3px 3px rgba(0, 0, 0, .1)", 
+        }
+    }
+
+    const customToastStyles = {
+        color: 'white', // Set the desired text color
+      };
 
     const handleSave = () => {
 
         const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9]+\.[a-zA-Z]+$/;
-
-        if (!emailRegex.test(email)) {
-            setSaveStatus("Please enter a valid email address");
+        
+        if (phoneNumber === '' || email === '' || addr === '' || officeNum === '') {
+            toast.error("Please fill in all the fields!", {style: customToastStyles})
+            return;
+        } else if (!emailRegex.test(email)) {
+            toast.error("Please enter a valid email address", {style: customToastStyles})
             return;
         } else {
-            setSaveStatus("Save Success!")
+            toast.success("Save Success!", {style: customToastStyles})
         }
         
         const dataToSend ={
@@ -46,28 +67,28 @@ const PropertyManagerPage = () => {
         });
     };
     return (
-        <Container sx={{ width: '600' }}>
             <Card
                 variant='contained'
                 sx={{
-                   backgroundColor: "#f5ebe0",
+                    backgroundColor: "#f5ebe0",
                     color: "#AB191F",
                     width: "800px",
                     height: "385px",
                     boxShadow: "0px 0px 3px 3px rgba(0, 0, 0, .1)",
                     marginBottom: "225px",
                     marginTop: "50px",
-                    marginLeft: "150px"
+                    marginLeft: "300px"
                     }}>
                 <CardContent>
-                <Box width='100%' marginLeft={5}>
+                <Box width='45%' marginLeft={5}>
                         <Typography 
                         sx={{
                             fontWeight: 600,
                             fontSize: 24,
                             marginTop: 2,
                             variant: "h1",
-                            color: "black"
+                            color: "black",
+                            width: "310px",
                         }}>
                             {"John Doe"}
                         </Typography >
@@ -75,47 +96,50 @@ const PropertyManagerPage = () => {
                         sx={{
                             fontWeight: 600,
                             fontSize: 15,
-                            marginTop: 1
+                            marginTop: 1,
+                            width: "300px",
                         }}>
                             {"Contact Info:"}
                         </Typography>
                         <Box sx={{
                             fontWeight: 600,
                             fontSize: 12,
-                            
-                            fontFamily: 'Raleway'
+                            width: "300px",
+                            fontFamily: 'Raleway',
                         }}>
-                            <Input 
+                            <InputBase
+                            sx={inputBaseSX} 
                             type="text"
                             name="phoneNum"
                             placeholder="Phone Number" style={{width:200}}
                             value={phoneNumber}
                             onChange={(e) => setPhoneNumber(e.target.value)}
-                            
+                            disabled={disableButton}
                             />
                         </Box>
                         <Box sx={{
                             fontWeight: 600,
                             fontSize: 12,
                             marginTop: 2,
-                            fontFamily: 'Raleway'
+                            fontFamily: 'Raleway',
+                            width: "300px",
                         }}>
-                            <Input 
+                            <InputBase
+                            sx={inputBaseSX}
                             type="text"
                             name="email"
                             placeholder="Email Address" style={{width:200}} 
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            
+                            disabled={disableButton}
                             />
-                            
-    
                         </Box>
                         <Typography
                         sx={{
                             fontWeight: 600,
                             fontSize: 15,
-                            marginTop: 1
+                            marginTop: 1,
+                            width:"300px",
                         }}>
                             {"Bio:"}
                         </Typography>
@@ -123,19 +147,30 @@ const PropertyManagerPage = () => {
                             fontWeight: 600,
                             fontSize: 12,
                             marginTop: 1,
-                            fontFamily: 'Raleway'
+                            fontFamily: 'Raleway',
+                            width:"300px",
                         }}>
-                            <TextField 
+                            <TextField
                             type="text"
                             name="bio"
                             value={bio}
                             onChange={(e) => setBio(e.target.value)}
-                            multiline rows={4} maxRows={4} style={{width:300}}
+                            multiline rows={4} maxRows={4} 
+                            disabled={disableButton}
+                            width="500px"
+                            style={{
+                                width:"300px",
+                                borderRadius: "7px",
+                                border: "2px solid #AB191F",
+                                "&:hover": {
+                                    boxShadow:"0px 0px 3px 3px rgba(0, 0, 0, .1)", 
+                                }
+                            }}
                             />
                         </Box>
                 </Box>
             
-                <Box width='100%' marginLeft={57} marginY={-39}>
+                <Box width='40%' marginLeft={57} marginY={-39}>
                     <Typography 
                         sx={{
                             fontWeight: 600,
@@ -159,12 +194,14 @@ const PropertyManagerPage = () => {
                             marginBottom: 1,
                             fontFamily: 'Raleway'
                         }}>
-                            <Input 
+                            <InputBase
+                            sx={inputBaseSX} 
                             type="text"
                             name="addr"
                             placeholder="" style={{width:200}} 
                             value={addr}
                             onChange={(e) => setAddr(e.target.value)}
+                            disabled={disableButton}
                             />
                         </Box>
                         <Typography
@@ -181,43 +218,61 @@ const PropertyManagerPage = () => {
                             marginBottom: 2,
                             fontFamily: 'Raleway'
                         }}>
-                            <Input 
+                            <InputBase
+                            sx={inputBaseSX} 
                             type="text"
                             name="officeNum"
                             placeholder="" style={{width:200}} 
                             value={officeNum}
                             onChange={(e) => setOfficeNum(e.target.value)}
+                            disabled={disableButton}
                             />
                         </Box>
-                        <Link href="##" underline="always" color="#AB191F" fontWeight={600} >
+                        <Link href="https://www.google.com" underline="always" color="#AB191F" fontWeight={600} >
                                 {'Leasing Site'}
                         </Link>
-                        <Box marginLeft={28} marginY={12}>
+                        <Box marginLeft={28} marginY={10} width={"200px"}>
                         <Button 
                             variant='contained'
                             sx={{
                                 ":hover":{
-                                    bgcolor: "#F6EBE1",
-                                    color: "#AB191F"
+                                bgcolor: "#F6EBE1",
+                                color: "#AB191F"
                                 },
                                 backgroundColor: "#AB191F",
                                 color: "#F6EBE1",
                                 m: 1
                             }}
-                            onClick={handleSave}
-                            >
-                                Save
+                        onClick={() => {
+                            if (disableButton) {
+                            // Enable edit mode
+                            setDisableButton(false);
+                            } else {
+                            // Save changes and disable edit mode
+                            handleSave();
+                            setDisableButton(true);
+                            }  
+                        }}>
+                            {disableButton ? 'Edit' : 'Save'}
                         </Button>
                         </Box>
                 </Box>
-                <Divider orientation="vertical" width={3} sx={{ borderBottomWidth: 3, color: "#AB191F", backgroundColor: "#AB191F", marginX: 48, marginY:-52, height: 270}} />
+                <Divider orientation="vertical" width={3} sx={{ borderBottomWidth: 3, color: "#AB191F", backgroundColor: "#AB191F", marginX: 48, marginY:-50, height: 270}} />
                 </CardContent>
-                {saveStatus && (
-                <p style={{color: '#AB191F', marginLeft: "290px", marginTop: "328px"}}>{saveStatus}</p>
-            )}
+                <Toaster
+                    toastOptions={{
+                        success: {
+                        style: {
+                            background: 'green',
+                        },
+                        },
+                        error: {
+                        style: {
+                            background: 'red',
+                        },
+                        },
+                    }}/>
             </Card>
-            
-        </Container>
     )
 }
 

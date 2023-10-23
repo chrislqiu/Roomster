@@ -152,7 +152,7 @@ const RoomsterAppBar = ({ login }) => {
                                                 //Hide My Coops once we separate the User types
                                                 navigate("/MyCoops")
                                             } else if (page === "Coopmates") {
-                                                //coopmates
+                                                navigate("/Coopmates")
                                             } else if (page === "Log Out") {
                                                 handleLogout();
                                             }
