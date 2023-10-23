@@ -136,7 +136,7 @@ const RoomsterAppBar = ({ login }) => {
                     }
                     {login === true ?
                         <Grow orientation="horizontal" in={!isToolbarVisible}>
-                        <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+                        <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex", zIndex: 5} }}>
                             {pages.map((page, i) => {
                                 return (
                                     <Button
