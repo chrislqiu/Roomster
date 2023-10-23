@@ -98,7 +98,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
                         <CardContent>
                         <div style={{ display: 'flex', alignItems: 'center', marginLeft: 0 }}>
 
-                          <Typography variant="h6" style={{margin: "-20px 0 0px 0"}}> {data.propertyName.split(":")[0]} </Typography>
+                          <Typography variant="h6" style={{margin: "-20px 0 0px 0"}}> {data.propertyInfo.propertyName.split(":")[0]} </Typography>
                          {/* {featured === true ? <StarIcon style={{margin: "-20px 0 0px 2.5"}} /> : ''} */}
                           {/* {favCoops === true ? <FavoriteIcon style={{margin: "-20px 0 0px 2.5"}} sx={{color: "#AB191F", ":hover": {color: "#F6EBE1",},}}/> : ''} */}
                           {/* <Typography variant="h6" style={{fontSize: "13pt", margin: "-20px 0 0px 0"}}> Property Name </Typography> */}
@@ -107,11 +107,11 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
                           {myCoops === true ? <BookmarkIcon style={{margin: "-22px 0 0 5px", fontSize: "15pt"}} sx={{color: "#AB191F", ":hover": {color: "#F6EBE1",},}}/> : ''}
 
                         </div>
-                          <Typography variant="body2" style={{margin: "0 0 5px 0"}}>{data.addr}</Typography>
-                          <Typography variant="body2">{data.numBed} bedroom </Typography>
-                          <Typography variant="body2" style={{marginBottom:"5px"}}>{data.numBath} bathroom</Typography>
+                          <Typography variant="body2" style={{margin: "0 0 5px 0"}}>{data.propertyInfo.address}</Typography>
+                          <Typography variant="body2">{data.propertyInfo.beds} bedroom </Typography>
+                          <Typography variant="body2" style={{marginBottom:"5px"}}>{data.propertyInfo.baths} bathroom</Typography>
                           <Divider style={styles.divider}></Divider>
-                          <Typography variant="body1" style={{marginTop:"5px", textAlign:"right", fontWeight:"500"}}> ${data.cost} per month</Typography>
+                          <Typography variant="body1" style={{marginTop:"5px", textAlign:"right", fontWeight:"500"}}> ${data.propertyInfo.cost} per month</Typography>
                         
                     </CardContent>
                 </CardActionArea>
@@ -168,7 +168,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
                                      * When passing in values into MUI text components, use curly braces
                                      */
                                 }
-                                {data.propertyName}
+                                {data.propertyInfo.propertyName}
                             </Typography>
                             <Typography
                                 sx={{
@@ -178,7 +178,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
                                     marginTop: .5
                                 }}
                             >
-                                {data.addr}
+                                {data.propertyInfo.address}
                             </Typography>
                             <Typography
                                 sx={{
@@ -186,7 +186,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
                                     variant:"body2",
                                 }}
                             >
-                                {data.numBed} {data.numBed > 1 ? 'beds' : 'bed'}, {data.numBath} {data.numBath > 1 ? 'baths' : 'bath'}
+                                {data.propertyInfo.beds} {data.propertyInfo.beds > 1 ? 'beds' : 'bed'}, {data.propertyInfo.baths} {data.propertyInfo.baths > 1 ? 'baths' : 'bath'}
                             </Typography>
                             <Divider orientation='horizontal' width={200} sx={{ borderBottomWidth: 3, color: "#AB191F", backgroundColor: "#AB191F", marginY: 1 }} />
                             <Typography
@@ -196,7 +196,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
 
                                 }}
                             >
-                                ${data.cost} per month
+                                ${data.propertyInfo.cost} per month
                             </Typography>
                         </Box>
                         <Divider orientation={{xs:'horizontal', md:'vertical', lg:'vertical', xl:'vertical'}} width={3} sx={{ borderBottomWidth: 3, color: "#AB191F", backgroundColor: "#AB191F", marginY: 2 }} />
@@ -210,21 +210,17 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
                             >
                                 Amenities
                             </Typography>
-                            <Typography
-                                sx={{
-                                    fontWeight: 300,
-                                    variant:"body2",
-                                }}
-                            >
-                                {
-                                    /*
-                                     * <br /> breaks to new lines
-                                     */
-                                }
-                                Parking {<br />}
-                                Pets {<br />}
-                                Furnished apartment {<br />}
-                            </Typography>
+                            {data.propertyInfo.amenities.map((amenity) => {
+                                return <Typography
+                                 sx={{
+                                     fontWeight: 300,
+                                     variant:"body2",
+                                 }}
+                             >
+                                 {amenity}
+                             </Typography>   
+                            })}
+
                         </Box>
                         <Divider orientation='verticle' width={3} sx={{ borderBottomWidth: 3, color: "#AB191F", backgroundColor: "#AB191F", marginY: 2 }} />
                         <Box width={'100%'} sx={{paddingRight: 1}} >

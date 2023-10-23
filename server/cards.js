@@ -97,7 +97,7 @@ router.get('/all-cards', (req, res) => {
 
 // Route to get featured cards
 router.get('/featured-cards', (req, res) => {
-    Property.find({'propertyInfo.featured': true} })
+    Property.find({'propertyInfo.featured': true} )
     .then((result) => {
         res.send(result);
     })
