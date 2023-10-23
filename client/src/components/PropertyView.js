@@ -210,21 +210,17 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
                             >
                                 Amenities
                             </Typography>
-                            <Typography
-                                sx={{
-                                    fontWeight: 300,
-                                    variant:"body2",
-                                }}
-                            >
-                                {
-                                    /*
-                                     * <br /> breaks to new lines
-                                     */
-                                }
-                                Parking {<br />}
-                                Pets {<br />}
-                                Furnished apartment {<br />}
-                            </Typography>
+                            {data.propertyInfo.amenities.map((amenity) => {
+                                return <Typography
+                                 sx={{
+                                     fontWeight: 300,
+                                     variant:"body2",
+                                 }}
+                             >
+                                 {amenity}
+                             </Typography>   
+                            })}
+
                         </Box>
                         <Divider orientation='verticle' width={3} sx={{ borderBottomWidth: 3, color: "#AB191F", backgroundColor: "#AB191F", marginY: 2 }} />
                         <Box width={'100%'} sx={{paddingRight: 1}} >
