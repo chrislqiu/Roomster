@@ -28,7 +28,7 @@ const MainPage = ({login}) => {
     const [input, setInput] = React.useState('')
     React.useEffect(() => {
         const filteredPropertyInfo = propertyInfo.filter((property) => {
-          return property.propertyName.toLowerCase().includes(input.toLowerCase());
+          return property.propertyInfo.propertyName.toLowerCase().includes(input.toLowerCase());
         });
         setFilteredPropertyInfo(filteredPropertyInfo);
       }, [input, propertyInfo]);

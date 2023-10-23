@@ -18,7 +18,7 @@ import FavCoopsPage from "./pages/FavCoopsPage";
 import Settings from "./pages/Settings"
 import VerifyPage from "./pages/VerifyPage"
 import Popup from "./components/Popup";
-import RenterCreateAccountView from "./components/RenterCreateAccounView";
+import RenterCreateAccountView from "./components/RenterCreateAccountView";
 import ManagerCreateAccountView from "./components/PropertyManagerCreateAccountView";
 import CoopmatesPage from "./pages/CoopmatesPage";
 import PropertyManagerPublicPage from "./pages/PropertyManagerPublicPage";
