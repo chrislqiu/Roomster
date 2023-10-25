@@ -148,6 +148,10 @@ const RenterPage = () => {
     const [disableButton, setDisableButton] = React.useState(true);
     const [sleepFrom, setSleepFrom] = React.useState('');
     const [sleepTo, setSleepTo] = React.useState('');
+    const [studious, setStudious] = React.useState('')
+    const [cleanliness, setCleanliness] = React.useState('')
+    const [guestFreq, setGuestFreq] = React.useState('')
+
     const handleSleepFrom = (event) => {
       setSleepFrom(event.target.value);
     };
@@ -168,14 +172,27 @@ const RenterPage = () => {
         }
 
         const dataToSend = {
-            profilePic: profileImg,
-            purdueEmail: email,
-            phone: phone,
-            pets: hasPet,
-            smoke: doesSmoke,
-            sleepFrom: sleepFrom,
-            sleepTo: sleepTo
+            findingCoopmates: toggleOn,
+            renterInfo: {
+                name: name,
+                age: age,
+                email: email,
+                phone: phone,
+                pfp: profileImg,
+                livingPreferences: {
+                    pets: hasPet,
+                    smoke: doesSmoke,
+                    studious: studious,
+                    cleanliness: cleanliness,
+                    guestFreq: guestFreq,
+                    sleepSchedule: {
+                        from: sleepFrom,
+                        to: sleepTo
+                    }
+                }
+            }
         }
+
         fetch('http://localhost:8000/sendRenterProfile', {
             method: 'POST',
             headers: {
@@ -206,10 +223,25 @@ const RenterPage = () => {
         }
 
         const dataToSend = {
-            profilePic: profileImg,
-            purdueEmail: email,
-            phone: phone,
-            looking: toggleOn
+            findingCoopmates: toggleOn,
+            renterInfo: {
+                name: name,
+                age: age,
+                email: email,
+                phone: phone,
+                pfp: profileImg,
+                livingPreferences: {
+                    pets: hasPet,
+                    smoke: doesSmoke,
+                    studious: studious,
+                    cleanliness: cleanliness,
+                    guestFreq: guestFreq,
+                    sleepSchedule: {
+                        from: sleepFrom,
+                        to: sleepTo
+                    }
+                }
+            }
         }
         fetch('http://localhost:8000/sendRenterProfile', {
             method: 'POST',
@@ -246,6 +278,8 @@ const RenterPage = () => {
         setOpen(false);
     }
 
+    const name = "John Doe"
+    const age = "22"
 
     return (
         
@@ -268,10 +302,10 @@ const RenterPage = () => {
                         </Box>
 
                         <Typography style={Object.assign(styles.name, styles.boxPadding, {marginTop: "20px"})}> 
-                            {"John Doe"}
+                            {name}
                         </Typography >
                         <Typography style={Object.assign(styles.age, {padding: "0 10px 0 20px", marginTop: "20px"})}> 
-                            {"22"}
+                            {age}
                         </Typography >
                         <FontAwesomeIcon icon={faMars} style={Object.assign(styles.icon, {marginTop: "22px"})}/>
                     </Container>
@@ -302,7 +336,7 @@ const RenterPage = () => {
                         <Switch style={{verticalAlign:"center", marginTop:"2px"}}
                             color={toggleOn ? 'danger' : 'neutral'}
                             checked={toggleOn}
-                            onChange={() => {setToggleOn(!toggleOn); setDisableButton(true)}}
+                            onChange={() => {setToggleOn(!toggleOn); setDisableButton(true); setCleanliness(3); setStudious(3); setGuestFreq(3)}}
                         />
                     </Container>
                     {toggleOn &&
@@ -332,6 +366,7 @@ const RenterPage = () => {
                             </FormControl>
                             <Container>
                             <Slider
+                                onChange={(e, val) => setStudious(val)}
                                 size="small"
                                 defaultValue={3}
                                 valueLabelDisplay="auto"
@@ -345,6 +380,7 @@ const RenterPage = () => {
                             </Container>
                             <Container>
                             <Slider
+                                onChange={(e, val) => setCleanliness(val)}
                                 size="small"
                                 defaultValue={3}
                                 valueLabelDisplay="auto"
@@ -358,6 +394,7 @@ const RenterPage = () => {
                             </Container>
                             <Container>
                             <Slider
+                                onChange={(e, val) => setGuestFreq(val)}
                                 size="small"
                                 defaultValue={3}
                                 valueLabelDisplay="auto"

@@ -4,8 +4,8 @@ const authRouter = require("./auth");
 const mongoose = require('mongoose');
 const cardRoutes = require('./cards');
 const saveMProfileRoutes = require('./sendManagerProfile') 
-const managerProfile = require('./models/managerProfile')
-const renterProfile = require('./models/renterProfile')
+const RenterInfo = require("./models/renterInfo")
+const Renter = require("./models/renter")
 const Manager = require("./models/manager")
 const Company = require("./models/company")
 const CompanyInfo = require("./models/companyInfo")
@@ -63,8 +63,33 @@ const newManagerProfile = new Manager({
 app.post('/sendRenterProfile', async (req,res) => {
   const data = req.body;
   console.log(data)
-  const newRenterProfile = new renterProfile(data);
-  newRenterProfile.save()
+  //const newRenterProfile = new renterProfile(data);
+
+  const newRenterInfo = new RenterInfo({
+    name: data.renterInfo.name,
+    age: data.renterInfo.age,
+    email: data.renterInfo.email,
+    phone: data.renterInfo.phone,
+    pfp: data.renterInfo.pfp,
+    livingPreferences: {
+        pets: data.renterInfo.livingPreferences.pets,
+        smoke: data.renterInfo.livingPreferences.smoke,
+        studious: data.renterInfo.livingPreferences.studious,
+        cleanliness: data.renterInfo.livingPreferences.cleanliness,
+        guestFreq: data.renterInfo.livingPreferences.guestFreq,
+        sleepSchedule: {
+            from: data.renterInfo.livingPreferences.sleepSchedule.from,
+            to: data.renterInfo.livingPreferences.sleepSchedule.to
+        }
+    }
+})
+
+const newRenter = new Renter({
+    findingCoopmates: data.findingCoopmates,
+    renterInfo: newRenterInfo
+})
+
+  newRenter.save()
   .then((result) => {
     console.log(result)
     res.send(result);

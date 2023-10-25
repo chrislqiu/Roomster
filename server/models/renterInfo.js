@@ -9,7 +9,7 @@ const renterInfo = new Schema({
     },
     age: {
         type: Number,
-        required: true
+        required: false
     },
     gender: {
         type: String,
@@ -24,10 +24,6 @@ const renterInfo = new Schema({
         type: String,
         required: true
     },
-    bio: {
-        type: String,
-        default: "Hi! I'm a property manager here!"
-    },
     pfp: {
         type: String,
         default: "og pfp"
@@ -35,11 +31,11 @@ const renterInfo = new Schema({
     livingPreferences: {
         pets: {
             type: Boolean,
-            required: true
+            required: false
         },
         smoke: {
             type: Boolean,
-            required: true
+            required: false
         },
         studious: {
             type: Number,
@@ -57,17 +53,17 @@ const renterInfo = new Schema({
             max: 5
         },
         sleepSchedule: {
-            asleep: {
+            from: {
                 type: Number,
                 min: 0,
                 max: 23
             },
-            awake: {
+            to: {
                 type: Number,
                 min: 0,
                 max: 23
             }
-        }
+        },
     },
     favCoops: {
         type: [Property.schema],

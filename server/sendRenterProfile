@@ -1,5 +1,6 @@
 const express = require("express");
-const renterProfile = require('./models/renterProfile');
+const RenterInfo = require("./models/renterInfo")
+const Renter = require("./models/renter")
 const router = express.Router();
 const bodyParser = require("body-parser");
 router.use(bodyParser.json());
@@ -7,9 +8,33 @@ router.use(bodyParser.json());
 router.get('/saveRProfile', (req, res) => {
     const data = req.body;
 
-    const newRenterProfile = new renterProfile(data);
+    //const newRenterProfile = new renterProfile(data);
 
-    newRenterProfile.save((err) => {
+    const newRenterInfo = new RenterInfo({
+        name: data.renterInfo.name,
+        age: data.renterInfo.age,
+        email: data.renterInfo.email,
+        phone: data.renterInfo.phone,
+        pfp: data.renterInfo.pfp,
+        livingPreferences: {
+            pets: data.renterInfo.livingPreferences.pets,
+            smoke: data.renterInfo.livingPreferences.smoke,
+            studious: data.renterInfo.livingPreferences.studious,
+            cleanliness: data.renterInfo.livingPreferences.cleanliness,
+            guestFreq: data.renterInfo.livingPreferences.guestFreq,
+            sleepSchedule: {
+                from: data.renterInfo.livingPreferences.sleepSchedule.from,
+                to: data.renterInfo.livingPreferences.sleepSchedule.to
+            }
+        }
+    })
+
+    const newRenter = new Renter({
+        findingCoopmates: data.findingCoopmates,
+        renterInfo: newRenterInfo
+    })
+
+    newRenter.save((err) => {
         if (err) {
             console.error('ERROR SAVING: ', err);
             res.status(500).json({error: 'ERROR SAVING'});
