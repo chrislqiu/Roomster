@@ -3,8 +3,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass, faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons'
 import React from "react"
 
-
 const SearchBar = ({ data, setInput }) => {
+
     const handleInput = (e) => {
         console.log(e.target.value)
         setInput(e.target.value.toLowerCase())
@@ -50,7 +50,7 @@ const SearchBar = ({ data, setInput }) => {
                             padding: '0 20px',
                         },
                     }}
-                    onChange={handleInput}
+                    onSelect={handleInput}
                 />
                 <Box style={{ float: "right", marginTop: "7px" }}>
                     <Button
