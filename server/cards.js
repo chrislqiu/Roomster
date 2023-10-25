@@ -3,13 +3,28 @@ const Property = require('./models/property');
 const PropertyInfo = require('./models/propertyInfo');
 const Company = require('./models/company');
 const CompanyInfo = require('./models/companyInfo');
-const User = require('./models/user'); //TODO
 const Manager = require('./models/manager');
 const Renter = require('./models/renter');
 const router = express.Router();
 
+// for testing use
+router.get('/link-cards', async (req, res) => {
+    const existingCompany = await Company.findOne({'companyInfo.name': 'RISE'});
+    const existingPropertyInfo = await PropertyInfo.find({});
+    existingPropertyInfo.forEach(function(prop) {
+        const newProperty = new Property({
+            propertyInfo: prop,
+            companyInfo: existingCompany.companyInfo
+        });
 
-// Route to add a card
+        newProperty.save()
+        .catch((err) => {
+            console.log(err);
+        });
+    });
+});
+
+// Route to add a card for testing use
 router.get('/add-card', async (req, res) => {
     const newCompanyInfo = new CompanyInfo({
         name: "RISE",

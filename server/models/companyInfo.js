@@ -12,7 +12,7 @@ const companyInfo = new Schema({
     },
     site: {
       type: String,
-      required: true
+      required: false //TODO: make true when prompted on front end
     },
     email: {
       type: String,
