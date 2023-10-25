@@ -146,11 +146,10 @@ class App extends React.Component {
 
          <RoomsterAppBar login={isAuthenticated}/>
           <div style={{textAlign:"center", zIndex: "3", position: "relative", marginBottom:"50px"}}>
-
             <img className="logo" src={logo} style={styles.logo}></img>
           </div>
           <Routes>
-            <Route path="/" element={<MainPage />} />
+            <Route path="/" element={<MainPage login={isAuthenticated}/>} />
             <Route path="/Home" element={<MainPage login={isAuthenticated}/>} />
             <Route path="/RProfile" element={<RenterPage />} />
             <Route path="/MProfile" element={<PropertyManagerPage />} />
