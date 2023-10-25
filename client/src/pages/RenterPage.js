@@ -376,7 +376,6 @@ const RenterPage = () => {
                                     <MenuItem value={22}>22</MenuItem> <MenuItem value={23}>23</MenuItem> <MenuItem value={24}>24</MenuItem>
                                 </Select>
                             
-                            
                                 <Select displayEmpty value={sleepTo} onChange={handleSleepTo} sx={selectSX} disabled={disableButton} >
                                     <MenuItem value=""> <em>To</em> </MenuItem>
                                     <MenuItem value={1}>1</MenuItem> <MenuItem value={2}>2</MenuItem> <MenuItem value={3}>3</MenuItem>

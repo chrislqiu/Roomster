@@ -1,7 +1,6 @@
 import { Typography, Box, TextField, Button } from '@mui/material'
-import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCaretDown } from '@fortawesome/free-solid-svg-icons'
+import { faMagnifyingGlass, faCaretDown } from '@fortawesome/free-solid-svg-icons'
 
 const SearchBar = ({ data, setInput }) => {
 
@@ -49,13 +48,16 @@ const SearchBar = ({ data, setInput }) => {
                     <Button style={styles.buttons}>
                         <FontAwesomeIcon icon={faCaretDown}/>
                     </Button>
-                    
+                    <Button style={styles.buttons}>
+                        <FontAwesomeIcon icon={faMagnifyingGlass}/>
+                    </Button>
                 </Box>
-               
+                
             </Box>
             
 
     </Box>
+
 
 }
 export default SearchBar;
