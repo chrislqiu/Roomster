@@ -23,9 +23,9 @@ const renter = new Schema({
         type: RenterInfo.schema,
         required: true
     },
-    coopmates: { //TODO: fix obj ref
+    coopmates: {
         type: [RenterInfo.schema],
-        default: {}
+        required: false
     }
 });
 

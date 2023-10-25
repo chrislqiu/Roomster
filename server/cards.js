@@ -3,7 +3,6 @@ const Property = require('./models/property');
 const PropertyInfo = require('./models/propertyInfo');
 const Company = require('./models/company');
 const CompanyInfo = require('./models/companyInfo');
-const User = require('./models/user'); //TODO
 const Manager = require('./models/manager');
 const Renter = require('./models/renter');
 const router = express.Router();
@@ -25,7 +24,7 @@ router.get('/link-cards', async (req, res) => {
     });
 });
 
-// Route to add a card
+// Route to add a card for testing use
 router.get('/add-card', async (req, res) => {
     const newCompanyInfo = new CompanyInfo({
         name: "RISE",

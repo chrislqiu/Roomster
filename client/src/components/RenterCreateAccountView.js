@@ -71,13 +71,13 @@ const RenterCreateAccountView = ({ }) => {
         }
 
         try {
-            const response = await fetch('http://localhost:8000/auth/signup', {
+            const response = await fetch('http://localhost:8000/auth/renter-signup', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 credentials: 'include',
-                body: JSON.stringify({ username: email, password }),
+                body: JSON.stringify({ username: email, password, name, email }),
             });
 
             if (response.ok) {
