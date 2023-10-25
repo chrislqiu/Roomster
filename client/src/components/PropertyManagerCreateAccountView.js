@@ -25,6 +25,8 @@ import MainPage from '../pages/MainPage';
 
 const ManagerCreateAccountView = ({ }) => {
     const [open, setOpen] = React.useState(true)
+    const [managerName, setManagerName] = React.useState("")
+    const [managerEmail, setManagerEmail] = React.useState("")
     const [name, setName] = React.useState("")
     const [address, setAddress] = React.useState("")
     const [email, setEmail] = React.useState("")
@@ -39,6 +41,8 @@ const ManagerCreateAccountView = ({ }) => {
     const handleClose = () => {
         setOpen(false)
         setName(null)
+        setManagerName(null)
+        setManagerEmail(null)
         setAddress(null)
         setEmail(null)
         setPassword(null)
@@ -59,9 +63,19 @@ const ManagerCreateAccountView = ({ }) => {
             return
         }
 
+        if (managerName === "") {
+            setSignupStatus("Please enter your manager name")
+            return
+        }
+
         if (address === "") {
             setSignupStatus("Please enter your company address")
             return
+        }
+
+        if (!emailRegex.test(managerEmail)) {
+            setSignupStatus("Please enter a valid email address");
+            return;
         }
 
         if (!emailRegex.test(email)) {
@@ -80,13 +94,13 @@ const ManagerCreateAccountView = ({ }) => {
         }
 
         try {
-            const response = await fetch('http://localhost:8000/auth/signup', {
+            const response = await fetch('http://localhost:8000/auth/manager-signup', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 credentials: 'include',
-                body: JSON.stringify({ username: email, password }),
+                body: JSON.stringify({ username: email, password, companyName: name, companyEmail: email, address }),
             });
 
             if (response.ok) {
@@ -102,6 +116,13 @@ const ManagerCreateAccountView = ({ }) => {
         }
     };
 
+    const styles = {
+        textfieldStyle: {
+            boxShadow: "3", 
+            margin: "dense", 
+            marginBottom: "15px"
+        }
+    }
     return (
         <React.Fragment>
             
@@ -136,30 +157,38 @@ const ManagerCreateAccountView = ({ }) => {
                 <DialogContent sx={{ maxWidth: "400px" }}>
                     <div>
                         <TextField
+                            label="Manager Name" id="managerName-textfield" variant="outlined" fullWidth
+                            inputProps={{ style: { fontSize: 15 } }}
+                            inputLabelProps={{ style: { fontSize: 15 } }}
+                            sx={styles.textfieldStyle}
+                            onChange={(e) => setManagerName(e.target.value)}
+                        />
+                        <TextField
+                            label="Manager Email" id="managerEmail-textfield" variant="outlined" fullWidth
+                            inputProps={{ style: { fontSize: 15 } }}
+                            inputLabelProps={{ style: { fontSize: 15 } }}
+                            sx={styles.textfieldStyle}
+                            onChange={(e) => setManagerEmail(e.target.value)}
+                        />
+                        <TextField
                             label="Company Name" id="name-textfield" variant="outlined" fullWidth
                             inputProps={{ style: { fontSize: 15 } }}
                             inputLabelProps={{ style: { fontSize: 15 } }}
-                            sx={{
-                                boxShadow: "3", margin: "dense", marginBottom: "15px"
-                            }}
+                            sx={styles.textfieldStyle}
                             onChange={(e) => setName(e.target.value)}
                         />
                         <TextField
-                            label="Company address" id="addr-textfield" variant="outlined" fullWidth
+                            label="Company Address" id="addr-textfield" variant="outlined" fullWidth
                             inputProps={{ style: { fontSize: 15 } }}
                             inputLabelProps={{ style: { fontSize: 15 } }}
-                            sx={{
-                                boxShadow: "3", margin: "dense", marginBottom: "15px"
-                            }}
+                            sx={styles.textfieldStyle}
                             onChange={(e) => setAddress(e.target.value)}
                         />
                         <TextField
                             label="Company Email" id="email-textfield" variant="outlined" fullWidth
                             inputProps={{ style: { fontSize: 15 } }}
                             inputLabelProps={{ style: { fontSize: 15, marginBottom: "15px" } }}
-                            sx={{
-                                boxShadow: "3", margin: "dense", marginBottom: "15px",
-                            }}
+                            sx={styles.textfieldStyle}
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                         />
@@ -167,9 +196,7 @@ const ManagerCreateAccountView = ({ }) => {
                             label="Password" id="psw-textfield" variant="outlined" type="password" fullWidth
                             inputProps={{ style: { fontSize: 15 } }}
                             inputLabelProps={{ style: { fontSize: 15 } }}
-                            sx={{
-                                boxShadow: "3", margin: "dense", marginBottom: "15px"
-                            }}
+                            sx={styles.textfieldStyle}
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                         />
@@ -178,9 +205,7 @@ const ManagerCreateAccountView = ({ }) => {
                             label="Confirm Password" id="confirm-psw-textfield" variant="outlined" type="password" fullWidth
                             inputProps={{ style: { fontSize: 15 } }}
                             inputLabelProps={{ style: { fontSize: 15 } }}
-                            sx={{
-                                boxShadow: "3", margin: "dense", marginBottom: "15px"
-                            }}
+                            sx={styles.textfieldStyle}
                             value={confirmedPassword}
                             onChange={(e) => setConfirmedPassword(e.target.value)}
                         />

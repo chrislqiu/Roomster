@@ -22,7 +22,7 @@ const renterInfo = new Schema({
     },
     phone: {
         type: String,
-        required: true
+        required: false
     },
     pfp: {
         type: String,
@@ -31,11 +31,11 @@ const renterInfo = new Schema({
     livingPreferences: {
         pets: {
             type: Boolean,
-            required: false
+            default: null
         },
         smoke: {
             type: Boolean,
-            required: false
+            default: null
         },
         studious: {
             type: Number,
@@ -67,7 +67,7 @@ const renterInfo = new Schema({
     },
     favCoops: {
         type: [Property.schema],
-        default: {}
+        required: false
     }
 });
 

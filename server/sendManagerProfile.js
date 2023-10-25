@@ -1,5 +1,5 @@
 const express = require("express");
-const managerProfile = require('./models/managerProfile');
+const Manager = require('./models/manager');
 const router = express.Router();
 const bodyParser = require("body-parser");
 const Manager = require("./models/manager")
@@ -10,6 +10,7 @@ router.use(bodyParser.json());
 router.get('/saveMProfile', (req, res) => {
     const data = req.body;
     console.log(data)
+
 
     //const newManagerProfile = new managerProfile(data);
 
@@ -30,6 +31,7 @@ router.get('/saveMProfile', (req, res) => {
         bio: data.bio,
         company: newCompany
     })
+
 
     newManagerProfile.save((err) => {
         if (err) {

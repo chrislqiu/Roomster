@@ -27,6 +27,7 @@ import PropertyManagerPublicPage from "./pages/PropertyManagerPublicPage";
     background: {
       position: "absolute",
       width:"100%",
+      height: "100%",
       margin: "0",
       padding:"0",
       backgroundColor: "#f5ebe0",
@@ -50,8 +51,6 @@ import PropertyManagerPublicPage from "./pages/PropertyManagerPublicPage";
       }
     }
   });
-
-
 
 
 class App extends React.Component {
@@ -125,6 +124,7 @@ class App extends React.Component {
   
 
   render() {
+    
     const { isAuthenticated } = this.state;
     return (
       // <ThemeProvider theme={theme}>
@@ -133,6 +133,7 @@ class App extends React.Component {
       //       body: { backgroundColor: "#F6EBE1" }
       //     }}
       //   />
+      <html>
       <body style={styles.background}>
         <div style={{zIndex: "0"}}>
           <img className="theredthing" src={theredthing} style={styles.theredthing}></img>
@@ -145,11 +146,10 @@ class App extends React.Component {
 
          <RoomsterAppBar login={isAuthenticated}/>
           <div style={{textAlign:"center", zIndex: "3", position: "relative", marginBottom:"50px"}}>
-
             <img className="logo" src={logo} style={styles.logo}></img>
           </div>
           <Routes>
-            <Route path="/" element={<MainPage />} />
+            <Route path="/" element={<MainPage login={isAuthenticated}/>} />
             <Route path="/Home" element={<MainPage login={isAuthenticated}/>} />
             <Route path="/RProfile" element={<RenterPage />} />
             <Route path="/MProfile" element={<PropertyManagerPage />} />
@@ -165,7 +165,7 @@ class App extends React.Component {
           </Routes>
         </BrowserRouter>
       </body>  
-
+      </html>
       /* </ThemeProvider> */
    
 

@@ -3,6 +3,7 @@ const cors = require("cors");
 const authRouter = require("./auth");
 const mongoose = require('mongoose');
 const cardRoutes = require('./cards');
+
 const saveMProfileRoutes = require('./sendManagerProfile') 
 const RenterInfo = require("./models/renterInfo")
 const Renter = require("./models/renter")
@@ -11,6 +12,7 @@ const Company = require("./models/company")
 const CompanyInfo = require("./models/companyInfo")
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
+
 const app = express();
 
 const dbURI = 'mongodb+srv://chrisqiu52:oe7O2bahWRmXJjOp@cluster0.xe4cgpv.mongodb.net/DB?retryWrites=true&w=majority';
@@ -59,6 +61,7 @@ app.use("/auth", authRouter);
 app.use('/cards', cardRoutes);
 app.post('/sendManagerProfile', async (req, res) => {
   const data = req.body;
+
   //const newManagerProfile = new managerProfile(data);
   const newCompanyInfo = new CompanyInfo({
     name: data.company.name,
@@ -89,6 +92,7 @@ const newManagerProfile = new Manager({
 app.post('/sendRenterProfile', async (req,res) => {
   const data = req.body;
   console.log(data)
+
 
   const newRenterInfo = new RenterInfo({
     name: data.renterInfo.name,

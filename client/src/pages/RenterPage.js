@@ -129,12 +129,6 @@ const RenterPage = () => {
         },
         '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
             border:"2px solid #AB191F"
-        },
-        '&:hover .MuiOutlinedInput-notchedOutline': {
-            border:"2px solid #AB191F"
-        },
-        '.MuiSvgIcon-root ': {
-        fill: "#AB191F",
         }
     }
     const [toggleOn, setToggleOn] = React.useState(false);
@@ -351,14 +345,14 @@ const RenterPage = () => {
                             <Typography style={styles.livingHabit}>{"Sleep schedule"}</Typography>
                         </Container>
                         <Container style={{float: "right", width: "45%"}}>
-                            <FormControl style={{marginLeft:"-25px", marginBottom:"-7px"}} disabled={disableButton}>
+                            <FormControl style={{marginLeft:"-55px", marginBottom:"-7px"}} disabled={disableButton}>
                                 <RadioGroup row name="pets" style={{width: "150px", display: "flex", justifyContent:"center"}} > 
                                     <FormControlLabel value="yes" control={<Radio sx={radioSX}/>} label="Yes" onChange={() => setHasPet(true)}/>
                                     <FormControlLabel value="no" control={<Radio sx={radioSX}/>} label="No" onChange={() => setHasPet(false)}
                                     />
                                 </RadioGroup>
                             </FormControl>
-                            <FormControl style={{marginLeft:"-25px", marginBottom: "-7px"}} disabled={disableButton}>
+                            <FormControl style={{marginLeft:"-55px", marginBottom: "-7px"}} disabled={disableButton}>
                                 <RadioGroup row name="smoke" style={{width: "150px", display: "flex", justifyContent:"center"}} > 
                                     <FormControlLabel value="yes" control={<Radio sx={radioSX}/>} label="Yes" onChange={() => setDoesSmoke(true)}/>
                                     <FormControlLabel value="no" control={<Radio sx={radioSX}/>} label="No" onChange={() => setDoesSmoke(false)}
@@ -375,7 +369,7 @@ const RenterPage = () => {
                                 marks
                                 min={0}
                                 max={5}
-                                sx={{color:"#AB191F", width: "100px", height: "5px", marginLeft: "-40px"}}
+                                sx={{color:"#AB191F", width: "120px", height: "5px", marginLeft: "-70px"}}
                                 disabled={disableButton}
                             />
                             </Container>
@@ -389,7 +383,7 @@ const RenterPage = () => {
                                 marks
                                 min={0}
                                 max={5}
-                                sx={{color:"#AB191F", width: "100px", height: "5px", marginLeft: "-40px"}}
+                                sx={{color:"#AB191F", width: "120px", height: "5px", marginLeft: "-70px"}}
                                 disabled={disableButton}
                             />
                             </Container>
@@ -403,11 +397,11 @@ const RenterPage = () => {
                                 marks
                                 min={0}
                                 max={5}
-                                sx={{color:"#AB191F", width: "100px", height: "5px", marginLeft: "-40px"}}
+                                sx={{color:"#AB191F", width: "120px", height: "5px", marginLeft: "-70px"}}
                                 disabled={disableButton}
                             />
                             </Container>
-                            <Container style={{display: "flex", gap: "1rem", width: "200px", margin:"0 0 10px -20px", padding:"0"}}>
+                            <Container style={{display: "flex", gap: "1rem", width: "200px", margin:"0 0 10px -50px", padding:"0"}}>
                                 <Select displayEmpty value={sleepFrom} onChange={handleSleepFrom} sx={selectSX} disabled={disableButton} >
                                     <MenuItem value=""> <em>From</em> </MenuItem> <MenuItem value={0}>0</MenuItem>
                                     <MenuItem value={1}>1</MenuItem> <MenuItem value={2}>2</MenuItem> <MenuItem value={3}>3</MenuItem>
@@ -419,7 +413,6 @@ const RenterPage = () => {
                                     <MenuItem value={19}>19</MenuItem> <MenuItem value={20}>20</MenuItem> <MenuItem value={21}>21</MenuItem>
                                     <MenuItem value={22}>22</MenuItem> <MenuItem value={23}>23</MenuItem>
                                 </Select>
-                            
                             
                                 <Select displayEmpty value={sleepTo} onChange={handleSleepTo} sx={selectSX} disabled={disableButton} >
                                     <MenuItem value=""> <em>To</em> </MenuItem> <MenuItem value={0}>0</MenuItem>
@@ -433,7 +426,7 @@ const RenterPage = () => {
                                     <MenuItem value={22}>22</MenuItem> <MenuItem value={23}>23</MenuItem>
                                 </Select>
                             </Container>
-                            <Button variant="contained" style={{backgroundColor: "#AB191F", float: "right", margin: "0 0 0 0"}}
+                            <Button variant="contained" style={{backgroundColor: "#AB191F", float: "right", margin: "0 -40px 0 0"}}
                                 onClick={() => {
                                     if (disableButton) {
                                     // Enable edit mode
@@ -448,8 +441,10 @@ const RenterPage = () => {
                             </Button>
 
                         </Container>
+                        
                     </Container>
                     }
+                    
                 </Box>
                 
                 </CardContent>

@@ -25,8 +25,9 @@ const renter = new Schema({
     },
     // coopmates: { //TODO: fix obj ref
     //     type: [RenterInfo.schema],
-    //     default: {}
+    //     required: false
     // }
+
 });
 
 const Renter = mongoose.model('renters', renter);

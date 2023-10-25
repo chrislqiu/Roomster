@@ -17,7 +17,7 @@ const manager = new Schema({
     },
     name: {
         type: String,
-        required: true
+        required: false //TODO: make true when name is a field on UI
     },
     email: {
         type: String,
@@ -25,7 +25,7 @@ const manager = new Schema({
     },
     phone: {
         type: String,
-        required: true
+        required: false
     },
     bio: {
         type: String,
