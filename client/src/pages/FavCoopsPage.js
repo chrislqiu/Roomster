@@ -12,7 +12,7 @@ const FavCoopPage = ({login}) => {
      */
     React.useEffect(() => {
         const getPropertyInfo = async () => {
-            const res = await fetch('http://localhost:8000/cards/all-cards')
+            const res = await fetch('http://localhost:8000/cards/fav-coops-cards')
             const getData = await res.json()
             const obj = JSON.parse(JSON.stringify(getData));
             setPropertyInfo(obj);
