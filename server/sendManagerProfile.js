@@ -2,7 +2,6 @@ const express = require("express");
 const Manager = require('./models/manager');
 const router = express.Router();
 const bodyParser = require("body-parser");
-const Manager = require("./models/manager")
 const Company = require("./models/company")
 const CompanyInfo = require("./models/companyInfo")
 router.use(bodyParser.json());
