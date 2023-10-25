@@ -27,6 +27,7 @@ import PropertyManagerPublicPage from "./pages/PropertyManagerPublicPage";
     background: {
       position: "absolute",
       width:"100%",
+      height: "100%",
       margin: "0",
       padding:"0",
       backgroundColor: "#f5ebe0",
@@ -132,6 +133,7 @@ class App extends React.Component {
       //       body: { backgroundColor: "#F6EBE1" }
       //     }}
       //   />
+      <html>
       <body style={styles.background}>
         <div style={{zIndex: "0"}}>
           <img className="theredthing" src={theredthing} style={styles.theredthing}></img>
@@ -164,7 +166,7 @@ class App extends React.Component {
           </Routes>
         </BrowserRouter>
       </body>  
-
+      </html>
       /* </ThemeProvider> */
    
 
