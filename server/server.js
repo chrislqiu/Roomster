@@ -3,9 +3,10 @@ const cors = require("cors");
 const authRouter = require("./auth");
 const mongoose = require('mongoose');
 const cardRoutes = require('./cards');
-const saveMProfileRoutes = require('./sendManagerProfile') 
-const managerProfile = require('./models/managerProfile')
-const renterProfile = require('./models/renterProfile')
+const saveMProfileRoutes = require('./sendManagerProfile');
+const Manager = require('./models/manager');
+const Renter = require('./models/renter');
+const RenterInfo = require('./models/renterInfo');
 const app = express();
 
 const dbURI = 'mongodb+srv://chrisqiu52:oe7O2bahWRmXJjOp@cluster0.xe4cgpv.mongodb.net/DB?retryWrites=true&w=majority';
@@ -30,8 +31,8 @@ app.use("/auth", authRouter);
 app.use('/cards', cardRoutes);
 app.post('/sendManagerProfile', async (req, res) => {
   const data = req.body;
-  const newManagerProfile = new managerProfile(data);
-  newManagerProfile.save()
+  const newManager = new Manager(data);
+  newManager.save()
   .then((result) => {
     res.send(result);
   })
@@ -43,8 +44,14 @@ app.post('/sendManagerProfile', async (req, res) => {
 app.post('/sendRenterProfile', async (req,res) => {
   const data = req.body;
   console.log(data)
-  const newRenterProfile = new renterProfile(data);
-  newRenterProfile.save()
+  const newRenterInfo = new RenterInfo(data);
+  newRenterInfo.save();
+  const newRenter = new Renter({
+    username: "name",
+    password: "password",
+    renterInfo: newRenterInfo
+  });
+  newRenter.save()
   .then((result) => {
     console.log(result)
     res.send(result);
