@@ -243,6 +243,7 @@ const RenterPage = () => {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(dataToSend),
+            credentials: "include"
         })
         .then(response => response.json())
         .then(data => {
@@ -402,7 +403,7 @@ const RenterPage = () => {
                             </Container>
                             <Container style={{display: "flex", gap: "1rem", width: "200px", margin:"0 0 10px -50px", padding:"0"}}>
                                 <Select displayEmpty value={sleepFrom} onChange={handleSleepFrom} sx={selectSX} disabled={disableButton} >
-                                    <MenuItem value=""> <em>From</em> </MenuItem>
+                                    <MenuItem value=""> <em>From</em> </MenuItem> <MenuItem value={0}>0</MenuItem>
                                     <MenuItem value={1}>1</MenuItem> <MenuItem value={2}>2</MenuItem> <MenuItem value={3}>3</MenuItem>
                                     <MenuItem value={4}>4</MenuItem> <MenuItem value={5}>5</MenuItem> <MenuItem value={6}>6</MenuItem>
                                     <MenuItem value={7}>7</MenuItem> <MenuItem value={8}>8</MenuItem> <MenuItem value={9}>9</MenuItem>
@@ -410,11 +411,11 @@ const RenterPage = () => {
                                     <MenuItem value={13}>13</MenuItem> <MenuItem value={14}>14</MenuItem> <MenuItem value={15}>15</MenuItem>
                                     <MenuItem value={16}>16</MenuItem> <MenuItem value={17}>17</MenuItem> <MenuItem value={18}>18</MenuItem>
                                     <MenuItem value={19}>19</MenuItem> <MenuItem value={20}>20</MenuItem> <MenuItem value={21}>21</MenuItem>
-                                    <MenuItem value={22}>22</MenuItem> <MenuItem value={23}>23</MenuItem> <MenuItem value={24}>24</MenuItem>
+                                    <MenuItem value={22}>22</MenuItem> <MenuItem value={23}>23</MenuItem>
                                 </Select>
                             
                                 <Select displayEmpty value={sleepTo} onChange={handleSleepTo} sx={selectSX} disabled={disableButton} >
-                                    <MenuItem value=""> <em>To</em> </MenuItem>
+                                    <MenuItem value=""> <em>To</em> </MenuItem> <MenuItem value={0}>0</MenuItem>
                                     <MenuItem value={1}>1</MenuItem> <MenuItem value={2}>2</MenuItem> <MenuItem value={3}>3</MenuItem>
                                     <MenuItem value={4}>4</MenuItem> <MenuItem value={5}>5</MenuItem> <MenuItem value={6}>6</MenuItem>
                                     <MenuItem value={7}>7</MenuItem> <MenuItem value={8}>8</MenuItem> <MenuItem value={9}>9</MenuItem>
@@ -422,7 +423,7 @@ const RenterPage = () => {
                                     <MenuItem value={13}>13</MenuItem> <MenuItem value={14}>14</MenuItem> <MenuItem value={15}>15</MenuItem>
                                     <MenuItem value={16}>16</MenuItem> <MenuItem value={17}>17</MenuItem> <MenuItem value={18}>18</MenuItem>
                                     <MenuItem value={19}>19</MenuItem> <MenuItem value={20}>20</MenuItem> <MenuItem value={21}>21</MenuItem>
-                                    <MenuItem value={22}>22</MenuItem> <MenuItem value={23}>23</MenuItem> <MenuItem value={24}>24</MenuItem>
+                                    <MenuItem value={22}>22</MenuItem> <MenuItem value={23}>23</MenuItem>
                                 </Select>
                             </Container>
                             <Button variant="contained" style={{backgroundColor: "#AB191F", float: "right", margin: "0 -40px 0 0"}}
