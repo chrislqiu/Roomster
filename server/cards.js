@@ -8,6 +8,7 @@ const Manager = require('./models/manager');
 const Renter = require('./models/renter');
 const router = express.Router();
 
+
 // Route to add a card
 router.get('/add-card', async (req, res) => {
     const newCompanyInfo = new CompanyInfo({

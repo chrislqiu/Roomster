@@ -52,8 +52,6 @@ import PropertyManagerPublicPage from "./pages/PropertyManagerPublicPage";
   });
 
 
-
-
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -125,6 +123,7 @@ class App extends React.Component {
   
 
   render() {
+    
     const { isAuthenticated } = this.state;
     return (
       // <ThemeProvider theme={theme}>

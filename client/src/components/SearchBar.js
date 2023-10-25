@@ -1,20 +1,15 @@
 import { Typography, Box, TextField, Button } from '@mui/material'
-import React, { useRef, Component } from 'react'
+import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faMagnifyingGlass, faCaretDown } from '@fortawesome/free-solid-svg-icons'
+import { faCaretDown } from '@fortawesome/free-solid-svg-icons'
 
 const SearchBar = ({ data, setInput }) => {
-    const valueRef = useRef('') //creating a refernce for TextField Component
 
-    const sendValue = () => {
-        setInput(valueRef.current.value);
-    }
-
-    {/*const handleInput = (e) => {
+    const handleInput = (e) => {
         console.log(e.target.value)
         setInput(e.target.value.toLowerCase())
       }
-    */}
+    
     const styles = {
         search: {
             margin: "-30px 0 60px 0",
@@ -48,18 +43,15 @@ const SearchBar = ({ data, setInput }) => {
                           padding: '0 20px',
                         },
                     }}
-                    inputRef={valueRef}
-                    //onchange={handleInput}
+                    onSelect={handleInput}
                 />
                 <Box style={{float:"right", marginTop:"7px"}}>
                     <Button style={styles.buttons}>
                         <FontAwesomeIcon icon={faCaretDown}/>
                     </Button>
-                    <Button style={styles.buttons} onClick={sendValue}>
-                        <FontAwesomeIcon icon={faMagnifyingGlass}/>
-                    </Button>
+                    
                 </Box>
-                
+               
             </Box>
             
 
