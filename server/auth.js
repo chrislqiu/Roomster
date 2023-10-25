@@ -248,6 +248,7 @@ router.post("/delete", authorization, async (req, res) => {
 
         if (isPasswordValid) {
             if (userType === "renter") {
+                //TODO delete renter info before deleting renter
                 await Renter.deleteOne({ username: req.body.username });
             } else if (userType === "manager") {
                 await Manager.deleteOne({ username: req.body.username });
@@ -377,6 +378,7 @@ router.get("/verify/:token", async (req, res) => {
 //only for testing purposes
 router.get("/clearUsers", async (req, res) => {
     try {
+        await RenterInfo.deleteMany({});
         await Renter.deleteMany({});
         await Manager.deleteMany({});
         res.send("All users deleted");
