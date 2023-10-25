@@ -271,7 +271,7 @@ router.get("/logout", authorization, (req, res) => {
         .json({ message: "Logged out" });
 });
 
-router.post("/change-password", authorization, async (req, res) => { //TODO: replace User
+router.post("/change-password", authorization, async (req, res) => {
     const userType = req.cookies.user_type;
     var user = null;
     if (userType === "renter") {
@@ -315,7 +315,7 @@ router.post("/change-password", authorization, async (req, res) => { //TODO: rep
     }
 });
 
-router.get("/check-verify", authorization, async (req, res) => { //TODO: replace User
+router.get("/check-verify", authorization, async (req, res) => {
     try {
         const userType = req.cookies.user_type;
         var user = null;
@@ -373,7 +373,6 @@ router.get("/verify/:token", async (req, res) => {
         return res.status(500).send("Email verification failed");
     }
 });
-
 
 //only for testing purposes
 router.get("/clearUsers", async (req, res) => {

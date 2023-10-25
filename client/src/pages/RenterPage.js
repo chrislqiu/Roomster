@@ -129,9 +129,7 @@ const RenterPage = () => {
         },
         '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
             border:"2px solid #AB191F"
-        },
-        
-        
+        }
     }
     const [toggleOn, setToggleOn] = React.useState(false);
     const [hasPet, setHasPet] = React.useState(null);
