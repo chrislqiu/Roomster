@@ -5,11 +5,11 @@ const RenterInfo = require('./renterInfo');
 const renter = new Schema({
     username: {
         type: String,
-        required: true
+        required: false
     },
     password: {
         type: String,
-        required: true
+        required: false
     },
     isVerified: {
         type: Boolean,
@@ -23,10 +23,11 @@ const renter = new Schema({
         type: RenterInfo.schema,
         required: true
     },
-    coopmates: {
-        type: [RenterInfo.schema],
-        required: false
-    }
+    // coopmates: { //TODO: fix obj ref
+    //     type: [RenterInfo.schema],
+    //     required: false
+    // }
+
 });
 
 const Renter = mongoose.model('renters', renter);

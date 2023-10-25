@@ -16,7 +16,7 @@ const companyInfo = new Schema({
     },
     email: {
       type: String,
-      required: true
+      required: false
     },
     phone: {
       type: String,
