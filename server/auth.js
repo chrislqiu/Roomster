@@ -23,20 +23,20 @@ const secretKey = "E.3AvP1]&r7;-vBSAL|3AyetV%H*fIEy";
 
 const authorization = (req, res, next) => {
     const token = req.cookies.access_token;
-    
+
     if (!token) {
         return res.sendStatus(401); // Unauthorized
     }
-    
+
     jwt.verify(token, secretKey, (err, user) => {
         if (err) {
             return res.sendStatus(403); // Forbidden
         }
-        
+
         if (req.body.username && req.body.username !== user.username) {
             return res.status(401).send("Unauthorized");
         }
-        
+
         req.user = user;
         next();
     });
@@ -71,7 +71,7 @@ router.get("/managers", (req, res) => {
         console.log(err);
     });
 });
-    
+
 const isEmailValid = (email) => {
     const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
     return emailRegex.test(email);
@@ -80,11 +80,11 @@ const isEmailValid = (email) => {
 router.post("/renter-signup", async (req, res) => {
     const existingRenter = await Renter.findOne({ username: req.body.username });
     const userType = "renter";
-    
+
     if (existingRenter) {
         return res.status(400).send("User already exists");
     }
-    
+
     try {
         const salt = await bcrypt.genSalt();
         const hashedPW = await bcrypt.hash(req.body.password, salt);
@@ -95,19 +95,19 @@ router.post("/renter-signup", async (req, res) => {
         });
 
         newRenterInfo.save();
-        
+
         const newRenter = new Renter({
             username: req.body.username,
             password: hashedPW,
             renterInfo: newRenterInfo
         });
-        
+
         newRenter.save()
         .then((result) => {
             const verificationToken = jwt.sign({ username: req.body.username}, secretKey, { expiresIn: "10m" });
-    
+
             sendVerificationEmail(newRenter.username, verificationToken);
-            
+
             const token = jwt.sign({ username: req.body.username }, secretKey, { expiresIn: '1h' });
             return res
                 .cookie("access_token", token, {
