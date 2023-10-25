@@ -45,11 +45,11 @@ const MainPage = ({login}) => {
         <Container sx={{ width: '100%' }}>
 
             <SearchBar data={propertyInfo} setInput={setInput}/>
-            {console.log(input)}
+            {input == '' &&
             <Box sx={{ m: 4 }} style={styles.feed}>
                 <FeaturedProperties data={propertyInfo} style={styles.feed} login={login}/>
             </Box>
-           
+            }
             <Box sx={{ m: 1 }} style={styles.feed}>
                 {
                    /*
