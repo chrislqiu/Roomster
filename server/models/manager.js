@@ -5,11 +5,11 @@ const Company = require('./company');
 const manager = new Schema({
     username: {
         type: String,
-        required: true
+        required: false
     },
     password: {
         type: String,
-        required: true
+        required: false
     },
     isVerified: {
         type: Boolean,
