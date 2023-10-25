@@ -44,11 +44,15 @@ const PropertyManagerPage = () => {
         }
         
         const dataToSend ={
-            phoneNum: phoneNumber,
+            name: name,
+            phone: phoneNumber,
             email: email,
             bio: bio,
-            address: addr,
-            officePhone: officeNum
+            company: {
+                name: companyName,
+                address: addr,
+                phone: officeNum
+            }
         };
 
         fetch('http://localhost:8000/sendManagerProfile', {
@@ -60,12 +64,15 @@ const PropertyManagerPage = () => {
         })
         .then(response => response.json())
         .then(data => {
-            console.log('DATA SAVEDDDD: ', data.message);
+            console.log('DATA SAVEDDDD: ', data);
         })
         .catch(error => {
             console.error('ERRORRR: ', error);
         });
     };
+
+    const name = "John Doe"
+    const companyName = "RISE on Chauncey"
     return (
             <Card
                 variant='contained'
@@ -90,7 +97,7 @@ const PropertyManagerPage = () => {
                             color: "black",
                             width: "310px",
                         }}>
-                            {"John Doe"}
+                            {name}
                         </Typography >
                         <Typography
                         sx={{
@@ -178,7 +185,7 @@ const PropertyManagerPage = () => {
                             variant: "h1",
                             color: "black"
                         }}>
-                            {"Rise Apartments"}
+                            {companyName}
                     </Typography >
                     <Typography
                         sx={{
