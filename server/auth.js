@@ -520,11 +520,11 @@ router.get("/admin/verify/:token", async (req, res) => {
 
         const verificationToken = jwt.sign(
             {
-              username: req.body.username,
+              username: decoded.username,
             }, secretKey, { expiresIn: "7d" }
           );
 
-        setAdminPWEmail(req.body.username, verificationToken);
+        setAdminPWEmail(decoded.username, verificationToken);
 
         return res.redirect("http://localhost:3001/VerifyPage");
     } catch (err) {
@@ -538,7 +538,7 @@ router.get("/admin/verify-set-pw/:token", async (req, res) => {
     console.log("Token:", token);
     try {
       const decoded = jwt.verify(token, secretKey);
-      console.log(decoded.username);
+      console.log("username: " + decoded.username);
   
       const user = await Admin.findOne({ username: decoded.username });
   
