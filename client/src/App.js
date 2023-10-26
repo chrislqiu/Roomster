@@ -27,7 +27,7 @@ import PropertyManagerPublicPage from "./pages/PropertyManagerPublicPage";
     background: {
       position: "absolute",
       width:"100%",
-      height: "100%",
+      minHeight: "100vh",
       margin: "0",
       padding:"0",
       backgroundColor: "#f5ebe0",
