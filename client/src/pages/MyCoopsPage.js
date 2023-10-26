@@ -15,7 +15,7 @@ const MyCoopsPage = () => {
     const [hovered, setHovered] = React.useState(false);
     const [openMessage, setOpenMessage] = React.useState(false);
 
-    /* Amenities */
+    /* Amenities: pet friendly, in-unit WD, parking, kitchen appliances, furnished */
     const [isPetFriendly, setIsPetFriendly] = React.useState(false)
     const [notPetFriendly, setNotPetFriendly] = React.useState(false)
     const [hasInUnitWD, setHasInUnitWD] = React.useState(false)
@@ -31,13 +31,15 @@ const MyCoopsPage = () => {
     const [includeElec, setIncludeElec] = React.useState(false)
     const [noElec, setNoElec] = React.useState(false)
     const [includeGas, setIncludeGas] = React.useState(false)
+    const [noGas, setNoGas] = React.useState(false)
     const [includeWater, setIncludeWater] = React.useState(false)
     const [noWater, setNoWater] = React.useState(false)
     const [includeTrash, setIncludeTrash] = React.useState(false)
-    const []
-
-
-
+    const [noTrash, setNoTrash] = React.useState(false)
+    const [includeSewage, setIncludeSewage] = React.useState(false)
+    const [noSewage, setNoSewage] = React.useState(false)
+    const [includeInternet, setInternet] = React.useState(false)
+    const [noInternet, setNoInternet] = React.useState(false)
 
     const handleOpenMessage = () => {
         setOpenMessage(true)
@@ -118,14 +120,6 @@ const MyCoopsPage = () => {
         }
 
     }
-
-    const amenitySX = {
-        width:"200px",
-        fontSize: "11pt",
-        color: "black",
-        margin: "0 0 7px -25px",
-        padding: "0"
-    }
     
     return (
         <Container sx={{ width: '100%' }}>
@@ -166,7 +160,6 @@ const MyCoopsPage = () => {
                         },
                     },
                 }}
-                
             >
                 <DialogContent>
                     
@@ -274,19 +267,20 @@ const MyCoopsPage = () => {
                             <Divider orientation={{xs:'horizontal', md:'vertical', lg:'vertical', xl:'vertical'}} width={3} sx={{ borderBottomWidth: 3, color: "#AB191F", backgroundColor: "#AB191F", marginY: 2, marginX: 0, maxHeight:"175px" }} />
                             <Box height="175px" style={{marginRight:"-45px", }}>
                                 <Box width='200px' height='600px' style={{margin:"-10px 0 0 -30px", textAlign:"left", padding: "0"}}>
-                                <Typography
-                                    sx={{
-                                        fontWeight: 600,
-                                        marginTop:"-30px",
-                                        marginBottom:"5px",
-                                        //marginLeft:"-25px",
-                                        variant:"body2"
-                                    }}
-                                >
-                                    Amenities
-                                </Typography>
+                                    <Typography
+                                        sx={{
+                                            fontWeight: 600,
+                                            marginTop:"-30px",
+                                            marginBottom:"5px",
+                                            //marginLeft:"-25px",
+                                            variant:"body2"
+                                        }}
+                                    >
+                                        Amenities
+                                    </Typography>
+
                                     {/* Furnished */}
-                                    <Container style={{float:"left", width:"100%",}}>
+                                    <Container style={{float:"left", width:"100%"}}>
                                         <FormControlLabel style={{margin:"-10px 0 0 -30px"}} label={<Typography style={{fontSize:"11pt"}}>Furnished</Typography>} control={
                                             <Checkbox style={{}}
                                             checked={isFurnished}
@@ -304,7 +298,7 @@ const MyCoopsPage = () => {
 
                                     {/* Kitchen Appliances */}
                                     <Container style={{float:"left", width:"100%"}}>
-                                        <FormControlLabel style={{margin:"-10px 0 0 -30px"}} label={<Typography style={{fontSize:"11pt"}}>Kitchen Appliances</Typography>} control={
+                                        <FormControlLabel style={{margin:"-20px 0 0 -30px"}} label={<Typography style={{fontSize:"11pt"}}>Kitchen Appliances</Typography>} control={
                                             <Checkbox style={{}}
                                             checked={hasKitchenApp}
                                             onChange={() => setHasKitchenApp(!hasKitchenApp)}
@@ -321,7 +315,7 @@ const MyCoopsPage = () => {
 
                                     {/* In-Unit Washer Dryer */}
                                     <Container style={{float:"left", width:"100%"}}>
-                                        <FormControlLabel style={{margin:"-10px 0 0 -30px"}} label={<Typography style={{fontSize:"11pt"}}>In-Unit Washer Dryer</Typography>} control={
+                                        <FormControlLabel style={{margin:"-40px 0 0 -30px"}} label={<Typography style={{fontSize:"11pt"}}>In-Unit Washer Dryer</Typography>} control={
                                             <Checkbox style={{}}
                                             checked={hasInUnitWD}
                                             onChange={() => setHasInUnitWD(!hasInUnitWD)}
@@ -338,7 +332,7 @@ const MyCoopsPage = () => {
 
                                     {/* Parking */}
                                     <Container style={{float:"left", width:"50%"}}>
-                                        <FormControlLabel style={{margin:"-10px 0 0 -30px"}} label={<Typography style={{fontSize:"11pt"}}>Parking</Typography>} control={
+                                        <FormControlLabel style={{margin:"-60px 0 0 -30px"}} label={<Typography style={{fontSize:"11pt"}}>Parking</Typography>} control={
                                             <Checkbox style={{}}
                                             checked={hasParking}
                                             onChange={() => setHasParking(!hasParking)}
@@ -355,7 +349,7 @@ const MyCoopsPage = () => {
 
                                     {/* Pet Friendly */}
                                     <Container style={{float:"left", width:"100%"}}>
-                                        <FormControlLabel style={{margin:"-10px 0 0 -30px"}} label={<Typography style={{fontSize:"11pt"}}>Pet Friendly</Typography>} control={
+                                        <FormControlLabel style={{margin:"-80px 0 0 -30px"}} label={<Typography style={{fontSize:"11pt"}}>Pet Friendly</Typography>} control={
                                             <Checkbox style={{}}
                                             checked={isPetFriendly}
                                             onChange={() => setIsPetFriendly(!isPetFriendly)}
@@ -369,8 +363,29 @@ const MyCoopsPage = () => {
                                             />}
                                         />
                                     </Container> 
+
+                                    {/* Other */}
+                                    <InputBase 
+                                        placeholder="Other" 
+                                        id="Other" 
+                                        sx={{
+                                            marginLeft:"6px",
+                                            top:"-27px",
+                                            fontSize:"11pt",
+                                            width:"150px", 
+                                            height: "35px",
+                                            borderRadius: "5px",
+                                            border: "2px solid #AB191F",
+                                            padding: "5px",
+                                            "&:hover": {
+                                                border: "2px solid #AB191F",
+                                                boxShadow:"0px 0px 3px 3px rgba(0, 0, 0, .1)", 
+                                            }
+                                        }}
+                                    /> {<br />}{<br />}
                                 </Box>
                             </Box>
+
                             {/* Utilities */}
                             <Divider orientation={{xs:'horizontal', md:'vertical', lg:'vertical', xl:'vertical'}} width={3} sx={{ borderBottomWidth: 3, color: "#AB191F", backgroundColor: "#AB191F", marginY: 2, marginX: 0, maxHeight:"175px" }} />
                             <Box height="175px" style={{marginRight:"-25px", }}>
@@ -386,6 +401,108 @@ const MyCoopsPage = () => {
                                     >
                                         Utilities
                                     </Typography>
+
+                                    {/* Water */}
+                                    <Container style={{float:"left", width:"100%",}}>
+                                        <FormControlLabel style={{margin:"-10px 0 0 -30px"}} label={<Typography style={{fontSize:"11pt"}}>Water</Typography>} control={
+                                            <Checkbox style={{}}
+                                            checked={includeWater}
+                                            onChange={() => setIncludeWater(!includeWater)}
+                                            disabled={noWater === true ? true : false}
+                                            inputProps={{ 'aria-label': 'controlled' }}
+                                            sx={{
+                                                color:"#AB191F",
+                                                '&.Mui-checked': {
+                                                    color: "#AB191F",
+                                                },}}
+                                            />}
+                                        />
+                                    </Container> {<br />}{<br />}
+
+                                    {/* Electricity */}
+                                    <Container style={{float:"left", width:"100%"}}>
+                                        <FormControlLabel style={{margin:"-20px 0 0 -30px"}} label={<Typography style={{fontSize:"11pt"}}>Electricity</Typography>} control={
+                                            <Checkbox style={{}}
+                                            checked={includeElec}
+                                            onChange={() => setNoElec(!includeElec)}
+                                            disabled={noElec === true ? true : false}
+                                            inputProps={{ 'aria-label': 'controlled' }}
+                                            sx={{
+                                                color:"#AB191F",
+                                                '&.Mui-checked': {
+                                                    color: "#AB191F",
+                                                },}}
+                                            />}
+                                        />
+                                    </Container> {<br />}{<br />}
+
+                                    {/* Gas */}
+                                    <Container style={{float:"left", width:"100%",}}>
+                                        <FormControlLabel style={{margin:"-40px 0 0 -30px"}} label={<Typography style={{fontSize:"11pt"}}>Gas</Typography>} control={
+                                            <Checkbox style={{}}
+                                            checked={includeGas}
+                                            onChange={() => setNoGas(!includeGas)}
+                                            disabled={noGas === true ? true : false}
+                                            inputProps={{ 'aria-label': 'controlled' }}
+                                            sx={{
+                                                color:"#AB191F",
+                                                '&.Mui-checked': {
+                                                    color: "#AB191F",
+                                                },}}
+                                            />}
+                                        />
+                                    </Container> {<br />}{<br />}
+
+                                    {/* Trash */}
+                                    <Container style={{float:"left", width:"100%",}}>
+                                        <FormControlLabel style={{margin:"-60px 0 0 -30px"}} label={<Typography style={{fontSize:"11pt"}}>Trash</Typography>} control={
+                                            <Checkbox style={{}}
+                                            checked={includeTrash}
+                                            onChange={() => setNoTrash(!includeTrash)}
+                                            disabled={noTrash === true ? true : false}
+                                            inputProps={{ 'aria-label': 'controlled' }}
+                                            sx={{
+                                                color:"#AB191F",
+                                                '&.Mui-checked': {
+                                                    color: "#AB191F",
+                                                },}}
+                                            />}
+                                        />
+                                    </Container> {<br />}{<br />}
+
+                                    {/* Sewage */}
+                                    <Container style={{float:"left", width:"100%",}}>
+                                        <FormControlLabel style={{margin:"-80px 0 0 -30px"}} label={<Typography style={{fontSize:"11pt"}}>Sewage</Typography>} control={
+                                            <Checkbox style={{}}
+                                            checked={includeSewage}
+                                            onChange={() => setNoSewage(!includeSewage)}
+                                            disabled={noSewage === true ? true : false}
+                                            inputProps={{ 'aria-label': 'controlled' }}
+                                            sx={{
+                                                color:"#AB191F",
+                                                '&.Mui-checked': {
+                                                    color: "#AB191F",
+                                                },}}
+                                            />}
+                                        />
+                                    </Container> {<br />}{<br />}
+
+                                    {/* Internet */}
+                                    <Container style={{float:"left", width:"100%",}}>
+                                        <FormControlLabel style={{margin:"-100px 0 0 -30px"}} label={<Typography style={{fontSize:"11pt"}}>Internet</Typography>} control={
+                                            <Checkbox style={{}}
+                                            checked={includeInternet}
+                                            onChange={() => setNoInternet(!includeInternet)}
+                                            disabled={noInternet === true ? true : false}
+                                            inputProps={{ 'aria-label': 'controlled' }}
+                                            sx={{
+                                                color:"#AB191F",
+                                                '&.Mui-checked': {
+                                                    color: "#AB191F",
+                                                },}}
+                                            />}
+                                        />
+                                    </Container> {<br />}{<br />}
                                 </Box>
                             </Box>
 
@@ -398,7 +515,7 @@ const MyCoopsPage = () => {
                                     },
                                     borderColor:"#AB191F", bgcolor:"#AB191F", color:"#F6EBE1", 
                                     borderWidth: 1.5, width:"100%", fontWeight:600, lineHeight:"15px",
-                                    boxShadow: 5, maxWidth:"120px", maxHeight: "50px",
+                                    boxShadow: 5, maxWidth:"112px", maxHeight: "50px",
                                     float: "right", bottom: 20, right:35,
                                     //left: "50%",
                                     marginBottom:"30px",
@@ -408,21 +525,9 @@ const MyCoopsPage = () => {
                                 }}
                                 variant="outlined">Add Coop
                             </Button>
-                                
-                                
-                                
-                            
-                            
-
                         </Stack>
 
                     </Container>
-                    
-                    <Container sx={{display:"inline-flex", marginTop:"50px"}}>
-                        
-                        
-                    </Container>
-                    
                 </DialogContent>
         <DialogActions>
             
