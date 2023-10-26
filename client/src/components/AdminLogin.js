@@ -8,25 +8,8 @@ import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
-import RenterCreateAccountView from './RenterCreateAccountView';
-import RenterCreateAccountPage from '../pages/RenterCreateAccountPage';
-import ManagerCreateAccountView from './PropertyManagerCreateAccountView';
-
-
-
-/**
- * Display for Log in/Create Account Pop-up
- * Jillian Urgello 
- * 
- * Colors:
- * red: #AB191F
- * yellow: #F6EBE1
-
- */
-
-
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 const AdminLogin = ({ text }) => {
@@ -38,21 +21,6 @@ const AdminLogin = ({ text }) => {
     const [loginStatus, setLoginStatus] = React.useState(null)
     const [RequestOpen, setRequestOpen] = React.useState(false)
     const [RequestUsername, setRequestUsername] = React.useState('')
-
-    const handleOpen = () => {
-        setOpen(true)
-        //setMCreateOpen(false)
-    }
-    const handleClose = () => {
-        // setOpen(false)
-        setLoginStatus(null)
-    }
-
-
-    const handleRequest = () => {
-        // ... (implement the logic for resetting the password)
-        console.log('Resetting password...');
-    };
 
     const handleRequestOpen = () => {
         setRequestOpen(true);
@@ -80,7 +48,6 @@ const AdminLogin = ({ text }) => {
                     message: 'Logging in...',
                     color: 'green',
                 });
-                // handleClose();
                 setTimeout(() => {
                     window.location.reload();
                 }, 1000);
@@ -101,12 +68,54 @@ const AdminLogin = ({ text }) => {
 
     }
 
-    const handleRCreate = event => {
-        //handleClose()
-        //setRCreateOpen(prev => !prev)   
-        window.location.replace("/RCreate")
-        //return <RenterCreateAccountView text={"hello"} />
-    }
+    const handleAdminRequest = async () => {
+        try {
+            const response = await fetch('http://localhost:8000/auth/admin/send-admin-request', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                // credentials: 'include',
+                body: JSON.stringify({ username: RequestUsername }),
+            });
+
+            console.log(response)
+
+            if (response.ok) {
+                toast.success('Request email sent', {
+                    position: toast.POSITION.TOP_CENTER,
+                    autoClose: 3000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: false,
+                    style: {
+                        background: "#F6EBE1", 
+                      },
+                });
+                handleRequestClose();
+            } else {
+                toast.error('User already exists', {
+                    position: toast.POSITION.TOP_CENTER,
+                    autoClose: 3000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: false,
+                    style: {
+                        background: "#F6EBE1", 
+                      },
+                });
+
+            }
+        } catch (error) {
+            setLoginStatus({
+                message: 'Error logging in',
+                color: '#AB191F',
+            });
+        }
+        
+    };
 
     return (
         <div
@@ -213,14 +222,14 @@ const AdminLogin = ({ text }) => {
                     />
 
                     <Button
-                        onClick={handleRequest}
+                        onClick={handleAdminRequest}
                         sx={{
                             ':hover': {
                                 borderColor: 'black',
                                 bgcolor: '#F6EBE1',
                                 color: 'black',
                                 borderWidth: 1.5,
-                                width: '100%',
+                                width: '30%',
                                 fontWeight: 600,
                             },
                             borderColor: 'black',
