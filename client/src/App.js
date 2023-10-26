@@ -15,7 +15,7 @@ import theredthing from './images/theredthing.png'
 import logo from './images/logo2.png'
 import RoomsterAppBar from "./components/AppBar";
 import FavCoopsPage from "./pages/FavCoopsPage";
-import Settings from "./pages/Settings"
+import Settings from "./pages/Settings"  
 import VerifyPage from "./pages/VerifyPage"
 import Popup from "./components/Popup";
 import RenterCreateAccountView from "./components/RenterCreateAccountView";
@@ -23,6 +23,7 @@ import ManagerCreateAccountView from "./components/PropertyManagerCreateAccountV
 import CoopmatesPage from "./pages/CoopmatesPage";
 import PropertyManagerPublicPage from "./pages/PropertyManagerPublicPage";
 import AdminPage from "./pages/AdminPage";
+import ResetPWPage from "./pages/ResetPWPage"
 
   const styles = {
     background: {
@@ -164,6 +165,7 @@ class App extends React.Component {
             <Route path="/Coopmates" element={<CoopmatesPage />} />
             <Route path="/CompanyPage" element={<PropertyManagerPublicPage />} />
             <Route path="/Admin" element={<AdminPage />} />
+            <Route path="/ResetPW/:token" element={<ResetPWPage />} />
           </Routes>
         </BrowserRouter>
       </body>  

@@ -9,13 +9,14 @@ const CompanyInfo = require('./models/companyInfo.js');
 const Admin = require("./models/admin.js")
 const cookieParser = require("cookie-parser");
 const sendVerificationEmail = require("./emailVerify.js");
+const changePasswordEmail = require("./changePasswordEmail.js")
 const cors = require('cors');
 
 const router = express.Router();
 router.use(cookieParser())
 const corsOptions = {
-    origin: 'http://localhost:3001',
-    credentials: true,
+  origin: 'http://localhost:3001',
+  credentials: true,
 };
 
 router.use(cors(corsOptions));
@@ -196,6 +197,7 @@ router.post("/manager-signup", async (req, res) => {
     }
 });
 
+
 router.post("/login", async (req, res) => {
     var user = await Renter.findOne({ username: req.body.username });
     var userType = "renter";
@@ -331,14 +333,35 @@ router.get("/check-verify", authorization, async (req, res) => {
             return res.status(404).send("User not found");
         }
 
-        if (user.isVerified) {
-            return res.status(200).json({user});
-        }
-    } catch (err) {
-        console.error(err);
-        return res.status(500).send("Error checking user verification");
+    if (user.isVerified) {
+      return res.status(200).json({ user });
     }
+  } catch (err) {
+    console.error(err);
+    return res.status(500).send("Error checking user verification");
+  }
 });
+
+router.post("/send-pw-reset", async (req, res) => {
+  const user = await User.findOne({ username: req.body.username });
+
+  if (!user) {
+    return res.status(400).send("User does not exist");
+  }
+
+  const verificationToken = jwt.sign(
+    {
+      username: req.body.username,
+    }, secretKey, { expiresIn: "10m" }
+  );
+
+  changePasswordEmail(req.body.username, verificationToken);
+
+  return res.status(200).send("Email sent");
+
+});
+
+
 
 router.get("/verify/:token", async (req, res) => {
     const { token } = req.params;
@@ -376,6 +399,56 @@ router.get("/verify/:token", async (req, res) => {
     }
 });
 
+
+router.get("/verify-pw-reset/:token", async (req, res) => {
+  const { token } = req.params;
+  console.log("Token:", token);
+  try {
+    const decoded = jwt.verify(token, secretKey);
+    console.log(decoded.username);
+
+    const user = await User.findOne({ username: decoded.username });
+
+    if (!user) {
+      // return res.status(404).send("User not found");
+      return res.redirect(`http://localhost:3001/?toast=ResetErr`);
+    }
+
+    const resetToken = jwt.sign({ username: decoded.username }, secretKey, { expiresIn: '10m' });
+
+    return res.redirect(`http://localhost:3001/ResetPW/${resetToken}`);
+  } catch (err) {
+    return res.redirect(`http://localhost:3001/?toast=ResetErr`);
+  }
+});
+
+router.post("/pw-reset/:token", async (req, res) => {
+  const { token } = req.params;
+  console.log("Token:", token);
+  try {
+    const decoded = jwt.verify(token, secretKey);
+    console.log("decoded" + decoded.username);
+
+    const user = await User.findOne({ username: decoded.username });
+
+    if (!user) {
+      return res.status(404).send("User not found");
+    }
+
+    const salt = await bcrypt.genSalt();
+    const hashedNewPassword = await bcrypt.hash(req.body.newPassword, salt);
+
+    await User.updateOne({ username: decoded.username }, { password: hashedNewPassword });
+
+    return res.status(200).send("Password reset");
+  } catch (err) {
+    console.log(err)
+    return res.status(500).send("Error resetting password");
+  }
+});
+
+
+
 router.post("/admin/login", async (req, res) => {
     var user = await Admin.findOne({ username: req.body.username });
 
@@ -403,6 +476,8 @@ router.post("/admin/login", async (req, res) => {
         res.status(500).send("Error when logging in");
     }
 });
+
+
 
 //only for testing purposes
 router.get("/clearUsers", async (req, res) => {
