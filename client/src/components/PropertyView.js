@@ -155,10 +155,29 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
                     }
                     <Stack direction={{'400px': "column", md: "row",lg: "row", xl: "row"}} spacing={5} sx={{ marginTop: 2, p: 1 }} >
                         <Box width='600'>
-                            <Tooltip title="Go to Company Page">
-                            <Link href="/CompanyPage" underline="none" color="black" sx={{fontWeight: 600}}>
-                                {data.propertyInfo.propertyName}
-                            </Link>
+                            <Tooltip 
+                                title="Go to Company Page"
+                                componentsProps={{
+                                    tooltip: {
+                                      sx: {
+                                        bgcolor: 'rgba(171, 25, 31, 0.9)',
+                                        color: '#F6EBE1'
+                                      },
+                                    },
+                                }}
+                                >
+                                <Link href="/CompanyPage"
+                                    underline="none"
+                                    color="black"
+                                    sx={{
+                                        fontWeight: 600,
+                                        '&:hover': {
+                                            textDecoration: 'underline', 
+                                            color: 'rgba(171, 25, 31)'
+                                        },
+                                    }}>
+                                    {data.propertyInfo.propertyName}
+                                </Link>
                             </Tooltip>
                             <Typography
                                 sx={{
@@ -240,7 +259,16 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
                 <DialogActions>
 
                     {login == true 
-                        ? <Tooltip title="Add to FAV COOPS">
+                        ? <Tooltip 
+                            title="Add to FAV COOPS" 
+                            componentsProps={{
+                            tooltip: {
+                              sx: {
+                                bgcolor: 'rgba(171, 25, 31, 0.9)',
+                                color: '#F6EBE1'
+                              },
+                            },
+                        }}>
                         <IconButton size="large" onClick={e => {
                             setActive(!active)
                             //add onclick function for db, and to hide if property owner, or to replace with edit if property owner needs

@@ -1,60 +1,105 @@
-import { Typography, Box, TextField, Button, Collapse, Paper, FormGroup, FormControlLabel, Checkbox, Stack, Container, Slider, Divider } from '@mui/material'
+import { Typography, Box, TextField, Collapse, Paper, FormGroup, FormControlLabel, Checkbox, Stack, Slider, Menu, MenuItem, IconButton, Tooltip } from '@mui/material'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faMagnifyingGlass, faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons'
+import { faMagnifyingGlass, faCaretDown, faCaretUp, faArrowUp19 } from '@fortawesome/free-solid-svg-icons'
 import React from "react"
 
-const SearchBar = ({ data, setInput, setFilteredOptions }) => {
+const SearchBar = ({ data, setInput, setFilteredOptions, setNumberSelected, setSortedOptions }) => {
 
     const [selectBed, setSelectBed] = React.useState([]);
     const [selectBath, setSelectedBath] = React.useState([]);
     const [selectAmenities, setSelectedAmenities] = React.useState([]);
-   
+    const [searchText, setSearchText] = React.useState('')
+
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const [sortOption, setSortOption] = React.useState('Default');
+
+
+    //FILTER
     const handleBedroom = (event) => {
         const value = event.target.value;
         if (selectBed.includes(value)) {
-          setSelectBed(selectBed.filter((item) => item !== value));
+            setSelectBed(selectBed.filter((item) => item !== value));
         } else {
-          setSelectBed([...selectBed, value]);
+            setSelectBed([...selectBed, value]);
         }
-      };
-      
-      const handleBathroom = (event) => {
+    };
+
+    const handleBathroom = (event) => {
         const value = event.target.value;
         if (selectBath.includes(value)) {
-          setSelectedBath(selectBath.filter((item) => item !== value));
+            setSelectedBath(selectBath.filter((item) => item !== value));
         } else {
-          setSelectedBath([...selectBath, value]);
+            setSelectedBath([...selectBath, value]);
         }
-      };
-      
-      const handleAmenity = (event) => {
+    };
+
+    const handleAmenity = (event) => {
         const value = event.target.value;
         if (selectAmenities.includes(value)) {
-          setSelectedAmenities(selectAmenities.filter((item) => item !== value));
+            setSelectedAmenities(selectAmenities.filter((item) => item !== value));
         } else {
-          setSelectedAmenities([...selectAmenities, value]);
+            setSelectedAmenities([...selectAmenities, value]);
         }
-      };
-
-      React.useEffect(() => {
-        const filteredPropertyInfo = data.filter((property) => {
-          const bedroomFilter = selectBed.length === 0 || selectBed.includes(property.propertyInfo.beds.toString());
-    
-          const bathroomFilter = selectBath.length === 0 || selectBath.includes(property.propertyInfo.baths.toString());
-    
-          const amenityFilter = selectAmenities.length === 0 || selectAmenities.every((amenity) => property.propertyInfo.amenities.includes(amenity));
-    
-          return bedroomFilter && bathroomFilter && amenityFilter;
-        });
-        /* setFilteredOptions is the final combined list of the filtered options */
-        setFilteredOptions(filteredPropertyInfo);
-        /* */
-    }, [selectBed, selectBath, selectAmenities]);
+    };
 
     const handleInput = (e) => {
         //console.log(e.target.value)
         setInput(e.target.value.toLowerCase())
+        setSearchText(e.target.value.toLowerCase())
+
     }
+
+    //SORTING 
+    const handleSortButtonClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleSortButtonClose = () => {
+        setAnchorEl(null);
+    };
+
+    const handleSortOptionClick = (sortOption) => {
+        // set the sort option -- price or dist
+        setSortOption(sortOption);
+
+        const sortedData = sortData(data, sortOption);
+        // update the list of properties 
+        setFilteredOptions(sortedData);
+    
+        handleSortButtonClose();
+      };
+
+    const sortData = (data, sortingOption) => {    
+        if (sortingOption === 'Price') {
+          return data.sort((a, b) => a.propertyInfo.cost - b.propertyInfo.cost);
+        } else if (sortingOption === 'Distance') {
+          return data.sort((a, b) => a.propertyInfo.distance - b.propertyInfo.distance);
+        } else {
+          return data;
+        }
+      };
+    
+
+    React.useEffect(() => {
+        const filteredPropertyInfo = data.filter((property) => {
+
+            const searchTextFilter = property.propertyInfo.propertyName.toLowerCase().includes(searchText.toLowerCase());
+
+            const bedroomFilter = selectBed.length === 0 || selectBed.includes(property.propertyInfo.beds.toString());
+
+            const bathroomFilter = selectBath.length === 0 || selectBath.includes(property.propertyInfo.baths.toString());
+
+            const amenityFilter = selectAmenities.length === 0 || selectAmenities.every((amenity) => property.propertyInfo.amenities.includes(amenity));
+
+            return bedroomFilter && bathroomFilter && amenityFilter && searchTextFilter;
+        });
+        /* setFilteredOptions is the final combined list of the filtered options */
+        setFilteredOptions(filteredPropertyInfo);
+        setNumberSelected(selectBed.length + selectBath.length + selectAmenities.length)
+
+        /* */
+    }, [selectBed, selectBath, selectAmenities]);
+
 
     const [open, setOpen] = React.useState(false);
 
@@ -77,6 +122,14 @@ const SearchBar = ({ data, setInput, setFilteredOptions }) => {
         buttons: {
             color: "#AB191F",
             fontSize: "22px",
+        },
+        menuItems: {
+            color: "#AB191F",
+            fontWeight: '600'
+        },
+        tooltip: {
+            backgroundColor: '#AB191F',
+            color: '#F6EBE1'
         }
     }
 
@@ -99,14 +152,14 @@ const SearchBar = ({ data, setInput, setFilteredOptions }) => {
                     onSelect={handleInput}
                 />
                 <Box style={{ float: "right", marginTop: "7px" }}>
-                    <Button
+                    <IconButton
                         onClick={handleClick}
                         style={styles.buttons}>
                         <FontAwesomeIcon icon={open ? faCaretUp : faCaretDown} />
-                    </Button>
-                    <Button style={styles.buttons}>
+                    </IconButton>
+                    <IconButton style={styles.buttons}>
                         <FontAwesomeIcon icon={faMagnifyingGlass} />
-                    </Button>
+                    </IconButton>
                 </Box>
             </Box>
             {open && (
@@ -160,53 +213,53 @@ const SearchBar = ({ data, setInput, setFilteredOptions }) => {
                                 <FormGroup>
                                     Bedroom
                                     <FormControlLabel
-                                        control={<Checkbox 
-                                            value="1" 
-                                            onChange={handleBedroom} 
+                                        control={<Checkbox
+                                            value="1"
+                                            onChange={handleBedroom}
                                             sx={{
-                                            color: "black",
-                                            '&.Mui-checked': {
-                                                color: "#AB191F",
-                                            }
-                                        }} />}
+                                                color: "black",
+                                                '&.Mui-checked': {
+                                                    color: "#AB191F",
+                                                }
+                                            }} />}
                                         label="1 bed"
                                     />
                                     <FormControlLabel
-                                        control={<Checkbox 
-                                            value="2" 
-                                            onChange={handleBedroom} 
+                                        control={<Checkbox
+                                            value="2"
+                                            onChange={handleBedroom}
                                             sx={{
-                                            color: "black",
-                                            '&.Mui-checked': {
-                                                color: "#AB191F",
-                                            }
-                                        }} />
+                                                color: "black",
+                                                '&.Mui-checked': {
+                                                    color: "#AB191F",
+                                                }
+                                            }} />
                                         }
                                         label="2 beds"
                                     />
                                     <FormControlLabel
-                                        control={<Checkbox 
-                                            value="3" 
-                                            onChange={handleBedroom} 
+                                        control={<Checkbox
+                                            value="3"
+                                            onChange={handleBedroom}
                                             sx={{
-                                            color: "black",
-                                            '&.Mui-checked': {
-                                                color: "#AB191F",
-                                            }
-                                        }} />
+                                                color: "black",
+                                                '&.Mui-checked': {
+                                                    color: "#AB191F",
+                                                }
+                                            }} />
                                         }
                                         label="3 beds"
                                     />
                                     <FormControlLabel
                                         control={<Checkbox
-                                            value="4" 
-                                            onChange={handleBedroom} 
+                                            value="4"
+                                            onChange={handleBedroom}
                                             sx={{
-                                            color: "black",
-                                            '&.Mui-checked': {
-                                                color: "#AB191F",
-                                            }
-                                        }} />
+                                                color: "black",
+                                                '&.Mui-checked': {
+                                                    color: "#AB191F",
+                                                }
+                                            }} />
                                         }
                                         label="4 beds"
                                     />
@@ -214,66 +267,66 @@ const SearchBar = ({ data, setInput, setFilteredOptions }) => {
                                 <FormGroup>
                                     Bathroom
                                     <FormControlLabel
-                                        control={<Checkbox 
-                                            value="1" 
-                                            onChange={handleBathroom} 
+                                        control={<Checkbox
+                                            value="1"
+                                            onChange={handleBathroom}
                                             sx={{
-                                            color: "black",
-                                            '&.Mui-checked': {
-                                                color: "#AB191F",
-                                            }
-                                        }} />}
+                                                color: "black",
+                                                '&.Mui-checked': {
+                                                    color: "#AB191F",
+                                                }
+                                            }} />}
                                         label="1 bath"
                                     />
                                     <FormControlLabel
-                                        control={<Checkbox 
-                                            value="2" 
-                                            onChange={handleBathroom} 
+                                        control={<Checkbox
+                                            value="2"
+                                            onChange={handleBathroom}
                                             sx={{
-                                            color: "black",
-                                            '&.Mui-checked': {
-                                                color: "#AB191F",
-                                            }
-                                        }} />
+                                                color: "black",
+                                                '&.Mui-checked': {
+                                                    color: "#AB191F",
+                                                }
+                                            }} />
                                         }
                                         label="2 baths"
                                     />
                                     <FormControlLabel
                                         control={<Checkbox
-                                            value="3"  
-                                            onChange={handleBathroom} 
+                                            value="3"
+                                            onChange={handleBathroom}
                                             sx={{
-                                            color: "black",
-                                            '&.Mui-checked': {
-                                                color: "#AB191F",
-                                            }
-                                        }} />
+                                                color: "black",
+                                                '&.Mui-checked': {
+                                                    color: "#AB191F",
+                                                }
+                                            }} />
                                         }
                                         label="3 baths"
                                     />
                                     <FormControlLabel
-                                        control={<Checkbox 
-                                            value="4" 
-                                            onChange={handleBathroom} 
+                                        control={<Checkbox
+                                            value="4"
+                                            onChange={handleBathroom}
                                             sx={{
-                                            color: "black",
-                                            '&.Mui-checked': {
-                                                color: "#AB191F",
-                                            }
-                                        }} />
+                                                color: "black",
+                                                '&.Mui-checked': {
+                                                    color: "#AB191F",
+                                                }
+                                            }} />
                                         }
                                         label="4 baths"
                                     />
                                     <FormControlLabel
                                         control={<Checkbox
-                                            value="5" 
-                                            onChange={handleBathroom} 
+                                            value="5"
+                                            onChange={handleBathroom}
                                             sx={{
-                                            color: "black",
-                                            '&.Mui-checked': {
-                                                color: "#AB191F",
-                                            }
-                                        }} />
+                                                color: "black",
+                                                '&.Mui-checked': {
+                                                    color: "#AB191F",
+                                                }
+                                            }} />
                                         }
                                         label="5 baths"
                                     />
@@ -281,41 +334,41 @@ const SearchBar = ({ data, setInput, setFilteredOptions }) => {
                                 <FormGroup>
                                     Amenities
                                     <FormControlLabel
-                                        control={<Checkbox 
+                                        control={<Checkbox
                                             value="lounge"
                                             onChange={handleAmenity}
                                             sx={{
-                                            color: "black",
-                                            '&.Mui-checked': {
-                                                color: "#AB191F",
-                                            }
-                                        }} />}
+                                                color: "black",
+                                                '&.Mui-checked': {
+                                                    color: "#AB191F",
+                                                }
+                                            }} />}
                                         label="Lounge"
                                     />
                                     <FormControlLabel
-                                        control={<Checkbox 
+                                        control={<Checkbox
                                             value="parking"
                                             onChange={handleAmenity}
                                             sx={{
-                                            color: "black",
-                                            '&.Mui-checked': {
-                                                color: "#AB191F",
-                                            }
-                                        }} />
+                                                color: "black",
+                                                '&.Mui-checked': {
+                                                    color: "#AB191F",
+                                                }
+                                            }} />
                                         }
                                         label="Parking"
                                     />
                                     <FormControlLabel
                                         control={
-                                        <Checkbox 
-                                        value="pool"
-                                        onChange={handleAmenity}
-                                        sx={{
-                                            color: "black",
-                                            '&.Mui-checked': {
-                                                color: "#AB191F",
-                                            }
-                                        }} />
+                                            <Checkbox
+                                                value="pool"
+                                                onChange={handleAmenity}
+                                                sx={{
+                                                    color: "black",
+                                                    '&.Mui-checked': {
+                                                        color: "#AB191F",
+                                                    }
+                                                }} />
                                         }
                                         label="Pool"
                                     />
@@ -326,6 +379,58 @@ const SearchBar = ({ data, setInput, setFilteredOptions }) => {
                 </Collapse>
             )}
         </Stack>
+        <Box>
+            <Tooltip
+                title={"Sort results"}
+                componentsProps={{
+                    tooltip: {
+                        sx: {
+                            bgcolor: 'rgba(171, 25, 31, 0.9)',
+                            color: '#F6EBE1'
+                        },
+                    },
+                }}
+            >
+                <IconButton
+                    aria-controls="sorting-menu"
+                    aria-haspopup="true"
+                    onClick={handleSortButtonClick}
+                    style={styles.buttons}
+                    sx={{
+                        marginTop: 1
+                    }}
+
+                >
+                    <FontAwesomeIcon icon={faArrowUp19} />
+                </IconButton>
+            </Tooltip>
+            <Menu
+                id="sorting-menu"
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={handleSortButtonClose}
+                PaperProps={{
+                    sx: {
+                        backgroundColor: "#F6EBE1",
+
+                    },
+                }}
+            >
+                <MenuItem
+                    style={styles.menuItems}
+                    onClick={() => handleSortOptionClick('Price')}
+                >
+                    Price
+                </MenuItem>
+                <MenuItem
+                    style={styles.menuItems}
+                    onClick={() => handleSortOptionClick('Distance')}
+                    >
+                        
+                    Distance
+                </MenuItem>
+            </Menu>
+        </Box>
     </Box>
 
 
