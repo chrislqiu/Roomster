@@ -58,9 +58,6 @@ const SearchBar = ({ data, setInput }) => {
                         style={styles.buttons}>
                         <FontAwesomeIcon icon={open ?  faCaretUp : faCaretDown} />
                     </Button>
-                    <Button style={styles.buttons}>
-                        <FontAwesomeIcon icon={faMagnifyingGlass} />
-                    </Button>
                 </Box>
             </Box>
             {open && (
