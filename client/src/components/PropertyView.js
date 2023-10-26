@@ -155,8 +155,8 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
                     }
                     <Stack direction={{'400px': "column", md: "row",lg: "row", xl: "row"}} spacing={5} sx={{ marginTop: 2, p: 1 }} >
                         <Box width='600'>
-                            <Tooltip title="Go to Company Page">
-                            <Link href="/CompanyPage" underline="none" color="black" sx={{fontWeight: 600}}>
+                            <Tooltip title="Go to Company Page" >
+                            <Link href="/CompanyPage" underline="hover" color="black" sx={{fontWeight: 600, "&:hover": {color:"#AB191F"}}}>
                                 {data.propertyInfo.propertyName}
                             </Link>
                             </Tooltip>
