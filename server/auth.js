@@ -454,12 +454,16 @@ router.post("/admin/send-admin-request", async (req, res) => {
     if (user) {
       return res.status(400).send("User already exists");
     }
+
+    console.log(req.body.username)
   
     const verificationToken = jwt.sign(
       {
         username: req.body.username,
       }, secretKey, { expiresIn: "10m" }
     );
+
+    // console.log(verificationToken)
   
     adminRequestEmail(req.body.username, verificationToken);
   
@@ -494,6 +498,29 @@ router.post("/admin/login", async (req, res) => {
         }
     } catch {
         res.status(500).send("Error when logging in");
+    }
+});
+
+router.get("/admin/verify/:token", async (req, res) => {
+    const { token } = req.params;
+    console.log("Token:", token);
+    try {
+        const decoded = jwt.verify(token, secretKey);
+        console.log(decoded.username);
+
+        const newAdmin = new Admin({
+            username: decoded.username,
+            isVerified: true
+        });
+
+        newAdmin.save()
+
+        console.log("Admin User:", newAdmin);
+
+        return res.redirect("http://localhost:3001/VerifyPage");
+    } catch (err) {
+        console.log(err);
+        return res.status(500).send("Email verification failed");
     }
 });
 

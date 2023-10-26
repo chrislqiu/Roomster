@@ -12,10 +12,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 
-const AdminLogin = ({ text }) => {
-    const [open, setOpen] = React.useState(true)
-    const [rCreateOpen, setRCreateOpen] = React.useState(false)
-    const [mCreateOpen, setMCreateOpen] = React.useState(false)
+const AdminLogin = () => {
     const [email, setEmail] = React.useState('')
     const [password, setPassword] = React.useState('')
     const [loginStatus, setLoginStatus] = React.useState(null)
