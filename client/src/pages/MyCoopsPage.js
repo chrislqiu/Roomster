@@ -1,8 +1,9 @@
-import React from "react"
+import React, { useState } from "react"
 import PropertyViewMore from "../components/PropertyView"
 import { InputAdornment, FormControl, InputLabel, MenuItem, Select, Dialog, DialogContent, DialogActions, Tooltip, IconButton, Avatar, InputBase, Slider, Checkbox, Grid, Card, Container, Box, Typography, CardContent, Input, Divider, TextField, Link, Button, FormControlLabel, Stack, Icon } from "@mui/material";
 import AddHomeIcon from '@mui/icons-material/AddHome';
 import AddIcon from '@mui/icons-material/Add';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { AspectRatio } from "@mui/joy";
 
 const MyCoopsPage = () => {
@@ -12,8 +13,31 @@ const MyCoopsPage = () => {
     const [open, setOpen] = React.useState(false)
     const [propertyInfo, setPropertyInfo] = React.useState([])
     const [hovered, setHovered] = React.useState(false);
-    const [amenity, setAmenity] = React.useState(false);
     const [openMessage, setOpenMessage] = React.useState(false);
+
+    /* Amenities */
+    const [isPetFriendly, setIsPetFriendly] = React.useState(false)
+    const [notPetFriendly, setNotPetFriendly] = React.useState(false)
+    const [hasInUnitWD, setHasInUnitWD] = React.useState(false)
+    const [noInUnitWD, setnoInUnitWD] = React.useState(false)
+    const [hasParking, setHasParking] = React.useState(false)
+    const [noParking, setNoParking] = React.useState(false)
+    const [hasKitchenApp, setHasKitchenApp] = React.useState(false)
+    const [noKitchenApp, setNoKitchenApp] = React.useState(false)
+    const [isFurnished, setIsFurnished] = React.useState(false)
+    const [notFurnished, setNotFurnished] = React.useState(false)
+
+    /* Utilities: electricity, gas, water, trash, sewage, internet */
+    const [includeElec, setIncludeElec] = React.useState(false)
+    const [noElec, setNoElec] = React.useState(false)
+    const [includeGas, setIncludeGas] = React.useState(false)
+    const [includeWater, setIncludeWater] = React.useState(false)
+    const [noWater, setNoWater] = React.useState(false)
+    const [includeTrash, setIncludeTrash] = React.useState(false)
+    const []
+
+
+
 
     const handleOpenMessage = () => {
         setOpenMessage(true)
@@ -34,10 +58,6 @@ const MyCoopsPage = () => {
         setHovered(true)
     }
 
-    const handleAmenity = () => {
-        setAmenity(true)
-    }
-
     const handleLeave = () => {
         setHovered(false)
     }
@@ -51,7 +71,7 @@ const MyCoopsPage = () => {
         }
         getPropertyInfo()
     }, [])
-
+    
     const styles = {
         feed: {
             display: "flex",
@@ -62,10 +82,9 @@ const MyCoopsPage = () => {
         
     }
     const inputBaseSX = {
-        //margin: "0 0 10px 25px", 
         marginLeft:"-10px",
         marginTop:"-10px",
-        width:"300px", 
+        width:"205px", 
         height: "35px",
         borderRadius: "5px",
         border: "2px solid #AB191F",
@@ -78,7 +97,7 @@ const MyCoopsPage = () => {
 
     const selectSX = {
         marginLeft:"-10px",
-        marginRight:"20px",
+        marginRight:"15px",
         marginTop:"-10px",
         width: "100px", height: "35px", fontSize:"11pt", 
         '.MuiOutlinedInput-notchedOutline': {
@@ -99,6 +118,15 @@ const MyCoopsPage = () => {
         }
 
     }
+
+    const amenitySX = {
+        width:"200px",
+        fontSize: "11pt",
+        color: "black",
+        margin: "0 0 7px -25px",
+        padding: "0"
+    }
+    
     return (
         <Container sx={{ width: '100%' }}>
             <Box style ={{position:"fixed", bottom:"0", right:"0"}}>
@@ -141,9 +169,7 @@ const MyCoopsPage = () => {
                 
             >
                 <DialogContent>
-                    <Typography style={{fontWeight: "600", fontSize: "15pt", color: "#AB191F", textAlign:"center", margin:"10px 0 -10px 0"}}> 
-                            {"CREATE YOUR PROPERTY"}
-                    </Typography >
+                    
                     <Container 
                         sx={{
                             marginTop:"15px",
@@ -155,11 +181,27 @@ const MyCoopsPage = () => {
                         <AspectRatio minHeight={100} maxHeight={200} minWidth={300} maxWidth={400} 
                             style={{
                                 borderStyle:"dotted", 
-                                borderColor:"black"
+                                borderColor:"black",
+                                marginBottom:"30px"
                             }}>
-                                <Typography>
-                                    HELLO
-                                </Typography>
+                                <Button
+                                    sx={{
+                                        ":hover": {
+                                            borderColor: "#AB191F", bgcolor: "#F6EBE1", color: "#AB191F",
+                                            borderWidth: 1.5
+                                        },
+                                        borderColor:"#AB191F", bgcolor:"#F6EBE1", color:"#AB191F", 
+                                        borderWidth: 1.5, width:"100%", fontWeight:600, lineHeight:"15px",
+                                        boxShadow: 5, maxWidth:"120px", maxHeight: "30px",
+                                        float: "left", top: "5px",
+                                        left: "5px",
+                                        marginBottom:"15px",
+                                        marginLeft: "210px",
+                                        position: "absolute"
+
+                                    }}
+                                    variant="outlined">Add Photos
+                                </Button>
                         </AspectRatio>
 
                         <Stack direction={{'400px': "column", md: "row",lg: "row", xl: "row"}} spacing={5} sx={{ marginTop: 2, p: 1 }}>
@@ -202,8 +244,19 @@ const MyCoopsPage = () => {
                                 <Select
                                     id="baths-input" 
                                     defaultValue={-1}
-                                    sx={selectSX}
-                                >
+                                    sx={{
+                                        marginLeft:"-10px",
+                                        marginRight:"-50px",
+                                        marginTop:"-10px",
+                                        width: "100px", height: "35px", fontSize:"11pt", 
+                                        '.MuiOutlinedInput-notchedOutline': {
+                                            border:"2px solid #AB191F"
+                                            
+                                        },
+                                        '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                                            border:"2px solid #AB191F"
+                                        },
+                                    }}>
                                     <MenuItem value={-1}># baths</MenuItem>
                                     <MenuItem value={1} sx={menuItemSX}>1</MenuItem>
                                     <MenuItem value={1.5} sx={menuItemSX}>1.5</MenuItem>
@@ -216,28 +269,128 @@ const MyCoopsPage = () => {
                                     <MenuItem value={5} sx={menuItemSX}>5</MenuItem>
                                 </Select>
                             </Box>
-                            <Divider orientation={{xs:'horizontal', md:'vertical', lg:'vertical', xl:'vertical'}} width={3} sx={{ borderBottomWidth: 3, color: "#AB191F", backgroundColor: "#AB191F", marginY: 2 }} />
-                            <Box width='600'>
+
+                            {/* Amenities */}
+                            <Divider orientation={{xs:'horizontal', md:'vertical', lg:'vertical', xl:'vertical'}} width={3} sx={{ borderBottomWidth: 3, color: "#AB191F", backgroundColor: "#AB191F", marginY: 2, marginX: 0, maxHeight:"175px" }} />
+                            <Box height="175px" style={{marginRight:"-45px", }}>
+                                <Box width='200px' height='600px' style={{margin:"-10px 0 0 -30px", textAlign:"left", padding: "0"}}>
                                 <Typography
                                     sx={{
                                         fontWeight: 600,
-                                        marginTop:"-10px",
-                                        marginLeft:"-20px",
+                                        marginTop:"-30px",
+                                        marginBottom:"5px",
+                                        //marginLeft:"-25px",
                                         variant:"body2"
                                     }}
                                 >
                                     Amenities
-                                    <IconButton>
-                                        <AddIcon
-                                            style={{ 
-                                                color: "#AB191F", 
-                                                fontSize:"15pt"
-                                            }}
-                                            onClick={handleAmenity}
-                                        />
-                                    </IconButton>
                                 </Typography>
-                                <Button
+                                    {/* Furnished */}
+                                    <Container style={{float:"left", width:"100%",}}>
+                                        <FormControlLabel style={{margin:"-10px 0 0 -30px"}} label={<Typography style={{fontSize:"11pt"}}>Furnished</Typography>} control={
+                                            <Checkbox style={{}}
+                                            checked={isFurnished}
+                                            onChange={() => setIsFurnished(!isFurnished)}
+                                            disabled={notFurnished === true ? true : false}
+                                            inputProps={{ 'aria-label': 'controlled' }}
+                                            sx={{
+                                                color:"#AB191F",
+                                                '&.Mui-checked': {
+                                                    color: "#AB191F",
+                                                },}}
+                                            />}
+                                        />
+                                    </Container> {<br />}{<br />}
+
+                                    {/* Kitchen Appliances */}
+                                    <Container style={{float:"left", width:"100%"}}>
+                                        <FormControlLabel style={{margin:"-10px 0 0 -30px"}} label={<Typography style={{fontSize:"11pt"}}>Kitchen Appliances</Typography>} control={
+                                            <Checkbox style={{}}
+                                            checked={hasKitchenApp}
+                                            onChange={() => setHasKitchenApp(!hasKitchenApp)}
+                                            disabled={noKitchenApp === true ? true : false}
+                                            inputProps={{ 'aria-label': 'controlled' }}
+                                            sx={{
+                                                color:"#AB191F",
+                                                '&.Mui-checked': {
+                                                    color: "#AB191F",
+                                                },}}
+                                            />}
+                                        />
+                                    </Container> {<br />}{<br />}
+
+                                    {/* In-Unit Washer Dryer */}
+                                    <Container style={{float:"left", width:"100%"}}>
+                                        <FormControlLabel style={{margin:"-10px 0 0 -30px"}} label={<Typography style={{fontSize:"11pt"}}>In-Unit Washer Dryer</Typography>} control={
+                                            <Checkbox style={{}}
+                                            checked={hasInUnitWD}
+                                            onChange={() => setHasInUnitWD(!hasInUnitWD)}
+                                            disabled={noInUnitWD === true ? true : false}
+                                            inputProps={{ 'aria-label': 'controlled' }}
+                                            sx={{
+                                                color:"#AB191F",
+                                                '&.Mui-checked': {
+                                                    color: "#AB191F",
+                                                },}}
+                                            />}
+                                        />
+                                    </Container> {<br />}{<br />}
+
+                                    {/* Parking */}
+                                    <Container style={{float:"left", width:"50%"}}>
+                                        <FormControlLabel style={{margin:"-10px 0 0 -30px"}} label={<Typography style={{fontSize:"11pt"}}>Parking</Typography>} control={
+                                            <Checkbox style={{}}
+                                            checked={hasParking}
+                                            onChange={() => setHasParking(!hasParking)}
+                                            disabled={noParking === true ? true : false}
+                                            inputProps={{ 'aria-label': 'controlled' }}
+                                            sx={{
+                                                color:"#AB191F",
+                                                '&.Mui-checked': {
+                                                    color: "#AB191F",
+                                                },}}
+                                            />}
+                                        />
+                                    </Container> {<br />}{<br />}
+
+                                    {/* Pet Friendly */}
+                                    <Container style={{float:"left", width:"100%"}}>
+                                        <FormControlLabel style={{margin:"-10px 0 0 -30px"}} label={<Typography style={{fontSize:"11pt"}}>Pet Friendly</Typography>} control={
+                                            <Checkbox style={{}}
+                                            checked={isPetFriendly}
+                                            onChange={() => setIsPetFriendly(!isPetFriendly)}
+                                            disabled={notPetFriendly === true ? true : false}
+                                            inputProps={{ 'aria-label': 'controlled' }}
+                                            sx={{
+                                                color:"#AB191F",
+                                                '&.Mui-checked': {
+                                                    color: "#AB191F",
+                                                },}}
+                                            />}
+                                        />
+                                    </Container> 
+                                </Box>
+                            </Box>
+                            {/* Utilities */}
+                            <Divider orientation={{xs:'horizontal', md:'vertical', lg:'vertical', xl:'vertical'}} width={3} sx={{ borderBottomWidth: 3, color: "#AB191F", backgroundColor: "#AB191F", marginY: 2, marginX: 0, maxHeight:"175px" }} />
+                            <Box height="175px" style={{marginRight:"-25px", }}>
+                                <Box width='200px' height='600px' style={{margin:"-10px 0 0 -30px", textAlign:"left", padding: "0"}}>
+                                    <Typography
+                                        sx={{
+                                            fontWeight: 600,
+                                            marginTop:"-30px",
+                                            marginBottom:"5px",
+                                            //marginLeft:"-25px",
+                                            variant:"body2"
+                                        }}
+                                    >
+                                        Utilities
+                                    </Typography>
+                                </Box>
+                            </Box>
+
+                            {/* Add Coop button */}
+                            <Button
                                 sx={{
                                     ":hover": {
                                         borderColor: "#F6EBE1", bgcolor: "#F6EBE1", color: "#AB191F",
@@ -246,16 +399,19 @@ const MyCoopsPage = () => {
                                     borderColor:"#AB191F", bgcolor:"#AB191F", color:"#F6EBE1", 
                                     borderWidth: 1.5, width:"100%", fontWeight:600, lineHeight:"15px",
                                     boxShadow: 5, maxWidth:"120px", maxHeight: "50px",
-                                    float: "right", bottom: 0,
-                                    left: "50%",
-                                    marginBottom:"20px",
+                                    float: "right", bottom: 20, right:35,
+                                    //left: "50%",
+                                    marginBottom:"30px",
                                     marginLeft: "210px",
                                     position: "absolute"
 
                                 }}
                                 variant="outlined">Add Coop
                             </Button>
-                            </Box>
+                                
+                                
+                                
+                            
                             
 
                         </Stack>
