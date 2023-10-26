@@ -22,6 +22,7 @@ import RenterCreateAccountView from "./components/RenterCreateAccountView";
 import ManagerCreateAccountView from "./components/PropertyManagerCreateAccountView";
 import CoopmatesPage from "./pages/CoopmatesPage";
 import PropertyManagerPublicPage from "./pages/PropertyManagerPublicPage";
+import AdminPage from "./pages/AdminPage";
 
   const styles = {
     background: {
@@ -162,6 +163,7 @@ class App extends React.Component {
             <Route path="/VerifyPage" element={<VerifyPage />} />
             <Route path="/Coopmates" element={<CoopmatesPage />} />
             <Route path="/CompanyPage" element={<PropertyManagerPublicPage />} />
+            <Route path="/Admin" element={<AdminPage />} />
           </Routes>
         </BrowserRouter>
       </body>  
