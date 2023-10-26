@@ -3,10 +3,56 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass, faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons'
 import React from "react"
 
-const SearchBar = ({ data, setInput }) => {
+const SearchBar = ({ data, setInput, setFilteredOptions }) => {
+
+    const [selectBed, setSelectBed] = React.useState([]);
+    const [selectBath, setSelectedBath] = React.useState([]);
+    const [selectAmenities, setSelectedAmenities] = React.useState([]);
+   
+    const handleBedroom = (event) => {
+        const value = event.target.value;
+        if (selectBed.includes(value)) {
+          setSelectBed(selectBed.filter((item) => item !== value));
+        } else {
+          setSelectBed([...selectBed, value]);
+        }
+      };
+      
+      const handleBathroom = (event) => {
+        const value = event.target.value;
+        if (selectBath.includes(value)) {
+          setSelectedBath(selectBath.filter((item) => item !== value));
+        } else {
+          setSelectedBath([...selectBath, value]);
+        }
+      };
+      
+      const handleAmenity = (event) => {
+        const value = event.target.value;
+        if (selectAmenities.includes(value)) {
+          setSelectedAmenities(selectAmenities.filter((item) => item !== value));
+        } else {
+          setSelectedAmenities([...selectAmenities, value]);
+        }
+      };
+
+      React.useEffect(() => {
+        const filteredPropertyInfo = data.filter((property) => {
+          const bedroomFilter = selectBed.length === 0 || selectBed.includes(property.propertyInfo.beds.toString());
+    
+          const bathroomFilter = selectBath.length === 0 || selectBath.includes(property.propertyInfo.baths.toString());
+    
+          const amenityFilter = selectAmenities.length === 0 || selectAmenities.every((amenity) => property.propertyInfo.amenities.includes(amenity));
+    
+          return bedroomFilter && bathroomFilter && amenityFilter;
+        });
+        /* setFilteredOptions is the final combined list of the filtered options */
+        setFilteredOptions(filteredPropertyInfo);
+        /* */
+    }, [selectBed, selectBath, selectAmenities]);
 
     const handleInput = (e) => {
-        console.log(e.target.value)
+        //console.log(e.target.value)
         setInput(e.target.value.toLowerCase())
     }
 
@@ -56,7 +102,7 @@ const SearchBar = ({ data, setInput }) => {
                     <Button
                         onClick={handleClick}
                         style={styles.buttons}>
-                        <FontAwesomeIcon icon={open ?  faCaretUp : faCaretDown} />
+                        <FontAwesomeIcon icon={open ? faCaretUp : faCaretDown} />
                     </Button>
                     <Button style={styles.buttons}>
                         <FontAwesomeIcon icon={faMagnifyingGlass} />
@@ -76,45 +122,48 @@ const SearchBar = ({ data, setInput }) => {
                                 >
                                     Filter by:
                                 </Typography>
-                                <Box sx={{paddingY: 5}}>
-                                <FormGroup>
-                                Distance
-                                    <FormControlLabel
-                                        control={
-                                            <Slider
-                                                size="small"
-                                                defaultValue={3}
-                                                valueLabelDisplay="auto"
-                                                step={1}
-                                                marks
-                                                min={0}
-                                                max={5}
-                                                sx={{ color: "#AB191F", width: "100px", height: "5px", marginBottom: 2}}
-                                            />
-                                        }
-                                    />
-                                  
-                                Price
-                                    <FormControlLabel
-                                        control={
-                                            <Slider
-                                                size="small"
-                                                defaultValue={2000}
-                                                valueLabelDisplay="auto"
-                                                step={600}
-                                                marks
-                                                min={0}
-                                                max={3000}
-                                                sx={{ color: "#AB191F", width: "100px", height: "5px" }}
-                                            />
-                                        }
-                                    />
-                                </FormGroup>
+                                <Box sx={{ paddingY: 5 }}>
+                                    <FormGroup>
+                                        Distance
+                                        <FormControlLabel
+                                            control={
+                                                <Slider
+                                                    size="small"
+                                                    defaultValue={3}
+                                                    valueLabelDisplay="auto"
+                                                    step={1}
+                                                    marks
+                                                    min={0}
+                                                    max={5}
+                                                    sx={{ color: "#AB191F", width: "100px", height: "5px", marginBottom: 2 }}
+                                                />
+                                            }
+                                        />
+
+                                        Price
+                                        <FormControlLabel
+                                            control={
+                                                <Slider
+                                                    size="small"
+                                                    defaultValue={2000}
+                                                    valueLabelDisplay="auto"
+                                                    step={600}
+                                                    marks
+                                                    min={0}
+                                                    max={3000}
+                                                    sx={{ color: "#AB191F", width: "100px", height: "5px" }}
+                                                />
+                                            }
+                                        />
+                                    </FormGroup>
                                 </Box>
                                 <FormGroup>
                                     Bedroom
                                     <FormControlLabel
-                                        control={<Checkbox sx={{
+                                        control={<Checkbox 
+                                            value="1" 
+                                            onChange={handleBedroom} 
+                                            sx={{
                                             color: "black",
                                             '&.Mui-checked': {
                                                 color: "#AB191F",
@@ -123,7 +172,10 @@ const SearchBar = ({ data, setInput }) => {
                                         label="1 bed"
                                     />
                                     <FormControlLabel
-                                        control={<Checkbox sx={{
+                                        control={<Checkbox 
+                                            value="2" 
+                                            onChange={handleBedroom} 
+                                            sx={{
                                             color: "black",
                                             '&.Mui-checked': {
                                                 color: "#AB191F",
@@ -133,7 +185,10 @@ const SearchBar = ({ data, setInput }) => {
                                         label="2 beds"
                                     />
                                     <FormControlLabel
-                                        control={<Checkbox sx={{
+                                        control={<Checkbox 
+                                            value="3" 
+                                            onChange={handleBedroom} 
+                                            sx={{
                                             color: "black",
                                             '&.Mui-checked': {
                                                 color: "#AB191F",
@@ -143,7 +198,10 @@ const SearchBar = ({ data, setInput }) => {
                                         label="3 beds"
                                     />
                                     <FormControlLabel
-                                        control={<Checkbox sx={{
+                                        control={<Checkbox
+                                            value="4" 
+                                            onChange={handleBedroom} 
+                                            sx={{
                                             color: "black",
                                             '&.Mui-checked': {
                                                 color: "#AB191F",
@@ -156,7 +214,10 @@ const SearchBar = ({ data, setInput }) => {
                                 <FormGroup>
                                     Bathroom
                                     <FormControlLabel
-                                        control={<Checkbox sx={{
+                                        control={<Checkbox 
+                                            value="1" 
+                                            onChange={handleBathroom} 
+                                            sx={{
                                             color: "black",
                                             '&.Mui-checked': {
                                                 color: "#AB191F",
@@ -165,7 +226,10 @@ const SearchBar = ({ data, setInput }) => {
                                         label="1 bath"
                                     />
                                     <FormControlLabel
-                                        control={<Checkbox sx={{
+                                        control={<Checkbox 
+                                            value="2" 
+                                            onChange={handleBathroom} 
+                                            sx={{
                                             color: "black",
                                             '&.Mui-checked': {
                                                 color: "#AB191F",
@@ -175,7 +239,10 @@ const SearchBar = ({ data, setInput }) => {
                                         label="2 baths"
                                     />
                                     <FormControlLabel
-                                        control={<Checkbox sx={{
+                                        control={<Checkbox
+                                            value="3"  
+                                            onChange={handleBathroom} 
+                                            sx={{
                                             color: "black",
                                             '&.Mui-checked': {
                                                 color: "#AB191F",
@@ -185,7 +252,10 @@ const SearchBar = ({ data, setInput }) => {
                                         label="3 baths"
                                     />
                                     <FormControlLabel
-                                        control={<Checkbox sx={{
+                                        control={<Checkbox 
+                                            value="4" 
+                                            onChange={handleBathroom} 
+                                            sx={{
                                             color: "black",
                                             '&.Mui-checked': {
                                                 color: "#AB191F",
@@ -195,7 +265,10 @@ const SearchBar = ({ data, setInput }) => {
                                         label="4 baths"
                                     />
                                     <FormControlLabel
-                                        control={<Checkbox sx={{
+                                        control={<Checkbox
+                                            value="5" 
+                                            onChange={handleBathroom} 
+                                            sx={{
                                             color: "black",
                                             '&.Mui-checked': {
                                                 color: "#AB191F",
@@ -208,7 +281,10 @@ const SearchBar = ({ data, setInput }) => {
                                 <FormGroup>
                                     Amenities
                                     <FormControlLabel
-                                        control={<Checkbox sx={{
+                                        control={<Checkbox 
+                                            value="lounge"
+                                            onChange={handleAmenity}
+                                            sx={{
                                             color: "black",
                                             '&.Mui-checked': {
                                                 color: "#AB191F",
@@ -217,7 +293,10 @@ const SearchBar = ({ data, setInput }) => {
                                         label="Lounge"
                                     />
                                     <FormControlLabel
-                                        control={<Checkbox sx={{
+                                        control={<Checkbox 
+                                            value="parking"
+                                            onChange={handleAmenity}
+                                            sx={{
                                             color: "black",
                                             '&.Mui-checked': {
                                                 color: "#AB191F",
@@ -227,7 +306,11 @@ const SearchBar = ({ data, setInput }) => {
                                         label="Parking"
                                     />
                                     <FormControlLabel
-                                        control={<Checkbox sx={{
+                                        control={
+                                        <Checkbox 
+                                        value="pool"
+                                        onChange={handleAmenity}
+                                        sx={{
                                             color: "black",
                                             '&.Mui-checked': {
                                                 color: "#AB191F",

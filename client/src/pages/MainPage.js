@@ -13,7 +13,7 @@ const MainPage = ({login}) => {
      * propertyInfo, setPropertyInfo to hold the card information from the server
      */
     const [propertyInfo, setPropertyInfo] = React.useState([])
-    const [filteredPropertyInfo, setFilteredPropertyInfo] = React.useState([]);
+    const [namePropertySearch, setNamePropertyInfo] = React.useState([]);
 
     React.useEffect(() => {
         const getPropertyInfo = async () => {
@@ -24,13 +24,18 @@ const MainPage = ({login}) => {
         }
         getPropertyInfo()
     }, [])
+    const [filteredProperties, setFilteredProperties] = React.useState(propertyInfo);
+    console.log('propertyInfo:', propertyInfo); // Log propertyInfo
+    console.log('filteredProperties:', filteredProperties);
 
     const [input, setInput] = React.useState('')
     React.useEffect(() => {
         const filteredPropertyInfo = propertyInfo.filter((property) => {
           return property.propertyInfo.propertyName.toLowerCase().includes(input.toLowerCase());
         });
-        setFilteredPropertyInfo(filteredPropertyInfo);
+        setNamePropertyInfo(filteredPropertyInfo);
+        /* SET DEFAULT PAGE TO ALL */
+        setFilteredProperties(filteredPropertyInfo)
       }, [input, propertyInfo]);
     const styles = {
         feed: {
@@ -43,8 +48,7 @@ const MainPage = ({login}) => {
     }
     return (
         <Container sx={{ width: '100%' }}>
-
-            <SearchBar data={propertyInfo} setInput={setInput}/>
+            <SearchBar data={propertyInfo} setInput={setInput} setFilteredOptions={setFilteredProperties}/>
             {input == '' &&
             <Box sx={{ m: 4 }} style={styles.feed}>
                 <FeaturedProperties data={propertyInfo} style={styles.feed} login={login}/>
@@ -56,7 +60,11 @@ const MainPage = ({login}) => {
                     * Maps each Property Information object to its own "card"
                     */
                     //propertyInfo.map(cards => {
-                    filteredPropertyInfo.map((cards) => {
+                    // namePropertySearch.map((cards) => {
+                    //     return <PropertyViewMore data={cards} login={login}/>
+                    //     }
+                    // )
+                    filteredProperties.map((cards) => {
                         return <PropertyViewMore data={cards} login={login}/>
                         }
                     )
