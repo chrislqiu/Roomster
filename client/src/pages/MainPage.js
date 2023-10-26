@@ -13,7 +13,8 @@ const MainPage = ({login}) => {
      * propertyInfo, setPropertyInfo to hold the card information from the server
      */
     const [propertyInfo, setPropertyInfo] = React.useState([])
-    const [namePropertySearch, setNamePropertyInfo] = React.useState([]);
+    const [numberSelected, setNumberSelected] = React.useState();
+    
 
     React.useEffect(() => {
         const getPropertyInfo = async () => {
@@ -25,15 +26,16 @@ const MainPage = ({login}) => {
         getPropertyInfo()
     }, [])
     const [filteredProperties, setFilteredProperties] = React.useState(propertyInfo);
-    console.log('propertyInfo:', propertyInfo); // Log propertyInfo
-    console.log('filteredProperties:', filteredProperties);
+    const [sortedProperties, setSortedProperties] = React.useState(propertyInfo);
+    //console.log('propertyInfo:', propertyInfo); // Log propertyInfo
+    //console.log('filteredProperties:', filteredProperties);
 
     const [input, setInput] = React.useState('')
     React.useEffect(() => {
         const filteredPropertyInfo = propertyInfo.filter((property) => {
           return property.propertyInfo.propertyName.toLowerCase().includes(input.toLowerCase());
         });
-        setNamePropertyInfo(filteredPropertyInfo);
+        //setNamePropertyInfo(filteredPropertyInfo);
         /* SET DEFAULT PAGE TO ALL */
         setFilteredProperties(filteredPropertyInfo)
       }, [input, propertyInfo]);
@@ -48,8 +50,9 @@ const MainPage = ({login}) => {
     }
     return (
         <Container sx={{ width: '100%' }}>
-            <SearchBar data={propertyInfo} setInput={setInput} setFilteredOptions={setFilteredProperties}/>
-            {input == '' &&
+            <SearchBar data={propertyInfo} setInput={setInput} setFilteredOptions={setFilteredProperties} setNumberSelected={setNumberSelected} setSortedOptions={setSortedProperties}/>
+            {console.log(filteredProperties)}
+            {(input == '' && numberSelected == 0) &&
             <Box sx={{ m: 4 }} style={styles.feed}>
                 <FeaturedProperties data={propertyInfo} style={styles.feed} login={login}/>
             </Box>
