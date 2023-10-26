@@ -11,6 +11,7 @@ const cookieParser = require("cookie-parser");
 const sendVerificationEmail = require("./emailVerify.js");
 const changePasswordEmail = require("./changePasswordEmail.js")
 const adminRequestEmail = require("./adminRequestEmail.js")
+const setAdminPWEmail = require("./setAdminPWEmail.js")
 const cors = require('cors');
 
 const router = express.Router();
@@ -517,12 +518,42 @@ router.get("/admin/verify/:token", async (req, res) => {
 
         console.log("Admin User:", newAdmin);
 
+        const verificationToken = jwt.sign(
+            {
+              username: req.body.username,
+            }, secretKey, { expiresIn: "7d" }
+          );
+
+        setAdminPWEmail(req.body.username, verificationToken);
+
         return res.redirect("http://localhost:3001/VerifyPage");
     } catch (err) {
         console.log(err);
         return res.status(500).send("Email verification failed");
     }
 });
+
+router.get("/admin/verify-set-pw/:token", async (req, res) => {
+    const { token } = req.params;
+    console.log("Token:", token);
+    try {
+      const decoded = jwt.verify(token, secretKey);
+      console.log(decoded.username);
+  
+      const user = await Admin.findOne({ username: decoded.username });
+  
+      if (!user) {
+        // return res.status(404).send("User not found");
+        return res.redirect(`http://localhost:3001/?toast=ResetErr`);
+      }
+  
+      const resetToken = jwt.sign({ username: decoded.username }, secretKey, { expiresIn: '10m' });
+  
+      return res.redirect(`http://localhost:3001/SetAdminPW/${resetToken}`);
+    } catch (err) {
+      return res.redirect(`http://localhost:3001/?toast=ResetErr`);
+    }
+  });
 
 
 

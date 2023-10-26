@@ -24,6 +24,7 @@ import CoopmatesPage from "./pages/CoopmatesPage";
 import PropertyManagerPublicPage from "./pages/PropertyManagerPublicPage";
 import AdminPage from "./pages/AdminPage";
 import ResetPWPage from "./pages/ResetPWPage"
+import SetAdminPWPage from "./pages/SetAdminPWPage";
 
   const styles = {
     background: {
@@ -166,6 +167,7 @@ class App extends React.Component {
             <Route path="/CompanyPage" element={<PropertyManagerPublicPage />} />
             <Route path="/Admin" element={<AdminPage />} />
             <Route path="/ResetPW/:token" element={<ResetPWPage />} />
+            <Route path="/SetAdminPW/:token" element={<SetAdminPWPage />} />
           </Routes>
         </BrowserRouter>
       </body>  
