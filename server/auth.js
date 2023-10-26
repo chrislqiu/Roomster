@@ -6,6 +6,7 @@ const RenterInfo = require('./models/renterInfo.js');
 const Manager = require('./models/manager.js');
 const Company = require('./models/company.js');
 const CompanyInfo = require('./models/companyInfo.js');
+const Admin = require("./models/admin.js")
 const cookieParser = require("cookie-parser");
 const sendVerificationEmail = require("./emailVerify.js");
 const cors = require('cors');
@@ -372,6 +373,34 @@ router.get("/verify/:token", async (req, res) => {
     } catch (err) {
         console.log(err);
         return res.status(500).send("Email verification failed");
+    }
+});
+
+router.post("/admin/login", async (req, res) => {
+    var user = await Admin.findOne({ username: req.body.username });
+
+    if (!user) {
+        return res.status(400).send("User does not exist");
+    }
+
+    try {
+        const isPasswordValid = await bcrypt.compare(req.body.password, user.password);
+
+        if (isPasswordValid) {
+            const token = jwt.sign({ username: req.body.username }, secretKey, { expiresIn: '1h' });
+            return res
+                .cookie("access_token_admin", token, {
+                    httpOnly: true,
+                    secure: process.env.NODE_ENV === "production",
+                    // sameSite: "None",
+                })
+                .status(200)
+                .json({ message: "Access granted" });
+        } else {
+            res.status(401).send("Access denied");
+        }
+    } catch {
+        res.status(500).send("Error when logging in");
     }
 });
 

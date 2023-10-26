@@ -27,6 +27,8 @@ import ManagerCreateAccountView from './PropertyManagerCreateAccountView';
 
 
 
+
+
 const AdminLogin = ({ text }) => {
     const [open, setOpen] = React.useState(true)
     const [rCreateOpen, setRCreateOpen] = React.useState(false)
@@ -34,6 +36,8 @@ const AdminLogin = ({ text }) => {
     const [email, setEmail] = React.useState('')
     const [password, setPassword] = React.useState('')
     const [loginStatus, setLoginStatus] = React.useState(null)
+    const [RequestOpen, setRequestOpen] = React.useState(false)
+    const [RequestUsername, setRequestUsername] = React.useState('')
 
     const handleOpen = () => {
         setOpen(true)
@@ -43,6 +47,20 @@ const AdminLogin = ({ text }) => {
         // setOpen(false)
         setLoginStatus(null)
     }
+
+
+    const handleRequest = () => {
+        // ... (implement the logic for resetting the password)
+        console.log('Resetting password...');
+    };
+
+    const handleRequestOpen = () => {
+        setRequestOpen(true);
+    };
+
+    const handleRequestClose = () => {
+        setRequestOpen(false);
+    };
 
     const handleLogin = async () => {
         try {
@@ -154,9 +172,74 @@ const AdminLogin = ({ text }) => {
                         >
                             LOGIN
                         </Button>
+                        <Typography
+                            sx={{ margin: 1.5, marginLeft: "auto", marginTop: "15px", color: "#AB191F", cursor: "pointer" }}
+                            onClick={handleRequestOpen}
+                        >
+                            Request Admin Account
+                        </Typography>
                     </div>
                 </Box>
             </DialogContent>
+            <Dialog
+                open={RequestOpen}
+                onClose={handleRequestClose}
+                sx={{
+                    '& .MuiDialog-container': {
+                        '& .MuiPaper-root': {
+                            width: '100%',
+                            maxWidth: '400px',
+                            maxHeight: '1000px',
+                            bgcolor: '#F6EBE1',
+                        },
+                    },
+                }}
+            >
+                <DialogTitle sx={{ fontWeight: 600, fontSize: 25 }}>Admin Account Request</DialogTitle>
+                <DialogContent sx={{ maxWidth: '400px' }}>
+                    <TextField
+                        label="Email"
+                        id="username-textfield"
+                        variant="outlined"
+                        fullWidth
+                        sx={{
+                            boxShadow: '3',
+                            margin: 'dense',
+                            marginBottom: '15px',
+                            marginTop: '10px',
+                        }}
+                        value={RequestUsername}
+                        onChange={(e) => setRequestUsername(e.target.value)}
+                    />
+
+                    <Button
+                        onClick={handleRequest}
+                        sx={{
+                            ':hover': {
+                                borderColor: 'black',
+                                bgcolor: '#F6EBE1',
+                                color: 'black',
+                                borderWidth: 1.5,
+                                width: '100%',
+                                fontWeight: 600,
+                            },
+                            borderColor: 'black',
+                            bgcolor: '#AB191F',
+                            color: '#F6EBE1',
+                            borderWidth: 1.5,
+                            width: '30%',
+                            fontWeight: 600,
+                            maxWidth: '150px',
+                            boxShadow: 5,
+                            justifyContent: 'center',
+                            float: 'right',
+                        }}
+                        variant="outlined"
+                    >
+                        Request
+                    </Button>
+                </DialogContent>
+            </Dialog>
         </div>
     );
 

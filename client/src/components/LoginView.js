@@ -230,6 +230,7 @@ const LoginView = ({ text}) => {
                             </Button>
                         </div>
                     </Box>
+                    
                 </DialogContent>
             </Dialog>
         </React.Fragment>
