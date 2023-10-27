@@ -492,6 +492,7 @@ router.post("/admin/login", async (req, res) => {
                     secure: process.env.NODE_ENV === "production",
                     // sameSite: "None",
                 })
+                .cookie("user_type", "admin")
                 .status(200)
                 .json({ message: "Access granted" });
         } else {

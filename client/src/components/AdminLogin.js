@@ -29,7 +29,7 @@ const AdminLogin = () => {
 
     const handleLogin = async () => {
         try {
-            const response = await fetch('http://localhost:8000/auth/login', {
+            const response = await fetch('http://localhost:8000/auth/admin/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
