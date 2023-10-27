@@ -100,6 +100,20 @@ router.get('/add-card', async (req, res) => {
     }
 });
 
+router.post('/sendCompanyName', (req, res) => {
+    console.log(req.body);
+    companyName = req.body.companyName;
+    console.log(companyName);
+    Property.find({'companyInfo.name': companyName})
+    .then((result) => {
+        console.log(result);
+        res.send(result);
+    })
+    .catch((err) => {
+        console.log(err);
+    });
+})
+
 // Route to get all cards
 router.get('/all-cards', (req, res) => {
     Property.find()
