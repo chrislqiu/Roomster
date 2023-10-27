@@ -15,7 +15,7 @@ import StarIcon from '@mui/icons-material/Star';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
-import { useNavigate } from 'react-router-dom';
+import { createSearchParams, useNavigate } from 'react-router-dom';
 
 
 /* 
@@ -57,7 +57,15 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
             margin: "15px 0 15x 0",
         }
     }
-
+    const navigate=useNavigate()
+    const openCompanyPage = (property) => {
+        navigate({
+            pathname: "/CompanyPage",
+            search: createSearchParams({
+                companyName: data.companyInfo.name
+            }).toString()
+        })
+    }
     return (
         <React.Fragment>
             <Card
@@ -156,7 +164,12 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
                     <Stack direction={{'400px': "column", md: "row",lg: "row", xl: "row"}} spacing={5} sx={{ marginTop: 2, p: 1 }} >
                         <Box width='600'>
                             <Tooltip title="Go to Company Page" >
-                            <Link href="/CompanyPage" underline="hover" color="black" sx={{fontWeight: 600, "&:hover": {color:"#AB191F"}}}>
+                            {/*<Link href="/CompanyPage" underline="hover" color="black" sx={{fontWeight: 600, "&:hover": {color:"#AB191F"}}}>
+                                {data.propertyInfo.propertyName}
+                </Link>*/}
+                            <Link underline="hover" color="black" sx={{fontWeight: 600, "&:hover": {color:"#AB191F"}}}
+                                onClick={openCompanyPage}>
+
                                 {data.propertyInfo.propertyName}
                             </Link>
                             </Tooltip>
