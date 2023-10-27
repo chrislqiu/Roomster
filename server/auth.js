@@ -555,6 +555,31 @@ router.get("/admin/verify-set-pw/:token", async (req, res) => {
     }
   });
 
+  router.post("/admin/pw-set/:token", async (req, res) => {
+    const { token } = req.params;
+    console.log("Token:", token);
+    try {
+      const decoded = jwt.verify(token, secretKey);
+      console.log("decoded" + decoded.username);
+  
+      const user = await Admin.findOne({ username: decoded.username });
+  
+      if (!user) {
+        return res.status(404).send("User not found");
+      }
+  
+      const salt = await bcrypt.genSalt();
+      const hashedNewPassword = await bcrypt.hash(req.body.newPassword, salt);
+  
+      await Admin.updateOne({ username: decoded.username }, { password: hashedNewPassword });
+  
+      return res.status(200).send("Password set");
+    } catch (err) {
+      console.log(err)
+      return res.status(500).send("Error setting password");
+    }
+  });
+
 
 
 //only for testing purposes

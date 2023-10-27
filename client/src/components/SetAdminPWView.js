@@ -49,7 +49,7 @@ const SetAdminPWView = ({ text }) => {
         }
 
         try {
-            const response = await fetch(`http://localhost:8000/auth/pw-reset/${token}`, {
+            const response = await fetch(`http://localhost:8000/auth/admin/pw-set/${token}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -75,8 +75,8 @@ const SetAdminPWView = ({ text }) => {
                 });
             } else {
                 console.log("user valid");
-                navigate("/Home")
-                toast.success('Password reset', {
+                navigate("/Admin")
+                toast.success('Password set', {
                     position: toast.POSITION.TOP_CENTER,
                     autoClose: 3000,
                     hideProgressBar: true,
@@ -126,7 +126,7 @@ const SetAdminPWView = ({ text }) => {
             >
                 <DialogTitle sx={{ fontWeight: 600, marginBottom: "-20px" }}>
                     <Typography variant="inherit" color="inherit">
-                        Reset Password
+                        Set Password
                     </Typography>
                 </DialogTitle>
                 <Divider variant="middle" sx={{ borderBottomWidth: 3, color: "#AB191F", backgroundColor: "#AB191F", marginY: 1 }} />
@@ -191,7 +191,7 @@ const SetAdminPWView = ({ text }) => {
                             }}
                             variant="outlined"
                         >
-                            Reset Password
+                            Set Password
                         </Button>
                     </Box>
                 </DialogContent>
