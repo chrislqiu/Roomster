@@ -162,9 +162,6 @@ const SearchBar = ({ data, setInput, setFilteredOptions, setNumberSelected, setS
                         style={styles.buttons}>
                         <FontAwesomeIcon icon={open ? faCaretUp : faCaretDown} />
                     </IconButton>
-                    <IconButton style={styles.buttons}>
-                        <FontAwesomeIcon icon={faMagnifyingGlass} />
-                    </IconButton>
                 </Box>
             </Box>
             {open && (

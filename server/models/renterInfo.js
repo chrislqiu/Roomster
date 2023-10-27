@@ -24,10 +24,6 @@ const renterInfo = new Schema({
         type: String,
         required: false
     },
-    bio: {
-        type: String,
-        default: "Hi! I'm looking for housing!"
-    },
     pfp: {
         type: String,
         default: "og pfp"
@@ -57,17 +53,17 @@ const renterInfo = new Schema({
             max: 5
         },
         sleepSchedule: {
-            asleep: {
+            from: {
                 type: Number,
                 min: 0,
                 max: 23
             },
-            awake: {
+            to: {
                 type: Number,
                 min: 0,
                 max: 23
             }
-        }
+        },
     },
     favCoops: {
         type: [Property.schema],

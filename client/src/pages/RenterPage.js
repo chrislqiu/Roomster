@@ -142,6 +142,10 @@ const RenterPage = () => {
     const [disableButton, setDisableButton] = React.useState(true);
     const [sleepFrom, setSleepFrom] = React.useState('');
     const [sleepTo, setSleepTo] = React.useState('');
+    const [studious, setStudious] = React.useState('')
+    const [cleanliness, setCleanliness] = React.useState('')
+    const [guestFreq, setGuestFreq] = React.useState('')
+
     const handleSleepFrom = (event) => {
       setSleepFrom(event.target.value);
     };
@@ -162,14 +166,27 @@ const RenterPage = () => {
         }
 
         const dataToSend = {
-            profilePic: profileImg,
-            purdueEmail: email,
-            phone: phone,
-            pets: hasPet,
-            smoke: doesSmoke,
-            sleepFrom: sleepFrom,
-            sleepTo: sleepTo
+            findingCoopmates: toggleOn,
+            renterInfo: {
+                name: name,
+                age: age,
+                email: email,
+                phone: phone,
+                pfp: profileImg,
+                livingPreferences: {
+                    pets: hasPet,
+                    smoke: doesSmoke,
+                    studious: studious,
+                    cleanliness: cleanliness,
+                    guestFreq: guestFreq,
+                    sleepSchedule: {
+                        from: sleepFrom,
+                        to: sleepTo
+                    }
+                }
+            }
         }
+
         fetch('http://localhost:8000/sendRenterProfile', {
             method: 'POST',
             headers: {
@@ -200,10 +217,25 @@ const RenterPage = () => {
         }
 
         const dataToSend = {
-            profilePic: profileImg,
-            purdueEmail: email,
-            phone: phone,
-            looking: toggleOn
+            findingCoopmates: toggleOn,
+            renterInfo: {
+                name: name,
+                age: age,
+                email: email,
+                phone: phone,
+                pfp: profileImg,
+                livingPreferences: {
+                    pets: hasPet,
+                    smoke: doesSmoke,
+                    studious: studious,
+                    cleanliness: cleanliness,
+                    guestFreq: guestFreq,
+                    sleepSchedule: {
+                        from: sleepFrom,
+                        to: sleepTo
+                    }
+                }
+            }
         }
         fetch('http://localhost:8000/sendRenterProfile', {
             method: 'POST',
@@ -211,6 +243,7 @@ const RenterPage = () => {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(dataToSend),
+            credentials: "include"
         })
         .then(response => response.json())
         .then(data => {
@@ -240,6 +273,8 @@ const RenterPage = () => {
         setOpen(false);
     }
 
+    const name = "John Doe"
+    const age = "22"
 
     return (
         
@@ -262,10 +297,10 @@ const RenterPage = () => {
                         </Box>
 
                         <Typography style={Object.assign(styles.name, styles.boxPadding, {marginTop: "20px"})}> 
-                            {"John Doe"}
+                            {name}
                         </Typography >
                         <Typography style={Object.assign(styles.age, {padding: "0 10px 0 20px", marginTop: "20px"})}> 
-                            {"22"}
+                            {age}
                         </Typography >
                         <FontAwesomeIcon icon={faMars} style={Object.assign(styles.icon, {marginTop: "22px"})}/>
                     </Container>
@@ -296,7 +331,7 @@ const RenterPage = () => {
                         <Switch style={{verticalAlign:"center", marginTop:"2px"}}
                             color={toggleOn ? 'danger' : 'neutral'}
                             checked={toggleOn}
-                            onChange={() => {setToggleOn(!toggleOn); setDisableButton(true)}}
+                            onChange={() => {setToggleOn(!toggleOn); setDisableButton(true); setCleanliness(3); setStudious(3); setGuestFreq(3)}}
                         />
                     </Container>
                     {toggleOn &&
@@ -326,6 +361,7 @@ const RenterPage = () => {
                             </FormControl>
                             <Container>
                             <Slider
+                                onChange={(e, val) => setStudious(val)}
                                 size="small"
                                 defaultValue={3}
                                 valueLabelDisplay="auto"
@@ -339,6 +375,7 @@ const RenterPage = () => {
                             </Container>
                             <Container>
                             <Slider
+                                onChange={(e, val) => setCleanliness(val)}
                                 size="small"
                                 defaultValue={3}
                                 valueLabelDisplay="auto"
@@ -352,6 +389,7 @@ const RenterPage = () => {
                             </Container>
                             <Container>
                             <Slider
+                                onChange={(e, val) => setGuestFreq(val)}
                                 size="small"
                                 defaultValue={3}
                                 valueLabelDisplay="auto"
@@ -365,7 +403,7 @@ const RenterPage = () => {
                             </Container>
                             <Container style={{display: "flex", gap: "1rem", width: "200px", margin:"0 0 10px -50px", padding:"0"}}>
                                 <Select displayEmpty value={sleepFrom} onChange={handleSleepFrom} sx={selectSX} disabled={disableButton} >
-                                    <MenuItem value=""> <em>From</em> </MenuItem>
+                                    <MenuItem value=""> <em>From</em> </MenuItem> <MenuItem value={0}>0</MenuItem>
                                     <MenuItem value={1}>1</MenuItem> <MenuItem value={2}>2</MenuItem> <MenuItem value={3}>3</MenuItem>
                                     <MenuItem value={4}>4</MenuItem> <MenuItem value={5}>5</MenuItem> <MenuItem value={6}>6</MenuItem>
                                     <MenuItem value={7}>7</MenuItem> <MenuItem value={8}>8</MenuItem> <MenuItem value={9}>9</MenuItem>
@@ -373,11 +411,11 @@ const RenterPage = () => {
                                     <MenuItem value={13}>13</MenuItem> <MenuItem value={14}>14</MenuItem> <MenuItem value={15}>15</MenuItem>
                                     <MenuItem value={16}>16</MenuItem> <MenuItem value={17}>17</MenuItem> <MenuItem value={18}>18</MenuItem>
                                     <MenuItem value={19}>19</MenuItem> <MenuItem value={20}>20</MenuItem> <MenuItem value={21}>21</MenuItem>
-                                    <MenuItem value={22}>22</MenuItem> <MenuItem value={23}>23</MenuItem> <MenuItem value={24}>24</MenuItem>
+                                    <MenuItem value={22}>22</MenuItem> <MenuItem value={23}>23</MenuItem>
                                 </Select>
                             
                                 <Select displayEmpty value={sleepTo} onChange={handleSleepTo} sx={selectSX} disabled={disableButton} >
-                                    <MenuItem value=""> <em>To</em> </MenuItem>
+                                    <MenuItem value=""> <em>To</em> </MenuItem> <MenuItem value={0}>0</MenuItem>
                                     <MenuItem value={1}>1</MenuItem> <MenuItem value={2}>2</MenuItem> <MenuItem value={3}>3</MenuItem>
                                     <MenuItem value={4}>4</MenuItem> <MenuItem value={5}>5</MenuItem> <MenuItem value={6}>6</MenuItem>
                                     <MenuItem value={7}>7</MenuItem> <MenuItem value={8}>8</MenuItem> <MenuItem value={9}>9</MenuItem>
@@ -385,7 +423,7 @@ const RenterPage = () => {
                                     <MenuItem value={13}>13</MenuItem> <MenuItem value={14}>14</MenuItem> <MenuItem value={15}>15</MenuItem>
                                     <MenuItem value={16}>16</MenuItem> <MenuItem value={17}>17</MenuItem> <MenuItem value={18}>18</MenuItem>
                                     <MenuItem value={19}>19</MenuItem> <MenuItem value={20}>20</MenuItem> <MenuItem value={21}>21</MenuItem>
-                                    <MenuItem value={22}>22</MenuItem> <MenuItem value={23}>23</MenuItem> <MenuItem value={24}>24</MenuItem>
+                                    <MenuItem value={22}>22</MenuItem> <MenuItem value={23}>23</MenuItem>
                                 </Select>
                             </Container>
                             <Button variant="contained" style={{backgroundColor: "#AB191F", float: "right", margin: "0 -40px 0 0"}}
