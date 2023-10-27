@@ -22,7 +22,7 @@ const MyCoopsPage = () => {
     const [numBeds, setNumBeds] = React.useState(-1)
     const [numBaths, setNumBaths] = React.useState(-1)
 
-    /* Amenities: pet friendly, in-unit WD, parking, kitchen appliances, furnished */
+    /* Amenities: pet friendly, in-unit WD, parking, kitchen appliances, furnished, gym */
     const [isPetFriendly, setIsPetFriendly] = React.useState(false)
     const [notPetFriendly, setNotPetFriendly] = React.useState(false)
     const [hasInUnitWD, setHasInUnitWD] = React.useState(false)
@@ -33,6 +33,8 @@ const MyCoopsPage = () => {
     const [noKitchenApp, setNoKitchenApp] = React.useState(false)
     const [isFurnished, setIsFurnished] = React.useState(false)
     const [notFurnished, setNotFurnished] = React.useState(false)
+    const [hasGym, setHasGym] = React.useState(false)
+    const [noGym, setNoGym] = React.useState(false)
 
     /* Utilities: electricity, gas, water, trash, sewage, internet */
     const [includeElec, setIncludeElec] = React.useState(false)
@@ -194,7 +196,8 @@ const MyCoopsPage = () => {
                             
                         }}
                         style={{
-                            backgroundColor:"#F6EBE1"
+                            backgroundColor:"#F6EBE1",
+                            overflow:"hidden"
                         }}>
                         <AspectRatio minHeight={100} maxHeight={200} minWidth={300} maxWidth={400} 
                             style={{
@@ -400,25 +403,22 @@ const MyCoopsPage = () => {
                                         />
                                     </Container> 
 
-                                    {/* Other */}
-                                    <InputBase 
-                                        placeholder="Other" 
-                                        id="Other" 
-                                        sx={{
-                                            marginLeft:"6px",
-                                            top:"-27px",
-                                            fontSize:"11pt",
-                                            width:"150px", 
-                                            height: "35px",
-                                            borderRadius: "5px",
-                                            border: "2px solid #AB191F",
-                                            padding: "5px",
-                                            "&:hover": {
-                                                border: "2px solid #AB191F",
-                                                boxShadow:"0px 0px 3px 3px rgba(0, 0, 0, .1)", 
-                                            }
-                                        }}
-                                    /> {<br />}{<br />}
+                                    {/* Gym */}
+                                    <Container style={{float:"left", width:"100%"}}>
+                                        <FormControlLabel style={{margin:"-60px 0 0 -30px"}} label={<Typography style={{fontSize:"11pt"}}>Gym</Typography>} control={
+                                            <Checkbox style={{}}
+                                            checked={hasGym}
+                                            onChange={() => setHasGym(!hasGym)}
+                                            disabled={noGym === true ? true : false}
+                                            inputProps={{ 'aria-label': 'controlled' }}
+                                            sx={{
+                                                color:"#AB191F",
+                                                '&.Mui-checked': {
+                                                    color: "#AB191F",
+                                                },}}
+                                            />}
+                                        />
+                                    </Container> 
                                 </Box>
                             </Box>
 
@@ -550,9 +550,8 @@ const MyCoopsPage = () => {
                                         borderWidth: 1.5
                                     },
                                     borderColor:"#AB191F", bgcolor:"#AB191F", color:"#F6EBE1", 
-                                    borderWidth: 1.5, width:"100%", fontWeight:600, lineHeight:"15px",
-                                    boxShadow: 5, maxWidth:"112px", maxHeight: "50px",
-                                    float: "right", bottom: 20, right:35,
+                                    borderWidth: 1.5, width:"112px", height:"35px", fontWeight:600, lineHeight:"11px",
+                                    boxShadow: 5, float: "right", bottom: 20, right:30,
                                     marginBottom:"30px",
                                     marginLeft: "210px",
                                     position: "absolute"
@@ -580,33 +579,7 @@ const MyCoopsPage = () => {
                     )}
                 </DialogContent>
             </Dialog>
-            {/* <Dialog
-                open={open}
-                onClose={handleClose}
-                sx={{
-                    "& .MuiDialog-container": {
-                        "& .MuiPaper-root": {
-                            width: "600px",
-                            height: "200px",
-                            backgroundColor: "#F6EBE1"
-                        },
-                    },
-                }}
-            ><DialogContent> {
-                    addCoopStatus && 
-                    (<Typography 
-                        style={{
-                            fontWeight: "600", 
-                            fontSize: "15pt", 
-                            color: "#AB191F", 
-                            textAlign:"center", 
-                            margin:"10px 0 -10px 0"
-                        }}> 
-                        {addCoopStatus}
-                    </Typography >)
-                }</DialogContent>
-            </Dialog> */}
-           
+
             <Box sx={{ m: 1 }} style={styles.feed}>
                 {
                    /*
