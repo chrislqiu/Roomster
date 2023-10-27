@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass, faCaretDown, faCaretUp, faArrowUp19 } from '@fortawesome/free-solid-svg-icons'
 import React from "react"
 
-const SearchBar = ({ data, setInput, setFilteredOptions, setNumberSelected, setSortedOptions }) => {
+const SearchBar = ({ data, setInput, setFilteredOptions, setNumberSelected, setSortOptions }) => {
 
     const [selectBed, setSelectBed] = React.useState([]);
     const [selectBath, setSelectedBath] = React.useState([]);
@@ -11,8 +11,7 @@ const SearchBar = ({ data, setInput, setFilteredOptions, setNumberSelected, setS
     const [searchText, setSearchText] = React.useState('')
 
     const [anchorEl, setAnchorEl] = React.useState(null);
-    const [sortOption, setSortOption] = React.useState('Default');
-
+    //const [sortOption, setSortOption] = React.useState('Default');
 
     //FILTER
     const handleBedroom = (event) => {
@@ -60,13 +59,19 @@ const SearchBar = ({ data, setInput, setFilteredOptions, setNumberSelected, setS
 
     const handleSortOptionClick = (sortOption) => {
         // set the sort option -- price or dist
-        setSortOption(sortOption);
+        setSortOptions(sortOption);
 
-        const sortedData = sortData(data, sortOption);
+       const sortedData = sortData(data, sortOption);
         // update the list of properties 
-        setFilteredOptions(sortedData);
+       setFilteredOptions(sortedData);
     
         handleSortButtonClose();
+        if (open === true) {
+            setOpen(!open)
+        }
+        setSelectBed([])
+        setSelectedBath([])
+        setSelectedAmenities([])
       };
 
     const sortData = (data, sortingOption) => {    
@@ -425,8 +430,7 @@ const SearchBar = ({ data, setInput, setFilteredOptions, setNumberSelected, setS
                 <MenuItem
                     style={styles.menuItems}
                     onClick={() => handleSortOptionClick('Distance')}
-                    >
-                        
+                    >  
                     Distance
                 </MenuItem>
             </Menu>
