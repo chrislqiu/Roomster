@@ -25,14 +25,18 @@ router.use(cors(corsOptions));
 
 const secretKey = "E.3AvP1]&r7;-vBSAL|3AyetV%H*fIEy";
 
-const authorization = (req, res, next) => {
-    const token = req.cookies.access_token;
+const authorization = async (req, res, next) => {
+    const token = req.cookies.access_token_admin;
+    const userType = req.cookies.user_type;
+
+    console.log(req.cookies)
+
 
     if (!token) {
         return res.sendStatus(401); // Unauthorized
     }
 
-    jwt.verify(token, secretKey, (err, user) => {
+    jwt.verify(token, secretKey, async (err, user) => {
         if (err) {
             return res.sendStatus(403); // Forbidden
         }
@@ -40,6 +44,16 @@ const authorization = (req, res, next) => {
         if (req.body.username && req.body.username !== user.username) {
             return res.status(401).send("Unauthorized");
         }
+
+        if (userType && userType === "admin") {
+            const adminUser = await Admin.findOne({ username: user.username });
+
+            if (!adminUser) {
+                return res.status(401).send("Unauthorized");
+            }
+        }
+
+        
 
         req.user = user;
         next();
