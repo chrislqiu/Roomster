@@ -30,6 +30,7 @@ mongoose.connect(dbURI, {useNewUrlParser: true, useUnifiedTopology: true})
 
 app.use(cors(corsOptions));
 app.use(express.json());
+const secretKey = "E.3AvP1]&r7;-vBSAL|3AyetV%H*fIEy";
 
 
 const authorization = (req, res, next) => {
@@ -59,42 +60,43 @@ app.get("/message", (req, res) => {
 
 app.use("/auth", authRouter);
 app.use('/cards', cardRoutes);
-app.post('/sendManagerProfile', async (req, res) => {
+app.post('/sendManagerProfile', authorization, async (req, res) => {
   const data = req.body;
 
-  //const newManagerProfile = new managerProfile(data);
-  const newCompanyInfo = new CompanyInfo({
+  const existingCompany = await Company.findOne({name: req.user.company.companyInfo.name})
+
+  const updatedCompanyInfo = new CompanyInfo({
     name: data.company.name,
     address: data.company.address,
+    site: existingCompany.companyInfo.site,
+    email: existingCompany.companyInfo.email,
     phone: data.company.phone
 })
 
-const newCompany = new Company({
-    companyInfo: newCompanyInfo
-})
+const updatedCompany = Company.findOneAndUpdate({name: req.user.company.companyInfo.name}, {companyInfo: updatedCompanyInfo})
 
-const newManagerProfile = new Manager({
-    name: data.name,
-    phone: data.phone,
-    email: data.email,
-    bio: data.bio,
-    company: newCompany
-})
-  newManagerProfile.save()
+  
+  const updatedManager = await Manager.findOneAndUpdate({username: req.user.username}, {email: data.email, phone: data.phone, bio: data.bio, company: updatedCompany})
+  updatedManager.save()
   .then((result) => {
     res.send(result);
   })
   .catch((err) => {
-    console.log(err);
+      console.log(err);
   });
+  
 })
 
 app.post('/sendRenterProfile', async (req,res) => {
   const data = req.body;
-  console.log(data)
 
+  const token = (req.headers.cookie).split('; ')[0].split('=')[1];
+  const decoded = jwt.verify(token, secretKey);
+  const username = decoded.username
 
-  const newRenterInfo = new RenterInfo({
+  const existingRenter = await Renter.findOne({username: username})
+
+  const updatedRenterInfo = new RenterInfo({
     name: data.renterInfo.name,
     age: data.renterInfo.age,
     email: data.renterInfo.email,
@@ -111,21 +113,15 @@ app.post('/sendRenterProfile', async (req,res) => {
             to: data.renterInfo.livingPreferences.sleepSchedule.to
         }
     }
-})
+  })
 
-const newRenter = new Renter({
-    username: req.body.username,
-    findingCoopmates: data.findingCoopmates,
-    renterInfo: newRenterInfo
-})
-
-  newRenter.save()
+  const updatedRenter = await Renter.findOneAndUpdate({username: username}, {renterInfo: updatedRenterInfo})
+  updatedRenter.save()
   .then((result) => {
-    console.log(result)
     res.send(result);
   })
   .catch((err) => {
-    console.log(err);
+      console.log(err);
   });
 })
 
