@@ -13,7 +13,14 @@ const MyCoopsPage = () => {
     const [open, setOpen] = React.useState(false)
     const [propertyInfo, setPropertyInfo] = React.useState([])
     const [hovered, setHovered] = React.useState(false);
-    const [openMessage, setOpenMessage] = React.useState(false);
+    const [addCoopStatus, setAddCoopStatus] = React.useState(false)
+
+    /* Property Details */
+    const [name, setName] = React.useState("")
+    const [addr, setAddr] = React.useState("")
+    const [price, setPrice] = React.useState("")
+    const [numBeds, setNumBeds] = React.useState(-1)
+    const [numBaths, setNumBaths] = React.useState(-1)
 
     /* Amenities: pet friendly, in-unit WD, parking, kitchen appliances, furnished */
     const [isPetFriendly, setIsPetFriendly] = React.useState(false)
@@ -41,13 +48,6 @@ const MyCoopsPage = () => {
     const [includeInternet, setInternet] = React.useState(false)
     const [noInternet, setNoInternet] = React.useState(false)
 
-    const handleOpenMessage = () => {
-        setOpenMessage(true)
-    }
-    const handleCloseMessage = () => {
-        setOpenMessage(false)
-    }
-
     const handleOpen = () => {
         setOpen(true)
     }
@@ -62,6 +62,31 @@ const MyCoopsPage = () => {
 
     const handleLeave = () => {
         setHovered(false)
+    }
+
+    const handleBathChange = (selectedOption) => {
+        setNumBaths(selectedOption)
+        //console.log({value:e.target.value})
+
+    }
+
+    const handleAddCoop = () => {
+        /* Error Checking */
+        if (name === "") {
+            setAddCoopStatus("Please include a property name!")
+        } else if (addr === "") {
+            setAddCoopStatus("Please include a property address!")
+        } else if (price === "") {
+            setAddCoopStatus("Please include a price!")
+        } else if (numBeds === -1 || numBeds === "# beds") {
+            setAddCoopStatus("Please select the number of beds!")
+        } else if (numBaths == -1 || numBaths === "# baths") {
+            setAddCoopStatus("Please select the number of baths!")
+        } else {
+            setAddCoopStatus("Succesfully added coop!")
+        }
+
+        /* Saving property detail to database */
     }
 
     React.useEffect(() => {
@@ -199,33 +224,36 @@ const MyCoopsPage = () => {
 
                         <Stack direction={{'400px': "column", md: "row",lg: "row", xl: "row"}} spacing={5} sx={{ marginTop: 2, p: 1 }}>
                             
-                            {
-                                /*
-                                 * Property details
-                                 */
-                            }
+                            
+                            {/* Property Details */}
                             <Box width='600'>
                                 <InputBase 
                                     placeholder="Enter property name" 
                                     id="name-textfield" 
                                     sx={inputBaseSX}
+                                    onChange={(e) => setName(e.target.value)}
                                 /> {<br />}{<br />}
                                 <InputBase 
                                     placeholder="Enter property address" 
                                     id="addr-textfield" 
                                     sx={inputBaseSX}
+                                    onChange={(e) => setAddr(e.target.value)}
                                 /> {<br />}{<br />}
                                 <InputBase 
                                     placeholder="Enter property price" 
                                     id="price-textfield" 
                                     startAdornment={<InputAdornment position="start">$</InputAdornment>}
                                     sx={inputBaseSX}
+                                    onChange={(e) => setPrice(e.target.value)}
                                 /> {<br />}{<br />}
 
                                 <Select
                                     id="beds-input" 
-                                    defaultValue={-1}
+                                    defaultValue="# beds"
                                     sx={selectSX}
+                                    value={numBeds}
+                                    onChange={(e) => setNumBeds(e.target.value)}
+                                    
                                 >
                                     <MenuItem value={-1}># beds</MenuItem>
                                     <MenuItem value={1} sx={menuItemSX}>1</MenuItem>
@@ -233,10 +261,12 @@ const MyCoopsPage = () => {
                                     <MenuItem value={3} sx={menuItemSX}>3</MenuItem>
                                     <MenuItem value={4} sx={menuItemSX}>4</MenuItem>
                                     <MenuItem value={5} sx={menuItemSX}>5</MenuItem>
+                                    
                                 </Select>
                                 <Select
                                     id="baths-input" 
                                     defaultValue={-1}
+                                    value={numBaths}
                                     sx={{
                                         marginLeft:"-10px",
                                         marginRight:"-50px",
@@ -249,7 +279,13 @@ const MyCoopsPage = () => {
                                         '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
                                             border:"2px solid #AB191F"
                                         },
-                                    }}>
+                                    }}
+                                    onChange={(e) => setNumBaths(e.target.value)}
+                                    //onChange={handleBathChange}
+                                    autoFocus={true}
+                                    //onChange={handleBathChange}
+                                    //value={this.state.selectValue}
+                                    >
                                     <MenuItem value={-1}># baths</MenuItem>
                                     <MenuItem value={1} sx={menuItemSX}>1</MenuItem>
                                     <MenuItem value={1.5} sx={menuItemSX}>1.5</MenuItem>
@@ -517,22 +553,59 @@ const MyCoopsPage = () => {
                                     borderWidth: 1.5, width:"100%", fontWeight:600, lineHeight:"15px",
                                     boxShadow: 5, maxWidth:"112px", maxHeight: "50px",
                                     float: "right", bottom: 20, right:35,
-                                    //left: "50%",
                                     marginBottom:"30px",
                                     marginLeft: "210px",
                                     position: "absolute"
-
                                 }}
-                                variant="outlined">Add Coop
+                                variant="outlined"
+                                onClick={()=>handleAddCoop()}
+                                > Add Coop
                             </Button>
                         </Stack>
 
                     </Container>
+                    {addCoopStatus && ( 
+                        <Container 
+                            sx={{
+                                position:"relative", 
+                                //display:"-ms-flexbox", 
+                                //marginTop:"-290px",
+                                marginTop:"-5px", 
+                                marginBottom:"10px",
+                                textAlign:"center",
+                                fontSize:"11pt"
+                            }}>
+                            <p style={{color: '#AB191F'}}>{addCoopStatus}</p>
+                        </Container>
+                    )}
                 </DialogContent>
-        <DialogActions>
-            
-        </DialogActions>
-        </Dialog>
+            </Dialog>
+            {/* <Dialog
+                open={open}
+                onClose={handleClose}
+                sx={{
+                    "& .MuiDialog-container": {
+                        "& .MuiPaper-root": {
+                            width: "600px",
+                            height: "200px",
+                            backgroundColor: "#F6EBE1"
+                        },
+                    },
+                }}
+            ><DialogContent> {
+                    addCoopStatus && 
+                    (<Typography 
+                        style={{
+                            fontWeight: "600", 
+                            fontSize: "15pt", 
+                            color: "#AB191F", 
+                            textAlign:"center", 
+                            margin:"10px 0 -10px 0"
+                        }}> 
+                        {addCoopStatus}
+                    </Typography >)
+                }</DialogContent>
+            </Dialog> */}
            
             <Box sx={{ m: 1 }} style={styles.feed}>
                 {
