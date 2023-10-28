@@ -60,11 +60,15 @@ app.get("/message", (req, res) => {
 
 app.use("/auth", authRouter);
 app.use('/cards', cardRoutes);
-app.post('/sendManagerProfile', authorization, async (req, res) => {
+app.post('/sendManagerProfile', async (req, res) => {
   const data = req.body;
+  console.log(data)
+  const token = (req.headers.cookie).split('; ')[0].split('=')[1];
+  const decoded = jwt.verify(token, secretKey);
+  const username = decoded.username
 
-  const existingCompany = await Company.findOne({name: req.user.company.companyInfo.name})
-
+  const existingCompany = await Company.findOne({username: username.company.companyInfo})
+  console.log(existingCompany)
   const updatedCompanyInfo = new CompanyInfo({
     name: data.company.name,
     address: data.company.address,
@@ -73,10 +77,10 @@ app.post('/sendManagerProfile', authorization, async (req, res) => {
     phone: data.company.phone
 })
 
-const updatedCompany = Company.findOneAndUpdate({name: req.user.company.companyInfo.name}, {companyInfo: updatedCompanyInfo})
+const updatedCompany = Company.findOneAndUpdate({username: username.company}, {companyInfo: updatedCompanyInfo})
 
   
-  const updatedManager = await Manager.findOneAndUpdate({username: req.user.username}, {email: data.email, phone: data.phone, bio: data.bio, company: updatedCompany})
+  const updatedManager = await Manager.findOneAndUpdate({username: username}, {email: data.email, phone: data.phone, bio: data.bio, company: updatedCompany})
   updatedManager.save()
   .then((result) => {
     res.send(result);
