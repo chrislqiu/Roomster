@@ -5,6 +5,7 @@ import AddHomeIcon from '@mui/icons-material/AddHome';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { AspectRatio } from "@mui/joy";
+import toast, { Toaster } from 'react-hot-toast'
 
 const MyCoopsPage = () => {
     /*
@@ -14,6 +15,13 @@ const MyCoopsPage = () => {
     const [propertyInfo, setPropertyInfo] = React.useState([])
     const [hovered, setHovered] = React.useState(false);
     const [openMessage, setOpenMessage] = React.useState(false);
+
+    /* Textfield for property name, address, price, bed, and baths*/
+    const[propertyName, setPropertyName] = React.useState('')
+    const[propertyAddress, setPropertyAddress] = React.useState('')
+    const[price, setPrice] = React.useState('')
+    const[bed, setBed] = React.useState('')
+    const[bath, setBath] = React.useState('')
 
     /* Amenities: pet friendly, in-unit WD, parking, kitchen appliances, furnished */
     const [isPetFriendly, setIsPetFriendly] = React.useState(false)
@@ -26,6 +34,7 @@ const MyCoopsPage = () => {
     const [noKitchenApp, setNoKitchenApp] = React.useState(false)
     const [isFurnished, setIsFurnished] = React.useState(false)
     const [notFurnished, setNotFurnished] = React.useState(false)
+    const [hasPool, setHasPool] = React.useState(false)
 
     /* Utilities: electricity, gas, water, trash, sewage, internet */
     const [includeElec, setIncludeElec] = React.useState(false)
@@ -40,6 +49,9 @@ const MyCoopsPage = () => {
     const [noSewage, setNoSewage] = React.useState(false)
     const [includeInternet, setInternet] = React.useState(false)
     const [noInternet, setNoInternet] = React.useState(false)
+
+    /* Disabled button for Edit and Save */
+    const [disableButton, setDisableButton] = React.useState(true)
 
     const handleOpenMessage = () => {
         setOpenMessage(true)
@@ -73,6 +85,33 @@ const MyCoopsPage = () => {
         }
         getPropertyInfo()
     }, [])
+
+    const customToastStyle = {
+        color: 'white',
+    };
+
+    const handleAppCoop = () => {
+        if (propertyName === '' || propertyAddress === '' || price === '' || bed === '' || bath === ''){
+            toast.error("Please fill in all the textfileds and dropdown!", {style: customToastStyle})
+            return;
+        } else {
+            toast.success("Save Success", {style: customToastStyle})
+        }
+
+        const dataToSend = {
+            propertyInfo: {
+                image: '',
+                propertyName: propertyName,
+                address: propertyAddress,
+                beds: bed,
+                baths: bath,
+                cost: cost,
+                sqft: '',
+                distance: '',
+                
+            }
+        }
+    }
     
     const styles = {
         feed: {
@@ -209,23 +248,34 @@ const MyCoopsPage = () => {
                                     placeholder="Enter property name" 
                                     id="name-textfield" 
                                     sx={inputBaseSX}
+                                    disabled={disableButton}
+                                    value={propertyName}
+                                    onChange={(e) => setPropertyName(e.target.value)}
                                 /> {<br />}{<br />}
                                 <InputBase 
                                     placeholder="Enter property address" 
                                     id="addr-textfield" 
                                     sx={inputBaseSX}
+                                    disabled={disableButton}
+                                    value={propertyAddress}
+                                    onChange={(e) => setPropertyAddress(e.target.value)}
                                 /> {<br />}{<br />}
                                 <InputBase 
                                     placeholder="Enter property price" 
                                     id="price-textfield" 
                                     startAdornment={<InputAdornment position="start">$</InputAdornment>}
                                     sx={inputBaseSX}
+                                    disabled={disableButton}
+                                    value={price}
+                                    onChange={(e) => setPrice(e.target.value)}
                                 /> {<br />}{<br />}
 
                                 <Select
                                     id="beds-input" 
                                     defaultValue={-1}
                                     sx={selectSX}
+                                    disabled={disableButton}
+                                    onChange={(e) => setBed(e.target.value)}
                                 >
                                     <MenuItem value={-1}># beds</MenuItem>
                                     <MenuItem value={1} sx={menuItemSX}>1</MenuItem>
@@ -237,6 +287,7 @@ const MyCoopsPage = () => {
                                 <Select
                                     id="baths-input" 
                                     defaultValue={-1}
+                                    disabled={disableButton}
                                     sx={{
                                         marginLeft:"-10px",
                                         marginRight:"-50px",
@@ -249,7 +300,8 @@ const MyCoopsPage = () => {
                                         '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
                                             border:"2px solid #AB191F"
                                         },
-                                    }}>
+                                    }}
+                                    onChange={(e) => setBath(e.target.value)}>
                                     <MenuItem value={-1}># baths</MenuItem>
                                     <MenuItem value={1} sx={menuItemSX}>1</MenuItem>
                                     <MenuItem value={1.5} sx={menuItemSX}>1.5</MenuItem>
@@ -285,7 +337,7 @@ const MyCoopsPage = () => {
                                             <Checkbox style={{}}
                                             checked={isFurnished}
                                             onChange={() => setIsFurnished(!isFurnished)}
-                                            disabled={notFurnished === true ? true : false}
+                                            disabled={disableButton}
                                             inputProps={{ 'aria-label': 'controlled' }}
                                             sx={{
                                                 color:"#AB191F",
@@ -302,7 +354,7 @@ const MyCoopsPage = () => {
                                             <Checkbox style={{}}
                                             checked={hasKitchenApp}
                                             onChange={() => setHasKitchenApp(!hasKitchenApp)}
-                                            disabled={noKitchenApp === true ? true : false}
+                                            disabled={disableButton}
                                             inputProps={{ 'aria-label': 'controlled' }}
                                             sx={{
                                                 color:"#AB191F",
@@ -319,7 +371,7 @@ const MyCoopsPage = () => {
                                             <Checkbox style={{}}
                                             checked={hasInUnitWD}
                                             onChange={() => setHasInUnitWD(!hasInUnitWD)}
-                                            disabled={noInUnitWD === true ? true : false}
+                                            disabled={disableButton}
                                             inputProps={{ 'aria-label': 'controlled' }}
                                             sx={{
                                                 color:"#AB191F",
@@ -336,7 +388,7 @@ const MyCoopsPage = () => {
                                             <Checkbox style={{}}
                                             checked={hasParking}
                                             onChange={() => setHasParking(!hasParking)}
-                                            disabled={noParking === true ? true : false}
+                                            disabled={disableButton}
                                             inputProps={{ 'aria-label': 'controlled' }}
                                             sx={{
                                                 color:"#AB191F",
@@ -353,7 +405,7 @@ const MyCoopsPage = () => {
                                             <Checkbox style={{}}
                                             checked={isPetFriendly}
                                             onChange={() => setIsPetFriendly(!isPetFriendly)}
-                                            disabled={notPetFriendly === true ? true : false}
+                                            disabled={disableButton}
                                             inputProps={{ 'aria-label': 'controlled' }}
                                             sx={{
                                                 color:"#AB191F",
@@ -362,27 +414,24 @@ const MyCoopsPage = () => {
                                                 },}}
                                             />}
                                         />
-                                    </Container> 
+                                    </Container> {<br />}{<br />}
 
-                                    {/* Other */}
-                                    <InputBase 
-                                        placeholder="Other" 
-                                        id="Other" 
-                                        sx={{
-                                            marginLeft:"6px",
-                                            top:"-27px",
-                                            fontSize:"11pt",
-                                            width:"150px", 
-                                            height: "35px",
-                                            borderRadius: "5px",
-                                            border: "2px solid #AB191F",
-                                            padding: "5px",
-                                            "&:hover": {
-                                                border: "2px solid #AB191F",
-                                                boxShadow:"0px 0px 3px 3px rgba(0, 0, 0, .1)", 
-                                            }
-                                        }}
-                                    /> {<br />}{<br />}
+                                    {/* Pool */}
+                                    <Container style={{float:"left", width:"100%"}}>
+                                        <FormControlLabel style={{margin:"-100px 0 0 -30px"}} label={<Typography style={{fontSize:"11pt"}}>Pool</Typography>} control={
+                                            <Checkbox style={{}}
+                                            checked={hasPool}
+                                            onChange={() => setHasPool(!hasPool)}
+                                            disabled={disableButton}
+                                            inputProps={{ 'aria-label': 'controlled' }}
+                                            sx={{
+                                                color:"#AB191F",
+                                                '&.Mui-checked': {
+                                                    color: "#AB191F",
+                                                },}}
+                                            />}
+                                        />
+                                    </Container> {<br />}{<br />}
                                 </Box>
                             </Box>
 
@@ -408,7 +457,7 @@ const MyCoopsPage = () => {
                                             <Checkbox style={{}}
                                             checked={includeWater}
                                             onChange={() => setIncludeWater(!includeWater)}
-                                            disabled={noWater === true ? true : false}
+                                            disabled={disableButton}
                                             inputProps={{ 'aria-label': 'controlled' }}
                                             sx={{
                                                 color:"#AB191F",
@@ -425,7 +474,7 @@ const MyCoopsPage = () => {
                                             <Checkbox style={{}}
                                             checked={includeElec}
                                             onChange={() => setNoElec(!includeElec)}
-                                            disabled={noElec === true ? true : false}
+                                            disabled={disableButton}
                                             inputProps={{ 'aria-label': 'controlled' }}
                                             sx={{
                                                 color:"#AB191F",
@@ -442,7 +491,7 @@ const MyCoopsPage = () => {
                                             <Checkbox style={{}}
                                             checked={includeGas}
                                             onChange={() => setNoGas(!includeGas)}
-                                            disabled={noGas === true ? true : false}
+                                            disabled={disableButton}
                                             inputProps={{ 'aria-label': 'controlled' }}
                                             sx={{
                                                 color:"#AB191F",
@@ -459,7 +508,7 @@ const MyCoopsPage = () => {
                                             <Checkbox style={{}}
                                             checked={includeTrash}
                                             onChange={() => setNoTrash(!includeTrash)}
-                                            disabled={noTrash === true ? true : false}
+                                            disabled={disableButton}
                                             inputProps={{ 'aria-label': 'controlled' }}
                                             sx={{
                                                 color:"#AB191F",
@@ -476,7 +525,7 @@ const MyCoopsPage = () => {
                                             <Checkbox style={{}}
                                             checked={includeSewage}
                                             onChange={() => setNoSewage(!includeSewage)}
-                                            disabled={noSewage === true ? true : false}
+                                            disabled={disableButton}
                                             inputProps={{ 'aria-label': 'controlled' }}
                                             sx={{
                                                 color:"#AB191F",
@@ -493,7 +542,7 @@ const MyCoopsPage = () => {
                                             <Checkbox style={{}}
                                             checked={includeInternet}
                                             onChange={() => setNoInternet(!includeInternet)}
-                                            disabled={noInternet === true ? true : false}
+                                            disabled={disableButton}
                                             inputProps={{ 'aria-label': 'controlled' }}
                                             sx={{
                                                 color:"#AB191F",
@@ -507,6 +556,19 @@ const MyCoopsPage = () => {
                             </Box>
 
                             {/* Add Coop button */}
+                            <Toaster
+                                toastOptions={{
+                                    success: {
+                                        style: {
+                                            background: 'green',
+                                        },
+                                    },
+                                    error: {
+                                        style: {
+                                            background: 'red',
+                                        },
+                                    },
+                                }}/>
                             <Button
                                 sx={{
                                     ":hover": {
@@ -523,7 +585,15 @@ const MyCoopsPage = () => {
                                     position: "absolute"
 
                                 }}
-                                variant="outlined">Add Coop
+                                onClick={() => {
+                                    if (disableButton) {
+                                        setDisableButton(false)
+                                    } else {
+                                        handleAppCoop()
+                                        setDisableButton(true)
+                                    }
+                                }}
+                                variant="outlined">{disableButton ? 'Edit' : 'Add Coop'}
                             </Button>
                         </Stack>
 
