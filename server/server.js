@@ -63,24 +63,16 @@ app.use('/cards', cardRoutes);
 app.post('/sendManagerProfile', async (req, res) => {
   const data = req.body;
   console.log(data)
+
   const token = (req.headers.cookie).split('; ')[0].split('=')[1];
   const decoded = jwt.verify(token, secretKey);
   const username = decoded.username
+  const manager = await Manager.findOne({username: username})
 
-  const existingCompany = await Company.findOne({username: username.company.companyInfo})
-  console.log(existingCompany)
-  const updatedCompanyInfo = new CompanyInfo({
-    name: data.company.name,
-    address: data.company.address,
-    site: existingCompany.companyInfo.site,
-    email: existingCompany.companyInfo.email,
-    phone: data.company.phone
-})
+  const updatedCompanyInfo = await CompanyInfo.findOneAndUpdate({name: manager.company.companyInfo.name}, {name: data.company.name, address: data.company.address, phone: data.company.phone}, options.returnDocument='after')
+  const updatedCompany = await Company.findOneAndUpdate({'companyInfo.name': manager.company.companyInfo.name}, {companyInfo: updatedCompanyInfo}, options.returnDocument='after')
+  const updatedManager = await Manager.findOneAndUpdate({username: username}, {email: data.email, phone: data.phone, bio: data.bio, company: updatedCompany}. options.returnDocument='after')
 
-const updatedCompany = Company.findOneAndUpdate({username: username.company}, {companyInfo: updatedCompanyInfo})
-
-  
-  const updatedManager = await Manager.findOneAndUpdate({username: username}, {email: data.email, phone: data.phone, bio: data.bio, company: updatedCompany})
   updatedManager.save()
   .then((result) => {
     res.send(result);
@@ -92,34 +84,27 @@ const updatedCompany = Company.findOneAndUpdate({username: username.company}, {c
 })
 
 app.post('/sendRenterProfile', async (req,res) => {
-  const data = req.body;
+  const data = req.body.renterInfo;
 
   const token = (req.headers.cookie).split('; ')[0].split('=')[1];
   const decoded = jwt.verify(token, secretKey);
   const username = decoded.username
+  const renter = await Renter.findOne({username: username})
+  const updatedLivingPref = {
+      pets: data.livingPreferences.pets,
+      smoke: data.livingPreferences.smoke,
+      studious: data.livingPreferences.studious,
+      cleanliness: data.livingPreferences.cleanliness,
+      guestFreq: data.livingPreferences.guestFreq,
+      sleepSchedule: {
+          from: data.livingPreferences.sleepSchedule.from,
+          to: data.livingPreferences.sleepSchedule.to
+      }
+  }
 
-  const existingRenter = await Renter.findOne({username: username})
+  const updatedRenterInfo = await RenterInfo.findOneAndUpdate({name: renter.renterInfo.name}, {name: data.name, age: data.age, email: data.email, phone: data.phone, pfp: data.pfp, livingPreferences: updatedLivingPref}, options.returnDocument='after')
+  const updatedRenter = await Renter.findOneAndUpdate({username: username}, {findingCoopmates: req.body.findingCoopmates, renterInfo: updatedRenterInfo}, options.returnDocument='after')
 
-  const updatedRenterInfo = new RenterInfo({
-    name: data.renterInfo.name,
-    age: data.renterInfo.age,
-    email: data.renterInfo.email,
-    phone: data.renterInfo.phone,
-    pfp: data.renterInfo.pfp,
-    livingPreferences: {
-        pets: data.renterInfo.livingPreferences.pets,
-        smoke: data.renterInfo.livingPreferences.smoke,
-        studious: data.renterInfo.livingPreferences.studious,
-        cleanliness: data.renterInfo.livingPreferences.cleanliness,
-        guestFreq: data.renterInfo.livingPreferences.guestFreq,
-        sleepSchedule: {
-            from: data.renterInfo.livingPreferences.sleepSchedule.from,
-            to: data.renterInfo.livingPreferences.sleepSchedule.to
-        }
-    }
-  })
-
-  const updatedRenter = await Renter.findOneAndUpdate({username: username}, {renterInfo: updatedRenterInfo})
   updatedRenter.save()
   .then((result) => {
     res.send(result);
