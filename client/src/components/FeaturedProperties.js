@@ -39,7 +39,7 @@ d                    color="#AB191F"
             
 
             <List component={Stack} direction="row" sx={{ overflow: 'auto', marginTop: -1}} maxWidth='xl' spacing={-4}>
-                {data.filter(property => property.featured == true).map(featuredCards => {
+                {data.filter(property => property.propertyInfo.featured == true).map(featuredCards => {
                     return <ListItem>
                         <PropertyViewMore data={featuredCards} featured={true} login={login} />
                     </ListItem>
@@ -48,7 +48,7 @@ d                    color="#AB191F"
                 }
             </List>
             
-            {(data.filter(property => property.featured == true).length == 0)
+            {(data.filter(property => property.propertyInfo.featured == true).length == 0)
                 && <Typography
                     variant="h5"
                     color="#AB191F"

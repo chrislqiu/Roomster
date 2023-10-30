@@ -1,4 +1,4 @@
-import RenterCreateAccountView from "../components/RenterCreateAccounView"
+import RenterCreateAccountView from "../components/RenterCreateAccountView"
 import {Container, Box} from "@mui/material"
 
 const RenterCreateAccountPage = () => {

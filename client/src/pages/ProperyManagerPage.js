@@ -1,4 +1,5 @@
-import { Container, Card, Box, Typography, CardContent, Input, Divider, TextField, Link, Button } from "@mui/material";
+import { InputBase, Card, Box, Typography, CardContent, Input, Divider, TextField, Link, Button } from "@mui/material";
+import toast, { Toaster } from 'react-hot-toast';
 import React from "react"
 import { useState } from 'react';
 
@@ -9,26 +10,49 @@ const PropertyManagerPage = () => {
     const [bio, setBio] = useState('');
     const [addr, setAddr] = useState('');
     const [officeNum, setOfficeNum] = useState('');
-    const [saveStatus, setSaveStatus] = useState(null)
     const [disableButton, setDisableButton] = useState(true)
+
+    const inputBaseSX = {
+        margin: "5 0 10px 0px", 
+        width:"300px", 
+        height: "35px",
+        borderRadius: "5px",
+        border: "2px solid #AB191F",
+        padding: "5px",
+        "&:hover": {
+            border: "2px solid #AB191F",
+            boxShadow:"0px 0px 3px 3px rgba(0, 0, 0, .1)", 
+        }
+    }
+
+    const customToastStyles = {
+        color: 'white', // Set the desired text color
+      };
 
     const handleSave = () => {
 
         const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9]+\.[a-zA-Z]+$/;
-
-        if (!emailRegex.test(email)) {
-            setSaveStatus("Please enter a valid email address");
+        
+        if (phoneNumber === '' || email === '' || addr === '' || officeNum === '') {
+            toast.error("Please fill in all the fields!", {style: customToastStyles})
+            return;
+        } else if (!emailRegex.test(email)) {
+            toast.error("Please enter a valid email address", {style: customToastStyles})
             return;
         } else {
-            setSaveStatus("Save Success!")
+            toast.success("Save Success!", {style: customToastStyles})
         }
         
         const dataToSend ={
-            phoneNum: phoneNumber,
+            name: name,
+            phone: phoneNumber,
             email: email,
             bio: bio,
-            address: addr,
-            officePhone: officeNum
+            company: {
+                name: companyName,
+                address: addr,
+                phone: officeNum
+            }
         };
 
         fetch('http://localhost:8000/sendManagerProfile', {
@@ -40,12 +64,15 @@ const PropertyManagerPage = () => {
         })
         .then(response => response.json())
         .then(data => {
-            console.log('DATA SAVEDDDD: ', data.message);
+            console.log('DATA SAVEDDDD: ', data);
         })
         .catch(error => {
             console.error('ERRORRR: ', error);
         });
     };
+
+    const name = "John Doe"
+    const companyName = "RISE on Chauncey"
     return (
             <Card
                 variant='contained'
@@ -70,7 +97,7 @@ const PropertyManagerPage = () => {
                             color: "black",
                             width: "310px",
                         }}>
-                            {"John Doe"}
+                            {name}
                         </Typography >
                         <Typography
                         sx={{
@@ -87,7 +114,8 @@ const PropertyManagerPage = () => {
                             width: "300px",
                             fontFamily: 'Raleway',
                         }}>
-                            <Input 
+                            <InputBase
+                            sx={inputBaseSX} 
                             type="text"
                             name="phoneNum"
                             placeholder="Phone Number" style={{width:200}}
@@ -103,7 +131,8 @@ const PropertyManagerPage = () => {
                             fontFamily: 'Raleway',
                             width: "300px",
                         }}>
-                            <Input 
+                            <InputBase
+                            sx={inputBaseSX}
                             type="text"
                             name="email"
                             placeholder="Email Address" style={{width:200}} 
@@ -128,13 +157,22 @@ const PropertyManagerPage = () => {
                             fontFamily: 'Raleway',
                             width:"300px",
                         }}>
-                            <TextField 
+                            <TextField
                             type="text"
                             name="bio"
                             value={bio}
                             onChange={(e) => setBio(e.target.value)}
-                            multiline rows={4} maxRows={4} style={{width:300}}
+                            multiline rows={4} maxRows={4} 
                             disabled={disableButton}
+                            width="500px"
+                            style={{
+                                width:"300px",
+                                borderRadius: "7px",
+                                border: "2px solid #AB191F",
+                                "&:hover": {
+                                    boxShadow:"0px 0px 3px 3px rgba(0, 0, 0, .1)", 
+                                }
+                            }}
                             />
                         </Box>
                 </Box>
@@ -147,7 +185,7 @@ const PropertyManagerPage = () => {
                             variant: "h1",
                             color: "black"
                         }}>
-                            {"Rise Apartments"}
+                            {companyName}
                     </Typography >
                     <Typography
                         sx={{
@@ -163,7 +201,8 @@ const PropertyManagerPage = () => {
                             marginBottom: 1,
                             fontFamily: 'Raleway'
                         }}>
-                            <Input 
+                            <InputBase
+                            sx={inputBaseSX} 
                             type="text"
                             name="addr"
                             placeholder="" style={{width:200}} 
@@ -186,7 +225,8 @@ const PropertyManagerPage = () => {
                             marginBottom: 2,
                             fontFamily: 'Raleway'
                         }}>
-                            <Input 
+                            <InputBase
+                            sx={inputBaseSX} 
                             type="text"
                             name="officeNum"
                             placeholder="" style={{width:200}} 
@@ -195,49 +235,50 @@ const PropertyManagerPage = () => {
                             disabled={disableButton}
                             />
                         </Box>
-                        <Link href="##" underline="always" color="#AB191F" fontWeight={600} >
+                        <Link href="https://www.google.com" underline="always" color="#AB191F" fontWeight={600} >
                                 {'Leasing Site'}
                         </Link>
-                        <Box marginLeft={28} marginY={12} width={"200px"}>
+                        <Box marginLeft={28} marginY={10} width={"200px"}>
                         <Button 
                             variant='contained'
                             sx={{
                                 ":hover":{
-                                    bgcolor: "#F6EBE1",
-                                    color: "#AB191F"
+                                bgcolor: "#F6EBE1",
+                                color: "#AB191F"
                                 },
                                 backgroundColor: "#AB191F",
                                 color: "#F6EBE1",
                                 m: 1
                             }}
-                            onClick={() => {handleSave(); setDisableButton(true)}}
-                            >
-                                Save
-                        </Button>
-                        </Box>
-                        <Box marginLeft={16} marginY={-18.5} width={"90px"} >
-                        <Button 
-                            variant='contained'
-                            sx={{
-                                ":hover":{
-                                    bgcolor: "#F6EBE1",
-                                    color: "#AB191F"
-                                },
-                                backgroundColor: "#AB191F",
-                                color: "#F6EBE1",
-                                m: 1
-                            }}
-                            onClick={() => setDisableButton(!disableButton)}
-                            >
-                                {disableButton ? 'Edit' : 'Cancel'}
+                        onClick={() => {
+                            if (disableButton) {
+                            // Enable edit mode
+                            setDisableButton(false);
+                            } else {
+                            // Save changes and disable edit mode
+                            handleSave();
+                            setDisableButton(true);
+                            }  
+                        }}>
+                            {disableButton ? 'Edit' : 'Save'}
                         </Button>
                         </Box>
                 </Box>
-                <Divider orientation="vertical" width={3} sx={{ borderBottomWidth: 3, color: "#AB191F", backgroundColor: "#AB191F", marginX: 48, marginY:-40, height: 270}} />
+                <Divider orientation="vertical" width={3} sx={{ borderBottomWidth: 3, color: "#AB191F", backgroundColor: "#AB191F", marginX: 48, marginY:-50, height: 270}} />
                 </CardContent>
-                {saveStatus && (
-                <p style={{color: '#AB191F', marginLeft: "290px", marginTop: "328px"}}>{saveStatus}</p>
-            )}
+                <Toaster
+                    toastOptions={{
+                        success: {
+                        style: {
+                            background: 'green',
+                        },
+                        },
+                        error: {
+                        style: {
+                            background: 'red',
+                        },
+                        },
+                    }}/>
             </Card>
     )
 }
