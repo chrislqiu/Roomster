@@ -11,7 +11,11 @@ const property = new Schema({
     companyInfo: {
         type: CompanyInfo.schema,
         required: false
-    }
+    },
+    isVerified: {
+        type: Boolean,
+        default: false
+    }   
 });
 
 const Property = mongoose.model('properties', property);

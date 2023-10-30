@@ -65,7 +65,8 @@ router.get('/add-card', async (req, res) => {
 
     const newProperty = new Property({
         propertyInfo: newPropertyInfo,
-        companyInfo: newCompanyInfo
+        companyInfo: newCompanyInfo,
+        isVerified: false
     });
 
     //TODO: fix duplicate property additions
@@ -112,7 +113,7 @@ router.get('/all-cards', (req, res) => {
 });
 
 router.get('/unverified-cards', (req, res) => {
-    Property.find({ verified: false })  
+    Property.find({ isVerified: false })  
         .then((result) => {
             res.send(result);
         })

@@ -71,16 +71,15 @@ const AdminPage = () => {
                         </div>
 
                         <Box sx={{ m: 1 }} style={styles.feed}>
-                            {
-                                /*
-                                 * Maps each Property Information object to its own "card"
-                                 */
-                                //propertyInfo.map(cards => {
-                                filteredPropertyInfo.map((cards) => {
-                                    return <PropertyViewMore data={cards} login={true} admin={true} />
-                                }
-                                )
-                            }
+                            {filteredPropertyInfo.length === 0 ? (
+                                <Typography sx={{ fontSize: "20px", textAlign: "center"}}>
+                                    No properties to verify
+                                </Typography>
+                            ) : (
+                                filteredPropertyInfo.map((cards) => (
+                                    <PropertyViewMore data={cards} login={true} admin={true} />
+                                ))
+                            )}
                         </Box>
                     </Container>
                 ) : (
