@@ -167,13 +167,13 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
                                      componentsProps={{
                                         tooltip: {
                                             sx: {
-                                                bgcolor: 'rgba(171, 25, 31, 0.9',
+                                                bgcolor: 'rgba(171, 25, 31, 0.9)',
                                                 color: "#F6EBE1"
                                             },
                                         },
                                      }}
                                      >
-                            <Link onClick={openCompanyPage} underline="hover" color="black" sx={{fontWeight: 600, "&:hover": {color:"#AB191F"}}}>
+                            <Link onClick={openCompanyPage} underline="hover" color="black" sx={{fontWeight: 600, "&:hover": {cursor: "pointer", color:"#AB191F"}}}>
                                 {data.propertyInfo.propertyName}
                             </Link>
                             </Tooltip>
