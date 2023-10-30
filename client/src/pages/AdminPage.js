@@ -11,7 +11,7 @@ const AdminPage = () => {
 
     React.useEffect(() => {
         const getPropertyInfo = async () => {
-            const res = await fetch('http://localhost:8000/cards/all-cards')
+            const res = await fetch('http://localhost:8000/cards/unverified-cards')
             const getData = await res.json()
             const obj = JSON.parse(JSON.stringify(getData));
             setPropertyInfo(obj);
@@ -77,7 +77,7 @@ const AdminPage = () => {
                                  */
                                 //propertyInfo.map(cards => {
                                 filteredPropertyInfo.map((cards) => {
-                                    return <PropertyViewMore data={cards} login={true}  admin={true}/>
+                                    return <PropertyViewMore data={cards} login={true} admin={true} />
                                 }
                                 )
                             }

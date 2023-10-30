@@ -111,6 +111,16 @@ router.get('/all-cards', (req, res) => {
     });
 });
 
+router.get('/unverified-cards', (req, res) => {
+    Property.find({ verified: false })  
+        .then((result) => {
+            res.send(result);
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+});
+
 // Route to get featured cards
 router.get('/featured-cards', (req, res) => {
     Property.find({'propertyInfo.featured': true})
