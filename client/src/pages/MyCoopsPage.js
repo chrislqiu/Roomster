@@ -20,36 +20,24 @@ const MyCoopsPage = () => {
     const[propertyName, setPropertyName] = React.useState('')
     const[propertyAddress, setPropertyAddress] = React.useState('')
     const[price, setPrice] = React.useState('')
-    const[bed, setBed] = React.useState('')
-    const[bath, setBath] = React.useState('')
+    const[bed, setBed] = React.useState(-1)
+    const[bath, setBath] = React.useState(-1)
 
     /* Amenities: pet friendly, in-unit WD, parking, kitchen appliances, furnished, gym */
     const [isPetFriendly, setIsPetFriendly] = React.useState(false)
-    const [notPetFriendly, setNotPetFriendly] = React.useState(false)
     const [hasInUnitWD, setHasInUnitWD] = React.useState(false)
-    const [noInUnitWD, setnoInUnitWD] = React.useState(false)
     const [hasParking, setHasParking] = React.useState(false)
-    const [noParking, setNoParking] = React.useState(false)
     const [hasKitchenApp, setHasKitchenApp] = React.useState(false)
-    const [noKitchenApp, setNoKitchenApp] = React.useState(false)
     const [isFurnished, setIsFurnished] = React.useState(false)
-    const [notFurnished, setNotFurnished] = React.useState(false)
     const [hasGym, setHasGym] = React.useState(false)
-    const [noGym, setNoGym] = React.useState(false)
 
     /* Utilities: electricity, gas, water, trash, sewage, internet */
     const [includeElec, setIncludeElec] = React.useState(false)
-    const [noElec, setNoElec] = React.useState(false)
     const [includeGas, setIncludeGas] = React.useState(false)
-    const [noGas, setNoGas] = React.useState(false)
     const [includeWater, setIncludeWater] = React.useState(false)
-    const [noWater, setNoWater] = React.useState(false)
     const [includeTrash, setIncludeTrash] = React.useState(false)
-    const [noTrash, setNoTrash] = React.useState(false)
     const [includeSewage, setIncludeSewage] = React.useState(false)
-    const [noSewage, setNoSewage] = React.useState(false)
     const [includeInternet, setInternet] = React.useState(false)
-    const [noInternet, setNoInternet] = React.useState(false)
 
     /* Disabled button for Edit and Save */
     const [disableButton, setDisableButton] = React.useState(true)
@@ -75,31 +63,6 @@ const MyCoopsPage = () => {
 
     const handleLeave = () => {
         setHovered(false)
-    }
-
-    const handleBathChange = (selectedOption) => {
-        setNumBaths(selectedOption)
-        //console.log({value:e.target.value})
-
-    }
-
-    const handleAddCoop = () => {
-        /* Error Checking */
-        if (name === "") {
-            setAddCoopStatus("Please include a property name!")
-        } else if (addr === "") {
-            setAddCoopStatus("Please include a property address!")
-        } else if (price === "") {
-            setAddCoopStatus("Please include a price!")
-        } else if (numBeds === -1 || numBeds === "# beds") {
-            setAddCoopStatus("Please select the number of beds!")
-        } else if (numBaths == -1 || numBaths === "# baths") {
-            setAddCoopStatus("Please select the number of baths!")
-        } else {
-            setAddCoopStatus("Succesfully added coop!")
-        }
-
-        /* Saving property detail to database */
     }
 
     React.useEffect(() => {
@@ -131,7 +94,7 @@ const MyCoopsPage = () => {
                 address: propertyAddress,
                 beds: bed,
                 baths: bath,
-                cost: cost,
+                cost: price,
                 sqft: '',
                 distance: '',
                 
@@ -300,6 +263,7 @@ const MyCoopsPage = () => {
                                     sx={selectSX}
                                     disabled={disableButton}
                                     onChange={(e) => setBed(e.target.value)}
+                                    value={bed}
                                 >
                                     <MenuItem value={-1}># beds</MenuItem>
                                     <MenuItem value={1} sx={menuItemSX}>1</MenuItem>
@@ -443,11 +407,11 @@ const MyCoopsPage = () => {
 
                                     {/* Gym */}
                                     <Container style={{float:"left", width:"100%"}}>
-                                        <FormControlLabel style={{margin:"-60px 0 0 -30px"}} label={<Typography style={{fontSize:"11pt"}}>Gym</Typography>} control={
+                                        <FormControlLabel style={{margin:"-100px 0 0 -30px"}} label={<Typography style={{fontSize:"11pt"}}>Gym</Typography>} control={
                                             <Checkbox style={{}}
                                             checked={hasGym}
                                             onChange={() => setHasGym(!hasGym)}
-                                            disabled={noGym === true ? true : false}
+                                            disabled={disableButton}
                                             inputProps={{ 'aria-label': 'controlled' }}
                                             sx={{
                                                 color:"#AB191F",
@@ -498,7 +462,7 @@ const MyCoopsPage = () => {
                                         <FormControlLabel style={{margin:"-20px 0 0 -30px"}} label={<Typography style={{fontSize:"11pt"}}>Electricity</Typography>} control={
                                             <Checkbox style={{}}
                                             checked={includeElec}
-                                            onChange={() => setNoElec(!includeElec)}
+                                            onChange={() => setIncludeElec(!includeElec)}
                                             disabled={disableButton}
                                             inputProps={{ 'aria-label': 'controlled' }}
                                             sx={{
@@ -515,7 +479,7 @@ const MyCoopsPage = () => {
                                         <FormControlLabel style={{margin:"-40px 0 0 -30px"}} label={<Typography style={{fontSize:"11pt"}}>Gas</Typography>} control={
                                             <Checkbox style={{}}
                                             checked={includeGas}
-                                            onChange={() => setNoGas(!includeGas)}
+                                            onChange={() => setIncludeGas(!includeGas)}
                                             disabled={disableButton}
                                             inputProps={{ 'aria-label': 'controlled' }}
                                             sx={{
@@ -532,7 +496,7 @@ const MyCoopsPage = () => {
                                         <FormControlLabel style={{margin:"-60px 0 0 -30px"}} label={<Typography style={{fontSize:"11pt"}}>Trash</Typography>} control={
                                             <Checkbox style={{}}
                                             checked={includeTrash}
-                                            onChange={() => setNoTrash(!includeTrash)}
+                                            onChange={() => setIncludeTrash(!includeTrash)}
                                             disabled={disableButton}
                                             inputProps={{ 'aria-label': 'controlled' }}
                                             sx={{
@@ -549,7 +513,7 @@ const MyCoopsPage = () => {
                                         <FormControlLabel style={{margin:"-80px 0 0 -30px"}} label={<Typography style={{fontSize:"11pt"}}>Sewage</Typography>} control={
                                             <Checkbox style={{}}
                                             checked={includeSewage}
-                                            onChange={() => setNoSewage(!includeSewage)}
+                                            onChange={() => setIncludeSewage(!includeSewage)}
                                             disabled={disableButton}
                                             inputProps={{ 'aria-label': 'controlled' }}
                                             sx={{
@@ -566,7 +530,7 @@ const MyCoopsPage = () => {
                                         <FormControlLabel style={{margin:"-100px 0 0 -30px"}} label={<Typography style={{fontSize:"11pt"}}>Internet</Typography>} control={
                                             <Checkbox style={{}}
                                             checked={includeInternet}
-                                            onChange={() => setNoInternet(!includeInternet)}
+                                            onChange={() => setInternet(!includeInternet)}
                                             disabled={disableButton}
                                             inputProps={{ 'aria-label': 'controlled' }}
                                             sx={{
@@ -620,20 +584,6 @@ const MyCoopsPage = () => {
                         </Stack>
 
                     </Container>
-                    {addCoopStatus && ( 
-                        <Container 
-                            sx={{
-                                position:"relative", 
-                                //display:"-ms-flexbox", 
-                                //marginTop:"-290px",
-                                marginTop:"-5px", 
-                                marginBottom:"10px",
-                                textAlign:"center",
-                                fontSize:"11pt"
-                            }}>
-                            <p style={{color: '#AB191F'}}>{addCoopStatus}</p>
-                        </Container>
-                    )}
                 </DialogContent>
             </Dialog>
 
