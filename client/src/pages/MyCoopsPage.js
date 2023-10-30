@@ -23,7 +23,7 @@ const MyCoopsPage = () => {
     const[bed, setBed] = React.useState('')
     const[bath, setBath] = React.useState('')
 
-    /* Amenities: pet friendly, in-unit WD, parking, kitchen appliances, furnished */
+    /* Amenities: pet friendly, in-unit WD, parking, kitchen appliances, furnished, gym */
     const [isPetFriendly, setIsPetFriendly] = React.useState(false)
     const [notPetFriendly, setNotPetFriendly] = React.useState(false)
     const [hasInUnitWD, setHasInUnitWD] = React.useState(false)
@@ -34,7 +34,8 @@ const MyCoopsPage = () => {
     const [noKitchenApp, setNoKitchenApp] = React.useState(false)
     const [isFurnished, setIsFurnished] = React.useState(false)
     const [notFurnished, setNotFurnished] = React.useState(false)
-    const [hasPool, setHasPool] = React.useState(false)
+    const [hasGym, setHasGym] = React.useState(false)
+    const [noGym, setNoGym] = React.useState(false)
 
     /* Utilities: electricity, gas, water, trash, sewage, internet */
     const [includeElec, setIncludeElec] = React.useState(false)
@@ -74,6 +75,31 @@ const MyCoopsPage = () => {
 
     const handleLeave = () => {
         setHovered(false)
+    }
+
+    const handleBathChange = (selectedOption) => {
+        setNumBaths(selectedOption)
+        //console.log({value:e.target.value})
+
+    }
+
+    const handleAddCoop = () => {
+        /* Error Checking */
+        if (name === "") {
+            setAddCoopStatus("Please include a property name!")
+        } else if (addr === "") {
+            setAddCoopStatus("Please include a property address!")
+        } else if (price === "") {
+            setAddCoopStatus("Please include a price!")
+        } else if (numBeds === -1 || numBeds === "# beds") {
+            setAddCoopStatus("Please select the number of beds!")
+        } else if (numBaths == -1 || numBaths === "# baths") {
+            setAddCoopStatus("Please select the number of baths!")
+        } else {
+            setAddCoopStatus("Succesfully added coop!")
+        }
+
+        /* Saving property detail to database */
     }
 
     React.useEffect(() => {
@@ -208,7 +234,8 @@ const MyCoopsPage = () => {
                             
                         }}
                         style={{
-                            backgroundColor:"#F6EBE1"
+                            backgroundColor:"#F6EBE1",
+                            overflow:"hidden"
                         }}>
                         <AspectRatio minHeight={100} maxHeight={200} minWidth={300} maxWidth={400} 
                             style={{
@@ -238,11 +265,8 @@ const MyCoopsPage = () => {
 
                         <Stack direction={{'400px': "column", md: "row",lg: "row", xl: "row"}} spacing={5} sx={{ marginTop: 2, p: 1 }}>
                             
-                            {
-                                /*
-                                 * Property details
-                                 */
-                            }
+                            
+                            {/* Property Details */}
                             <Box width='600'>
                                 <InputBase 
                                     placeholder="Enter property name" 
@@ -272,7 +296,7 @@ const MyCoopsPage = () => {
 
                                 <Select
                                     id="beds-input" 
-                                    defaultValue={-1}
+                                    defaultValue="# beds"
                                     sx={selectSX}
                                     disabled={disableButton}
                                     onChange={(e) => setBed(e.target.value)}
@@ -283,6 +307,7 @@ const MyCoopsPage = () => {
                                     <MenuItem value={3} sx={menuItemSX}>3</MenuItem>
                                     <MenuItem value={4} sx={menuItemSX}>4</MenuItem>
                                     <MenuItem value={5} sx={menuItemSX}>5</MenuItem>
+                                    
                                 </Select>
                                 <Select
                                     id="baths-input" 
@@ -416,13 +441,13 @@ const MyCoopsPage = () => {
                                         />
                                     </Container> {<br />}{<br />}
 
-                                    {/* Pool */}
+                                    {/* Gym */}
                                     <Container style={{float:"left", width:"100%"}}>
-                                        <FormControlLabel style={{margin:"-100px 0 0 -30px"}} label={<Typography style={{fontSize:"11pt"}}>Pool</Typography>} control={
+                                        <FormControlLabel style={{margin:"-60px 0 0 -30px"}} label={<Typography style={{fontSize:"11pt"}}>Gym</Typography>} control={
                                             <Checkbox style={{}}
-                                            checked={hasPool}
-                                            onChange={() => setHasPool(!hasPool)}
-                                            disabled={disableButton}
+                                            checked={hasGym}
+                                            onChange={() => setHasGym(!hasGym)}
+                                            disabled={noGym === true ? true : false}
                                             inputProps={{ 'aria-label': 'controlled' }}
                                             sx={{
                                                 color:"#AB191F",
@@ -431,7 +456,7 @@ const MyCoopsPage = () => {
                                                 },}}
                                             />}
                                         />
-                                    </Container> {<br />}{<br />}
+                                    </Container> 
                                 </Box>
                             </Box>
 
@@ -576,14 +601,11 @@ const MyCoopsPage = () => {
                                         borderWidth: 1.5
                                     },
                                     borderColor:"#AB191F", bgcolor:"#AB191F", color:"#F6EBE1", 
-                                    borderWidth: 1.5, width:"100%", fontWeight:600, lineHeight:"15px",
-                                    boxShadow: 5, maxWidth:"112px", maxHeight: "50px",
-                                    float: "right", bottom: 20, right:35,
-                                    //left: "50%",
+                                    borderWidth: 1.5, width:"112px", height:"35px", fontWeight:600, lineHeight:"11px",
+                                    boxShadow: 5, float: "right", bottom: 20, right:30,
                                     marginBottom:"30px",
                                     marginLeft: "210px",
                                     position: "absolute"
-
                                 }}
                                 onClick={() => {
                                     if (disableButton) {
@@ -598,12 +620,23 @@ const MyCoopsPage = () => {
                         </Stack>
 
                     </Container>
+                    {addCoopStatus && ( 
+                        <Container 
+                            sx={{
+                                position:"relative", 
+                                //display:"-ms-flexbox", 
+                                //marginTop:"-290px",
+                                marginTop:"-5px", 
+                                marginBottom:"10px",
+                                textAlign:"center",
+                                fontSize:"11pt"
+                            }}>
+                            <p style={{color: '#AB191F'}}>{addCoopStatus}</p>
+                        </Container>
+                    )}
                 </DialogContent>
-        <DialogActions>
-            
-        </DialogActions>
-        </Dialog>
-           
+            </Dialog>
+
             <Box sx={{ m: 1 }} style={styles.feed}>
                 {
                    /*
