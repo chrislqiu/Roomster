@@ -7,31 +7,38 @@ const Manager = require('./models/manager');
 const Renter = require('./models/renter');
 const router = express.Router();
 
-// for testing use
+// for testing use (create a property from each property info and attach company)
 router.get('/link-cards', async (req, res) => {
-    const existingCompany = await Company.findOne({'companyInfo.name': 'RISE'});
+    await Property.deleteMany({});
     const existingPropertyInfo = await PropertyInfo.find({});
-    existingPropertyInfo.forEach(function(prop) {
+    var counter = 0;
+    existingPropertyInfo.forEach(async function(prop) {
+        const existingCompany = await Company.findOne({'companyInfo.address': prop.address})
         const newProperty = new Property({
             propertyInfo: prop,
             companyInfo: existingCompany.companyInfo
         });
 
         newProperty.save()
+        .then(() => {
+            counter++;
+        })
         .catch((err) => {
             console.log(err);
         });
     });
+
+    res.status(200).send(`Linked ${counter} properties`)
 });
 
 // Route to add a card for testing use
 router.get('/add-card', async (req, res) => {
     const newCompanyInfo = new CompanyInfo({
-        name: "RISE",
-        address: "100 S Chauncey Ave",
-        site: "riseonchauncey.com",
-        email: "info@riseonchauncey.com",
-        phone: "(765) 876-3177"
+        name: "Campus Edge",
+        address: "134 Pierce St",
+        site: "www.americancampus.com/student-apartments/in/west-lafayette/campus-edge-on-pierce",
+        email: "CampusEdgeonPierce@AmericanCampus.com",
+        phone: "(765) 535-1349"
     });
 
     const newCompany = new Company({
@@ -40,23 +47,23 @@ router.get('/add-card', async (req, res) => {
 
     const newPropertyInfo = new PropertyInfo({
         image: "filler link",
-        propertyName: "RISE on Chauncey: One Bedroom",
-        address: "100 S Chauncey Ave",
+        propertyName: "Studio A",
+        address: "134 Pierce St",
         beds: 1,
         baths: 1,
-        cost: 2089,
-        sqft: 426,
-        distance: 0.5,
-        amenities: ["gym","pool","game room"],
+        cost: 1899,
+        sqft: 0,
+        distance: 0.4,
+        amenities: ["gym","pool"],
         utilities: {
-            electricity: true,
-            water: true,
-            gas: true,
+            electricity: false,
+            water: false,
+            gas: false,
             trash: true,
             sewage: true,
             internet: true,
             laundry: true,
-            parking: true,
+            parking: false,
             furnished: true
         },
         featured: false,
@@ -68,12 +75,12 @@ router.get('/add-card', async (req, res) => {
         companyInfo: newCompanyInfo
     });
 
-    //TODO: fix duplicate property additions
-    const existingCompany = await Company.findOne({'companyInfo.name': 'RISE'});
+    const existingCompany = await Company.findOne({'companyInfo.name': newCompanyInfo.name});
     if (existingCompany) {
-        newProperty.companyInfo = existingCompany.companyInfo;
-        const addedProp = existingCompany.myCoops.addToSet(newPropertyInfo);
-        if (addedProp.length === 1) {
+        const existingProperty = await Property.findOne({'propertyInfo.name': newPropertyInfo.name, 'propertyInfo.address': newPropertyInfo.address});
+        if (!existingProperty) {
+            newProperty.companyInfo = existingCompany.companyInfo;
+            existingCompany.myCoops.addToSet(newPropertyInfo);
             newPropertyInfo.save();
             newProperty.save()
             .then((result) => {
@@ -83,7 +90,7 @@ router.get('/add-card', async (req, res) => {
                 console.log(err);
             });
         } else {
-            console.log("not new prop");
+            res.status(200).send("Property already exists")
         }
     } else {
         newCompany.myCoops.addToSet(newPropertyInfo);
@@ -111,6 +118,20 @@ router.get('/all-cards', (req, res) => {
     });
 });
 
+// Route to get all cards
+router.get('/add-save/:id', async (req, res) => {
+    const { id } = req.params;
+    const property = await Property.findById(id);
+    const saves = property.propertyInfo.saves;
+    await Property.findByIdAndUpdate(id, {$set: {'propertyInfo.saves': saves + 1}})
+    .then((result) => {
+        res.send(result);
+    })
+    .catch((err) => {
+        console.log(err);
+    });
+});
+
 // Route to get featured cards
 router.get('/featured-cards', (req, res) => {
     Property.find({'propertyInfo.featured': true})
@@ -123,7 +144,7 @@ router.get('/featured-cards', (req, res) => {
 });
 
 // Route to get my coops cards
-router.get('/my-coops-cards', (req, res) => {
+router.get('/my-coops-cards', (req, res) => { //TODO: match req username
     Manager.find({'company.myCoops': {}})
     .then((result) => {
         res.send(result);
@@ -134,7 +155,7 @@ router.get('/my-coops-cards', (req, res) => {
 });
 
 // Route to get fav coops cards
-router.get('/fav-coops-cards', (req, res) => {
+router.get('/fav-coops-cards', (req, res) => { //TODO: match req username
     Renter.find({'renterInfo.favCoops': {}})
     .then((result) => {
         res.send(result);

@@ -140,15 +140,12 @@ router.post("/manager-signup", async (req, res) => {
         const salt = await bcrypt.genSalt();
         const hashedPW = await bcrypt.hash(req.body.password, salt);
 
-        const existingCompany = await Company.findOne({'companyInfo.name': req.body.companyName});
+        var existingCompany = await Company.findOne({'companyInfo.name': req.body.companyName});
         if (!existingCompany) {
-            //TODO: prompt user for company data
             const newCompanyInfo = new CompanyInfo({
                 name: req.body.companyName,
                 address: req.body.address,
-                site: "google.com",             //site: req.body.site,
                 email: req.body.companyEmail,
-                phone: "(765) 123-4567"         //phone: req.body.companyPhone
             }); // the managers personal email and phone are separate from the company ones
 
             const newCompany = new Company({
@@ -162,10 +159,10 @@ router.post("/manager-signup", async (req, res) => {
         }
 
         const newManager = new Manager({
-            username: "testmanager@company.com",    //req.body.username,
+            username: req.body.username,
             password: hashedPW,
-            name: "Test Manager",                   //name: req.body.managerName,
-            email: "testmanager@company.com",       //req.body.managerEmail,
+            name: req.body.managerName,
+            email: req.body.managerEmail,
             company: existingCompany
         });
 
@@ -248,7 +245,7 @@ router.post("/delete", authorization, async (req, res) => {
 
         if (isPasswordValid) {
             if (userType === "renter") {
-                //TODO delete renter info before deleting renter
+                await RenterInfo.deleteOne({ _id: user.renterInfo._id});
                 await Renter.deleteOne({ username: req.body.username });
             } else if (userType === "manager") {
                 await Manager.deleteOne({ username: req.body.username });

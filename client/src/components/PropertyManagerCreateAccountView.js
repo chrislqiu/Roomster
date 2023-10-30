@@ -100,7 +100,7 @@ const ManagerCreateAccountView = ({ }) => {
                     'Content-Type': 'application/json',
                 },
                 credentials: 'include',
-                body: JSON.stringify({ username: email, password, companyName: name, companyEmail: email, address }),
+                body: JSON.stringify({ username: managerEmail, password, managerName, managerEmail, companyName: name, companyEmail: email, address }),
             });
 
             if (response.ok) {

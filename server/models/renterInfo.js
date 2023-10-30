@@ -24,10 +24,6 @@ const renterInfo = new Schema({
         type: String,
         required: false
     },
-    bio: {
-        type: String,
-        default: "Hi! I'm looking for housing!"
-    },
     pfp: {
         type: String,
         default: "og pfp"
