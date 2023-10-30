@@ -243,7 +243,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
                 <DialogActions>
 
 
-                    {login === true && admin === false ? (
+                    {login === true && !admin ? (
                         <Tooltip title={active ? "Remove from FAV COOPS" : "Add to FAV COOPS"}>
                             <IconButton size="large" onClick={e => {
                                 setActive(!active);
