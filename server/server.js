@@ -119,7 +119,7 @@ app.post('/sendRenterProfile', async (req,res) => {
     }
   })
 
-  const updatedRenter = await Renter.findOneAndUpdate({username: username}, {renterInfo: updatedRenterInfo})
+  const updatedRenter = await Renter.findOneAndUpdate({username: username}, {findingCoopmates: data.findingCoopmates, renterInfo: updatedRenterInfo})
   updatedRenter.save()
   .then((result) => {
     res.send(result);
