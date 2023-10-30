@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Button from '@mui/material/Button';
 import { Box, Card, CardContent, CardMedia, IconButton, Tooltip, } from '@mui/material';
 import { CardActionArea } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
@@ -49,6 +48,12 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
     const handleLeave = () => {
         setHovered(false)
     }
+
+
+
+
+
+
     const styles = {
         divider: {
             height: "3px",
@@ -256,7 +261,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
                 </DialogContent>
                 <DialogActions>
 
-                    {login == true 
+                    {login === true 
                         ? <Tooltip 
                             title="Add to FAV COOPS" 
                             componentsProps={{
@@ -269,14 +274,26 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
                         }}>
                         <IconButton size="large" onClick={e => {
                             setActive(!active)
+
+                                const propertyId = data._id; 
+                                const newSavesCount = active ? data.propertyInfo.saves : data.propertyInfo.saves + 1;
+
+                                console.log(`saves : ${newSavesCount} & _id : ${propertyId}`)
                             //add onclick function for db, and to hide if property owner, or to replace with edit if property owner needs
                             // to edit
                         }}>
                             {active ? <FavoriteIcon sx={{ color: "#AB191F" }} /> : <FavoriteBorderIcon sx={{ color: "#AB191F" }} />}
+                            
                         </IconButton>
                     </Tooltip>
                     :
-                    ''}
+                    ''
+                    }
+                     <Typography
+                        style={{margin: "0 5px 0 5px", padding: " 0 5px 0 0px"}}
+                     >
+                       {data.propertyInfo.saves}
+                    </Typography>
                 </DialogActions>
             </Dialog>
         </React.Fragment>

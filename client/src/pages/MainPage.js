@@ -59,7 +59,6 @@ const MainPage = ({login}) => {
     return (
         <Container sx={{ width: '100%' }}>
             <SearchBar data={propertyInfo} setInput={setInput} setFilteredOptions={setFilteredProperties} setNumberSelected={setNumberSelected} setSortOptions={setSortOption}/>
-            {console.log(filteredProperties)}
             {(input === '' && numberSelected === 0) &&
             <Box sx={{ m: 4 }} style={styles.feed}>
                 <FeaturedProperties data={propertyInfo} style={styles.feed} login={login}/>
