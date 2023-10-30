@@ -15,6 +15,9 @@ import StarIcon from '@mui/icons-material/Star';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import CheckIcon from "@mui/icons-material/Check";
+
 import { useNavigate } from 'react-router-dom';
 
 
@@ -27,7 +30,7 @@ import { useNavigate } from 'react-router-dom';
  * featured : Boolean to determine whether the card is featured or not
  * favCoops : Boolean to determine if card is on favCoops page
  */
-const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
+const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) => {
     /*
      * open, setOpen : controls the state of the dialogue popup
      */
@@ -41,7 +44,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
     //need user information for favCoops
     //if renter user and user.favCoops contains property then set favCoops to true
     //console.log(favCoops)
-    const [active, setActive]= React.useState(favCoops === true ? true : false)
+    const [active, setActive] = React.useState(favCoops === true ? true : false)
     const [hovered, setHovered] = React.useState(false);
     const handleHovered = () => {
         setHovered(true)
@@ -82,36 +85,36 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
                     boxShadow: featured === true ? "none" : "0px 0px 3px 3px rgba(0, 0, 0, .1)"
                 }}>
                 <CardActionArea>
-                        <CardMedia
-                            component="img"
-                            image={imgExample}
-                            //height="140px"
-                            style={{
-                                height: featured === true ? "120px" : "130px",
-                                width: featured === true ? "210px" : "230px",
-                                margin: "10px",
-                                borderRadius: "5px"
-                            }}
-                        />
-                        <CardContent>
+                    <CardMedia
+                        component="img"
+                        image={imgExample}
+                        //height="140px"
+                        style={{
+                            height: featured === true ? "120px" : "130px",
+                            width: featured === true ? "210px" : "230px",
+                            margin: "10px",
+                            borderRadius: "5px"
+                        }}
+                    />
+                    <CardContent>
                         <div style={{ display: 'flex', alignItems: 'center', marginLeft: 0 }}>
 
-                          <Typography variant="h6" style={{margin: "-20px 0 0px 0"}}
-                          > {data.propertyInfo.propertyName.split(":")[0]} </Typography>
-                         {/* {featured === true ? <StarIcon style={{margin: "-20px 0 0px 2.5"}} /> : ''} */}
-                          {/* {favCoops === true ? <FavoriteIcon style={{margin: "-20px 0 0px 2.5"}} sx={{color: "#AB191F", ":hover": {color: "#F6EBE1",},}}/> : ''} */}
-                          {/* <Typography variant="h6" style={{fontSize: "13pt", margin: "-20px 0 0px 0"}}> Property Name </Typography> */}
-                          {featured === true ? <StarIcon style={{margin: "-22px 0 0 5px", fontSize:"15pt"}} /> : ''}
-                          {favCoops === true ? <FavoriteIcon style={{margin: "-22px 0 0 5px", fontSize: "15pt"}} sx={{color: "#AB191F", ":hover": {color: "#F6EBE1",},}}/> : ''}
-                          {myCoops === true ? <BookmarkIcon style={{margin: "-22px 0 0 5px", fontSize: "15pt"}} sx={{color: "#AB191F", ":hover": {color: "#F6EBE1",},}}/> : ''}
+                            <Typography variant="h6" style={{ margin: "-20px 0 0px 0" }}
+                            > {data.propertyInfo.propertyName.split(":")[0]} </Typography>
+                            {/* {featured === true ? <StarIcon style={{margin: "-20px 0 0px 2.5"}} /> : ''} */}
+                            {/* {favCoops === true ? <FavoriteIcon style={{margin: "-20px 0 0px 2.5"}} sx={{color: "#AB191F", ":hover": {color: "#F6EBE1",},}}/> : ''} */}
+                            {/* <Typography variant="h6" style={{fontSize: "13pt", margin: "-20px 0 0px 0"}}> Property Name </Typography> */}
+                            {featured === true ? <StarIcon style={{ margin: "-22px 0 0 5px", fontSize: "15pt" }} /> : ''}
+                            {favCoops === true ? <FavoriteIcon style={{ margin: "-22px 0 0 5px", fontSize: "15pt" }} sx={{ color: "#AB191F", ":hover": { color: "#F6EBE1", }, }} /> : ''}
+                            {myCoops === true ? <BookmarkIcon style={{ margin: "-22px 0 0 5px", fontSize: "15pt" }} sx={{ color: "#AB191F", ":hover": { color: "#F6EBE1", }, }} /> : ''}
 
                         </div>
-                          <Typography variant="body2" style={{margin: "0 0 5px 0"}}>{data.propertyInfo.address}</Typography>
-                          <Typography variant="body2">{data.propertyInfo.beds} bedroom </Typography>
-                          <Typography variant="body2" style={{marginBottom:"5px"}}>{data.propertyInfo.baths} bathroom</Typography>
-                          <Divider style={styles.divider}></Divider>
-                          <Typography variant="body1" style={{marginTop:"5px", textAlign:"right", fontWeight:"500"}}> ${data.propertyInfo.cost} per month</Typography>
-                        
+                        <Typography variant="body2" style={{ margin: "0 0 5px 0" }}>{data.propertyInfo.address}</Typography>
+                        <Typography variant="body2">{data.propertyInfo.beds} bedroom </Typography>
+                        <Typography variant="body2" style={{ marginBottom: "5px" }}>{data.propertyInfo.baths} bathroom</Typography>
+                        <Divider style={styles.divider}></Divider>
+                        <Typography variant="body1" style={{ marginTop: "5px", textAlign: "right", fontWeight: "500" }}> ${data.propertyInfo.cost} per month</Typography>
+
                     </CardContent>
                 </CardActionArea>
             </Card>
@@ -153,17 +156,17 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
                          * Stack direction row has each text 'chunk'
                          */
                     }
-                    <Stack direction={{'400px': "column", md: "row",lg: "row", xl: "row"}} spacing={5} sx={{ marginTop: 2, p: 1 }} >
+                    <Stack direction={{ '400px': "column", md: "row", lg: "row", xl: "row" }} spacing={5} sx={{ marginTop: 2, p: 1 }} >
                         <Box width='600'>
                             <Tooltip title="Go to Company Page">
-                            <Link href="/CompanyPage" underline="none" color="black" sx={{fontWeight: 600}}>
-                                {data.propertyInfo.propertyName}
-                            </Link>
+                                <Link href="/CompanyPage" underline="none" color="black" sx={{ fontWeight: 600 }}>
+                                    {data.propertyInfo.propertyName}
+                                </Link>
                             </Tooltip>
                             <Typography
                                 sx={{
                                     fontWeight: 300,
-                                    variant:"body2",
+                                    variant: "body2",
                                     fontStyle: 'italic',
                                     marginTop: .5
                                 }}
@@ -173,7 +176,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
                             <Typography
                                 sx={{
                                     fontWeight: 300,
-                                    variant:"body2",
+                                    variant: "body2",
                                 }}
                             >
                                 {data.propertyInfo.beds} {data.propertyInfo.beds > 1 ? 'beds' : 'bed'}, {data.propertyInfo.baths} {data.propertyInfo.baths > 1 ? 'baths' : 'bath'}
@@ -182,43 +185,43 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
                             <Typography
                                 sx={{
                                     fontWeight: 500,
-                                    variant:"body2",
+                                    variant: "body2",
 
                                 }}
                             >
                                 ${data.propertyInfo.cost} per month
                             </Typography>
                         </Box>
-                        <Divider orientation={{xs:'horizontal', md:'vertical', lg:'vertical', xl:'vertical'}} width={3} sx={{ borderBottomWidth: 3, color: "#AB191F", backgroundColor: "#AB191F", marginY: 2 }} />
+                        <Divider orientation={{ xs: 'horizontal', md: 'vertical', lg: 'vertical', xl: 'vertical' }} width={3} sx={{ borderBottomWidth: 3, color: "#AB191F", backgroundColor: "#AB191F", marginY: 2 }} />
                         <Box width={'100%'}>
                             <Typography
                                 sx={{
                                     fontWeight: 600,
                                     marginTop: 1,
-                                    variant:"body2"
+                                    variant: "body2"
                                 }}
                             >
                                 Amenities
                             </Typography>
                             {data.propertyInfo.amenities.map((amenity) => {
                                 return <Typography
-                                 sx={{
-                                     fontWeight: 300,
-                                     variant:"body2",
-                                 }}
-                             >
-                                 {amenity}
-                             </Typography>   
+                                    sx={{
+                                        fontWeight: 300,
+                                        variant: "body2",
+                                    }}
+                                >
+                                    {amenity}
+                                </Typography>
                             })}
 
                         </Box>
                         <Divider orientation='verticle' width={3} sx={{ borderBottomWidth: 3, color: "#AB191F", backgroundColor: "#AB191F", marginY: 2 }} />
-                        <Box width={'100%'} sx={{paddingRight: 1}} >
+                        <Box width={'100%'} sx={{ paddingRight: 1 }} >
                             <Typography
                                 sx={{
                                     fontWeight: 600,
                                     marginTop: 1,
-                                    variant:"body2",
+                                    variant: "body2",
                                 }}
                             >
                                 Contact Information
@@ -226,7 +229,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
                             <Typography
                                 sx={{
                                     fontWeight: 300,
-                                    variant:"body2",
+                                    variant: "body2",
                                 }}
                             >
                                 Company Name {<br />}
@@ -239,18 +242,38 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
                 </DialogContent>
                 <DialogActions>
 
-                    {login == true 
-                        ? <Tooltip title="Add to FAV COOPS">
-                        <IconButton size="large" onClick={e => {
-                            setActive(!active)
-                            //add onclick function for db, and to hide if property owner, or to replace with edit if property owner needs
-                            // to edit
-                        }}>
-                            {active ? <FavoriteIcon sx={{ color: "#AB191F" }} /> : <FavoriteBorderIcon sx={{ color: "#AB191F" }} />}
-                        </IconButton>
-                    </Tooltip>
-                    :
-                    ''}
+
+                    {login === true && admin === false ? (
+                        <Tooltip title={active ? "Remove from FAV COOPS" : "Add to FAV COOPS"}>
+                            <IconButton size="large" onClick={e => {
+                                setActive(!active);
+                                //add onclick function for db, and to hide if property owner, or to replace with edit if property owner needs
+                                // to edit
+                            }}>
+                                {active ? (
+                                    <FavoriteIcon sx={{ color: "#AB191F" }} />
+                                ) : (
+                                    <FavoriteBorderIcon sx={{ color: "#AB191F" }} />
+                                )}
+                            </IconButton>
+                        </Tooltip>
+                    ) : (login === true && admin === true ? (
+                        <div sx={{ display: "flex", width: "100%" }}>
+                            <Tooltip title="Delete Property">
+                                <IconButton onClick={null}>
+                                    <DeleteOutlineIcon sx={{ color: "#AB191F" }} />
+                                </IconButton>
+                            </Tooltip>
+                            <Tooltip title="Verify Property">
+                                <IconButton onClick={null}>
+                                    <CheckIcon sx={{ color: "green" }} />
+                                </IconButton>
+                            </Tooltip>
+                        </div>
+                    ) : null)}
+
+
+
                 </DialogActions>
             </Dialog>
         </React.Fragment>

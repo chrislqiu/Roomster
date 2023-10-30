@@ -77,7 +77,7 @@ const AdminPage = () => {
                                  */
                                 //propertyInfo.map(cards => {
                                 filteredPropertyInfo.map((cards) => {
-                                    return <PropertyViewMore data={cards} login={true} />
+                                    return <PropertyViewMore data={cards} login={true} admin={true} />
                                 }
                                 )
                             }
