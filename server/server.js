@@ -12,6 +12,7 @@ const Company = require("./models/company")
 const CompanyInfo = require("./models/companyInfo")
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
+const { after } = require("node:test");
 
 const app = express();
 
@@ -69,10 +70,12 @@ app.post('/sendManagerProfile', async (req, res) => {
   const username = decoded.username
   const manager = await Manager.findOne({username: username})
 
-  const updatedCompanyInfo = await CompanyInfo.findOneAndUpdate({name: manager.company.companyInfo.name}, {name: data.company.name, address: data.company.address, phone: data.company.phone}, options.returnDocument='after')
-  const updatedCompany = await Company.findOneAndUpdate({'companyInfo.name': manager.company.companyInfo.name}, {companyInfo: updatedCompanyInfo}, options.returnDocument='after')
-  const updatedManager = await Manager.findOneAndUpdate({username: username}, {email: data.email, phone: data.phone, bio: data.bio, company: updatedCompany}. options.returnDocument='after')
+  const updatedCompanyInfo = await CompanyInfo.findOneAndUpdate({name: manager.company.companyInfo.name}, {name: data.company.name, address: data.company.address, phone: data.company.phone}).setOptions({returnDocument: after})
+  const updatedCompany = await Company.findOneAndUpdate({'companyInfo.name': manager.company.companyInfo.name}, {companyInfo: updatedCompanyInfo}).setOptions({returnDocument: after})
+  const updatedManager = await Manager.findOneAndUpdate({username: username}, {email: data.email, phone: data.phone, bio: data.bio, company: updatedCompany}).setOptions({returnDocument: after})
 
+  updatedCompanyInfo.save()
+  updatedCompany.save()
   updatedManager.save()
   .then((result) => {
     res.send(result);
@@ -102,8 +105,8 @@ app.post('/sendRenterProfile', async (req,res) => {
       }
   }
 
-  const updatedRenterInfo = await RenterInfo.findOneAndUpdate({name: renter.renterInfo.name}, {name: data.name, age: data.age, email: data.email, phone: data.phone, pfp: data.pfp, livingPreferences: updatedLivingPref}, options.returnDocument='after')
-  const updatedRenter = await Renter.findOneAndUpdate({username: username}, {findingCoopmates: req.body.findingCoopmates, renterInfo: updatedRenterInfo}, options.returnDocument='after')
+  const updatedRenterInfo = await RenterInfo.findOneAndUpdate({name: renter.renterInfo.name}, {name: data.name, age: data.age, email: data.email, phone: data.phone, pfp: data.pfp, livingPreferences: updatedLivingPref}).setOptions({returnDocument: after})
+  const updatedRenter = await Renter.findOneAndUpdate({username: username}, {findingCoopmates: req.body.findingCoopmates, renterInfo: updatedRenterInfo}).setOptions({returnDocument: after})
 
   updatedRenter.save()
   .then((result) => {
