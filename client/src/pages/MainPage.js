@@ -13,7 +13,7 @@ const MainPage = ({login}) => {
      * propertyInfo, setPropertyInfo to hold the card information from the server
      */
     const [propertyInfo, setPropertyInfo] = React.useState([])
-    const [filteredPropertyInfo, setFilteredPropertyInfo] = React.useState([]);
+    const [numberSelected, setNumberSelected] = React.useState();
 
     React.useEffect(() => {
         const getPropertyInfo = async () => {
@@ -24,13 +24,28 @@ const MainPage = ({login}) => {
         }
         getPropertyInfo()
     }, [])
+    const [filteredProperties, setFilteredProperties] = React.useState(propertyInfo);
+    //const [sortedProperties, setSortedProperties] = React.useState(propertyInfo);
+    const [sortOption, setSortOption] = React.useState('None');
 
     const [input, setInput] = React.useState('')
+
+    // const sortData = (data, sortingOption) => {    
+    //     if (sortingOption === 'Price') {
+    //       return data.sort((a, b) => a.propertyInfo.cost - b.propertyInfo.cost);
+    //     } else if (sortingOption === 'Distance') {
+    //       return data.sort((a, b) => a.propertyInfo.distance - b.propertyInfo.distance);
+    //     } else {
+    //       return data;
+    //     }
+    //   };
+
     React.useEffect(() => {
         const filteredPropertyInfo = propertyInfo.filter((property) => {
-          return property.propertyName.toLowerCase().includes(input.toLowerCase());
+          return property.propertyInfo.propertyName.toLowerCase().includes(input.toLowerCase());
         });
-        setFilteredPropertyInfo(filteredPropertyInfo);
+        /* SET DEFAULT PAGE TO ALL */
+        setFilteredProperties(filteredPropertyInfo)
       }, [input, propertyInfo]);
     const styles = {
         feed: {
@@ -43,20 +58,20 @@ const MainPage = ({login}) => {
     }
     return (
         <Container sx={{ width: '100%' }}>
-
-            <SearchBar data={propertyInfo} setInput={setInput}/>
-            {console.log(input)}
+            <SearchBar data={propertyInfo} setInput={setInput} setFilteredOptions={setFilteredProperties} setNumberSelected={setNumberSelected} setSortOptions={setSortOption}/>
+            {console.log(filteredProperties)}
+            {(input === '' && numberSelected === 0) &&
             <Box sx={{ m: 4 }} style={styles.feed}>
                 <FeaturedProperties data={propertyInfo} style={styles.feed} login={login}/>
             </Box>
-           
+            }
             <Box sx={{ m: 1 }} style={styles.feed}>
                 {
                    /*
                     * Maps each Property Information object to its own "card"
                     */
-                    //propertyInfo.map(cards => {
-                    filteredPropertyInfo.map((cards) => {
+
+                    filteredProperties.map((cards) => {
                         return <PropertyViewMore data={cards} login={login}/>
                         }
                     )

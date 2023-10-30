@@ -1,19 +1,22 @@
-import { Dialog, DialogContent, DialogActions, Tooltip, IconButton, Avatar, InputBase, Slider, Checkbox, Grid, Card, Container, Box, Typography, CardContent, Input, Divider, TextField, Link, Button, FormControlLabel } from "@mui/material";
+import { Dialog, DialogContent, DialogActions, Tooltip, IconButton, Avatar, InputBase, Slider, Select, MenuItem, Grid, Card, Container, Box, Typography, CardContent, Radio, Button, RadioGroup, FormControl, FormControlLabel } from "@mui/material";
 import Switch from '@mui/joy/Switch'
 import React from "react"
 import profilePic from "../images/profile-pic-no-shadow.png"
-import greenChicken from "../images/chickens/green.png"
-import redChicken from "../images/chickens/red.png"
-import orangeChicken from "../images/chickens/orange.png"
-import purpleChicken from "../images/chickens/purple.png"
-import yellowChicken from "../images/chickens/yellow.png"
-import blackChicken from "../images/chickens/black.png"
+import horse from "../images/chickens/horse.png"
+import duck from "../images/chickens/duck.png"
+import goose from "../images/chickens/goose.png"
+import cow from "../images/chickens/cow.png"
+import chicken from "../images/chickens/chicken.png"
+import sheep from "../images/chickens/sheep.png"
+import toast, { Toaster } from 'react-hot-toast';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMars } from '@fortawesome/free-solid-svg-icons'
-import { purple } from "@mui/material/colors";
 
 const RenterPage = () => {
+    const customToastStyles = {
+        color: 'white', // Set the desired text color
+      };
 
     const styles = {
         card: {
@@ -112,42 +115,78 @@ const RenterPage = () => {
         "& input::placeholder": {
             fontSize: "11pt"
         }
-        
+    }
+    const radioSX = {
+        color: "#AB191F",
+        '&.Mui-checked': {
+        color: "#AB191F",
+        },
+    }
+    const selectSX = {
+        width: 90, height: 30, fontSize:"11pt", 
+        '.MuiOutlinedInput-notchedOutline': {
+            border:"2px solid #AB191F"
+        },
+        '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+            border:"2px solid #AB191F"
+        }
     }
     const [toggleOn, setToggleOn] = React.useState(false);
-    const [hasPet, setHasPet] = React.useState(false);
-    const [noPet, setNoPet] = React.useState(false);
-    const [doesSmoke, setDoesSmoke] = React.useState(false);
-    const [doesNotSmoke, setDoesNotSmoke] = React.useState(false);
+    const [hasPet, setHasPet] = React.useState(null);
+    const [doesSmoke, setDoesSmoke] = React.useState(null);
     const [open, setOpen] = React.useState(false);
     const [openMessage, setOpenMessage] = React.useState(false);
     const [email, setEmail] = React.useState('');
     const [phone, setPhone] = React.useState('');
     const [profileImg, setProfileImg] = React.useState('');
-    const [saveStatus1, setSaveStatus1] = React.useState(null);
-    const [timeStart, setTimeStart] = React.useState('')
-    const [timeEnd, setTimeEnd] = React.useState('')
+    const [disableButton, setDisableButton] = React.useState(true);
+    const [sleepFrom, setSleepFrom] = React.useState('');
+    const [sleepTo, setSleepTo] = React.useState('');
+    const [studious, setStudious] = React.useState('')
+    const [cleanliness, setCleanliness] = React.useState('')
+    const [guestFreq, setGuestFreq] = React.useState('')
 
+    const handleSleepFrom = (event) => {
+      setSleepFrom(event.target.value);
+    };
+    const handleSleepTo = (event) => {
+        setSleepTo(event.target.value);
+      };
     const handleSaveRight = () => {
         const emailRegex = /^[a-zA-Z0-9._-]+@purdue\.edu$/;
-        if (!emailRegex.test(email)) {
-            setSaveStatus1("Please enter a valid Purdue email address");
-            return;
-        } else if (timeStart === "" || timeEnd === "" || hasPet === noPet || doesSmoke === doesNotSmoke || email == "" || phone == "") {
-            setSaveStatus1("One or more fields is empty!");
+
+        if (sleepFrom === '' || sleepTo === '' || email === '' || phone === '' || hasPet === null || doesSmoke === null) {
+            toast.error("Please fill in all the fields!", {style: customToastStyles});
             return
+        } else if (!emailRegex.test(email)) {
+            toast.error("Please enter a valid Purdue email address", {style: customToastStyles});
+            return;
         } else {
-            setSaveStatus1("Save Success!")
+            toast.success("Save Success!", {style: customToastStyles})
         }
-        var pets = hasPet === true ? true : false;
-        var smoke = doesSmoke === true ? true : false;
+
         const dataToSend = {
-            profilePic: profileImg,
-            purdueEmail: email,
-            phone: phone,
-            pets: pets,
-            smoke: smoke
+            findingCoopmates: toggleOn,
+            renterInfo: {
+                name: name,
+                age: age,
+                email: email,
+                phone: phone,
+                pfp: profileImg,
+                livingPreferences: {
+                    pets: hasPet,
+                    smoke: doesSmoke,
+                    studious: studious,
+                    cleanliness: cleanliness,
+                    guestFreq: guestFreq,
+                    sleepSchedule: {
+                        from: sleepFrom,
+                        to: sleepTo
+                    }
+                }
+            }
         }
+
         fetch('http://localhost:8000/sendRenterProfile', {
             method: 'POST',
             headers: {
@@ -166,19 +205,37 @@ const RenterPage = () => {
 
     const handleSaveLeft = () => {
         const emailRegex = /^[a-zA-Z0-9._-]+@purdue\.edu$/;
-        console.log(timeStart)
-        if (!emailRegex.test(email)) {
-            setSaveStatus1("Please enter a valid Purdue email address");
+
+        if (email === '' || phone === '') {
+            toast.error("Please fill in all the fields!"+sleepFrom, {style: customToastStyles})
+            return;
+        }   else if (!emailRegex.test(email)) {
+            toast.error("Please enter a valid Purdue email address", {style: customToastStyles});
             return;
         } else {
-            setSaveStatus1("Save Success!")
+            toast.success("Save Success!", {style: customToastStyles})
         }
 
         const dataToSend = {
-            profilePic: profileImg,
-            purdueEmail: email,
-            phone: phone,
-            looking: toggleOn
+            findingCoopmates: toggleOn,
+            renterInfo: {
+                name: name,
+                age: age,
+                email: email,
+                phone: phone,
+                pfp: profileImg,
+                livingPreferences: {
+                    pets: hasPet,
+                    smoke: doesSmoke,
+                    studious: studious,
+                    cleanliness: cleanliness,
+                    guestFreq: guestFreq,
+                    sleepSchedule: {
+                        from: sleepFrom,
+                        to: sleepTo
+                    }
+                }
+            }
         }
         fetch('http://localhost:8000/sendRenterProfile', {
             method: 'POST',
@@ -186,6 +243,7 @@ const RenterPage = () => {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(dataToSend),
+            credentials: "include"
         })
         .then(response => response.json())
         .then(data => {
@@ -215,6 +273,8 @@ const RenterPage = () => {
         setOpen(false);
     }
 
+    const name = "John Doe"
+    const age = "22"
 
     return (
         
@@ -237,19 +297,31 @@ const RenterPage = () => {
                         </Box>
 
                         <Typography style={Object.assign(styles.name, styles.boxPadding, {marginTop: "20px"})}> 
-                            {"John Doe"}
+                            {name}
                         </Typography >
                         <Typography style={Object.assign(styles.age, {padding: "0 10px 0 20px", marginTop: "20px"})}> 
-                            {"22"}
+                            {age}
                         </Typography >
                         <FontAwesomeIcon icon={faMars} style={Object.assign(styles.icon, {marginTop: "22px"})}/>
                     </Container>
                     <Typography style={styles.subheader}> 
                         {"Contact info"}
                     </Typography >
-                    <InputBase placeholder="Purdue Email" id="email-textfield" sx={inputBaseSX}onChange={(e) => setEmail(e.target.value)}/>
-                    <InputBase placeholder="Phone number" id="number-textfield" sx={inputBaseSX}onChange={(e) => setPhone(e.target.value)}/>
-                    <Button variant="contained" style={{backgroundColor: "#AB191F", float: "right", margin: "0 35px 0 0"}} onClick={handleSaveLeft}>SAVE</Button>
+                    <InputBase placeholder="Purdue Email" id="email-textfield" sx={inputBaseSX}onChange={(e) => setEmail(e.target.value)}disabled={disableButton}/>
+                    <InputBase placeholder="Phone number" id="number-textfield" sx={inputBaseSX}onChange={(e) => setPhone(e.target.value)}disabled={disableButton}/>
+                    <Button variant="contained" style={{backgroundColor: "#AB191F", float: "right", margin: "0 35px 0 0", visibility: toggleOn ? "hidden" : "visible"}} 
+                        onClick={() => {
+                            if (disableButton) {
+                            // Enable edit mode
+                            setDisableButton(false);
+                            } else {
+                            // Save changes and disable edit mode
+                            handleSaveLeft();
+                            setDisableButton(true);
+                            }  
+                        }}>
+                        {disableButton ? 'Edit' : 'Save'}
+                    </Button>
                 </Box>
                 <Box width='100%' style={styles.column2}>
                     <Container style={styles.box}>
@@ -259,7 +331,7 @@ const RenterPage = () => {
                         <Switch style={{verticalAlign:"center", marginTop:"2px"}}
                             color={toggleOn ? 'danger' : 'neutral'}
                             checked={toggleOn}
-                            onChange={() => setToggleOn(!toggleOn)}
+                            onChange={() => {setToggleOn(!toggleOn); setDisableButton(true); setCleanliness(3); setStudious(3); setGuestFreq(3)}}
                         />
                     </Container>
                     {toggleOn &&
@@ -273,60 +345,23 @@ const RenterPage = () => {
                             <Typography style={styles.livingHabit}>{"Sleep schedule"}</Typography>
                         </Container>
                         <Container style={{float: "right", width: "45%"}}>
-                            <Container style={{display:"inline-flex", justifyContent:"center"}}>
-                                <FormControlLabel label="Yes" control={
-                                    <Checkbox style={{}}
-                                    checked={hasPet}
-                                    onChange={() => setHasPet(!hasPet)}
-                                    disabled={noPet === true ? true : false}
-                                    inputProps={{ 'aria-label': 'controlled' }}
-                                    sx={{color:"#AB191F",
-                                        '&.Mui-checked': {
-                                            color: "#AB191F",
-                                        },}}
-                                    />}
-                                />
-                                <FormControlLabel label="No" control={
-                                    <Checkbox style={{}}
-                                    checked={noPet}
-                                    disabled={hasPet === true ? true : false}
-                                    onChange={() => setNoPet(!noPet)}
-                                    inputProps={{ 'aria-label': 'controlled' }}
-                                    sx={{color:"#AB191F",
-                                        '&.Mui-checked': {
-                                            color: "#AB191F",
-                                        },}}
-                                    />}
-                                />
-                            </Container>
-                            <Container style={{display:"inline-flex", justifyContent:"center", marginTop:"-8px"}}>
-                                <FormControlLabel label="Yes" control={
-                                    <Checkbox style={{}}
-                                    checked={doesSmoke}
-                                    disabled={doesNotSmoke === true ? true : false}
-                                    onChange={() => setDoesSmoke(!doesSmoke)}
-                                    inputProps={{ 'aria-label': 'controlled' }}
-                                    sx={{color:"#AB191F",
-                                        '&.Mui-checked': {
-                                            color: "#AB191F",
-                                        },}}
-                                    />}
-                                />
-                                <FormControlLabel label="No" control={
-                                    <Checkbox style={{}}
-                                    checked={doesNotSmoke}
-                                    disabled={doesSmoke === true ? true : false}
-                                    onChange={() => setDoesNotSmoke(!doesNotSmoke)}
-                                    inputProps={{ 'aria-label': 'controlled' }}
-                                    sx={{color:"#AB191F",
-                                        '&.Mui-checked': {
-                                            color: "#AB191F",
-                                        },}}
-                                    />}
-                                />
-                            </Container>
+                            <FormControl style={{marginLeft:"-55px", marginBottom:"-7px"}} disabled={disableButton}>
+                                <RadioGroup row name="pets" style={{width: "150px", display: "flex", justifyContent:"center"}} > 
+                                    <FormControlLabel value="yes" control={<Radio sx={radioSX}/>} label="Yes" onChange={() => setHasPet(true)}/>
+                                    <FormControlLabel value="no" control={<Radio sx={radioSX}/>} label="No" onChange={() => setHasPet(false)}
+                                    />
+                                </RadioGroup>
+                            </FormControl>
+                            <FormControl style={{marginLeft:"-55px", marginBottom: "-7px"}} disabled={disableButton}>
+                                <RadioGroup row name="smoke" style={{width: "150px", display: "flex", justifyContent:"center"}} > 
+                                    <FormControlLabel value="yes" control={<Radio sx={radioSX}/>} label="Yes" onChange={() => setDoesSmoke(true)}/>
+                                    <FormControlLabel value="no" control={<Radio sx={radioSX}/>} label="No" onChange={() => setDoesSmoke(false)}
+                                    />
+                                </RadioGroup>
+                            </FormControl>
                             <Container>
                             <Slider
+                                onChange={(e, val) => setStudious(val)}
                                 size="small"
                                 defaultValue={3}
                                 valueLabelDisplay="auto"
@@ -334,11 +369,13 @@ const RenterPage = () => {
                                 marks
                                 min={0}
                                 max={5}
-                                sx={{color:"#AB191F", width: "100px", height: "5px", marginLeft: "-40px"}}
+                                sx={{color:"#AB191F", width: "120px", height: "5px", marginLeft: "-70px"}}
+                                disabled={disableButton}
                             />
                             </Container>
                             <Container>
                             <Slider
+                                onChange={(e, val) => setCleanliness(val)}
                                 size="small"
                                 defaultValue={3}
                                 valueLabelDisplay="auto"
@@ -346,11 +383,13 @@ const RenterPage = () => {
                                 marks
                                 min={0}
                                 max={5}
-                                sx={{color:"#AB191F", width: "100px", height: "5px", marginLeft: "-40px"}}
+                                sx={{color:"#AB191F", width: "120px", height: "5px", marginLeft: "-70px"}}
+                                disabled={disableButton}
                             />
                             </Container>
                             <Container>
                             <Slider
+                                onChange={(e, val) => setGuestFreq(val)}
                                 size="small"
                                 defaultValue={3}
                                 valueLabelDisplay="auto"
@@ -358,45 +397,71 @@ const RenterPage = () => {
                                 marks
                                 min={0}
                                 max={5}
-                                sx={{color:"#AB191F", width: "100px", height: "5px", marginLeft: "-40px"}}
+                                sx={{color:"#AB191F", width: "120px", height: "5px", marginLeft: "-70px"}}
+                                disabled={disableButton}
                             />
                             </Container>
-                            <Container style={{marginLeft: "-15px", marginTop:"-5px", width: "150px", display:"flex"}}>
-                                <InputBase placeholder="From" onChange={(e)=>{setTimeStart(e.target.value)}} id="from-textfield" style={{marginLeft:"-25px"}}sx={sleepScheduleSX}/>
-                                <InputBase placeholder="To" onChange={(e)=>{setTimeEnd(e.target.value)}} id="to-textfield" sx={sleepScheduleSX}/>
+                            <Container style={{display: "flex", gap: "1rem", width: "200px", margin:"0 0 10px -50px", padding:"0"}}>
+                                <Select displayEmpty value={sleepFrom} onChange={handleSleepFrom} sx={selectSX} disabled={disableButton} >
+                                    <MenuItem value=""> <em>From</em> </MenuItem> <MenuItem value={0}>0</MenuItem>
+                                    <MenuItem value={1}>1</MenuItem> <MenuItem value={2}>2</MenuItem> <MenuItem value={3}>3</MenuItem>
+                                    <MenuItem value={4}>4</MenuItem> <MenuItem value={5}>5</MenuItem> <MenuItem value={6}>6</MenuItem>
+                                    <MenuItem value={7}>7</MenuItem> <MenuItem value={8}>8</MenuItem> <MenuItem value={9}>9</MenuItem>
+                                    <MenuItem value={10}>10</MenuItem> <MenuItem value={11}>11</MenuItem> <MenuItem value={12}>12</MenuItem>
+                                    <MenuItem value={13}>13</MenuItem> <MenuItem value={14}>14</MenuItem> <MenuItem value={15}>15</MenuItem>
+                                    <MenuItem value={16}>16</MenuItem> <MenuItem value={17}>17</MenuItem> <MenuItem value={18}>18</MenuItem>
+                                    <MenuItem value={19}>19</MenuItem> <MenuItem value={20}>20</MenuItem> <MenuItem value={21}>21</MenuItem>
+                                    <MenuItem value={22}>22</MenuItem> <MenuItem value={23}>23</MenuItem>
+                                </Select>
+                            
+                                <Select displayEmpty value={sleepTo} onChange={handleSleepTo} sx={selectSX} disabled={disableButton} >
+                                    <MenuItem value=""> <em>To</em> </MenuItem> <MenuItem value={0}>0</MenuItem>
+                                    <MenuItem value={1}>1</MenuItem> <MenuItem value={2}>2</MenuItem> <MenuItem value={3}>3</MenuItem>
+                                    <MenuItem value={4}>4</MenuItem> <MenuItem value={5}>5</MenuItem> <MenuItem value={6}>6</MenuItem>
+                                    <MenuItem value={7}>7</MenuItem> <MenuItem value={8}>8</MenuItem> <MenuItem value={9}>9</MenuItem>
+                                    <MenuItem value={10}>10</MenuItem> <MenuItem value={11}>11</MenuItem> <MenuItem value={12}>12</MenuItem>
+                                    <MenuItem value={13}>13</MenuItem> <MenuItem value={14}>14</MenuItem> <MenuItem value={15}>15</MenuItem>
+                                    <MenuItem value={16}>16</MenuItem> <MenuItem value={17}>17</MenuItem> <MenuItem value={18}>18</MenuItem>
+                                    <MenuItem value={19}>19</MenuItem> <MenuItem value={20}>20</MenuItem> <MenuItem value={21}>21</MenuItem>
+                                    <MenuItem value={22}>22</MenuItem> <MenuItem value={23}>23</MenuItem>
+                                </Select>
                             </Container>
-                            <Button variant="contained" onClick={() => handleSaveRight()} style={{backgroundColor: "#AB191F", float: "right", margin: "0 0 0 0"}}>SAVE</Button>
+                            <Button variant="contained" style={{backgroundColor: "#AB191F", float: "right", margin: "0 -40px 0 0"}}
+                                onClick={() => {
+                                    if (disableButton) {
+                                    // Enable edit mode
+                                    setDisableButton(false);
+                                    } else {
+                                    // Save changes and disable edit mode
+                                    handleSaveRight();
+                                    setDisableButton(true);
+                                    }  
+                                }}>
+                                {disableButton ? 'Edit' : 'Save'}  
+                            </Button>
 
                         </Container>
+                        
                     </Container>
                     }
+                    
                 </Box>
                 
                 </CardContent>
-                {saveStatus1 && ( <Container sx={{position:"relative", display:"-ms-flexbox", marginTop:"290px", textAlign:"center"}}>
-                <p style={{color: '#AB191F'}}>{saveStatus1}</p></Container>
-            )}
-            </Card>
-            <Dialog
-                open={openMessage}
-                onClose={handleCloseMessage}
-                sx={{
-                    "& .MuiDialog-container": {
-                        "& .MuiPaper-root": {
-                            width: "600px",
-                            height: "200px",
-                            backgroundColor: "#F6EBE1"
+                <Toaster
+                    toastOptions={{
+                        success: {
+                        style: {
+                            background: 'green',
                         },
-                    },
-                }}
-                
-            ><DialogContent>{saveStatus1 && ( 
-                <Typography style={{fontWeight: "600", fontSize: "15pt", color: "#AB191F", textAlign:"center", margin:"10px 0 -10px 0"}}> 
-                        {saveStatus1}
-                    </Typography >
-                
-            )}</DialogContent></Dialog>
-
+                        },
+                        error: {
+                        style: {
+                            background: 'red',
+                        },
+                        },
+                    }}/>
+            </Card>
             <Dialog
                 open={open}
                 onClose={handleClose}
@@ -412,43 +477,39 @@ const RenterPage = () => {
                 
             ><DialogContent>
                 <Typography style={{fontWeight: "600", fontSize: "15pt", color: "#AB191F", textAlign:"center", margin:"10px 0 -10px 0"}}> 
-                        {"CHOOSE YOUR CHICKEN"}
+                        {"SELECT YOUR PROFILE PICTURE"}
                     </Typography >
                 <Container sx={{display:"inline-flex", marginTop:"50px"}}>
-                        <Tooltip onClick={() => {setChicken(blackChicken); setProfileImg(blackChicken)}}>
-                            <IconButton sx={{ p: 0, marginRight:"50px"} } >
-                                    <Avatar alt="blackChicken" src={blackChicken} style={{transform: `scale(1.90, 1.90)` }} />
+                        <Tooltip onClick={() => {setChicken(sheep); setProfileImg(sheep)}}>
+                            <IconButton sx={{ p: 0, marginRight:"50px",} } >
+                                    <Avatar alt="sheep" src={sheep} style={{transform: `scale(1.90, 1.90)`}} />
                             </IconButton>
                         </Tooltip>
-                        <Tooltip onClick={() => {setChicken(greenChicken); setProfileImg(greenChicken)}}>
+                        <Tooltip onClick={() => {setChicken(horse); setProfileImg(horse)}}>
                             <IconButton sx={{ p: 0, marginRight:"50px"}} >
-                                <Avatar alt="greenChicken" src={greenChicken} style={{transform: `scale(1.90, 1.90)` }} />
+                                <Avatar alt="horse" src={horse} style={{transform: `scale(1.90, 1.90)` }} />
                             </IconButton>
                         </Tooltip>
-                        <Tooltip onClick={() => {setChicken(orangeChicken); setProfileImg(orangeChicken)}}>
+                        <Tooltip onClick={() => {setChicken(goose); setProfileImg(goose)}}>
                             <IconButton sx={{ p: 0, marginRight:"50px"}} >
-                                <Avatar alt="orangeChicken" src={orangeChicken} style={{transform: `scale(1.90, 1.90)` }} />
+                                <Avatar alt="goose" src={goose} style={{transform: `scale(1.90, 1.90)` }} />
                             </IconButton>
                         </Tooltip>
-                        <Tooltip onClick={() => {setChicken(purpleChicken); setProfileImg(purpleChicken)}}>
+                        <Tooltip onClick={() => {setChicken(cow); setProfileImg(cow)}}>
                             <IconButton sx={{ p: 0, marginRight:"50px"}} >
-                                <Avatar alt="purpleChicken" src={purpleChicken} style={{transform: `scale(1.90, 1.90)` }} />
+                                <Avatar alt="cow" src={cow} style={{transform: `scale(1.90, 1.90)` }} />
                             </IconButton>
                         </Tooltip>
-                        <Tooltip onClick={() => {setChicken(redChicken); setProfileImg(redChicken)}}>
+                        <Tooltip onClick={() => {setChicken(duck); setProfileImg(duck)}}>
                             <IconButton sx={{ p: 0, marginRight:"50px"}} >
-                                <Avatar alt="redChicken" src={redChicken} style={{transform: `scale(1.90, 1.90)` }} />
+                                <Avatar alt="duck" src={duck} style={{transform: `scale(1.90, 1.90)` }} />
                             </IconButton>
                         </Tooltip>
-                        <Tooltip onClick={() => {setChicken(yellowChicken); setProfileImg(yellowChicken)}}>
+                        <Tooltip onClick={() => {setChicken(chicken); setProfileImg(chicken)}}>
                             <IconButton sx={{ p: 0}} >
-                                <Avatar alt="yellowChicken" src={yellowChicken} style={{transform: `scale(1.90, 1.90)` }} />
+                                <Avatar alt="chicken" src={chicken} style={{transform: `scale(1.90, 1.90)` }} />
                             </IconButton>
                         </Tooltip>
-                        
-                        
-                        
-                        
                         
                 </Container>
                 

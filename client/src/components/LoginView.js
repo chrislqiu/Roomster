@@ -9,7 +9,7 @@ import Divider from '@mui/material/Divider';
 import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
-import RenterCreateAccountView from './RenterCreateAccounView';
+import RenterCreateAccountView from './RenterCreateAccountView';
 import RenterCreateAccountPage from '../pages/RenterCreateAccountPage';
 import ManagerCreateAccountView from './PropertyManagerCreateAccountView';
 
@@ -157,9 +157,9 @@ const LoginView = ({ text}) => {
                                             borderColor:"#AB191F", bgcolor:"#AB191F", color:"#F6EBE1", 
                                             borderWidth: 1.5, width:"45%", fontWeight:600
                                         },
-                                        borderColor:"#F6EBE1", bgcolor:"#F6EBE1", color:"#AB191F", 
+                                        borderColor:"#F6EBE1", bgcolor:"#F6EBE1", color:"black", 
                                         borderWidth: 1.5, width:"45%", fontWeight:600, 
-                                        boxShadow: 5, justifyContent: "center", maxWidth:"95px", maxHeight: "50px"
+                                        boxShadow: "0px 0px 3px 3px rgba(0, 0, 0, .1)", justifyContent: "center", maxWidth:"95px", maxHeight: "50px"
                                     }} 
                                     variant="outlined">RENTER
                                 </Button>
@@ -171,9 +171,9 @@ const LoginView = ({ text}) => {
                                         borderColor:"#AB191F", bgcolor:"#AB191F", color:"#F6EBE1", 
                                         borderWidth: 1.5, width:"45%", fontWeight:600
                                     },
-                                    borderColor:"#F6EBE1", bgcolor:"#F6EBE1", color:"#AB191F", 
+                                    borderColor:"#F6EBE1", bgcolor:"#F6EBE1", color:"black", 
                                     borderWidth: 1.5, width:"45%", fontWeight:600, lineHeight:"15px",
-                                    boxShadow: 5, marginLeft: "15px", maxWidth:"95px", maxHeight: "50px"
+                                    boxShadow: "0px 0px 3px 3px rgba(0, 0, 0, .1)", marginLeft: "15px", maxWidth:"95px", maxHeight: "50px"
 
                                 }}
                                 variant="outlined">PROPERTY MANAGER
@@ -193,7 +193,7 @@ const LoginView = ({ text}) => {
                             <TextField
                                 label="Email" id="email-textfield" variant="outlined" fullWidth
                                 sx={{
-                                    boxShadow: "3", margin: "dense", marginBottom: "15px"
+                                    boxShadow: "0px 0px 3px 3px rgba(0, 0, 0, .1)", margin: "dense", marginBottom: "15px"
                                 }}
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
@@ -201,7 +201,7 @@ const LoginView = ({ text}) => {
                             <TextField
                                 label="Password" id="psw-textfield" variant="outlined" fullWidth
                                 sx={{
-                                    boxShadow: "3", margin: "dense", marginBottom: "15px"
+                                    boxShadow: "0px 0px 3px 3px rgba(0, 0, 0, .1)", margin: "dense", marginBottom: "15px"
                                 }}
                                 type="password"
                                 value={password}
