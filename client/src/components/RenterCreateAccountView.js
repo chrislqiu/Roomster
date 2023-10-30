@@ -29,6 +29,7 @@ const RenterCreateAccountView = ({ }) => {
     const [password, setPassword] = React.useState("")
     const [confirmedPassword, setConfirmedPassword] = React.useState("")
     const [signupStatus, setSignupStatus] = React.useState(null);
+    const [backButton, setBackButton] = React.useState(false)
 
     const handleOpen = () => {
         setOpen(true)
@@ -40,10 +41,11 @@ const RenterCreateAccountView = ({ }) => {
         setPassword(null)
         setSignupStatus(null)
         window.location.replace("/Home")
+        
     }
 
     const handleBackButton = () => {
-        window.location.replace("/Login")
+        window.location.replace("/Home")
     }
 
     const handleSignUp = async () => {
@@ -202,7 +204,7 @@ const RenterCreateAccountView = ({ }) => {
                         >SIGN UP
                         </Button>
 
-                        {/* <IconButton
+                         {/*<IconButton
                             style={{ position: "BottomLeft", position: "sticky", top: 70, left: 0 }}
                             onClick={() => handleBackButton()}
 
