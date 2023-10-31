@@ -61,6 +61,56 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
         }
     }
 
+    const handleDeleteProperty = async () => {
+        const id = data._id;
+        console.log("data: " + id);
+        try {
+            const response = await fetch('http://localhost:8000/auth/delete-property', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: JSON.stringify({ id: id }),
+            });
+
+            console.log(response)
+
+            if (response.ok) {
+               console.log("good") 
+            } else {
+                console.log("nope")
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    };
+
+    const handleVerifyProperty = async () => {
+        const id = data._id;
+        console.log("data: " + id);
+        try {
+            const response = await fetch('http://localhost:8000/auth/verify-property', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: JSON.stringify({ id: id }),
+            });
+
+            console.log(response)
+
+            if (response.ok) {
+               console.log("good") 
+            } else {
+                console.log("nope")
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    };
+
     return (
         <React.Fragment>
             <Card
@@ -260,12 +310,12 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
                     ) : (login === true && admin === true ? (
                         <div sx={{ display: "flex", width: "100%" }}>
                             <Tooltip title="Delete Property">
-                                <IconButton onClick={null}>
+                                <IconButton onClick={handleDeleteProperty}>
                                     <DeleteOutlineIcon sx={{ color: "#AB191F" }} />
                                 </IconButton>
                             </Tooltip>
                             <Tooltip title="Verify Property">
-                                <IconButton onClick={null}>
+                                <IconButton onClick={handleVerifyProperty}>
                                     <CheckIcon sx={{ color: "green" }} />
                                 </IconButton>
                             </Tooltip>
