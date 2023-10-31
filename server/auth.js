@@ -56,12 +56,14 @@ const authorization = async (req, res, next) => {
         
 
         req.user = user;
+        req.userType = userType;
+        
         next();
     });
 };
 
 router.get("/authorize", authorization, (req, res) => {
-    res.status(200).json({ message: 'Authorized', user: req.user });
+    res.status(200).json({ message: 'Authorized', user: req.user, userType: req.userType});
 });
 
 
@@ -595,6 +597,8 @@ router.get("/admin/verify-set-pw/:token", async (req, res) => {
       return res.status(500).send("Error setting password");
     }
   });
+
+  router.post("/admin/")
 
 
 
