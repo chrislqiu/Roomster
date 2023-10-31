@@ -144,4 +144,20 @@ router.get('/fav-coops-cards', (req, res) => {
     });
 });
 
+// router.post('/add-save/:id', async (req, res) => {
+//     console.log(req.params)
+//     const { id } = req.params;
+    
+//     console.log(res)
+//     const property = await Property.findById(id);
+//     const saves = property.propertyInfo.saves;
+//     await Property.findByIdAndUpdate(id, {$set: {'propertyInfo.saves': saves + 1}})
+//     .then((result) => {
+//         res.send(result);
+//     })
+//     .catch((err) => {
+//         console.log(err);
+//     });
+// });
+
 module.exports = router;

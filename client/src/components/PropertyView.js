@@ -49,10 +49,32 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
         setHovered(false)
     }
 
+    const handleFavorite = async () => {
+        setActive(!active)
 
+        const propertyId = data._id;
+        console.log()
+        const newSavesCount = active ? data.propertyInfo.saves : data.propertyInfo.saves + 1;
 
-
-
+        console.log(`saves : ${newSavesCount} & _id : ${propertyId}`)
+//, saves: newSavesCount 
+        await fetch(`http://localhost:8000/add-save/${data._id}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ id: propertyId }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log("Succ ess")
+        })
+        .catch(error => {
+            console.error(`Error ${error}`)
+        })
+        console.log(data.propertyInfo.saves)
+    }
+    
 
     const styles = {
         divider: {
@@ -272,18 +294,8 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
                               },
                             },
                         }}>
-                        <IconButton size="large" onClick={e => {
-                            setActive(!active)
-
-                                const propertyId = data._id; 
-                                const newSavesCount = active ? data.propertyInfo.saves : data.propertyInfo.saves + 1;
-
-                                console.log(`saves : ${newSavesCount} & _id : ${propertyId}`)
-                            //add onclick function for db, and to hide if property owner, or to replace with edit if property owner needs
-                            // to edit
-                        }}>
+                        <IconButton size="large" onClick={handleFavorite}>
                             {active ? <FavoriteIcon sx={{ color: "#AB191F" }} /> : <FavoriteBorderIcon sx={{ color: "#AB191F" }} />}
-                            
                         </IconButton>
                     </Tooltip>
                     :

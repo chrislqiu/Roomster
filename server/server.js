@@ -113,6 +113,22 @@ app.post('/sendRenterProfile', async (req,res) => {
     }
 })
 
+app.post('/add-save/:id', async (req, res) => {
+  console.log(req.body)
+  const { id } = req.body;
+  
+  console.log(res)
+  const property = await Property.findById(id);
+  const saves = property.propertyInfo.saves;
+  await Property.findByIdAndUpdate(id, {$set: {'propertyInfo.saves': saves + 1}})
+  .then((result) => {
+      res.send(result);
+  })
+  .catch((err) => {
+      console.log(err);
+  });
+});
+
 const newRenter = new Renter({
     username: req.body.username,
     findingCoopmates: data.findingCoopmates,
