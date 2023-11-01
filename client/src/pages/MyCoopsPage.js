@@ -106,7 +106,7 @@ const MyCoopsPage = () => {
       };
 
     const handleAppCoop = () => {
-        if (propertyName === '' || propertyAddress === '' || price === '' || bed === '' || bath === ''){
+        if (propertyName === '' || propertyAddress === '' || price === '' || bed === -1 || bath === -1){
             toast.error("Please fill in all the textfileds and dropdown!", {style: customToastStyle})
             return;
         } else {
