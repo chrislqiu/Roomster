@@ -1,12 +1,13 @@
 import React from "react"
-import { Container, Box } from "@mui/material";
+import { Container, Box, Typography } from "@mui/material";
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import PropertyView from "../components/PropertyView";
 
 const FavCoopPage = ({login}) => {
-    const [propertyInfo, setPropertyInfo] = React.useState([])
     const [username, setUsername] = React.useState('')
+    const [userData, setUserData] = React.useState('')
+    const [favCoopsArr, setFavCoopsArr] = React.useState([])
     /* TODO:
      *  change this so it only gets the users favorite coops from the db
      *  later
@@ -24,25 +25,12 @@ const FavCoopPage = ({login}) => {
             const getData = await res.json()
             const obj = JSON.parse(JSON.stringify(getData));
             setUsername(obj.username)
+            setUserData(obj)
+            setFavCoopsArr(obj.user.renterInfo.favCoops)
         }
         getUserInfo()
-    }, [])
-    React.useEffect(() => {
-        const getPropertyInfo = async () => {
-            const res = await fetch('http://localhost:8000/cards/fav-coops-cards', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({username: username}),
-                credentials: 'include'
-            })
-            const getData = await res.json()
-            const obj = JSON.parse(JSON.stringify(getData));
-            setPropertyInfo(obj);
-        }
-        getPropertyInfo()
-    }, [])
+    }, [userData,favCoopsArr])
+    
     const styles = {
         feed: {
             display: "flex",
@@ -59,7 +47,9 @@ const FavCoopPage = ({login}) => {
                    /*
                     * Maps each Property Information object to its own "card"
                     */
-                    propertyInfo.map(cards => {
+                   
+                   favCoopsArr.length > 0 ?
+                   favCoopsArr.map(cards => {
                         /* TODO:
                          * make it so the card doesnt show/page refreshes when 
                          * fav coops is unfavorited
@@ -67,6 +57,17 @@ const FavCoopPage = ({login}) => {
                         return <PropertyView data={cards} favCoops={true} login={login}/>
                         }
                     )
+                    :
+                    <Typography
+                        sx={{
+                            fontWeight: 600,
+                            fontSize: 25,
+                            color: "#AB191F"
+                        }}
+                    >
+                        No properties favorited!
+                    </Typography>
+                
                 }
             </Box>
         </Container>
