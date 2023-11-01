@@ -17,11 +17,11 @@ const manager = new Schema({
     },
     name: {
         type: String,
-        required: false //TODO: make true when name is a field on UI
+        required: false
     },
     email: {
         type: String,
-        required: true
+        required: false
     },
     phone: {
         type: String,

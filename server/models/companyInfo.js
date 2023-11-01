@@ -12,7 +12,7 @@ const companyInfo = new Schema({
     },
     site: {
       type: String,
-      required: false //TODO: make true when prompted on front end
+      required: false
     },
     email: {
       type: String,
@@ -20,7 +20,7 @@ const companyInfo = new Schema({
     },
     phone: {
       type: String,
-      required: true
+      required: false
     }
 });
 

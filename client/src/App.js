@@ -10,7 +10,7 @@ import LoginPage from "./pages/LoginPage"
 import GlobalStyles from "@mui/material/GlobalStyles";
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-import { Divider, Box } from "@mui/material";
+import { Divider, Box, Link } from "@mui/material";
 import theredthing from './images/theredthing.png'
 import logo from './images/logo2.png'
 import RoomsterAppBar from "./components/AppBar";
@@ -124,7 +124,6 @@ class App extends React.Component {
   
 
   render() {
-    
     const { isAuthenticated } = this.state;
     return (
       // <ThemeProvider theme={theme}>
@@ -146,7 +145,10 @@ class App extends React.Component {
 
          <RoomsterAppBar login={isAuthenticated}/>
           <div style={{textAlign:"center", zIndex: "3", position: "relative", marginBottom:"50px"}}>
+            <Link href="/Home">
             <img className="logo" src={logo} style={styles.logo}></img>
+            </Link>
+
           </div>
           <Routes>
             <Route path="/" element={<MainPage login={isAuthenticated}/>} />

@@ -61,6 +61,7 @@ const PropertyManagerPage = () => {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(dataToSend),
+            credentials: 'include'
         })
         .then(response => response.json())
         .then(data => {
