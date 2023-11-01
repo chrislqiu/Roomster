@@ -57,6 +57,11 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
      * Handle favorite button
      */
     const handleFavorite = async() => {
+        /* TODO:
+         * make a function in the server that gets the user info and returns 
+         * it to main
+         */
+
         /* the id of the single property */
         const propertyId = data._id; 
         /* update the save count (trust DONT TOUCH THIS PLEASE) */
