@@ -12,6 +12,7 @@ const Company = require("./models/company")
 const CompanyInfo = require("./models/companyInfo")
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
+const { after } = require("node:test");
 
 const app = express();
 
@@ -30,6 +31,7 @@ mongoose.connect(dbURI, {useNewUrlParser: true, useUnifiedTopology: true})
 
 app.use(cors(corsOptions));
 app.use(express.json());
+const secretKey = "E.3AvP1]&r7;-vBSAL|3AyetV%H*fIEy";
 
 
 const authorization = (req, res, next) => {
@@ -61,71 +63,57 @@ app.use("/auth", authRouter);
 app.use('/cards', cardRoutes);
 app.post('/sendManagerProfile', async (req, res) => {
   const data = req.body;
+  console.log(data)
 
-  //const newManagerProfile = new managerProfile(data);
-  const newCompanyInfo = new CompanyInfo({
-    name: data.company.name,
-    address: data.company.address,
-    phone: data.company.phone
-})
+  const token = (req.headers.cookie).split('; ')[0].split('=')[1];
+  const decoded = jwt.verify(token, secretKey);
+  const username = decoded.username
+  const manager = await Manager.findOne({username: username})
 
-const newCompany = new Company({
-    companyInfo: newCompanyInfo
-})
+  const updatedCompanyInfo = await CompanyInfo.findOneAndUpdate({name: manager.company.companyInfo.name}, {name: data.company.name, address: data.company.address, phone: data.company.phone}).setOptions({returnDocument: after})
+  const updatedCompany = await Company.findOneAndUpdate({'companyInfo.name': manager.company.companyInfo.name}, {companyInfo: updatedCompanyInfo}).setOptions({returnDocument: after})
+  const updatedManager = await Manager.findOneAndUpdate({username: username}, {email: data.email, phone: data.phone, bio: data.bio, company: updatedCompany}).setOptions({returnDocument: after})
 
-const newManagerProfile = new Manager({
-    name: data.name,
-    phone: data.phone,
-    email: data.email,
-    bio: data.bio,
-    company: newCompany
-})
-  newManagerProfile.save()
+  updatedCompanyInfo.save()
+  updatedCompany.save()
+  updatedManager.save()
   .then((result) => {
     res.send(result);
   })
   .catch((err) => {
-    console.log(err);
+      console.log(err);
   });
+  
 })
 
 app.post('/sendRenterProfile', async (req,res) => {
-  const data = req.body;
-  console.log(data)
+  const data = req.body.renterInfo;
 
+  const token = (req.headers.cookie).split('; ')[0].split('=')[1];
+  const decoded = jwt.verify(token, secretKey);
+  const username = decoded.username
+  const renter = await Renter.findOne({username: username})
+  const updatedLivingPref = {
+      pets: data.livingPreferences.pets,
+      smoke: data.livingPreferences.smoke,
+      studious: data.livingPreferences.studious,
+      cleanliness: data.livingPreferences.cleanliness,
+      guestFreq: data.livingPreferences.guestFreq,
+      sleepSchedule: {
+          from: data.livingPreferences.sleepSchedule.from,
+          to: data.livingPreferences.sleepSchedule.to
+      }
+  }
 
-  const newRenterInfo = new RenterInfo({
-    name: data.renterInfo.name,
-    age: data.renterInfo.age,
-    email: data.renterInfo.email,
-    phone: data.renterInfo.phone,
-    pfp: data.renterInfo.pfp,
-    livingPreferences: {
-        pets: data.renterInfo.livingPreferences.pets,
-        smoke: data.renterInfo.livingPreferences.smoke,
-        studious: data.renterInfo.livingPreferences.studious,
-        cleanliness: data.renterInfo.livingPreferences.cleanliness,
-        guestFreq: data.renterInfo.livingPreferences.guestFreq,
-        sleepSchedule: {
-            from: data.renterInfo.livingPreferences.sleepSchedule.from,
-            to: data.renterInfo.livingPreferences.sleepSchedule.to
-        }
-    }
-})
+  const updatedRenterInfo = await RenterInfo.findOneAndUpdate({name: renter.renterInfo.name}, {name: data.name, age: data.age, email: data.email, phone: data.phone, pfp: data.pfp, livingPreferences: updatedLivingPref}).setOptions({returnDocument: after})
+  const updatedRenter = await Renter.findOneAndUpdate({username: username}, {findingCoopmates: req.body.findingCoopmates, renterInfo: updatedRenterInfo}).setOptions({returnDocument: after})
 
-const newRenter = new Renter({
-    username: req.body.username,
-    findingCoopmates: data.findingCoopmates,
-    renterInfo: newRenterInfo
-})
-
-  newRenter.save()
+  updatedRenter.save()
   .then((result) => {
-    console.log(result)
     res.send(result);
   })
   .catch((err) => {
-    console.log(err);
+      console.log(err);
   });
 })
 

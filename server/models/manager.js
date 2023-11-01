@@ -17,7 +17,7 @@ const manager = new Schema({
     },
     name: {
         type: String,
-        required: false //TODO: make true when name is a field on UI
+        required: true
     },
     email: {
         type: String,

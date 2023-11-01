@@ -72,6 +72,23 @@ router.get("/managers", (req, res) => {
     });
 });
 
+router.get("/current_user", authorization, async (req, res) => {
+    const userType = req.cookies.user_type;
+    var user = null;
+    var username = req.user.username;
+    if (userType === "renter") {
+        user = await Renter.findOne({ username: username });
+    } else if (userType === "manager") {
+        user = await Manager.findOne({ username: username });
+    }
+
+    if (user === null) {
+        return res.status(400).send("User does not exist");
+    }
+
+    res.status(200).json({user: user, username: username, user_type: userType})
+});
+
 const isEmailValid = (email) => {
     const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
     return emailRegex.test(email);
@@ -79,9 +96,10 @@ const isEmailValid = (email) => {
 
 router.post("/renter-signup", async (req, res) => {
     const existingRenter = await Renter.findOne({ username: req.body.username });
+    const existingManager = await Manager.findOne({ username: req.body.username });
     const userType = "renter";
 
-    if (existingRenter) {
+    if (existingRenter || existingManager) {
         return res.status(400).send("User already exists");
     }
 
@@ -130,9 +148,10 @@ router.post("/renter-signup", async (req, res) => {
 
 router.post("/manager-signup", async (req, res) => {
     const existingManager = await Manager.findOne({ username: req.body.username });
+    const existingRenter = await Renter.findOne({ username: req.body.username });
     const userType = "manager";
 
-    if (existingManager) {
+    if (existingManager || existingRenter) {
         return res.status(400).send("User already exists");
     }
 
@@ -140,15 +159,12 @@ router.post("/manager-signup", async (req, res) => {
         const salt = await bcrypt.genSalt();
         const hashedPW = await bcrypt.hash(req.body.password, salt);
 
-        const existingCompany = await Company.findOne({'companyInfo.name': req.body.companyName});
+        var existingCompany = await Company.findOne({'companyInfo.name': req.body.companyName});
         if (!existingCompany) {
-            //TODO: prompt user for company data
             const newCompanyInfo = new CompanyInfo({
                 name: req.body.companyName,
                 address: req.body.address,
-                site: "google.com",             //site: req.body.site,
                 email: req.body.companyEmail,
-                phone: "(765) 123-4567"         //phone: req.body.companyPhone
             }); // the managers personal email and phone are separate from the company ones
 
             const newCompany = new Company({
@@ -162,10 +178,10 @@ router.post("/manager-signup", async (req, res) => {
         }
 
         const newManager = new Manager({
-            username: "testmanager@company.com",    //req.body.username,
+            username: req.body.username,
             password: hashedPW,
-            name: "Test Manager",                   //name: req.body.managerName,
-            email: "testmanager@company.com",       //req.body.managerEmail,
+            name: req.body.managerName,
+            email: req.body.managerEmail,
             company: existingCompany
         });
 
@@ -198,11 +214,10 @@ router.post("/manager-signup", async (req, res) => {
 router.post("/login", async (req, res) => {
     var user = await Renter.findOne({ username: req.body.username });
     var userType = "renter";
-    if (!user) {
+    if (user === null) {
         user = Manager.findOne({ username: req.body.username });
-        if (user) {
-            userType = "manager";
-        } else {
+        userType = "manager";
+        if (user === null) {
             return res.status(400).send("User does not exist");
         }
     }
@@ -248,7 +263,7 @@ router.post("/delete", authorization, async (req, res) => {
 
         if (isPasswordValid) {
             if (userType === "renter") {
-                //TODO delete renter info before deleting renter
+                await RenterInfo.deleteOne({ _id: user.renterInfo._id});
                 await Renter.deleteOne({ username: req.body.username });
             } else if (userType === "manager") {
                 await Manager.deleteOne({ username: req.body.username });

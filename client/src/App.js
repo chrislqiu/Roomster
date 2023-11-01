@@ -148,7 +148,7 @@ class App extends React.Component {
             <Link href="/Home">
             <img className="logo" src={logo} style={styles.logo}></img>
             </Link>
-            
+
           </div>
           <Routes>
             <Route path="/" element={<MainPage login={isAuthenticated}/>} />
