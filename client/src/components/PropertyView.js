@@ -15,7 +15,7 @@ import StarIcon from '@mui/icons-material/Star';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
-import { useNavigate } from 'react-router-dom';
+import { createSearchParams, useNavigate } from 'react-router-dom';
 
 
 /* 
@@ -57,7 +57,15 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
             margin: "15px 0 15x 0",
         }
     }
-
+    const navigate=useNavigate()
+    const openCompanyPage = (property) => {
+        navigate({
+            pathname: "/CompanyPage",
+            search: createSearchParams({
+                companyName: data.companyInfo.name
+            }).toString()
+        })
+    }
     return (
         <React.Fragment>
             <Card
@@ -155,8 +163,17 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
                     }
                     <Stack direction={{'400px': "column", md: "row",lg: "row", xl: "row"}} spacing={5} sx={{ marginTop: 2, p: 1 }} >
                         <Box width='600'>
-                            <Tooltip title="Go to Company Page">
-                            <Link href="/CompanyPage" underline="none" color="black" sx={{fontWeight: 600}}>
+                            <Tooltip title="Go to Company Page"
+                                     componentsProps={{
+                                        tooltip: {
+                                            sx: {
+                                                bgcolor: 'rgba(171, 25, 31, 0.9)',
+                                                color: "#F6EBE1"
+                                            },
+                                        },
+                                     }}
+                                     >
+                            <Link onClick={openCompanyPage} underline="hover" color="black" sx={{fontWeight: 600, "&:hover": {cursor: "pointer", color:"#AB191F"}}}>
                                 {data.propertyInfo.propertyName}
                             </Link>
                             </Tooltip>
@@ -240,7 +257,16 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
                 <DialogActions>
 
                     {login == true 
-                        ? <Tooltip title="Add to FAV COOPS">
+                        ? <Tooltip 
+                            title="Add to FAV COOPS" 
+                            componentsProps={{
+                            tooltip: {
+                              sx: {
+                                bgcolor: 'rgba(171, 25, 31, 0.9)',
+                                color: '#F6EBE1'
+                              },
+                            },
+                        }}>
                         <IconButton size="large" onClick={e => {
                             setActive(!active)
                             //add onclick function for db, and to hide if property owner, or to replace with edit if property owner needs

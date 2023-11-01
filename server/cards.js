@@ -107,6 +107,27 @@ router.get('/add-card', async (req, res) => {
     }
 });
 
+router.post('/getCompanyInfo', (req, res) => {
+    companyName = req.body.companyName;
+    CompanyInfo.findOne({name: companyName})
+    .then((result) => {
+        res.send(result);
+    }).catch((err) => {
+        console.log(err);
+    })
+})
+
+router.post('/sendCompanyName', (req, res) => {
+    companyName = req.body.companyName;
+    Property.find({'companyInfo.name': companyName})
+    .then((result) => {
+        res.send(result);
+    })
+    .catch((err) => {
+        console.log(err);
+    });
+})
+
 // Route to get all cards
 router.get('/all-cards', (req, res) => {
     Property.find()
