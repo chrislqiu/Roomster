@@ -160,12 +160,11 @@ router.post("/manager-signup", async (req, res) => {
 
             existingCompany = newCompany;
         }
-
         const newManager = new Manager({
-            username: "testmanager@company.com",    //req.body.username,
+            username: req.body.username,
             password: hashedPW,
-            name: "Test Manager",                   //name: req.body.managerName,
-            email: "testmanager@company.com",       //req.body.managerEmail,
+            name: req.body.name,
+            email: req.body.email,
             company: existingCompany
         });
 
