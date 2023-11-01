@@ -23,7 +23,7 @@ const MyCoopsPage = () => {
 
     /* Upload Image */
     const [propertyImage, setPropertyImage] = React.useState("")
-    const [displayUpload, setDisplayUpload] = React.useState(false)
+    const [image, setHasImage] = React.useState(false)
 
     /* Amenities: pet friendly, in-unit WD, parking, kitchen appliances, furnished, gym */
     const [isPetFriendly, setIsPetFriendly] = React.useState(false)
@@ -151,6 +151,7 @@ const MyCoopsPage = () => {
         reader.readAsDataURL(file)
         reader.onload = () => {
             setPropertyImage(reader.result)
+            setHasImage(true)
         }
     }
     
@@ -258,7 +259,9 @@ const MyCoopsPage = () => {
                                 borderColor:"black",
                                 marginBottom:"30px"
                             }}>
-                            <label for="imageFile" style={{color: "#AB191F"}}>
+
+                            {!image && 
+                            <label id="imageLabel" for="imageFile" style={{color: "#AB191F"}}>
                                 Click to Add A Photo
                                 <input
                                     accept="image/*"
@@ -267,8 +270,8 @@ const MyCoopsPage = () => {
                                     id="imageFile"
                                     style={{display:"none"}}
                                 />
-                            </label>
-                            
+                            </label>}
+
                             {propertyImage==="" || propertyImage === null?"" : <img src={propertyImage}/>}
                         </AspectRatio>
 
