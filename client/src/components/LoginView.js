@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Button from '@mui/material/Button';
-import { Box } from '@mui/material';
+import { Box, Link } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
@@ -12,7 +12,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import RenterCreateAccountView from './RenterCreateAccountView';
 import RenterCreateAccountPage from '../pages/RenterCreateAccountPage';
 import ManagerCreateAccountView from './PropertyManagerCreateAccountView';
-
+import ForgotPwView from './ForgotPwView';
 
 
 /**
@@ -31,6 +31,7 @@ const LoginView = ({ text}) => {
     const [open, setOpen] = React.useState(false)
     const [rCreateOpen, setRCreateOpen] = React.useState(false)
     const [mCreateOpen, setMCreateOpen] = React.useState(false)
+    const [forgotPwOpen, setforgotPwOpen] = React.useState(false)
     const [email, setEmail] = React.useState('')
     const [password, setPassword] = React.useState('')
     const [loginStatus, setLoginStatus] = React.useState(null)
@@ -43,6 +44,11 @@ const LoginView = ({ text}) => {
         setOpen(false)
         setLoginStatus(null)
     }
+
+    const handleForgotPw = () => {
+        setforgotPwOpen(true);
+    }
+
 
     const handleLogin = async () => {
         try {
@@ -120,6 +126,7 @@ const LoginView = ({ text}) => {
                 sx={{
                     "& .MuiDialog-container": {
                         "& .MuiPaper-root": {
+                            opacity: forgotPwOpen ? "0" : "1",
                             width: "100%",
                             maxWidth: "400px",
                             maxHeight: "1000px",
@@ -201,7 +208,7 @@ const LoginView = ({ text}) => {
                             <TextField
                                 label="Password" id="psw-textfield" variant="outlined" fullWidth
                                 sx={{
-                                    boxShadow: "0px 0px 3px 3px rgba(0, 0, 0, .1)", margin: "dense", marginBottom: "15px"
+                                    boxShadow: "0px 0px 3px 3px rgba(0, 0, 0, .1)", margin: "dense", 
                                 }}
                                 type="password"
                                 value={password}
@@ -214,6 +221,18 @@ const LoginView = ({ text}) => {
                                 </p>
                             )}
 
+                            <Typography onClick={handleForgotPw} sx={{ 
+                                margin: "5px 0 5px 2px",
+                                fontSize: "10pt",
+                                color: "black",
+                                textDecoration: "underline",
+                                "&:hover": {
+                                    cursor: "pointer",
+                                    color: "#AB191F"
+                                }}}>
+                                Forgot your password?
+                            </Typography>
+                            {forgotPwOpen === true && <ForgotPwView setOpen={setOpen}></ForgotPwView>}
                             <Button
                                 onClick={handleLogin}
                                 sx={{
