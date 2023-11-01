@@ -153,20 +153,6 @@ const MyCoopsPage = () => {
             setPropertyImage(reader.result)
         }
     }
-
-    const displayUploadPhoto = () => {
-        return (
-            <Dialog>
-                <input
-                    accept="image/*"
-                    type="file"
-                    onChange={handleAddPhotos}
-                    //style={{display:"none"}}
-                    //ref={imageInput => this.imageInput = imageInput}
-                />
-            </Dialog>
-        )
-    }
     
     const styles = {
         feed: {
@@ -279,42 +265,9 @@ const MyCoopsPage = () => {
                                     type="file"
                                     onChange={handleAddPhotos}
                                     id="imageFile"
-                                    //style={{color:"#AB191F", font: "lato"}}
                                     style={{display:"none"}}
-                                    //ref={imageInput => this.imageInput = imageInput}
                                 />
                             </label>
-                            
-                            {/* <Button
-                                for="imageFile"
-                                sx={{
-                                    ":hover": {
-                                        borderColor: "#AB191F", bgcolor: "#F6EBE1", color: "#AB191F",
-                                        borderWidth: 1.5
-                                    },
-                                    borderColor:"#AB191F", bgcolor:"#F6EBE1", color:"#AB191F", 
-                                    borderWidth: 1.5, width:"100%", fontWeight:600, lineHeight:"15px",
-                                    boxShadow: 5, maxWidth:"120px", maxHeight: "30px",
-                                    float: "left", top: "5px",
-                                    left: "5px",
-                                    marginBottom:"15px",
-                                    marginLeft: "210px",
-                                    position: "absolute"
-
-                                }}
-                                variant="outlined">
-                                Add Photos
-                                <input
-                                    accept="image/*"
-                                    type="file"
-                                    onChange={handleAddPhotos}
-                                    id="imageFile"
-                                    //style={{color:"#AB191F", font: "lato"}}
-                                    style={{display:"none"}}
-                                    //ref={imageInput => this.imageInput = imageInput}
-                                />
-                            </Button> */}
-                            
                             
                             {propertyImage==="" || propertyImage === null?"" : <img src={propertyImage}/>}
                         </AspectRatio>
