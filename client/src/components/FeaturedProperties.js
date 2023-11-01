@@ -36,7 +36,6 @@ d                    color="#AB191F"
                 </Typography>
             </Container>
             
-            
 
             <List component={Stack} direction="row" sx={{ overflow: 'auto', marginTop: -1}} maxWidth='xl' spacing={-4}>
                 {data.filter(property => property.propertyInfo.featured == true).map(featuredCards => {
