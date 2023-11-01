@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import PropertyViewMore from "../components/PropertyView"
 import { InputAdornment, FormControl, InputLabel, MenuItem, Select, Dialog, DialogContent, DialogActions, Tooltip, IconButton, Avatar, InputBase, Slider, Checkbox, Grid, Card, Container, Box, Typography, CardContent, Input, Divider, TextField, Link, Button, FormControlLabel, Stack, Icon } from "@mui/material";
 import AddHomeIcon from '@mui/icons-material/AddHome';
@@ -30,6 +30,7 @@ const MyCoopsPage = () => {
     const [hasKitchenApp, setHasKitchenApp] = React.useState(false)
     const [isFurnished, setIsFurnished] = React.useState(false)
     const [hasGym, setHasGym] = React.useState(false)
+    const [amenitiesArr, setAmenitiesArr] = React.useState([])
 
     /* Utilities: electricity, gas, water, trash, sewage, internet */
     const [includeElec, setIncludeElec] = React.useState(false)
@@ -38,6 +39,15 @@ const MyCoopsPage = () => {
     const [includeTrash, setIncludeTrash] = React.useState(false)
     const [includeSewage, setIncludeSewage] = React.useState(false)
     const [includeInternet, setInternet] = React.useState(false)
+    const presetData = [
+        ['water', false],
+        ['electricity', false],
+        ['gas', false],
+        ['trash', false],
+        ['sewage', false],
+        ['internet', false]
+      ];
+    const [utilities, setUtilities] = useState(new Map(presetData));
 
     /* Disabled button for Edit and Save */
     const [disableButton, setDisableButton] = React.useState(true)
@@ -79,6 +89,20 @@ const MyCoopsPage = () => {
         color: 'white',
     };
 
+    const handleCheckboxChange = (amenity) => {
+        if (amenitiesArr.includes(amenity)) {
+          // If the amenity is already in the array, remove it
+          setAmenitiesArr(amenitiesArr.filter((item) => item !== amenity));
+        } else {
+          // If the amenity is not in the array, add it
+          setAmenitiesArr([...amenitiesArr, amenity]);
+        }
+      };
+
+      const handleUtilChange = (key, value) => {
+        setUtilities((prevUtilities) => new Map(prevUtilities.set(key, value)));
+      };
+
     const handleAppCoop = () => {
         if (propertyName === '' || propertyAddress === '' || price === '' || bed === '' || bath === ''){
             toast.error("Please fill in all the textfileds and dropdown!", {style: customToastStyle})
@@ -97,9 +121,26 @@ const MyCoopsPage = () => {
                 cost: price,
                 sqft: '',
                 distance: '',
-                
+                amenities: amenitiesArr,
+                utilities: Object.fromEntries(utilities)
             }
         }
+
+        fetch('http://localhost:8000/sendProperty', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(dataToSend),
+            credentials: 'include'
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('DATA SAVEDDDD: ', data.message);
+        })
+        .catch(error => {
+            console.error('ERRORRR: ', error);
+        });
     }
     
     const styles = {
@@ -325,7 +366,15 @@ const MyCoopsPage = () => {
                                         <FormControlLabel style={{margin:"-10px 0 0 -30px"}} label={<Typography style={{fontSize:"11pt"}}>Furnished</Typography>} control={
                                             <Checkbox style={{}}
                                             checked={isFurnished}
-                                            onChange={() => setIsFurnished(!isFurnished)}
+                                            onChange={() => {
+                                                if (!isFurnished) {
+                                                    setIsFurnished(true)
+                                                    handleCheckboxChange("Furnished")
+                                                } else {
+                                                    setIsFurnished(false)
+                                                    handleCheckboxChange("Furnished")
+                                                }
+                                            }}
                                             disabled={disableButton}
                                             inputProps={{ 'aria-label': 'controlled' }}
                                             sx={{
@@ -342,7 +391,15 @@ const MyCoopsPage = () => {
                                         <FormControlLabel style={{margin:"-20px 0 0 -30px"}} label={<Typography style={{fontSize:"11pt"}}>Kitchen Appliances</Typography>} control={
                                             <Checkbox style={{}}
                                             checked={hasKitchenApp}
-                                            onChange={() => setHasKitchenApp(!hasKitchenApp)}
+                                            onChange={() => {
+                                                if (!hasKitchenApp) {
+                                                    setHasKitchenApp(true)
+                                                    handleCheckboxChange("Kitchen Appliance")
+                                                } else {
+                                                    setHasKitchenApp(false)
+                                                    handleCheckboxChange("Kitchen Appliance")
+                                                }
+                                            }}
                                             disabled={disableButton}
                                             inputProps={{ 'aria-label': 'controlled' }}
                                             sx={{
@@ -359,7 +416,15 @@ const MyCoopsPage = () => {
                                         <FormControlLabel style={{margin:"-40px 0 0 -30px"}} label={<Typography style={{fontSize:"11pt"}}>In-Unit Washer Dryer</Typography>} control={
                                             <Checkbox style={{}}
                                             checked={hasInUnitWD}
-                                            onChange={() => setHasInUnitWD(!hasInUnitWD)}
+                                            onChange={() => {
+                                                if (!hasInUnitWD) {
+                                                    setHasInUnitWD(true)
+                                                    handleCheckboxChange("In Unit W/D")
+                                                } else {
+                                                    setHasInUnitWD(false)
+                                                    handleCheckboxChange("In Unit W/D")
+                                                }
+                                            }}
                                             disabled={disableButton}
                                             inputProps={{ 'aria-label': 'controlled' }}
                                             sx={{
@@ -376,7 +441,15 @@ const MyCoopsPage = () => {
                                         <FormControlLabel style={{margin:"-60px 0 0 -30px"}} label={<Typography style={{fontSize:"11pt"}}>Parking</Typography>} control={
                                             <Checkbox style={{}}
                                             checked={hasParking}
-                                            onChange={() => setHasParking(!hasParking)}
+                                            onChange={() => {
+                                                if (!hasParking) {
+                                                    setHasParking(true)
+                                                    handleCheckboxChange("Parking")
+                                                } else {
+                                                    setHasParking(false)
+                                                    handleCheckboxChange("Parking")
+                                                }
+                                            }}
                                             disabled={disableButton}
                                             inputProps={{ 'aria-label': 'controlled' }}
                                             sx={{
@@ -393,7 +466,15 @@ const MyCoopsPage = () => {
                                         <FormControlLabel style={{margin:"-80px 0 0 -30px"}} label={<Typography style={{fontSize:"11pt"}}>Pet Friendly</Typography>} control={
                                             <Checkbox style={{}}
                                             checked={isPetFriendly}
-                                            onChange={() => setIsPetFriendly(!isPetFriendly)}
+                                            onChange={() => {
+                                                if (!isPetFriendly) {
+                                                    setIsPetFriendly(true)
+                                                    handleCheckboxChange("Pet Friendly")
+                                                } else {
+                                                    setIsPetFriendly(false)
+                                                    handleCheckboxChange("Pet Friendly")
+                                                }
+                                            }}
                                             disabled={disableButton}
                                             inputProps={{ 'aria-label': 'controlled' }}
                                             sx={{
@@ -410,7 +491,15 @@ const MyCoopsPage = () => {
                                         <FormControlLabel style={{margin:"-100px 0 0 -30px"}} label={<Typography style={{fontSize:"11pt"}}>Gym</Typography>} control={
                                             <Checkbox style={{}}
                                             checked={hasGym}
-                                            onChange={() => setHasGym(!hasGym)}
+                                            onChange={() => {
+                                                if (!hasGym) {
+                                                    setHasGym(true)
+                                                    handleCheckboxChange("Gym")
+                                                } else {
+                                                    setHasGym(false)
+                                                    handleCheckboxChange("Gym")
+                                                }
+                                            }}
                                             disabled={disableButton}
                                             inputProps={{ 'aria-label': 'controlled' }}
                                             sx={{
@@ -445,7 +534,15 @@ const MyCoopsPage = () => {
                                         <FormControlLabel style={{margin:"-10px 0 0 -30px"}} label={<Typography style={{fontSize:"11pt"}}>Water</Typography>} control={
                                             <Checkbox style={{}}
                                             checked={includeWater}
-                                            onChange={() => setIncludeWater(!includeWater)}
+                                            onChange={() => {
+                                                if (!includeWater) {
+                                                    setIncludeWater(true)
+                                                    handleUtilChange('water', true)
+                                                } else {
+                                                    setIncludeWater(false)
+                                                    handleUtilChange('water', false)
+                                                }
+                                            }}
                                             disabled={disableButton}
                                             inputProps={{ 'aria-label': 'controlled' }}
                                             sx={{
@@ -462,7 +559,15 @@ const MyCoopsPage = () => {
                                         <FormControlLabel style={{margin:"-20px 0 0 -30px"}} label={<Typography style={{fontSize:"11pt"}}>Electricity</Typography>} control={
                                             <Checkbox style={{}}
                                             checked={includeElec}
-                                            onChange={() => setIncludeElec(!includeElec)}
+                                            onChange={() => {
+                                                if (!includeElec) {
+                                                    setIncludeElec(true)
+                                                    handleUtilChange('electricity', true)
+                                                } else {
+                                                    setIncludeElec(false)
+                                                    handleUtilChange('electricity', false)
+                                                }
+                                            }}
                                             disabled={disableButton}
                                             inputProps={{ 'aria-label': 'controlled' }}
                                             sx={{
@@ -479,7 +584,15 @@ const MyCoopsPage = () => {
                                         <FormControlLabel style={{margin:"-40px 0 0 -30px"}} label={<Typography style={{fontSize:"11pt"}}>Gas</Typography>} control={
                                             <Checkbox style={{}}
                                             checked={includeGas}
-                                            onChange={() => setIncludeGas(!includeGas)}
+                                            onChange={() => {
+                                                if (!includeGas) {
+                                                    setIncludeGas(true)
+                                                    handleUtilChange('gas', true)
+                                                } else {
+                                                    setIncludeGas(false)
+                                                    handleUtilChange('gas', false)
+                                                }
+                                            }}
                                             disabled={disableButton}
                                             inputProps={{ 'aria-label': 'controlled' }}
                                             sx={{
@@ -496,7 +609,15 @@ const MyCoopsPage = () => {
                                         <FormControlLabel style={{margin:"-60px 0 0 -30px"}} label={<Typography style={{fontSize:"11pt"}}>Trash</Typography>} control={
                                             <Checkbox style={{}}
                                             checked={includeTrash}
-                                            onChange={() => setIncludeTrash(!includeTrash)}
+                                            onChange={() => {
+                                                if (!includeTrash) {
+                                                    setIncludeTrash(true)
+                                                    handleUtilChange('trash', true)
+                                                } else {
+                                                    setIncludeTrash(false)
+                                                    handleUtilChange('trash', false)
+                                                }
+                                            }}
                                             disabled={disableButton}
                                             inputProps={{ 'aria-label': 'controlled' }}
                                             sx={{
@@ -513,7 +634,15 @@ const MyCoopsPage = () => {
                                         <FormControlLabel style={{margin:"-80px 0 0 -30px"}} label={<Typography style={{fontSize:"11pt"}}>Sewage</Typography>} control={
                                             <Checkbox style={{}}
                                             checked={includeSewage}
-                                            onChange={() => setIncludeSewage(!includeSewage)}
+                                            onChange={() => {
+                                                if (!includeSewage) {
+                                                    setIncludeSewage(true)
+                                                    handleUtilChange('sewage', true)
+                                                } else {
+                                                    setIncludeSewage(false)
+                                                    handleUtilChange('sewage', false)
+                                                }
+                                            }}
                                             disabled={disableButton}
                                             inputProps={{ 'aria-label': 'controlled' }}
                                             sx={{
@@ -530,7 +659,15 @@ const MyCoopsPage = () => {
                                         <FormControlLabel style={{margin:"-100px 0 0 -30px"}} label={<Typography style={{fontSize:"11pt"}}>Internet</Typography>} control={
                                             <Checkbox style={{}}
                                             checked={includeInternet}
-                                            onChange={() => setInternet(!includeInternet)}
+                                            onChange={() => {
+                                                if (!includeInternet) {
+                                                    setInternet(true)
+                                                    handleUtilChange('internet', true)
+                                                } else {
+                                                    setInternet(false)
+                                                    handleUtilChange('internet', false)
+                                                }
+                                            }}
                                             disabled={disableButton}
                                             inputProps={{ 'aria-label': 'controlled' }}
                                             sx={{
