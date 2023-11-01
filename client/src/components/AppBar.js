@@ -74,7 +74,31 @@ const RoomsterAppBar = ({ login }) => {
             }
           };
 
-          logout();
+
+          const logoutAdmin = async () => {
+            try {
+              const response = await fetch('http://localhost:8000/auth/logout-admin', {
+                method: 'GET',
+                credentials: 'include',
+              });
+      
+              if (response.ok) {
+                console.log('Logout successful');
+                window.location.href = 'http://localhost:3001/Admin';
+              } else {
+                console.log('Logout failed');
+              }
+            } catch (error) {
+              console.error('Error during logout:', error);
+            }
+          };
+
+
+          if(window.location.pathname !== "/Admin"){
+            logout();
+          } else {
+            logoutAdmin();
+          }
       };
 
     return (

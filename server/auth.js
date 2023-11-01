@@ -338,6 +338,16 @@ router.get("/logout", (req, res) => {
         .json({ message: "Logged out" });
 });
 
+router.get("/logout-admin", (req, res) => {
+    console.log("admin logout")
+    return res
+        // .clearCookie("access_token")
+        .clearCookie("access_token_admin")
+        // .clearCookie("user_type")
+        .status(200)
+        .json({ message: "Logged out" });
+});
+
 router.post("/change-password", authorization, async (req, res) => {
     const userType = req.cookies.user_type;
     var user = null;
@@ -553,7 +563,7 @@ router.post("/admin/login", async (req, res) => {
                     secure: process.env.NODE_ENV === "production",
                     // sameSite: "None",
                 })
-                .cookie("user_type", "admin")
+                // .cookie("user_type_admin", "admin")
                 .status(200)
                 .json({ message: "Access granted" });
         } else {
