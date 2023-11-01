@@ -32,6 +32,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
      * open, setOpen : controls the state of the dialogue popup
      */
     const [open, setOpen] = React.useState(false)
+    const [utilities, setUtilities] = React.useState('')
     const handleOpen = () => {
         setOpen(true)
     }
@@ -66,6 +67,11 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
             }).toString()
         })
     }
+
+    const pullUtilities = () => {
+        setUtilities(Object.keys(data.propertyInfo.utilities).filter(key => data.propertyInfo.utilities[key] === true))
+    }
+
     return (
         <React.Fragment>
             <Card
@@ -252,9 +258,8 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
                             >
                                 Utilities
                             </Typography>
-                            {/* TODO: CHANGE FROM AMENITIES TO UTILITIES */}
-                            {data.propertyInfo.amenities.map((amenity) => {
-                                return <List
+                            {pullUtilities}
+                            <List
                                 sx={{
                                      listStyleType: 'disc',
                                      listStylePosition: 'inside',
@@ -264,11 +269,9 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
                                    }}
                                  >
                                     <ListItem sx={{ display: 'list-item' }}>
-                                        {amenity}
+                                        {utilities} 
                                     </ListItem>
                                 </List> 
-                            })}
-
                         </Box>
 
                         <Divider orientation='verticle' width={3} sx={{ borderBottomWidth: 3, color: "#AB191F", backgroundColor: "#AB191F", marginY: 2 }} />
