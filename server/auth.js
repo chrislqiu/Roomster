@@ -666,7 +666,7 @@ router.post("/delete-property", authorization, async (req, res) => {
     }
 })
 
-router.post("/verify-property", authorization, async (req, res) => {
+router.post("/verify-property", authorizationAdmin, async (req, res) => {
     try {
         const propertyId = req.body.id
         console.log(propertyId);

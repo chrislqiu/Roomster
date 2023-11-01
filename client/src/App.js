@@ -26,7 +26,7 @@ import AdminPage from "./pages/AdminPage";
 import ResetPWPage from "./pages/ResetPWPage"
 import SetAdminPWPage from "./pages/SetAdminPWPage";
 import { Helmet, HelmetProvider } from 'react-helmet-async';
-import favicon from "./favicon.png"
+// import favicon from "https://i.ibb.co/NF8X7Vx/favicon.png"
 
 const styles = {
   background: {
@@ -188,8 +188,10 @@ class App extends React.Component {
       <HelmetProvider>
         <Helmet>
           <title>Roomster</title>
-          <link rel="icon" type="image/png" href={favicon}/>
-                  </Helmet>
+          {/* <link rel="icon" type="image/png" href={favicon} /> */}
+          <link rel="icon" href="https://i.ibb.co/NF8X7Vx/favicon.png" />
+
+        </Helmet>
 
 
         <html>
