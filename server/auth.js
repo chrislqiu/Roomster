@@ -27,10 +27,10 @@ router.use(cors(corsOptions));
 const secretKey = "E.3AvP1]&r7;-vBSAL|3AyetV%H*fIEy";
 
 const authorization = async (req, res, next) => {
-    const token = req.cookies.access_token_admin;
+    const token = req.cookies.access_token;
     const userType = req.cookies.user_type;
 
-    console.log(req.cookies)
+    // console.log(req.cookies)
 
 
     if (!token) {
@@ -54,6 +54,45 @@ const authorization = async (req, res, next) => {
             }
         }
 
+        console.log("gffood")
+
+        req.user = user;
+        req.userType = userType;
+
+        next();
+    });
+};
+
+const authorizationAdmin = async (req, res, next) => {
+    const token = req.cookies.access_token_admin;
+    const userType = req.cookies.user_type;
+
+    // console.log(req.cookies)
+   
+
+    if (!token) {
+        return res.sendStatus(401); // Unauthorized
+    }
+
+    jwt.verify(token, secretKey, async (err, user) => {
+        if (err) {
+            return res.sendStatus(403); // Forbidden
+        }
+
+        if (req.body.username && req.body.username !== user.username) {
+            return res.status(401).send("Unauthorized");
+        }
+
+        if (userType && userType === "admin") {
+            const adminUser = await Admin.findOne({ username: user.username });
+
+            if (!adminUser) {
+                
+                return res.status(401).send("Unauthorized");
+            }
+        }
+
+        console.log("good")
 
 
         req.user = user;
@@ -64,6 +103,10 @@ const authorization = async (req, res, next) => {
 };
 
 router.get("/authorize", authorization, (req, res) => {
+    res.status(200).json({ message: 'Authorized', user: req.user, userType: req.userType });
+});
+
+router.get("/authorize-admin", authorizationAdmin, (req, res) => {
     res.status(200).json({ message: 'Authorized', user: req.user, userType: req.userType });
 });
 
@@ -286,7 +329,7 @@ router.post("/delete", authorization, async (req, res) => {
     }
 });
 
-router.get("/logout", authorization, (req, res) => {
+router.get("/logout", (req, res) => {
     return res
         .clearCookie("access_token")
         .clearCookie("access_token_admin")

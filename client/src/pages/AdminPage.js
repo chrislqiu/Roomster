@@ -30,7 +30,7 @@ const AdminPage = () => {
     useEffect(() => {
         const checkAuthentication = async () => {
             try {
-                const response = await fetch("http://localhost:8000/auth/authorize", {
+                const response = await fetch("http://localhost:8000/auth/authorize-admin", {
                     method: "GET",
                     credentials: "include",
                 });

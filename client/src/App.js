@@ -62,6 +62,7 @@ class App extends React.Component {
     this.state = {
       apiResponse: "",
       isAuthenticated: false,
+      isAuthenticatedAdmin: false,
       isPopupOpen: false,
       popupMessage: "",
       userType: ""
@@ -77,6 +78,7 @@ class App extends React.Component {
   async componentDidMount() {
     this.callServer();
     this.checkAuthentication();
+    this.checkAuthenticationAdmin();
   }
 
 
@@ -103,6 +105,31 @@ class App extends React.Component {
       console.error('Error during authentication check:', error);
     }
   };
+
+  checkAuthenticationAdmin = async () => {
+    console.log("asdfadsf")
+    try {
+      const response = await fetch('http://localhost:8000/auth/authorize-admin', {
+        method: 'GET',
+        credentials: 'include',
+      });
+
+
+
+      if (response.ok) {
+        this.setState({ isAuthenticatedAdmin: true });
+        const data = await response.json();
+        const userType = data.userType;
+        this.setState({ userType: userType });
+        console.log("user type: " + userType)
+      } else {
+        console.log('Authentication check failed');
+      }
+    } catch (error) {
+      console.error('Error during authentication check:', error);
+    }
+  };
+  
 
   // checkVerification = async () => {
   //   try {
@@ -136,9 +163,14 @@ class App extends React.Component {
 
 
   render() {
-    const { isAuthenticated, userType } = this.state;
-    // const showAppBar = userType !== "admin";
-    const showAppBar = isAuthenticated;
+    const { isAuthenticated, isAuthenticatedAdmin, userType } = this.state;
+    // const history = useHistory();
+    // const showAppBar = true;
+    const pathname = window.location.pathname
+    const showAppBar = pathname !== "/Admin" || isAuthenticatedAdmin;
+    // const showAppBar = user;
+    const showAppBarAdmin = pathname === "/Admin" && isAuthenticatedAdmin;
+    const showAppBarMain = pathname !== "/Admin" && isAuthenticated;
 
     return (
       // <ThemeProvider theme={theme}>
@@ -158,7 +190,7 @@ class App extends React.Component {
               // if login is false, appbar only has login/signup button
             }
 
-            {showAppBar ? <RoomsterAppBar login={isAuthenticated} /> : <div style={{ height: '64px' }}></div>}
+            {showAppBar ? <RoomsterAppBar login={showAppBarAdmin || showAppBarMain} /> : <div style={{ height: '64px' }}></div>}
             <div style={{ textAlign: "center", zIndex: "3", position: "relative", marginBottom: "50px" }}>
               <img className="logo" src={logo} style={styles.logo}></img>
             </div>
