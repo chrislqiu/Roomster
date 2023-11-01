@@ -10,6 +10,8 @@ const Renter = require("./models/renter")
 const Manager = require("./models/manager")
 const Company = require("./models/company")
 const CompanyInfo = require("./models/companyInfo")
+const PropertyInfo = require('./models/propertyInfo')
+const Property = require('./models/property')
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
 
@@ -30,7 +32,7 @@ mongoose.connect(dbURI, {useNewUrlParser: true, useUnifiedTopology: true})
 
 app.use(cors(corsOptions));
 app.use(express.json());
-
+const secretKey = "E.3AvP1]&r7;-vBSAL|3AyetV%H*fIEy";
 
 const authorization = (req, res, next) => {
   const token = req.cookies.access_token;
@@ -128,6 +130,48 @@ const newRenter = new Renter({
     console.log(err);
   });
 })
+
+
+app.post('/sendProperty', async (req,res) => {
+  const data = req.body
+  const token = (req.headers.cookie).split('; ')[0].split('=')[1];
+  const decoded = jwt.verify(token, secretKey);
+  const username = decoded.username
+  const manager = await Manager.findOne({username: username})
+  console.log(req.body)
+  const newPropertyInfo = new PropertyInfo({
+    image: data.propertyInfo.image,
+    propertyName: data.propertyInfo.propertyName,
+    address: data.propertyInfo.address,
+    beds: data.propertyInfo.beds,
+    baths: data.propertyInfo.baths,
+    cost: data.propertyInfo.cost,
+    sqft: data.propertyInfo.sqft,
+    distance: data.propertyInfo.distance,
+    amenities: data.propertyInfo.amenities,
+    utilities: data.propertyInfo.utilities
+  })
+
+  const existingCompanyInfo = await CompanyInfo.findOne({name: manager.company.companyInfo.name})
+
+  const newProperty = new Property({
+    propertyInfo: newPropertyInfo,
+    companyInfo: existingCompanyInfo
+  })
+
+  // const existingCompany = await Company.findOne({'companyInfo.name': manager.company.companyInfo.name})
+  // existingCompany.myCoops.push(newProperty)
+
+  //existingCompany.save()
+  newProperty.save()
+  .then((result) => {
+    res.send(result);
+  })
+  .catch((err) => {
+      console.log(err);
+  });
+})
+
 
 app.listen(8000, () => {
   console.log(`Server is running on port 8000.`);
