@@ -252,6 +252,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
                             >
                                 Utilities
                             </Typography>
+                            {/* TODO: CHANGE FROM AMENITIES TO UTILITIES */}
                             {data.propertyInfo.amenities.map((amenity) => {
                                 return <List
                                 sx={{
