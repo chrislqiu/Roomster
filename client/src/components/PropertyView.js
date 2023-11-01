@@ -34,6 +34,8 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
     const [saves, setSaves] = React.useState(data.propertyInfo.saves)
     const [updateOrRemove, setUpdateOrRemove] = React.useState('')
     const [userData, setUserData] = React.useState('')
+    const [favCoopsArr, setFavCoopsArr] = React.useState([])
+    const coopFavorited = favCoopsArr.some(coops => coops._id.toString() === data._id.toString())
 
     React.useEffect(() => {
         const getUserInfo = async () => {
@@ -47,12 +49,14 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
             const getData = await res.json()
             const obj = JSON.parse(JSON.stringify(getData));
             setUserData(obj)
+            setFavCoopsArr(obj.user.renterInfo.favCoops)
         }
         getUserInfo()
-    }, [userData])
+    }, [userData, favCoopsArr])
 
     const handleOpen = () => {
         setOpen(true)
+        
     }
     const handleClose = () => {
         setOpen(false)
@@ -74,16 +78,11 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
      * Handle favorite button
      */
     const handleFavorite = async() => {
-        /* TODO:
-         * make a function in the server that gets the user info and returns 
-         * it to main
-         */
 
         /* the id of the single property */
         const propertyId = data._id; 
-        /* update save count */
         
-        
+        //var newSavesCount = active === true ? saves - 1 : saves + 1;
         /* update the active for the button */
         setActive(!active);
         /* send id, number of saves, coop to be added, the check for delete/add */
@@ -105,7 +104,10 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
         } catch (error) {
             console.error(`Error: ${error}`);
         }
+
         setSaves(data.propertyInfo.saves);
+        window.location.reload(true)
+
     }
     
     const styles = {
@@ -161,8 +163,8 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
                           {/* {favCoops === true ? <FavoriteIcon style={{margin: "-20px 0 0px 2.5"}} sx={{color: "#AB191F", ":hover": {color: "#F6EBE1",},}}/> : ''} */}
                           {/* <Typography variant="h6" style={{fontSize: "13pt", margin: "-20px 0 0px 0"}}> Property Name </Typography> */}
                           {featured === true ? <StarIcon style={{margin: "-22px 0 0 5px", fontSize:"15pt"}} /> : ''}
-                          {favCoops === true ? <FavoriteIcon style={{margin: "-22px 0 0 5px", fontSize: "15pt"}} sx={{color: "#AB191F", ":hover": {color: "#F6EBE1",},}}/> : ''}
-                          {myCoops === true ? <BookmarkIcon style={{margin: "-22px 0 0 5px", fontSize: "15pt"}} sx={{color: "#AB191F", ":hover": {color: "#F6EBE1",},}}/> : ''}
+                          {favCoops === true ? <FavoriteIcon style={{margin: "-22px 0 0 5px", fontSize: "15pt"}} />: ''}
+                          {myCoops === true ? <BookmarkIcon style={{margin: "-22px 0 0 5px", fontSize: "15pt"}} /> : ''}
 
                         </div>
                           <Typography variant="body2" style={{margin: "0 0 5px 0"}}>{data.propertyInfo.address}</Typography>
@@ -326,7 +328,8 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
                             },
                         }}>
                         <IconButton size="large" onClick={handleFavorite}>
-                            {active ? <FavoriteIcon sx={{ color: "#AB191F" }} /> : <FavoriteBorderIcon sx={{ color: "#AB191F" }} />}
+                            {/* {active ? <FavoriteIcon sx={{ color: "#AB191F" }} /> : <FavoriteBorderIcon sx={{ color: "#AB191F" }} />} */}
+                            {coopFavorited  ? <FavoriteIcon sx={{ color: "#AB191F" }} /> : <FavoriteBorderIcon sx={{ color: "#AB191F" }} />}
                         </IconButton>
                     </Tooltip>
                     :

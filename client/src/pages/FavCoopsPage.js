@@ -1,19 +1,17 @@
-import React from "react"
-import { Container, Box, Typography } from "@mui/material";
+import React, { useState, useEffect } from "react";
+import { Container, Box, Typography, CircularProgress } from "@mui/material";
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import PropertyView from "../components/PropertyView";
+import { faWindowRestore } from "@fortawesome/free-solid-svg-icons";
 
-const FavCoopPage = ({login}) => {
-    const [username, setUsername] = React.useState('')
-    const [userData, setUserData] = React.useState('')
-    const [favCoopsArr, setFavCoopsArr] = React.useState([])
-    /* TODO:
-     *  change this so it only gets the users favorite coops from the db
-     *  later
-     */
+const FavCoopPage = ({ login }) => {
+    const [username, setUsername] = useState('');
+    const [userData, setUserData] = useState('');
+    const [favCoopsArr, setFavCoopsArr] = useState([]);
+    const [loading, setLoading] = useState(true); // Add loading state
 
-    React.useEffect(() => {
+    useEffect(() => {
         const getUserInfo = async () => {
             const res = await fetch('http://localhost:8000/auth/current-user', {
                 method: 'GET',
@@ -21,16 +19,18 @@ const FavCoopPage = ({login}) => {
                     'Content-Type': 'application/json',
                 },
                 credentials: 'include'
-            })
-            const getData = await res.json()
+            });
+            const getData = await res.json();
             const obj = JSON.parse(JSON.stringify(getData));
-            setUsername(obj.username)
-            setUserData(obj)
-            setFavCoopsArr(obj.user.renterInfo.favCoops)
-        }
-        getUserInfo()
-    }, [userData,favCoopsArr])
-    
+            setUsername(obj.username);
+            setUserData(obj);
+            setFavCoopsArr(obj.user.renterInfo.favCoops);
+            setLoading(false); 
+        };
+
+        getUserInfo();
+    }, [userData, favCoopsArr]);
+
     const styles = {
         feed: {
             display: "flex",
@@ -38,40 +38,38 @@ const FavCoopPage = ({login}) => {
             maxWidth: "1200px",
             flexWrap: "wrap",
         },
-        
-    }
+        loadingSpinner: {
+            color: "#AB191F", // Change the color here
+        },
+    };
+
     return (
         <Container sx={{ width: '100%' }}>
             <Box sx={{ marginTop: 3 }} style={styles.feed}>
-                {
-                   /*
-                    * Maps each Property Information object to its own "card"
-                    */
-                   
-                   favCoopsArr.length > 0 ?
-                   favCoopsArr.map(cards => {
-                        /* TODO:
-                         * make it so the card doesnt show/page refreshes when 
-                         * fav coops is unfavorited
-                         */
-                        return <PropertyView data={cards} favCoops={true} login={login}/>
-                        }
+                {loading ? ( // Display loading spinner while loading
+                    <CircularProgress style={styles.loadingSpinner}>
+                        Loading coops!
+                    </CircularProgress>
+                ) : (
+                    favCoopsArr.length > 0 ? (
+                        favCoopsArr.map(cards => {
+                            return <PropertyView data={cards} favCoops={true} login={login} />;
+                        })
+                    ) : (
+                        <Typography
+                            sx={{
+                                fontWeight: 600,
+                                fontSize: 25,
+                                color: "#AB191F",
+                            }}
+                        >
+                            No properties favorited!
+                        </Typography>
                     )
-                    :
-                    <Typography
-                        sx={{
-                            fontWeight: 600,
-                            fontSize: 25,
-                            color: "#AB191F"
-                        }}
-                    >
-                        No properties favorited!
-                    </Typography>
-                
-                }
+                )}
             </Box>
         </Container>
-    )
-}
+    );
+};
 
 export default FavCoopPage;
