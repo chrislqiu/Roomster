@@ -193,6 +193,7 @@ const RenterPage = () => {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(dataToSend),
+            credentials: 'include'
         })
         .then(response => response.json())
         .then(data => {
@@ -243,7 +244,7 @@ const RenterPage = () => {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(dataToSend),
-            credentials: "include"
+            credentials: 'include'
         })
         .then(response => response.json())
         .then(data => {
