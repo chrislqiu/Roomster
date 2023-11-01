@@ -61,8 +61,6 @@ const LoginView = ({ text}) => {
                 body: JSON.stringify({ username: email, password }),
             });
 
-            console.log(response)
-
             if (response.ok) {
                 setLoginStatus({
                     message: 'Logging in...',
@@ -87,13 +85,6 @@ const LoginView = ({ text}) => {
         }
 
 
-    }
-
-    const handleRCreate = event => {
-        //handleClose()
-        //setRCreateOpen(prev => !prev)   
-        window.location.replace("/RCreate")
-        //return <RenterCreateAccountView text={"hello"} />
     }
 
     return (
