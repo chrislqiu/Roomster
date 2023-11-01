@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { Box, Card, CardContent, CardMedia, IconButton, Tooltip, } from '@mui/material';
+import Button from '@mui/material/Button';
+import { List, ListItem, Box, Card, CardContent, CardMedia, IconButton, Tooltip, } from '@mui/material';
 import { CardActionArea } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
@@ -53,6 +54,9 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
         }
         getUserInfo()
     }, [userData, favCoopsArr])
+
+
+    const [utilities, setUtilities] = React.useState('')
 
     const handleOpen = () => {
         setOpen(true)
@@ -117,6 +121,20 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
             padding: "0",
             margin: "15px 0 15x 0",
         }
+    }
+
+    const navigate=useNavigate()
+    const openCompanyPage = (property) => {
+        navigate({
+            pathname: "/CompanyPage",
+            search: createSearchParams({
+                companyName: data.companyInfo.name
+            }).toString()
+        })
+    }
+
+    const pullUtilities = () => {
+        setUtilities(Object.keys(data.propertyInfo.utilities).filter(key => data.propertyInfo.utilities[key] === true))
     }
 
     return (
@@ -215,6 +233,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
                          */
                     }
                     <Stack direction={{'400px': "column", md: "row",lg: "row", xl: "row"}} spacing={5} sx={{ marginTop: 2, p: 1 }} >
+
                         <Box width='600'>
 
                             <Tooltip 
@@ -237,6 +256,21 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
                                        >
                                 {data.propertyInfo.propertyName}
                             </Link>
+                        {/* Basic Property Info */}
+                        <Box width='600px' style={{marginTop:"5px", marginRight:"-25px"}}>
+                            <Tooltip title="Go to Company Page"
+                                     componentsProps={{
+                                        tooltip: {
+                                            sx: {
+                                                bgcolor: 'rgba(171, 25, 31, 0.9)',
+                                                color: "#F6EBE1"
+                                            },
+                                        },
+                                     }}
+                                     >
+                                <Link onClick={openCompanyPage} underline="hover" color="black" sx={{fontWeight: 600, "&:hover": {cursor: "pointer", color:"#AB191F"}}}>
+                                    {data.propertyInfo.propertyName}
+                                </Link>
                             </Tooltip>
                             <Typography
                                 sx={{
@@ -256,61 +290,102 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
                             >
                                 {data.propertyInfo.beds} {data.propertyInfo.beds > 1 ? 'beds' : 'bed'}, {data.propertyInfo.baths} {data.propertyInfo.baths > 1 ? 'baths' : 'bath'}
                             </Typography>
-                            <Divider orientation='horizontal' width={200} sx={{ borderBottomWidth: 3, color: "#AB191F", backgroundColor: "#AB191F", marginY: 1 }} />
+                            <Divider orientation='horizontal' width={150} sx={{ borderBottomWidth: 3, color: "#AB191F", backgroundColor: "#AB191F", marginY: 1 }} />
                             <Typography
                                 sx={{
                                     fontWeight: 500,
                                     variant:"body2",
-
                                 }}
                             >
                                 ${data.propertyInfo.cost} per month
                             </Typography>
                         </Box>
                         <Divider orientation={{xs:'horizontal', md:'vertical', lg:'vertical', xl:'vertical'}} width={3} sx={{ borderBottomWidth: 3, color: "#AB191F", backgroundColor: "#AB191F", marginY: 2 }} />
-                        <Box width={'100%'}>
+                        
+                        {/* Amenitites */}
+                        <Box width='600px' style={{marginTop:"-5px", marginRight:"-25px"}} >
                             <Typography
                                 sx={{
                                     fontWeight: 600,
                                     marginTop: 1,
+                                    marginLeft:"-25px",
                                     variant:"body2"
                                 }}
                             >
                                 Amenities
                             </Typography>
                             {data.propertyInfo.amenities.map((amenity) => {
-                                return <Typography
-                                 sx={{
-                                     fontWeight: 300,
-                                     variant:"body2",
-                                 }}
-                             >
-                                 {amenity}
-                             </Typography>   
+                                return <List
+                                sx={{ 
+                                     listStyleType: 'disc',
+                                     listStylePosition: 'inside',
+                                     marginLeft:"-40px",
+                                     marginTop:"-15px",
+                                     marginBottom:"-25px"
+                                   }}
+                                 >
+                                    <ListItem sx={{ display: 'list-item' }}>
+                                        {amenity}
+                                    </ListItem>
+                                </List> 
                             })}
 
                         </Box>
                         <Divider orientation='verticle' width={3} sx={{ borderBottomWidth: 3, color: "#AB191F", backgroundColor: "#AB191F", marginY: 2 }} />
-                        <Box width={'100%'} sx={{paddingRight: 1}} >
+                        
+                        {/* Utilities */}
+                        <Box width='600px' style={{marginTop:"-5px", marginRight:"-25px"}} >
                             <Typography
                                 sx={{
                                     fontWeight: 600,
                                     marginTop: 1,
+                                    marginRight:"5px",
+                                    marginLeft:"-25px",
+                                    variant:"body2"
+                                }}
+                            >
+                                Utilities
+                            </Typography>
+                            {pullUtilities}
+                            <List
+                                sx={{
+                                     listStyleType: 'disc',
+                                     listStylePosition: 'inside',
+                                     marginLeft:"-40px",
+                                     marginTop:"-15px",
+                                     marginBottom:"-25px"
+                                   }}
+                                 >
+                                    <ListItem sx={{ display: 'list-item' }}>
+                                        {utilities} 
+                                    </ListItem>
+                                </List> 
+                        </Box>
+
+                        <Divider orientation='verticle' width={3} sx={{ borderBottomWidth: 3, color: "#AB191F", backgroundColor: "#AB191F", marginY: 2 }} />
+
+                        <Box width='600px' style={{marginTop:"-5px"}} >
+                            <Typography
+                                sx={{
+                                    fontWeight: 600,
+                                    marginTop: 1,
+                                    marginLeft:"-25px",
                                     variant:"body2",
                                 }}
                             >
-                                Contact Information
+                                Contact Info
                             </Typography>
                             <Typography
                                 sx={{
                                     fontWeight: 300,
+                                    marginLeft:"-25px",
                                     variant:"body2",
                                 }}
                             >
                                 Company Name {<br />}
                             </Typography>
-                            <Link href="https://riseonchauncey.com/" underline="always" color="#AB191F">
-                                {'Link'}
+                            <Link href="https://riseonchauncey.com/" underline="always" color="#AB191F" marginLeft="-25px">
+                                {'Website'}
                             </Link>
                         </Box>
                     </Stack>

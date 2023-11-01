@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const propertyInfo = new Schema({
     image: {
         type: String,
-        required: true
+        required: false
     },
     propertyName: {
         type: String,

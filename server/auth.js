@@ -89,11 +89,6 @@ router.get("/current-user", authorization, async (req, res) => {
     res.status(200).json({user: user, username: username, user_type: userType})
 });
 
-const isEmailValid = (email) => {
-    const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
-    return emailRegex.test(email);
-};
-
 router.post("/renter-signup", async (req, res) => {
     const existingRenter = await Renter.findOne({ username: req.body.username });
     const existingManager = await Manager.findOne({ username: req.body.username });
@@ -176,7 +171,6 @@ router.post("/manager-signup", async (req, res) => {
 
             existingCompany = newCompany;
         }
-
         const newManager = new Manager({
             username: req.body.username,
             password: hashedPW,
@@ -215,7 +209,7 @@ router.post("/login", async (req, res) => {
     var user = await Renter.findOne({ username: req.body.username });
     var userType = "renter";
     if (user === null) {
-        user = Manager.findOne({ username: req.body.username });
+        user = await Manager.findOne({ username: req.body.username });
         userType = "manager";
         if (user === null) {
             return res.status(400).send("User does not exist");
@@ -226,7 +220,7 @@ router.post("/login", async (req, res) => {
         const isPasswordValid = await bcrypt.compare(req.body.password, user.password);
 
         if (isPasswordValid) {
-            const token = jwt.sign({ username: req.body.username }, secretKey, { expiresIn: '1h' });
+            const token = jwt.sign({ username: req.body.email }, secretKey, { expiresIn: '1h' });
             return res
                 .cookie("access_token", token, {
                     httpOnly: true,
@@ -239,7 +233,8 @@ router.post("/login", async (req, res) => {
         } else {
             res.status(401).send("Access denied");
         }
-    } catch {
+    } catch(e) {
+        // console.log(e)
         res.status(500).send("Error when logging in");
     }
 });
