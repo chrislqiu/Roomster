@@ -72,6 +72,23 @@ router.get("/managers", (req, res) => {
     });
 });
 
+router.get("/current_user", authorization, async (req, res) => {
+    const userType = req.cookies.user_type;
+    var user = null;
+    var username = req.user.username;
+    if (userType === "renter") {
+        user = await Renter.findOne({ username: username });
+    } else if (userType === "manager") {
+        user = await Manager.findOne({ username: username });
+    }
+
+    if (user === null) {
+        return res.status(400).send("User does not exist");
+    }
+
+    res.status(200).json({user: user, username: username, user_type: userType})
+});
+
 const isEmailValid = (email) => {
     const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
     return emailRegex.test(email);
@@ -79,9 +96,10 @@ const isEmailValid = (email) => {
 
 router.post("/renter-signup", async (req, res) => {
     const existingRenter = await Renter.findOne({ username: req.body.username });
+    const existingManager = await Manager.findOne({ username: req.body.username });
     const userType = "renter";
 
-    if (existingRenter) {
+    if (existingRenter || existingManager) {
         return res.status(400).send("User already exists");
     }
 
@@ -130,9 +148,10 @@ router.post("/renter-signup", async (req, res) => {
 
 router.post("/manager-signup", async (req, res) => {
     const existingManager = await Manager.findOne({ username: req.body.username });
+    const existingRenter = await Renter.findOne({ username: req.body.username });
     const userType = "manager";
 
-    if (existingManager) {
+    if (existingManager || existingRenter) {
         return res.status(400).send("User already exists");
     }
 
@@ -195,11 +214,10 @@ router.post("/manager-signup", async (req, res) => {
 router.post("/login", async (req, res) => {
     var user = await Renter.findOne({ username: req.body.username });
     var userType = "renter";
-    if (!user) {
+    if (user === null) {
         user = Manager.findOne({ username: req.body.username });
-        if (user) {
-            userType = "manager";
-        } else {
+        userType = "manager";
+        if (user === null) {
             return res.status(400).send("User does not exist");
         }
     }
