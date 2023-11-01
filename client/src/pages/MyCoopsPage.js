@@ -115,7 +115,7 @@ const MyCoopsPage = () => {
 
         const dataToSend = {
             propertyInfo: {
-                image: '',
+                image: propertyImage,
                 propertyName: propertyName,
                 address: propertyAddress,
                 beds: bed,
