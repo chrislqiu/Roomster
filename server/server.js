@@ -3,8 +3,7 @@ const cors = require("cors");
 const authRouter = require("./auth");
 const mongoose = require('mongoose');
 const cardRoutes = require('./cards');
-
-const saveMProfileRoutes = require('./sendManagerProfile') 
+const Property = require('./models/property');
 const RenterInfo = require("./models/renterInfo")
 const Renter = require("./models/renter")
 const Manager = require("./models/manager")
@@ -13,19 +12,22 @@ const CompanyInfo = require("./models/companyInfo")
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
 
+
 const app = express();
 
+const secretKey = "E.3AvP1]&r7;-vBSAL|3AyetV%H*fIEy";
+
 const dbURI = 'mongodb+srv://chrisqiu52:oe7O2bahWRmXJjOp@cluster0.xe4cgpv.mongodb.net/DB?retryWrites=true&w=majority';
-mongoose.connect(dbURI, {useNewUrlParser: true, useUnifiedTopology: true})
+mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
   //waits until connected to db incase read/write is performed before db connection
   .then((result) => app.listen(3000))
   .catch((err) => console.log(err));
 
-  const router = express.Router();
-  router.use(cookieParser())
-  const corsOptions = {
-    origin: 'http://localhost:3001',
-    credentials: true,
+const router = express.Router();
+router.use(cookieParser())
+const corsOptions = {
+  origin: 'http://localhost:3001',
+  credentials: true,
 };
 
 app.use(cors(corsOptions));
@@ -67,29 +69,29 @@ app.post('/sendManagerProfile', async (req, res) => {
     name: data.company.name,
     address: data.company.address,
     phone: data.company.phone
-})
+  })
 
-const newCompany = new Company({
+  const newCompany = new Company({
     companyInfo: newCompanyInfo
-})
+  })
 
-const newManagerProfile = new Manager({
+  const newManagerProfile = new Manager({
     name: data.name,
     phone: data.phone,
     email: data.email,
     bio: data.bio,
     company: newCompany
-})
-  newManagerProfile.save()
-  .then((result) => {
-    res.send(result);
   })
-  .catch((err) => {
-    console.log(err);
-  });
+  newManagerProfile.save()
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 })
 
-app.post('/sendRenterProfile', async (req,res) => {
+app.post('/sendRenterProfile', async (req, res) => {
   const data = req.body;
   console.log(data)
 
@@ -101,49 +103,92 @@ app.post('/sendRenterProfile', async (req,res) => {
     phone: data.renterInfo.phone,
     pfp: data.renterInfo.pfp,
     livingPreferences: {
-        pets: data.renterInfo.livingPreferences.pets,
-        smoke: data.renterInfo.livingPreferences.smoke,
-        studious: data.renterInfo.livingPreferences.studious,
-        cleanliness: data.renterInfo.livingPreferences.cleanliness,
-        guestFreq: data.renterInfo.livingPreferences.guestFreq,
-        sleepSchedule: {
-            from: data.renterInfo.livingPreferences.sleepSchedule.from,
-            to: data.renterInfo.livingPreferences.sleepSchedule.to
-        }
+      pets: data.renterInfo.livingPreferences.pets,
+      smoke: data.renterInfo.livingPreferences.smoke,
+      studious: data.renterInfo.livingPreferences.studious,
+      cleanliness: data.renterInfo.livingPreferences.cleanliness,
+      guestFreq: data.renterInfo.livingPreferences.guestFreq,
+      sleepSchedule: {
+        from: data.renterInfo.livingPreferences.sleepSchedule.from,
+        to: data.renterInfo.livingPreferences.sleepSchedule.to
+      }
     }
-})
-
-app.post('/add-save/:id', async (req, res) => {
-  console.log(req.body)
-  const { id } = req.body;
-  
-  console.log(res)
-  const property = await Property.findById(id);
-  const saves = property.propertyInfo.saves;
-  await Property.findByIdAndUpdate(id, {$set: {'propertyInfo.saves': saves + 1}})
-  .then((result) => {
-      res.send(result);
   })
-  .catch((err) => {
-      console.log(err);
-  });
-});
 
-const newRenter = new Renter({
+
+  const newRenter = new Renter({
     username: req.body.username,
     findingCoopmates: data.findingCoopmates,
     renterInfo: newRenterInfo
-})
+  })
 
   newRenter.save()
-  .then((result) => {
-    console.log(result)
-    res.send(result);
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+    .then((result) => {
+      console.log(result)
+      res.send(result);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 })
+
+
+/*
+ * Update the favorite coops
+ */
+app.post('/add-save', async (req, res) => {
+  /* gets the username to identify the user model*/
+  const token = (req.headers.cookie).split('; ')[0].split('=')[1]
+  const decoded = jwt.verify(token, secretKey)
+  const username = decoded.username
+  /* gets the coop to be added/removed */
+  const coopToUpdate = req.body.favCoop;
+
+
+  try {
+    /* gets the renter */
+    const renter = await Renter.findOne({ username: username });
+    /* check if user is real */
+    if (!renter) {
+      console.log('Renter does not exist.');
+    } else {
+      /* filters the favCoop array to a favCoop
+       array that does not have the coop to be 
+       added or removed */
+      const updatedFavCoops = renter.renterInfo.favCoops.filter(coop => coop._id.toString() !== coopToUpdate._id.toString());
+      console.log(req.body.updateOrRemove )
+      /* Add property if it is to be added */
+      if (req.body.updateOrRemove === 'add') {
+        /* Checks if property already exists in the user's favCoop */
+        const propertyExists = updatedFavCoops.some(coop => coop._id.toString() === coopToUpdate._id.toString());
+        if (!propertyExists) {
+          /* adds to array */
+          updatedFavCoops.push(coopToUpdate);
+        }
+      }
+      /* sets fav coop */
+      renter.renterInfo.favCoops = updatedFavCoops;
+      const updatedRenter = await renter.save();
+      console.log(`Coop ${req.body.updateOrRemove} to favCoops: ${updatedRenter.renterInfo.favCoops.length}`);
+    }
+  } catch (error) {
+    console.error('Error:', error);
+  }
+  
+  try {
+    
+    const result = await Property.findByIdAndUpdate(req.body.id, { $set: { 'propertyInfo.saves': req.body.saves } });
+
+    if (!result) {
+      console.log('Document not found.');
+    } else {
+      console.log('Update successful:', result.propertyInfo.saves);
+    }
+  } catch (error) {
+    console.error('Update error:', error);
+  }
+  
+});
 
 app.listen(8000, () => {
   console.log(`Server is running on port 8000.`);

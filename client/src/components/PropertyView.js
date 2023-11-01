@@ -31,12 +31,16 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
      * open, setOpen : controls the state of the dialogue popup
      */
     const [open, setOpen] = React.useState(false)
+    const [saves, setSaves] = React.useState(data.propertyInfo.saves)
+    const [updateOrRemove, setUpdateOrRemove] = React.useState('')
+
     const handleOpen = () => {
         setOpen(true)
     }
     const handleClose = () => {
         setOpen(false)
     }
+
     //need user information for favCoops
     //if renter user and user.favCoops contains property then set favCoops to true
     //console.log(favCoops)
@@ -49,33 +53,41 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
         setHovered(false)
     }
 
-    const handleFavorite = async () => {
-        setActive(!active)
+    /*
+     * Handle favorite button
+     */
+    const handleFavorite = async() => {
+        /* the id of the single property */
+        const propertyId = data._id; 
+        /* update the save count (trust DONT TOUCH THIS PLEASE) */
+        var newSavesCount = active === true ? saves - 1 : saves + 1;
+        /* tells server whether or not to add or delete the coop from fav coops */
+        setUpdateOrRemove(newSavesCount < saves ? 'add' : 'delete')
+        /* update save count */
+        setSaves(newSavesCount < 0 ? 0 : newSavesCount);
+        /* update the active for the button */
+        setActive(!active);
+        /* send id, number of saves, coop to be added, the check for delete/add */
+        try {
+            const response = await fetch('http://localhost:8000/add-save', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ id: propertyId, saves: saves, favCoop: data, updateOrRemove: updateOrRemove}),
+                credentials: "include",
+            });
 
-        const propertyId = data._id;
-        console.log()
-        const newSavesCount = active ? data.propertyInfo.saves : data.propertyInfo.saves + 1;
-
-        console.log(`saves : ${newSavesCount} & _id : ${propertyId}`)
-//, saves: newSavesCount 
-        await fetch(`http://localhost:8000/add-save/${data._id}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ id: propertyId }),
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log("Succ ess")
-        })
-        .catch(error => {
-            console.error(`Error ${error}`)
-        })
-        console.log(data.propertyInfo.saves)
+            if (response.ok) {
+                console.log('Update successful');
+            } else {
+                console.error(`Failed to update: ${response.status}`);
+            }
+        } catch (error) {
+            console.error(`Error: ${error}`);
+        }
     }
     
-
     const styles = {
         divider: {
             height: "3px",
@@ -282,7 +294,6 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
                     </Stack>
                 </DialogContent>
                 <DialogActions>
-
                     {login === true 
                         ? <Tooltip 
                             title="Add to FAV COOPS" 
@@ -304,7 +315,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
                      <Typography
                         style={{margin: "0 5px 0 5px", padding: " 0 5px 0 0px"}}
                      >
-                       {data.propertyInfo.saves}
+                       {saves}
                     </Typography>
                 </DialogActions>
             </Dialog>
