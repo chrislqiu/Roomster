@@ -67,7 +67,22 @@ const MyCoopsPage = () => {
 
     React.useEffect(() => {
         const getPropertyInfo = async () => {
-            const res = await fetch('http://localhost:8000/cards/all-cards')
+            const data = await fetch('http://localhost:8000/auth/current-user', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include'
+            })
+            const userData = await data.json
+            const res = await fetch('http://localhost:8000/cards/my-coops-cards', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({username: userData.username}),
+                credentials: 'include'
+            })
             const getData = await res.json()
             const obj = JSON.parse(JSON.stringify(getData));
             setPropertyInfo(obj);

@@ -6,11 +6,11 @@ const CompanyInfo = require('./companyInfo');
 const property = new Schema({
     propertyInfo: {
         type: PropertyInfo.schema,
-        require: false
+        require: true
     },
     companyInfo: {
         type: CompanyInfo.schema,
-        required: false
+        required: true
     }
 });
 

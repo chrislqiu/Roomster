@@ -6,13 +6,37 @@ import PropertyView from "../components/PropertyView";
 
 const FavCoopPage = ({login}) => {
     const [propertyInfo, setPropertyInfo] = React.useState([])
+    const [username, setUsername] = React.useState('')
     /* TODO:
      *  change this so it only gets the users favorite coops from the db
      *  later
      */
+
+    React.useEffect(() => {
+        const getUserInfo = async () => {
+            const res = await fetch('http://localhost:8000/auth/current-user', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include'
+            })
+            const getData = await res.json()
+            const obj = JSON.parse(JSON.stringify(getData));
+            setUsername(obj.username)
+        }
+        getUserInfo()
+    }, [])
     React.useEffect(() => {
         const getPropertyInfo = async () => {
-            const res = await fetch('http://localhost:8000/cards/fav-coops-cards')
+            const res = await fetch('http://localhost:8000/cards/fav-coops-cards', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({username: username}),
+                credentials: 'include'
+            })
             const getData = await res.json()
             const obj = JSON.parse(JSON.stringify(getData));
             setPropertyInfo(obj);
