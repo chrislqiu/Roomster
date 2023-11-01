@@ -78,6 +78,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
 
             if (response.ok) {
                console.log("good") 
+               window.location.reload(true);
             } else {
                 console.log("nope")
             }
@@ -103,6 +104,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
 
             if (response.ok) {
                console.log("good") 
+               window.location.reload(true);
             } else {
                 console.log("nope")
             }
