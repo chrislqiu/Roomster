@@ -171,7 +171,6 @@ router.post("/manager-signup", async (req, res) => {
 
             existingCompany = newCompany;
         }
-
         const newManager = new Manager({
             username: req.body.username,
             password: hashedPW,
