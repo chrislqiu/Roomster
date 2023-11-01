@@ -46,6 +46,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
     //console.log(favCoops)
     const [active, setActive] = React.useState(favCoops === true ? true : false)
     const [hovered, setHovered] = React.useState(false);
+    const [isOwner, setIsOwner] = React.useState(false);
     const handleHovered = () => {
         setHovered(true)
     }
@@ -77,8 +78,8 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
             console.log(response)
 
             if (response.ok) {
-               console.log("good") 
-               window.location.reload(true);
+                console.log("good")
+                window.location.reload(true);
             } else {
                 console.log("nope")
             }
@@ -103,8 +104,8 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
             console.log(response)
 
             if (response.ok) {
-               console.log("good") 
-               window.location.reload(true);
+                console.log("good")
+                window.location.reload(true);
             } else {
                 console.log("nope")
             }
@@ -113,11 +114,47 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
         }
     };
 
+    const checkOwner = async () => {
+        const id = data._id;
+        // console.log(id)
+        try {
+            const response = await fetch('http://localhost:8000/auth/check-owner', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: JSON.stringify({ id: id }),
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                console.log(data.match)
+                setIsOwner(data.match)
+            } else {
+                console.log('Authentication check failed');
+            }
+        } catch (error) {
+            console.error('Error during authentication check:', error);
+        }
+    };
+
+
+    React.useEffect(() => {
+        // Call checkAuthentication when the component mounts
+        checkOwner();
+    }, []); 
+
+
+
     return (
         <React.Fragment>
             <Card
                 variant='contained'
-                onClick={handleOpen}
+                onClick={() => {
+                    handleOpen();
+                    // checkOwner();
+                }}
                 onMouseEnter={handleHovered}
                 onMouseLeave={handleLeave}
                 sx={{
@@ -296,19 +333,25 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
 
 
                     {login === true && !admin ? (
-                        <Tooltip title={active ? "Remove from FAV COOPS" : "Add to FAV COOPS"}>
-                            <IconButton size="large" onClick={e => {
-                                setActive(!active);
-                                //add onclick function for db, and to hide if property owner, or to replace with edit if property owner needs
-                                // to edit
-                            }}>
-                                {active ? (
-                                    <FavoriteIcon sx={{ color: "#AB191F" }} />
-                                ) : (
-                                    <FavoriteBorderIcon sx={{ color: "#AB191F" }} />
-                                )}
-                            </IconButton>
-                        </Tooltip>
+                        isOwner === true ? (
+                            <Tooltip title="Delete Property">
+                                <IconButton onClick={handleDeleteProperty}>
+                                    <DeleteOutlineIcon sx={{ color: "#AB191F" }} />
+                                </IconButton>
+                            </Tooltip>
+                        ) : (
+                            <Tooltip title={active ? "Remove from FAV COOPS" : "Add to FAV COOPS"}>
+                                <IconButton size="large" onClick={e => {
+                                    setActive(!active);
+                                }}>
+                                    {active ? (
+                                        <FavoriteIcon sx={{ color: "#AB191F" }} />
+                                    ) : (
+                                        <FavoriteBorderIcon sx={{ color: "#AB191F" }} />
+                                    )}
+                                </IconButton>
+                            </Tooltip>
+                        )
                     ) : (login === true && admin === true ? (
                         <div sx={{ display: "flex", width: "100%" }}>
                             <Tooltip title="Delete Property">

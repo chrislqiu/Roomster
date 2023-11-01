@@ -113,7 +113,6 @@ class App extends React.Component {
   };
 
   checkAuthenticationAdmin = async () => {
-    console.log("asdfadsf")
     try {
       const response = await fetch('http://localhost:8000/auth/authorize-admin', {
         method: 'GET',
@@ -159,7 +158,7 @@ class App extends React.Component {
 
 
   render() {
-    const { isAuthenticated, isAuthenticatedAdmin } = this.state;
+    const { isAuthenticated, isAuthenticatedAdmin, userType } = this.state;
     const pathname = window.location.pathname
     const showAppBar = pathname !== "/Admin" || isAuthenticatedAdmin;
 
@@ -209,7 +208,7 @@ class App extends React.Component {
                 <Route path="/RProfile" element={<RenterPage />} />
                 <Route path="/MProfile" element={<PropertyManagerPage />} />
                 <Route path="/FavCoops" element={<FavCoopsPage login={isAuthenticated} />} />
-                <Route path="/MyCoops" element={<MyCoopsPage />} />
+                <Route path="/MyCoops" element={<MyCoopsPage login={isAuthenticated} />} />
                 <Route path="/Login" element={<LoginPage />} />
                 <Route path="/RCreate" element={<RenterCreateAccountView />} />
                 <Route path="/MCreate" element={<ManagerCreateAccountView />} />

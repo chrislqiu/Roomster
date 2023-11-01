@@ -67,7 +67,7 @@ const authorizationAdmin = async (req, res, next) => {
     const userType = req.cookies.user_type;
 
     // console.log(req.cookies)
-   
+
 
     if (!token) {
         return res.sendStatus(401); // Unauthorized
@@ -86,7 +86,7 @@ const authorizationAdmin = async (req, res, next) => {
             const adminUser = await Admin.findOne({ username: user.username });
 
             if (!adminUser) {
-                
+
                 return res.status(401).send("Unauthorized");
             }
         }
@@ -107,6 +107,24 @@ router.get("/authorize", authorization, (req, res) => {
 router.get("/authorize-admin", authorizationAdmin, (req, res) => {
     res.status(200).json({ message: 'Authorized', user: req.user, userType: req.userType });
 });
+
+router.post("/check-owner", authorization, (req, res) => {
+    console.log(req.user.username)
+    console.log(req.body.id)
+    Manager.findOne({ username: req.user.username })
+        .then((result) => {
+            console.log(result.company.companyInfo.name)
+            // res.send({username: result.company.companyInfo.name});
+            Property.findOne({ _id: req.body.id })
+                .then((resultProperty) => {
+                    const match = result.company.companyInfo.name === resultProperty.companyInfo.name;
+                    res.send({ match: match });
+                })
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+})
 
 
 router.get("/secret", authorization, (req, res) => {
@@ -258,7 +276,7 @@ router.post("/login", async (req, res) => {
     var user = await Renter.findOne({ username: req.body.username });
     var userType = "renter";
     if (!user) {
-        user = Manager.findOne({ username: req.body.username });
+        user = await Manager.findOne({ username: req.body.username });
         if (user) {
             userType = "manager";
         } else {
