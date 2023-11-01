@@ -8,9 +8,7 @@ import { AspectRatio } from "@mui/joy";
 import toast, { Toaster } from 'react-hot-toast'
 
 const MyCoopsPage = () => {
-    /*
-     * propertyInfo, setPropertyInfo to hold the card information from the server
-     */
+    /* propertyInfo, setPropertyInfo to hold the card information from the server */ 
     const [open, setOpen] = React.useState(false)
     const [propertyInfo, setPropertyInfo] = React.useState([])
     const [hovered, setHovered] = React.useState(false);
@@ -22,6 +20,10 @@ const MyCoopsPage = () => {
     const[price, setPrice] = React.useState('')
     const[bed, setBed] = React.useState(-1)
     const[bath, setBath] = React.useState(-1)
+
+    /* Upload Image */
+    const [propertyImage, setPropertyImage] = React.useState("")
+    const [displayUpload, setDisplayUpload] = React.useState(false)
 
     /* Amenities: pet friendly, in-unit WD, parking, kitchen appliances, furnished, gym */
     const [isPetFriendly, setIsPetFriendly] = React.useState(false)
@@ -101,6 +103,29 @@ const MyCoopsPage = () => {
             }
         }
     }
+
+    function handleAddPhotos(event) {
+        var file = event.target.files[0] // image uploaded
+        const reader = new FileReader()
+        reader.readAsDataURL(file)
+        reader.onload = () => {
+            setPropertyImage(reader.result)
+        }
+    }
+
+    const displayUploadPhoto = () => {
+        return (
+            <Dialog>
+                <input
+                    accept="image/*"
+                    type="file"
+                    onChange={handleAddPhotos}
+                    //style={{display:"none"}}
+                    //ref={imageInput => this.imageInput = imageInput}
+                />
+            </Dialog>
+        )
+    }
     
     const styles = {
         feed: {
@@ -109,8 +134,8 @@ const MyCoopsPage = () => {
             maxWidth: "1200px",
             flexWrap: "wrap",
         },
-        
     }
+    
     const inputBaseSX = {
         marginLeft:"-10px",
         marginTop:"-10px",
@@ -206,24 +231,51 @@ const MyCoopsPage = () => {
                                 borderColor:"black",
                                 marginBottom:"30px"
                             }}>
-                                <Button
-                                    sx={{
-                                        ":hover": {
-                                            borderColor: "#AB191F", bgcolor: "#F6EBE1", color: "#AB191F",
-                                            borderWidth: 1.5
-                                        },
-                                        borderColor:"#AB191F", bgcolor:"#F6EBE1", color:"#AB191F", 
-                                        borderWidth: 1.5, width:"100%", fontWeight:600, lineHeight:"15px",
-                                        boxShadow: 5, maxWidth:"120px", maxHeight: "30px",
-                                        float: "left", top: "5px",
-                                        left: "5px",
-                                        marginBottom:"15px",
-                                        marginLeft: "210px",
-                                        position: "absolute"
+                            <label for="imageFile" style={{color: "#AB191F"}}>
+                                Click to Add A Photo
+                                <input
+                                    accept="image/*"
+                                    type="file"
+                                    onChange={handleAddPhotos}
+                                    id="imageFile"
+                                    //style={{color:"#AB191F", font: "lato"}}
+                                    style={{display:"none"}}
+                                    //ref={imageInput => this.imageInput = imageInput}
+                                />
+                            </label>
+                            
+                            {/* <Button
+                                for="imageFile"
+                                sx={{
+                                    ":hover": {
+                                        borderColor: "#AB191F", bgcolor: "#F6EBE1", color: "#AB191F",
+                                        borderWidth: 1.5
+                                    },
+                                    borderColor:"#AB191F", bgcolor:"#F6EBE1", color:"#AB191F", 
+                                    borderWidth: 1.5, width:"100%", fontWeight:600, lineHeight:"15px",
+                                    boxShadow: 5, maxWidth:"120px", maxHeight: "30px",
+                                    float: "left", top: "5px",
+                                    left: "5px",
+                                    marginBottom:"15px",
+                                    marginLeft: "210px",
+                                    position: "absolute"
 
-                                    }}
-                                    variant="outlined">Add Photos
-                                </Button>
+                                }}
+                                variant="outlined">
+                                Add Photos
+                                <input
+                                    accept="image/*"
+                                    type="file"
+                                    onChange={handleAddPhotos}
+                                    id="imageFile"
+                                    //style={{color:"#AB191F", font: "lato"}}
+                                    style={{display:"none"}}
+                                    //ref={imageInput => this.imageInput = imageInput}
+                                />
+                            </Button> */}
+                            
+                            
+                            {propertyImage==="" || propertyImage === null?"" : <img src={propertyImage}/>}
                         </AspectRatio>
 
                         <Stack direction={{'400px': "column", md: "row",lg: "row", xl: "row"}} spacing={5} sx={{ marginTop: 2, p: 1 }}>
