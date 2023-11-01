@@ -153,11 +153,15 @@ router.post('/update-saves', async (req, res) => {
     const id = req.body.id
     const renter = await Renter.findOne({username: req.body.username})
     const property = await Property.findById(id)
-    const coop = renter.renterInfo.favCoops.findOne({_id: id})
-    if (coop === null) { //add save
-        renter.renterInfo.favCoops.push(property)
+    const coopExists = renter.renterInfo.favCoops.some(coop => coop._id.toString() === property._id.toString());
+    console.log(coopExists)
+    if (!coopExists) { //add save
+        //const updatedPropertyInfo = await PropertyInfo.findOneAndUpdate({propertyName: property.propertyInfo.propertyName}, {saves: property.propertyInfo.saves + 1})
+        const updatedProperty = await Property.findByIdAndUpdate(id, {$set:{'propertyInfo.saves': property.propertyInfo.saves + 1}}, {'returnDocument': 'after'})
+        renter.renterInfo.favCoops.push(updatedProperty)
         renter.save()
-        await Property.findByIdAndUpdate(id, {'propertyInfo.saves': property.saves + 1}, {'new': true})
+        //updatedPropertyInfo.save()
+        updatedProperty.save()
         .then((result) => {
             res.send(result);
         })
@@ -166,9 +170,14 @@ router.post('/update-saves', async (req, res) => {
         });
     } else { //remove save
         renter.renterInfo.favCoops.pull(id)
+        console.log(renter.renterInfo.favCoops.pull(id))
+        //const updatedPropertyInfo = await PropertyInfo.findOneAndUpdate({propertyName: property.propertyInfo.propertyName}, {saves: property.propertyInfo.saves - 1})
+        const updatedProperty = await Property.findByIdAndUpdate(id, {$set:{'propertyInfo.saves': property.propertyInfo.saves - 1}}, {'returnDocument': 'after'})
         renter.save()
-        await Property.findByIdAndUpdate(id, {'propertyInfo.saves': property.saves - 1}, {'new': true})
+        //updatedPropertyInfo.save()
+        updatedProperty.save()
         .then((result) => {
+            console.log(result)
             res.send(result);
         })
         .catch((err) => {

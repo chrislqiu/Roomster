@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Button from '@mui/material/Button';
 import { Box, Card, CardContent, CardMedia, IconButton, Tooltip, } from '@mui/material';
 import { CardActionArea } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
@@ -15,7 +14,7 @@ import StarIcon from '@mui/icons-material/Star';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
-import { createSearchParams, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 
 /* 
@@ -32,12 +31,33 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
      * open, setOpen : controls the state of the dialogue popup
      */
     const [open, setOpen] = React.useState(false)
+    const [saves, setSaves] = React.useState(data.propertyInfo.saves)
+    const [updateOrRemove, setUpdateOrRemove] = React.useState('')
+    const [userData, setUserData] = React.useState('')
+
+    React.useEffect(() => {
+        const getUserInfo = async () => {
+            const res = await fetch('http://localhost:8000/auth/current-user', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include'
+            })
+            const getData = await res.json()
+            const obj = JSON.parse(JSON.stringify(getData));
+            setUserData(obj)
+        }
+        getUserInfo()
+    }, [userData])
+
     const handleOpen = () => {
         setOpen(true)
     }
     const handleClose = () => {
         setOpen(false)
     }
+
     //need user information for favCoops
     //if renter user and user.favCoops contains property then set favCoops to true
     //console.log(favCoops)
@@ -49,6 +69,45 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
     const handleLeave = () => {
         setHovered(false)
     }
+
+    /*
+     * Handle favorite button
+     */
+    const handleFavorite = async() => {
+        /* TODO:
+         * make a function in the server that gets the user info and returns 
+         * it to main
+         */
+
+        /* the id of the single property */
+        const propertyId = data._id; 
+        /* update save count */
+        
+        
+        /* update the active for the button */
+        setActive(!active);
+        /* send id, number of saves, coop to be added, the check for delete/add */
+        try {
+            const response = await fetch('http://localhost:8000/cards/update-saves', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ id: propertyId, favCoop: data, updateOrRemove: updateOrRemove, username: userData.username}),
+                credentials: "include",
+            });
+
+            if (response.ok) {
+                console.log('Update successful:', response);
+            } else {
+                console.error(`Failed to update: ${response.status}`);
+            }
+        } catch (error) {
+            console.error(`Error: ${error}`);
+        }
+        setSaves(data.propertyInfo.saves);
+    }
+    
     const styles = {
         divider: {
             height: "3px",
@@ -57,15 +116,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
             margin: "15px 0 15x 0",
         }
     }
-    const navigate=useNavigate()
-    const openCompanyPage = (property) => {
-        navigate({
-            pathname: "/CompanyPage",
-            search: createSearchParams({
-                companyName: data.companyInfo.name
-            }).toString()
-        })
-    }
+
     return (
         <React.Fragment>
             <Card
@@ -163,17 +214,25 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
                     }
                     <Stack direction={{'400px': "column", md: "row",lg: "row", xl: "row"}} spacing={5} sx={{ marginTop: 2, p: 1 }} >
                         <Box width='600'>
-                            <Tooltip title="Go to Company Page"
-                                     componentsProps={{
-                                        tooltip: {
-                                            sx: {
-                                                bgcolor: 'rgba(171, 25, 31, 0.9)',
-                                                color: "#F6EBE1"
-                                            },
-                                        },
-                                     }}
-                                     >
-                            <Link onClick={openCompanyPage} underline="hover" color="black" sx={{fontWeight: 600, "&:hover": {cursor: "pointer", color:"#AB191F"}}}>
+
+                            <Tooltip 
+                                title="Go to Company Page"
+                                componentsProps={{
+                                    tooltip: {
+                                      sx: {
+                                        bgcolor: 'rgba(171, 25, 31, 0.9)',
+                                        color: '#F6EBE1'
+                                      },
+                                    },
+                                }}
+                                >
+                            <Link href="/CompanyPage" 
+                                  underline="hover" 
+                                  color="black" 
+                                  sx={{fontWeight: 600, 
+                                        "&:hover": 
+                                          {color:"#AB191F"}}}
+                                       >
                                 {data.propertyInfo.propertyName}
                             </Link>
                             </Tooltip>
@@ -255,8 +314,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
                     </Stack>
                 </DialogContent>
                 <DialogActions>
-
-                    {login == true 
+                    {login === true 
                         ? <Tooltip 
                             title="Add to FAV COOPS" 
                             componentsProps={{
@@ -267,16 +325,18 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
                               },
                             },
                         }}>
-                        <IconButton size="large" onClick={e => {
-                            setActive(!active)
-                            //add onclick function for db, and to hide if property owner, or to replace with edit if property owner needs
-                            // to edit
-                        }}>
+                        <IconButton size="large" onClick={handleFavorite}>
                             {active ? <FavoriteIcon sx={{ color: "#AB191F" }} /> : <FavoriteBorderIcon sx={{ color: "#AB191F" }} />}
                         </IconButton>
                     </Tooltip>
                     :
-                    ''}
+                    ''
+                    }
+                     <Typography
+                        style={{margin: "0 5px 0 5px", padding: " 0 5px 0 0px"}}
+                     >
+                       {saves}
+                    </Typography>
                 </DialogActions>
             </Dialog>
         </React.Fragment>
