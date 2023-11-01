@@ -25,6 +25,8 @@ import PropertyManagerPublicPage from "./pages/PropertyManagerPublicPage";
 import AdminPage from "./pages/AdminPage";
 import ResetPWPage from "./pages/ResetPWPage"
 import SetAdminPWPage from "./pages/SetAdminPWPage";
+import { Helmet, HelmetProvider } from 'react-helmet-async';
+import favicon from "./favicon.png"
 
 const styles = {
   background: {
@@ -129,7 +131,7 @@ class App extends React.Component {
       console.error('Error during authentication check:', error);
     }
   };
-  
+
 
   // checkVerification = async () => {
   //   try {
@@ -172,6 +174,8 @@ class App extends React.Component {
     const showAppBarAdmin = pathname === "/Admin" && isAuthenticatedAdmin;
     const showAppBarMain = pathname !== "/Admin" && isAuthenticated;
 
+    const faviconPath = "favicon.ico";
+
     return (
       // <ThemeProvider theme={theme}>
       //   <GlobalStyles
@@ -179,45 +183,52 @@ class App extends React.Component {
       //       body: { backgroundColor: "#F6EBE1" }
       //     }}
       //   />
-      <html>
-        <body style={styles.background}>
-          <div style={{ zIndex: "0" }}>
-            <img className="theredthing" src={theredthing} style={styles.theredthing}></img>
-          </div>
-          <BrowserRouter>
-            {
-              // if login is true (for now), app bar with login buttons will show
-              // if login is false, appbar only has login/signup button
-            }
 
-            {showAppBar ? <RoomsterAppBar login={showAppBarAdmin || showAppBarMain} /> : <div style={{ height: '64px' }}></div>}
-            <div style={{ textAlign: "center", zIndex: "3", position: "relative", marginBottom: "50px" }}>
-              <img className="logo" src={logo} style={styles.logo}></img>
+
+      <HelmetProvider>
+        <Helmet>
+          <title>Roomster</title>
+          <link rel="icon" type="image/png" href={favicon}/>
+                  </Helmet>
+
+
+        <html>
+          <body style={styles.background}>
+            <div style={{ zIndex: "0" }}>
+              <img className="theredthing" src={theredthing} style={styles.theredthing}></img>
             </div>
-            <Routes>
-              <Route path="/" element={<MainPage login={isAuthenticated} />} />
-              <Route path="/Home" element={<MainPage login={isAuthenticated} />} />
-              <Route path="/RProfile" element={<RenterPage />} />
-              <Route path="/MProfile" element={<PropertyManagerPage />} />
-              <Route path="/FavCoops" element={<FavCoopsPage login={isAuthenticated} />} />
-              <Route path="/MyCoops" element={<MyCoopsPage />} />
-              <Route path="/Login" element={<LoginPage />} />
-              <Route path="/RCreate" element={<RenterCreateAccountView />} />
-              <Route path="/MCreate" element={<ManagerCreateAccountView />} />
-              <Route path="/Settings" element={<Settings />} />
-              <Route path="/VerifyPage" element={<VerifyPage />} />
-              <Route path="/Coopmates" element={<CoopmatesPage />} />
-              <Route path="/CompanyPage" element={<PropertyManagerPublicPage />} />
-              <Route path="/Admin" element={<AdminPage />} />
-              <Route path="/ResetPW/:token" element={<ResetPWPage />} />
-              <Route path="/SetAdminPW/:token" element={<SetAdminPWPage />} />
-            </Routes>
-          </BrowserRouter>
-        </body>
-      </html>
-      /* </ThemeProvider> */
+            <BrowserRouter>
+              {
+                // if login is true (for now), app bar with login buttons will show
+                // if login is false, appbar only has login/signup button
+              }
 
-
+              {showAppBar ? <RoomsterAppBar login={showAppBarAdmin || showAppBarMain} /> : <div style={{ height: '64px' }}></div>}
+              <div style={{ textAlign: "center", zIndex: "3", position: "relative", marginBottom: "50px" }}>
+                <img className="logo" src={logo} style={styles.logo}></img>
+              </div>
+              <Routes>
+                <Route path="/" element={<MainPage login={isAuthenticated} />} />
+                <Route path="/Home" element={<MainPage login={isAuthenticated} />} />
+                <Route path="/RProfile" element={<RenterPage />} />
+                <Route path="/MProfile" element={<PropertyManagerPage />} />
+                <Route path="/FavCoops" element={<FavCoopsPage login={isAuthenticated} />} />
+                <Route path="/MyCoops" element={<MyCoopsPage />} />
+                <Route path="/Login" element={<LoginPage />} />
+                <Route path="/RCreate" element={<RenterCreateAccountView />} />
+                <Route path="/MCreate" element={<ManagerCreateAccountView />} />
+                <Route path="/Settings" element={<Settings />} />
+                <Route path="/VerifyPage" element={<VerifyPage />} />
+                <Route path="/Coopmates" element={<CoopmatesPage />} />
+                <Route path="/CompanyPage" element={<PropertyManagerPublicPage />} />
+                <Route path="/Admin" element={<AdminPage />} />
+                <Route path="/ResetPW/:token" element={<ResetPWPage />} />
+                <Route path="/SetAdminPW/:token" element={<SetAdminPWPage />} />
+              </Routes>
+            </BrowserRouter>
+          </body>
+        </html>
+      </HelmetProvider >
     );
   }
 }
