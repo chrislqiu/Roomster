@@ -13,6 +13,7 @@ const sendVerificationEmail = require("./emailVerify.js");
 const changePasswordEmail = require("./changePasswordEmail.js")
 const adminRequestEmail = require("./adminRequestEmail.js")
 const setAdminPWEmail = require("./setAdminPWEmail.js")
+const adminDenyEmail = require("./adminDenyEmail.js")
 const cors = require('cors');
 
 const router = express.Router();
@@ -54,8 +55,6 @@ const authorization = async (req, res, next) => {
             }
         }
 
-        console.log("gffood")
-
         req.user = user;
         req.userType = userType;
 
@@ -92,7 +91,6 @@ const authorizationAdmin = async (req, res, next) => {
             }
         }
 
-        console.log("good")
 
 
         req.user = user;
@@ -136,10 +134,6 @@ router.get("/managers", (req, res) => {
         });
 });
 
-const isEmailValid = (email) => {
-    const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
-    return emailRegex.test(email);
-};
 
 router.post("/renter-signup", async (req, res) => {
     const existingRenter = await Renter.findOne({ username: req.body.username });
@@ -408,6 +402,8 @@ router.get("/check-verify", authorization, async (req, res) => {
 
         if (user.isVerified) {
             return res.status(200).json({ user });
+        } else {
+            return res.status(401).send("User not verified");
         }
     } catch (err) {
         console.error(err);
@@ -598,7 +594,23 @@ router.get("/admin/verify/:token", async (req, res) => {
 
         setAdminPWEmail(decoded.username, verificationToken);
 
-        return res.redirect("http://localhost:3001/VerifyPage");
+        return res.redirect("http://localhost:3001/AdminVerifyPage");
+    } catch (err) {
+        console.log(err);
+        return res.status(500).send("Email verification failed");
+    }
+});
+
+router.get("/admin/deny/:token", async (req, res) => {
+    const { token } = req.params;
+    console.log("Token:", token);
+    try {
+        const decoded = jwt.verify(token, secretKey);
+        console.log(decoded.username);
+
+        adminDenyEmail(decoded.username);
+
+        return res.redirect("http://localhost:3001/AdminDenyPage");
     } catch (err) {
         console.log(err);
         return res.status(500).send("Email verification failed");

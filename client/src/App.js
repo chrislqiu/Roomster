@@ -17,6 +17,7 @@ import RoomsterAppBar from "./components/AppBar";
 import FavCoopsPage from "./pages/FavCoopsPage";
 import Settings from "./pages/Settings"
 import VerifyPage from "./pages/VerifyPage"
+import AdminVerifyPage from "./pages/AdminVerifyPage";
 import Popup from "./components/Popup";
 import RenterCreateAccountView from "./components/RenterCreateAccountView";
 import ManagerCreateAccountView from "./components/PropertyManagerCreateAccountView";
@@ -25,8 +26,10 @@ import PropertyManagerPublicPage from "./pages/PropertyManagerPublicPage";
 import AdminPage from "./pages/AdminPage";
 import ResetPWPage from "./pages/ResetPWPage"
 import SetAdminPWPage from "./pages/SetAdminPWPage";
+import AdminDenyPage from "./pages/AdminDenyPage";
 import { Helmet, HelmetProvider } from 'react-helmet-async';
-// import favicon from "https://i.ibb.co/NF8X7Vx/favicon.png"
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const styles = {
   background: {
@@ -81,6 +84,7 @@ class App extends React.Component {
     this.callServer();
     this.checkAuthentication();
     this.checkAuthenticationAdmin();
+    // this.checkVerification();
   }
 
 
@@ -133,50 +137,39 @@ class App extends React.Component {
   };
 
 
-  // checkVerification = async () => {
-  //   try {
-  //     const response = await fetch('http://localhost:8000/auth/check-verify', {
-  //       method: 'GET',
-  //       credentials: 'include',
-  //     });
+  checkVerification = async () => {
+    try {
+      const response = await fetch('http://localhost:8000/auth/check-verify', {
+        method: 'GET',
+        credentials: 'include',
+      });
 
-  //     if (response.ok) {
-  //       const data = await response.json();
-  //       // console.log(data.user.isVerified);
-  //       if (data.user && data.user.isVerified) {
-  //         // this.setState({ popupMessage: 'User is verified' });
-  //       } else {
-  //         this.setState({ popupMessage: 'You are not verified, please check your email' });
-  //       }
-  //     } else {
-  //       // this.setState({ popupMessage: 'Error during verification check' });
-  //     }
-  //       this.setState({ isPopupOpen: true });
+      if (response.ok) {
+          // toast.success('User is verified');
+      } else {
+        toast.error('You are not verified, please check your email');
+        // toast.error('Error during verification check');
+      }
 
-
-  //   } catch (error) {
-  //     this.setState({ isPopupOpen: true });
-
-  //     // this.setState({ popupMessage: 'Error during verification check' });
-  //     // this.setState({ isPopupOpen: true });
-  //   }
-  // };
+    } catch (error) {
+      // toast.error('Error during verification check');
+    }
+  };
 
 
 
   render() {
-    const { isAuthenticated, isAuthenticatedAdmin, userType } = this.state;
-    // const history = useHistory();
-    // const showAppBar = true;
+    const { isAuthenticated, isAuthenticatedAdmin } = this.state;
     const pathname = window.location.pathname
     const showAppBar = pathname !== "/Admin" || isAuthenticatedAdmin;
-    // const showAppBar = user;
+
     const showAppBarAdmin = pathname === "/Admin" && isAuthenticatedAdmin;
     const showAppBarMain = pathname !== "/Admin" && isAuthenticated;
 
     const faviconPath = "favicon.ico";
 
     return (
+      
       // <ThemeProvider theme={theme}>
       //   <GlobalStyles
       //     sx={{
@@ -209,6 +202,7 @@ class App extends React.Component {
               <div style={{ textAlign: "center", zIndex: "3", position: "relative", marginBottom: "50px" }}>
                 <img className="logo" src={logo} style={styles.logo}></img>
               </div>
+              <ToastContainer />
               <Routes>
                 <Route path="/" element={<MainPage login={isAuthenticated} />} />
                 <Route path="/Home" element={<MainPage login={isAuthenticated} />} />
@@ -221,6 +215,8 @@ class App extends React.Component {
                 <Route path="/MCreate" element={<ManagerCreateAccountView />} />
                 <Route path="/Settings" element={<Settings />} />
                 <Route path="/VerifyPage" element={<VerifyPage />} />
+                <Route path="/AdminVerifyPage" element={<AdminVerifyPage />} />
+                <Route path="/AdminDenyPage" element={<AdminDenyPage />} />
                 <Route path="/Coopmates" element={<CoopmatesPage />} />
                 <Route path="/CompanyPage" element={<PropertyManagerPublicPage />} />
                 <Route path="/Admin" element={<AdminPage />} />
