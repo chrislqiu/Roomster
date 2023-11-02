@@ -17,8 +17,16 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import defaultPic from '../images/amongusturkey.jpeg'
 
+import MaleIcon from '@mui/icons-material/Male';
+import FemaleIcon from '@mui/icons-material/Female';
+import TransgenderIcon from '@mui/icons-material/Transgender';
+
 const CoopmatesView = ({ data }) => {
     const [hovered, setHovered] = React.useState(false);
+    const name = "John Doe"
+    const age = "22"
+    const gender = "Male"
+
     const handleHovered = () => {
         setHovered(true)
     }
@@ -38,6 +46,7 @@ const CoopmatesView = ({ data }) => {
         <React.Fragment>
             <Card
                 variant='contained'
+                alignContent='center'
                 //onClick={handleOpen}
                 onMouseEnter={handleHovered}
                 onMouseLeave={handleLeave}
@@ -56,7 +65,8 @@ const CoopmatesView = ({ data }) => {
                     borderRadius: "10px",
                     boxShadow:  "0px 0px 3px 3px rgba(0, 0, 0, .1)"
                 }}>
-                <CardActionArea>
+                <CardActionArea sx={{alignContent:"center"}}>
+                    {/* Profile Picture */}
                     <CardMedia
                         component="img"
                         image={defaultPic}
@@ -70,12 +80,46 @@ const CoopmatesView = ({ data }) => {
                             
                         }}
                     />
-                    <CardContent>
-                        <div style={{ display: 'flex', alignItems: 'center', marginLeft: 0 }}>
-                            <Typography variant="h6" style={{ margin: "-20px 30px 0px 30px" }} sx={{fontWeight: 600}}> Jeffrey Turkstra </Typography>
-                        </div>
-                        <Typography variant="body2" style={{ margin: "0 30px 5px 30px" }}> Age: Old</Typography>
-                        <Typography variant="body2" style={{ margin: "0 30px 5px 30px" }}> Gender: M </Typography>
+
+                    <CardContent sx={{alignContent:"center"}}>
+                        <Box style={{ display: 'flex', alignItems: 'center', marginLeft: "25px"}}>
+                            {/* Renter Name */}
+                            <Typography 
+                                variant="h6" 
+                                style={{ margin: "-20px 30px 0px 30px" }} 
+                                sx={{fontWeight: 600}}
+                            > {name} 
+                            </Typography> 
+                            {/* Renter Gender */}
+                            {gender === 'Male' ? <MaleIcon style={{margin:"-22px 0px 0px -20px", fontSize: "22pt"}}/> : ''}
+                            {gender === 'Female' ? <FemaleIcon style={{margin:"-22px 0px 0px -20px", fontSize: "22pt"}}/> : ''}
+                            {gender === 'Transgender' ? <TransgenderIcon style={{margin:"-22px 0px 0px -20px", fontSize: "22pt"}}/> : ''}
+
+                            {/* Renter Age */}
+                            <Typography 
+                                variant="body1" 
+                                style={{ margin: "-22px 30px 0px -40px", fontSize:"15pt" }} 
+                                sx={{fontWeight: 600}}
+                            > {age} 
+                            </Typography>
+                        </Box>
+
+                        <Box style={{alignItems:'center'}}>
+                            {/* Renter Age */}
+                            <Typography 
+                                variant="body2" 
+                                style={{ margin: "0 30px 5px 30px" }}
+                            > {age}
+                            </Typography>
+
+
+                            <Typography 
+                                variant="body2" 
+                                style={{ margin: "0 30px 5px 30px" }}
+                            > {gender}
+                            </Typography>
+
+                        </Box>
                         
                     </CardContent>
                 </CardActionArea>
