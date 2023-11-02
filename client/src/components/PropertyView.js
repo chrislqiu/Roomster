@@ -79,7 +79,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
                 setUserData(obj)
                 setMyCoopsArr(obj.user.company.myCoops)
             }
-            
+
         }
         getUserInfo()
     }, [userData, favCoopsArr, myCoopsArr])
@@ -112,7 +112,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
 
         //var newSavesCount = active === true ? saves - 1 : saves + 1;
         /* update the active for the button */
-            setActive(!active);
+        setActive(!active);
         /* send id, number of saves, coop to be added, the check for delete/add */
         try {
             const response = await fetch('http://localhost:8000/cards/update-saves', {
@@ -239,7 +239,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
     React.useEffect(() => {
         // Call checkAuthentication when the component mounts
         checkOwner();
-    }, []); 
+    }, []);
 
 
 
@@ -487,21 +487,21 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
                                 </IconButton>
                             </Tooltip>
                         ) : (
-                            <Tooltip 
-                            title="Add to FAV COOPS" 
-                            componentsProps={{
-                            tooltip: {
-                              sx: {
-                                bgcolor: 'rgba(171, 25, 31, 0.9)',
-                                color: '#F6EBE1'
-                              },
-                            },
-                        }}>
-                        <IconButton size="large" onClick={handleFavorite}>
-                            {/* {active ? <FavoriteIcon sx={{ color: "#AB191F" }} /> : <FavoriteBorderIcon sx={{ color: "#AB191F" }} />} */}
-                            {coopFavorited  ? <FavoriteIcon sx={{ color: "#AB191F" }} /> : <FavoriteBorderIcon sx={{ color: "#AB191F" }} />}
-                        </IconButton>
-                    </Tooltip>
+                            <Tooltip
+                                title="Add to FAV COOPS"
+                                componentsProps={{
+                                    tooltip: {
+                                        sx: {
+                                            bgcolor: 'rgba(171, 25, 31, 0.9)',
+                                            color: '#F6EBE1'
+                                        },
+                                    },
+                                }}>
+                                <IconButton size="large" onClick={handleFavorite}>
+                                    {/* {active ? <FavoriteIcon sx={{ color: "#AB191F" }} /> : <FavoriteBorderIcon sx={{ color: "#AB191F" }} />} */}
+                                    {coopFavorited ? <FavoriteIcon sx={{ color: "#AB191F" }} /> : <FavoriteBorderIcon sx={{ color: "#AB191F" }} />}
+                                </IconButton>
+                            </Tooltip>
                         )
                     ) : (login === true && admin === true ? (
                         <div sx={{ display: "flex", width: "100%" }}>
@@ -517,14 +517,14 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
                             </Tooltip>
                         </div>
                     ) : null)}
-                    
-                    {favCoops === true ?  
-                     <Typography
-                        style={{margin: "0 5px 0 5px", padding: " 0 5px 0 0px"}}
-                     >
-                       {saves}
-                    </Typography> : ''
-                    }  
+
+                    {favCoops === true ?
+                        <Typography
+                            style={{ margin: "0 5px 0 5px", padding: " 0 5px 0 0px" }}
+                        >
+                            {saves}
+                        </Typography> : ''
+                    }
 
 
 
