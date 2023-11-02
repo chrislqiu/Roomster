@@ -215,7 +215,7 @@ router.post("/login", async (req, res) => {
     var user = await Renter.findOne({ username: req.body.username });
     var userType = "renter";
     if (user === null) {
-        user = Manager.findOne({ username: req.body.username });
+        user = await Manager.findOne({ username: req.body.username });
         userType = "manager";
         if (user === null) {
             return res.status(400).send("User does not exist");
