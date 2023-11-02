@@ -281,17 +281,7 @@ const LoginView = ({ text }) => {
                                 </p>
                             )}
 
-                            <Typography onClick={handleForgotPw} sx={{ 
-                                margin: "5px 0 5px 2px",
-                                fontSize: "10pt",
-                                color: "black",
-                                textDecoration: "underline",
-                                "&:hover": {
-                                    cursor: "pointer",
-                                    color: "#AB191F"
-                                }}}>
-                                Forgot your password?
-                            </Typography>
+                            
                             {forgotPwOpen === true && <ForgotPwView setOpen={setOpen}></ForgotPwView>}
                             <Button
                                 onClick={handleLogin}

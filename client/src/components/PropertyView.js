@@ -61,26 +61,35 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
     const coopFavorited = favCoopsArr.some(coops => coops._id.toString() === data._id.toString())
 
     React.useEffect(() => {
-        const getUserInfo = async () => {
-            const res = await fetch('http://localhost:8000/auth/current-user', {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                credentials: 'include'
-            })
-            const getData = await res.json()
-            if (getData.userType == "renter") {
-                const obj = JSON.parse(JSON.stringify(getData));
-                setUserData(obj)
-                setFavCoopsArr(obj.user.renterInfo.favCoops)
-            } else if (getData.userType == "manager") {
-                const obj = JSON.parse(JSON.stringify(getData));
-                setUserData(obj)
-                setMyCoopsArr(obj.user.company.myCoops)
-            }
 
+        const getUserInfo = async () => {
+            try {
+                const res = await fetch('http://localhost:8000/auth/current-user', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    credentials: 'include'
+                })
+
+                if (res.ok) {
+                    const getData = await res.json()
+                    if (getData.userType == "renter") {
+                        const obj = JSON.parse(JSON.stringify(getData));
+                        setUserData(obj)
+                        setFavCoopsArr(obj.user.renterInfo.favCoops)
+                    } else if (getData.userType == "manager") {
+                        const obj = JSON.parse(JSON.stringify(getData));
+                        setUserData(obj)
+                        setMyCoopsArr(obj.user.company.myCoops)
+                    }
+                }
+
+            } catch (e) {
+                console.log("Error: " + e)
+            }
         }
+
         getUserInfo()
     }, [userData, favCoopsArr, myCoopsArr])
 
