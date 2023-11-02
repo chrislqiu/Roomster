@@ -67,11 +67,11 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
                 credentials: 'include'
             })
             const getData = await res.json()
-            if (getData.userType == "renter") {
+            if (getData.user_type == "renter") {
                 const obj = JSON.parse(JSON.stringify(getData));
-                setUserData(obj)
+                setUserData(getData)
                 setFavCoopsArr(obj.user.renterInfo.favCoops)
-            } else if (getData.userType == "manager") {
+            } else if (getData.user_type == "manager") {
                 const obj = JSON.parse(JSON.stringify(getData));
                 setUserData(obj)
                 setMyCoopsArr(obj.user.company.myCoops)
@@ -79,6 +79,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
             
         }
         getUserInfo()
+        console.log(favCoopsArr);
     }, [userData, favCoopsArr, myCoopsArr])
 
     const handleOpen = () => {
@@ -385,7 +386,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
                     </Stack>
                 </DialogContent>
                 <DialogActions>
-                    {favCoops === true && login === true 
+                    {login === true 
                         ? <Tooltip 
                             title="Add to FAV COOPS" 
                             componentsProps={{
@@ -404,13 +405,13 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
                     :
                     ''
                     }
-                    {favCoops === true ?  
+                    
                      <Typography
                         style={{margin: "0 5px 0 5px", padding: " 0 5px 0 0px"}}
                      >
                        {saves}
-                    </Typography> : ''
-                    }  
+                    </Typography>
+                    
                 </DialogActions>
             </Dialog>
         </React.Fragment>
