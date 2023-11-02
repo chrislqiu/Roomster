@@ -24,6 +24,7 @@ import sheep from "../images/chickens/sheep.png"
 import MaleIcon from '@mui/icons-material/Male';
 import FemaleIcon from '@mui/icons-material/Female';
 import TransgenderIcon from '@mui/icons-material/Transgender';
+import { faTruckPlane } from '@fortawesome/free-solid-svg-icons';
 
 const CoopmatesView = ({ data }) => {
     const [open, setOpen] = React.useState(false)
@@ -119,6 +120,23 @@ const CoopmatesView = ({ data }) => {
         "&:hover": {
             border: "2px solid #AB191F",
             boxShadow:"0px 0px 3px 3px rgba(0, 0, 0, .1)", 
+        }
+    }
+
+    const radioSX = {
+        color: "#AB191F",
+        '&.Mui-checked': {
+        color: "#AB191F",
+        },
+    }
+
+    const selectSX = {
+        width: 90, height: 30, fontSize:"11pt", 
+        '.MuiOutlinedInput-notchedOutline': {
+            border:"2px solid #AB191F"
+        },
+        '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+            border:"2px solid #AB191F"
         }
     }
     
@@ -242,7 +260,7 @@ const CoopmatesView = ({ data }) => {
                                 {"LIVING PREFERENCES"}
                             </Typography >
                         </Container>
-                        <Container style={styles.box} sx={{marginTop:"-10px", marginLeft:"-67px"}}>
+                        <Container style={styles.box} sx={{marginTop:"-10px"}}>
                             <Container style={{float: "left", width: "55%"}}>
                                 <Typography style={styles.livingHabit}>{"Pets"}</Typography>
                                 <Typography style={styles.livingHabit}>{"Smoke"}</Typography>
@@ -251,6 +269,69 @@ const CoopmatesView = ({ data }) => {
                                 <Typography style={styles.livingHabit}>{"Guests frequency"}</Typography>
                                 <Typography style={styles.livingHabit}>{"Sleep schedule"}</Typography>
                             </Container>
+                            <Container style={{float: "right", width: "45%"}}>
+                                {/* Pet */}
+                                <FormControl style={{marginLeft:"-55px", marginBottom:"-7px"}} disabled={true}>
+                                    <RadioGroup row name="pets" style={{width: "150px", display: "flex", justifyContent:"center"}} > 
+                                        <FormControlLabel value="yes" control={<Radio sx={radioSX}/>} label="Yes"/>
+                                        <FormControlLabel value="no" control={<Radio sx={radioSX}/>} label="No"/>
+                                    </RadioGroup>
+                                </FormControl>
+                                {/* Smoke */}
+                                <FormControl style={{marginLeft:"-55px", marginBottom: "-7px"}} disabled={true}>
+                                    <RadioGroup row name="smoke" style={{width: "150px", display: "flex", justifyContent:"center"}} > 
+                                        <FormControlLabel value="yes" control={<Radio sx={radioSX}/>} label="Yes"/>
+                                        <FormControlLabel value="no" control={<Radio sx={radioSX}/>} label="No"/>
+                                    </RadioGroup>
+                                </FormControl>
+                                <Container>
+                                    {/* Studious */}
+                                    <Slider
+                                        size="small"
+                                        defaultValue={3}
+                                        valueLabelDisplay="auto"
+                                        step={1}
+                                        marks
+                                        min={0}
+                                        max={5}
+                                        sx={{color:"#AB191F", width: "120px", height: "5px", marginLeft: "-70px"}}
+                                        disabled={true}
+                                    />
+                                </Container>
+                                <Container>
+                                    {/* Cleanliness */}
+                                    <Slider
+                                        size="small"
+                                        defaultValue={3}
+                                        valueLabelDisplay="auto"
+                                        step={1}
+                                        marks
+                                        min={0}
+                                        max={5}
+                                        sx={{color:"#AB191F", width: "120px", height: "5px", marginLeft: "-70px"}}
+                                        disabled={true}
+                                    />
+                                </Container>
+                                <Container>
+                                    {/* Guests */}
+                                    <Slider
+                                        size="small"
+                                        defaultValue={3}
+                                        valueLabelDisplay="auto"
+                                        step={1}
+                                        marks
+                                        min={0}
+                                        max={5}
+                                        sx={{color:"#AB191F", width: "120px", height: "5px", marginLeft: "-70px"}}
+                                        disabled={true}
+                                    />
+                                </Container>
+                                <Container style={{display: "flex", gap: "1rem", width: "200px", margin:"0 0 10px -50px", padding:"0"}}>
+
+                                </Container>
+
+                            </Container>
+                            
                         </Container>
 
                     </Box>
