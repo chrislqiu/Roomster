@@ -375,7 +375,6 @@ router.post("/delete", authorization, async (req, res) => {
 router.get("/logout", (req, res) => {
     return res
         .clearCookie("access_token")
-        .clearCookie("access_token_admin")
         .clearCookie("user_type")
         .status(200)
         .json({ message: "Logged out" });

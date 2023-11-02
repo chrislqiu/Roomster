@@ -489,14 +489,23 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
                 <DialogActions>
 
 
-                    {login === true && favCoops === true && !admin ? (
-                        isOwner === true ? (
-                            <Tooltip title="Delete Property">
-                                <IconButton onClick={handleDeleteProperty}>
-                                    <DeleteOutlineIcon sx={{ color: "#AB191F" }} />
-                                </IconButton>
-                            </Tooltip>
-                        ) : (
+                    {login === true ? (
+                        admin === true ? (
+                            // Admin view
+                            <div sx={{ display: "flex", width: "100%" }}>
+                                <Tooltip title="Delete Property">
+                                    <IconButton onClick={handleDeleteProperty}>
+                                        <DeleteOutlineIcon sx={{ color: "#AB191F" }} />
+                                    </IconButton>
+                                </Tooltip>
+                                <Tooltip title="Verify Property">
+                                    <IconButton onClick={handleVerifyProperty}>
+                                        <CheckIcon sx={{ color: "green" }} />
+                                    </IconButton>
+                                </Tooltip>
+                            </div>
+                        ) : isOwner === false ? (
+                            // User view (not owner)
                             <Tooltip
                                 title="Add to FAV COOPS"
                                 componentsProps={{
@@ -506,35 +515,35 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
                                             color: '#F6EBE1'
                                         },
                                     },
-                                }}>
+                                }}
+                            >
                                 <IconButton size="large" onClick={handleFavorite}>
-                                    {/* {active ? <FavoriteIcon sx={{ color: "#AB191F" }} /> : <FavoriteBorderIcon sx={{ color: "#AB191F" }} />} */}
-                                    {coopFavorited ? <FavoriteIcon sx={{ color: "#AB191F" }} /> : <FavoriteBorderIcon sx={{ color: "#AB191F" }} />}
+                                    {coopFavorited ? (
+                                        <FavoriteIcon sx={{ color: "#AB191F" }} />
+                                    ) : (
+                                        <FavoriteBorderIcon sx={{ color: "#AB191F" }} />
+                                    )}
                                 </IconButton>
                             </Tooltip>
-                        )
-                    ) : (login === true && admin === true ? (
-                        <div sx={{ display: "flex", width: "100%" }}>
+                        ) : (
+                            // Owner view
                             <Tooltip title="Delete Property">
                                 <IconButton onClick={handleDeleteProperty}>
                                     <DeleteOutlineIcon sx={{ color: "#AB191F" }} />
                                 </IconButton>
                             </Tooltip>
-                            <Tooltip title="Verify Property">
-                                <IconButton onClick={handleVerifyProperty}>
-                                    <CheckIcon sx={{ color: "green" }} />
-                                </IconButton>
-                            </Tooltip>
-                        </div>
-                    ) : null)}
+                        )
+                    ) : (
+                        // Not logged in view
+                        ''
+                    )}
 
-                    {favCoops === true ?
-                        <Typography
-                            style={{ margin: "0 5px 0 5px", padding: " 0 5px 0 0px" }}
-                        >
-                            {saves}
-                        </Typography> : ''
-                    }
+
+                    <Typography
+                        style={{ margin: "0 5px 0 5px", padding: " 0 5px 0 0px" }}
+                    >
+                        {saves}
+                    </Typography>
 
 
 
