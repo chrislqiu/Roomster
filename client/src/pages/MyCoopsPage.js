@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react"
-import PropertyViewMore from "../components/PropertyView"
-import { InputAdornment, FormControl, InputLabel, MenuItem, Select, Dialog, DialogContent, DialogActions, Tooltip, IconButton, Avatar, InputBase, Slider, Checkbox, Grid, Card, Container, Box, Typography, CardContent, Input, Divider, TextField, Link, Button, FormControlLabel, Stack, Icon } from "@mui/material";
+import { InputAdornment, CircularProgress, FormControl, InputLabel, MenuItem, Select, Dialog, DialogContent, DialogActions, Tooltip, IconButton, Avatar, InputBase, Slider, Checkbox, Grid, Card, Container, Box, Typography, CardContent, Input, Divider, TextField, Link, Button, FormControlLabel, Stack, Icon } from "@mui/material";
 import AddHomeIcon from '@mui/icons-material/AddHome';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { AspectRatio } from "@mui/joy";
 import toast, { Toaster } from 'react-hot-toast'
+import PropertyView from "../components/PropertyView";
 
-const MyCoopsPage = () => {
+
+const MyCoopsPage = ({login}) => {
     /* propertyInfo, setPropertyInfo to hold the card information from the server */ 
     const [open, setOpen] = React.useState(false)
     const [propertyInfo, setPropertyInfo] = React.useState([])
@@ -76,9 +77,29 @@ const MyCoopsPage = () => {
     const handleLeave = () => {
         setHovered(false)
     }
-
+    const [username, setUsername] = useState('');
+    const [userData, setUserData] = useState('');
+    const [myCoopsArr, setMyCoopsArr] = useState([]);
+    const [loading, setLoading] = useState(true); // Add loading state
     React.useEffect(() => {
-        const getPropertyInfo = async () => {
+        const getUserInfo = async () => {
+            const res = await fetch('http://localhost:8000/auth/current-user', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include'
+            });
+            const getData = await res.json();
+            const obj = JSON.parse(JSON.stringify(getData));
+            setUsername(obj.username);
+            setUserData(obj);
+            setMyCoopsArr(obj.user.company.myCoops);
+            setLoading(false); 
+        };
+
+        getUserInfo();
+        /*const getPropertyInfo = async () => {
             const data = await fetch('http://localhost:8000/auth/current-user', {
                 method: 'GET',
                 headers: {
@@ -86,7 +107,7 @@ const MyCoopsPage = () => {
                 },
                 credentials: 'include'
             })
-            const userData = await data.json
+            const userData = await data.json()
             const res = await fetch('http://localhost:8000/cards/my-coops-cards', {
                 method: 'POST',
                 headers: {
@@ -99,8 +120,8 @@ const MyCoopsPage = () => {
             const obj = JSON.parse(JSON.stringify(getData));
             setPropertyInfo(obj);
         }
-        getPropertyInfo()
-    }, [])
+        getPropertyInfo()*/
+    }, [userData, myCoopsArr])
 
     const customToastStyle = {
         color: 'white',
@@ -747,17 +768,31 @@ const MyCoopsPage = () => {
                 </DialogContent>
             </Dialog>
 
-            <Box sx={{ m: 1 }} style={styles.feed}>
-                {
-                   /*
-                    * Maps each Property Information object to its own "card"
-                    */
-                    propertyInfo.map(cards => {
-                        return <PropertyViewMore data={cards} myCoops={true}/>
-                        }
+            
+            <Box sx={{ marginTop: 3 }} style={styles.feed}>
+                {loading ? ( // Display loading spinner while loading
+                    <CircularProgress style={styles.loadingSpinner}>
+                        Loading coops!
+                    </CircularProgress>
+                ) : (
+                    myCoopsArr.length > 0 ? (
+                        myCoopsArr.map(cards => {
+                            return <PropertyView data={cards} myCoops={true} login={login} />;
+                        })
+                    ) : (
+                        <Typography
+                            sx={{
+                                fontWeight: 600,
+                                fontSize: 25,
+                                color: "#AB191F",
+                            }}
+                        >
+                            No properties favorited!
+                        </Typography>
                     )
-                }
+                )}
             </Box>
+        
         </Container>
     )
 }

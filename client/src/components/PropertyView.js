@@ -27,15 +27,34 @@ import { createSearchParams, useNavigate } from 'react-router-dom';
  * favCoops : Boolean to determine if card is on favCoops page
  */
 const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
+    var image, propertyName, address, beds, baths, cost, amenities
+    if (myCoops) {
+        image = data.image;
+        propertyName = data.propertyName;
+        address = data.address;
+        beds = data.beds;
+        baths = data.baths;
+        cost = data.cost;
+        amenities = data.amenities;
+    } else {
+        image = data.propertyInfo.image;
+        propertyName = data.propertyInfo.propertyName;
+        address = data.propertyInfo.address;
+        beds = data.propertyInfo.beds;
+        baths = data.propertyInfo.baths;
+        cost = data.propertyInfo.cost;
+        amenities = data.propertyInfo.amenities;
+    }
     /*
      * open, setOpen : controls the state of the dialogue popup
      */
     const [open, setOpen] = React.useState(false)
     const [utilities, setUtilities] = React.useState('')
-    const [saves, setSaves] = React.useState(data.propertyInfo.saves)
+    const [saves, setSaves] = React.useState(myCoops === true ? data.saves : data.propertyInfo.saves)
     const [updateOrRemove, setUpdateOrRemove] = React.useState('')
     const [userData, setUserData] = React.useState('')
     const [favCoopsArr, setFavCoopsArr] = React.useState([])
+    const [myCoopsArr, setMyCoopsArr] = React.useState([])
     const coopFavorited = favCoopsArr.some(coops => coops._id.toString() === data._id.toString())
 
     React.useEffect(() => {
@@ -48,12 +67,19 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
                 credentials: 'include'
             })
             const getData = await res.json()
-            const obj = JSON.parse(JSON.stringify(getData));
-            setUserData(obj)
-            setFavCoopsArr(obj.user.renterInfo.favCoops)
+            if (getData.userType == "renter") {
+                const obj = JSON.parse(JSON.stringify(getData));
+                setUserData(obj)
+                setFavCoopsArr(obj.user.renterInfo.favCoops)
+            } else if (getData.userType == "manager") {
+                const obj = JSON.parse(JSON.stringify(getData));
+                setUserData(obj)
+                setMyCoopsArr(obj.user.company.myCoops)
+            }
+            
         }
         getUserInfo()
-    }, [userData, favCoopsArr])
+    }, [userData, favCoopsArr, myCoopsArr])
 
     const handleOpen = () => {
         setOpen(true)
@@ -82,7 +108,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
 
         //var newSavesCount = active === true ? saves - 1 : saves + 1;
         /* update the active for the button */
-        setActive(!active);
+            setActive(!active);
         /* send id, number of saves, coop to be added, the check for delete/add */
         try {
             const response = await fetch('http://localhost:8000/cards/update-saves', {
@@ -105,7 +131,6 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
 
         setSaves(data.propertyInfo.saves);
         window.location.reload(true)
-
     }
     const styles = {
         divider: {
@@ -126,7 +151,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
     }
 
     const pullUtilities = () => {
-        setUtilities(Object.keys(data.propertyInfo.utilities).filter(key => data.propertyInfo.utilities[key] === true))
+        setUtilities(Object.keys(utilities).filter(key => utilities[key] === true))
     }
 
     return (
@@ -168,7 +193,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
                         <div style={{ display: 'flex', alignItems: 'center', marginLeft: 0 }}>
 
                             <Typography variant="h6" style={{ margin: "-20px 0 0px 0" }}
-                            > {data.propertyInfo.propertyName.split(":")[0]} </Typography>
+                            > {propertyName.split(":")[0]} </Typography>
                             {/* {featured === true ? <StarIcon style={{margin: "-20px 0 0px 2.5"}} /> : ''} */}
                             {/* {favCoops === true ? <FavoriteIcon style={{margin: "-20px 0 0px 2.5"}} sx={{color: "#AB191F", ":hover": {color: "#F6EBE1",},}}/> : ''} */}
                             {/* <Typography variant="h6" style={{fontSize: "13pt", margin: "-20px 0 0px 0"}}> Property Name </Typography> */}
@@ -177,11 +202,11 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
                             {myCoops === true ? <BookmarkIcon style={{ margin: "-22px 0 0 5px", fontSize: "15pt" }} sx={{ color: "#AB191F", ":hover": { color: "#F6EBE1", }, }} /> : ''}
 
                         </div>
-                        <Typography variant="body2" style={{ margin: "0 0 5px 0" }}>{data.propertyInfo.address}</Typography>
-                        <Typography variant="body2">{data.propertyInfo.beds} bedroom </Typography>
-                        <Typography variant="body2" style={{ marginBottom: "5px" }}>{data.propertyInfo.baths} bathroom</Typography>
+                        <Typography variant="body2" style={{ margin: "0 0 5px 0" }}>{address}</Typography>
+                        <Typography variant="body2">{beds} bedroom </Typography>
+                        <Typography variant="body2" style={{ marginBottom: "5px" }}>{baths} bathroom</Typography>
                         <Divider style={styles.divider}></Divider>
-                        <Typography variant="body1" style={{ marginTop: "5px", textAlign: "right", fontWeight: "500" }}> ${data.propertyInfo.cost} per month</Typography>
+                        <Typography variant="body1" style={{ marginTop: "5px", textAlign: "right", fontWeight: "500" }}> ${cost} per month</Typography>
 
                     </CardContent>
                 </CardActionArea>
@@ -238,7 +263,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
                                 }}
                             >
                                 <Link onClick={openCompanyPage} underline="hover" color="black" sx={{ fontWeight: 600, "&:hover": { cursor: "pointer", color: "#AB191F" } }}>
-                                    {data.propertyInfo.propertyName}
+                                    {propertyName}
                                 </Link>
                             </Tooltip>
                             <Typography
@@ -249,7 +274,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
                                     marginTop: .5
                                 }}
                             >
-                                {data.propertyInfo.address}
+                                {address}
                             </Typography>
                             <Typography
                                 sx={{
@@ -257,7 +282,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
                                     variant: "body2",
                                 }}
                             >
-                                {data.propertyInfo.beds} {data.propertyInfo.beds > 1 ? 'beds' : 'bed'}, {data.propertyInfo.baths} {data.propertyInfo.baths > 1 ? 'baths' : 'bath'}
+                                {beds} {beds > 1 ? 'beds' : 'bed'}, {baths} {baths > 1 ? 'baths' : 'bath'}
                             </Typography>
                             <Divider orientation='horizontal' width={150} sx={{ borderBottomWidth: 3, color: "#AB191F", backgroundColor: "#AB191F", marginY: 1 }} />
                             <Typography
@@ -266,7 +291,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
                                     variant: "body2",
                                 }}
                             >
-                                ${data.propertyInfo.cost} per month
+                                ${cost} per month
                             </Typography>
                         </Box>
                         <Divider orientation={{ xs: 'horizontal', md: 'vertical', lg: 'vertical', xl: 'vertical' }} width={3} sx={{ borderBottomWidth: 3, color: "#AB191F", backgroundColor: "#AB191F", marginY: 2 }} />
@@ -283,7 +308,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
                             >
                                 Amenities
                             </Typography>
-                            {data.propertyInfo.amenities.map((amenity) => {
+                            {amenities.map((amenity) => {
                                 return <List
                                     sx={{
                                         listStyleType: 'disc',
@@ -360,7 +385,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
                     </Stack>
                 </DialogContent>
                 <DialogActions>
-                    {login === true 
+                    {favCoops === true && login === true 
                         ? <Tooltip 
                             title="Add to FAV COOPS" 
                             componentsProps={{
@@ -379,11 +404,13 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
                     :
                     ''
                     }
+                    {favCoops === true ?  
                      <Typography
                         style={{margin: "0 5px 0 5px", padding: " 0 5px 0 0px"}}
                      >
                        {saves}
-                    </Typography>
+                    </Typography> : ''
+                    }  
                 </DialogActions>
             </Dialog>
         </React.Fragment>
