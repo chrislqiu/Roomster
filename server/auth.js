@@ -72,7 +72,7 @@ router.get("/managers", (req, res) => {
     });
 });
 
-router.get("/current_user", authorization, async (req, res) => {
+router.get("/current-user", authorization, async (req, res) => {
     const userType = req.cookies.user_type;
     var user = null;
     var username = req.user.username;
