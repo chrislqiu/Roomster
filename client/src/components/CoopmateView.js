@@ -59,9 +59,10 @@ const CoopmatesView = ({ data }) => {
                     backgroundColor: "#f5ebe0",
                     color: "#AB191F",
                     width:  "250px",
-                    height: "300px",
+                    height: "225px",
                     marginBottom: "20px",
                     marginRight: "20px",
+                    marginLeft:"20px",
                     borderRadius: "10px",
                     boxShadow:  "0px 0px 3px 3px rgba(0, 0, 0, .1)"
                 }}>
@@ -86,41 +87,22 @@ const CoopmatesView = ({ data }) => {
                             {/* Renter Name */}
                             <Typography 
                                 variant="h6" 
-                                style={{ margin: "-20px 30px 0px 30px" }} 
+                                style={{ margin: "-20px 25px 0px 0px" }} 
                                 sx={{fontWeight: 600}}
                             > {name} 
                             </Typography> 
-                            {/* Renter Gender */}
-                            {gender === 'Male' ? <MaleIcon style={{margin:"-22px 0px 0px -20px", fontSize: "22pt"}}/> : ''}
-                            {gender === 'Female' ? <FemaleIcon style={{margin:"-22px 0px 0px -20px", fontSize: "22pt"}}/> : ''}
-                            {gender === 'Transgender' ? <TransgenderIcon style={{margin:"-22px 0px 0px -20px", fontSize: "22pt"}}/> : ''}
-
                             {/* Renter Age */}
                             <Typography 
                                 variant="body1" 
-                                style={{ margin: "-22px 30px 0px -40px", fontSize:"15pt" }} 
-                                sx={{fontWeight: 600}}
+                                style={{ margin: "-22px 20px -2px -10px", fontSize:"15pt" }} 
+                                sx={{fontWeight: 500}}
                             > {age} 
                             </Typography>
+                            {/* Renter Gender */}
+                            {gender === 'Male' ? <MaleIcon style={{margin:"-22px 15px 0px -10px", fontSize: "22pt"}}/> : ''}
+                            {gender === 'Female' ? <FemaleIcon style={{margin:"-22px 0px 0px -20px", fontSize: "22pt"}}/> : ''}
+                            {gender === 'Transgender' ? <TransgenderIcon style={{margin:"-22px 0px 0px -20px", fontSize: "22pt"}}/> : ''}
                         </Box>
-
-                        <Box style={{alignItems:'center'}}>
-                            {/* Renter Age */}
-                            <Typography 
-                                variant="body2" 
-                                style={{ margin: "0 30px 5px 30px" }}
-                            > {age}
-                            </Typography>
-
-
-                            <Typography 
-                                variant="body2" 
-                                style={{ margin: "0 30px 5px 30px" }}
-                            > {gender}
-                            </Typography>
-
-                        </Box>
-                        
                     </CardContent>
                 </CardActionArea>
             </Card>
