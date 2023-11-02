@@ -74,11 +74,11 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
 
                 if (res.ok) {
                     const getData = await res.json()
-                    if (getData.userType == "renter") {
+                    if (getData.user_type == "renter") {
                         const obj = JSON.parse(JSON.stringify(getData));
-                        setUserData(obj)
+                        setUserData(getData)
                         setFavCoopsArr(obj.user.renterInfo.favCoops)
-                    } else if (getData.userType == "manager") {
+                    } else if (getData.user_type == "manager") {
                         const obj = JSON.parse(JSON.stringify(getData));
                         setUserData(obj)
                         setMyCoopsArr(obj.user.company.myCoops)
@@ -91,6 +91,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
         }
 
         getUserInfo()
+        console.log(favCoopsArr);
     }, [userData, favCoopsArr, myCoopsArr])
 
     const handleOpen = () => {
