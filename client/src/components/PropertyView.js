@@ -56,6 +56,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
     const [saves, setSaves] = React.useState(myCoops === true ? data.saves : data.propertyInfo.saves)
     const [updateOrRemove, setUpdateOrRemove] = React.useState('')
     const [userData, setUserData] = React.useState('')
+    const [userType, setUserType] = React.useState('')
     const [favCoopsArr, setFavCoopsArr] = React.useState([])
     const [myCoopsArr, setMyCoopsArr] = React.useState([])
     const coopFavorited = favCoopsArr.some(coops => coops._id.toString() === data._id.toString())
@@ -75,10 +76,13 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
                 if (res.ok) {
                     const getData = await res.json()
                     if (getData.user_type == "renter") {
+                        setUserType("renter")
                         const obj = JSON.parse(JSON.stringify(getData));
                         setUserData(getData)
                         setFavCoopsArr(obj.user.renterInfo.favCoops)
                     } else if (getData.user_type == "manager") {
+                        setUserType("manager")
+                        console.log("manager")
                         const obj = JSON.parse(JSON.stringify(getData));
                         setUserData(obj)
                         setMyCoopsArr(obj.user.company.myCoops)
@@ -504,7 +508,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
                                     </IconButton>
                                 </Tooltip>
                             </div>
-                        ) : isOwner === false ? (
+                        ) : isOwner === false && userType !== "manager" ? (
                             // User view (not owner)
                             <Tooltip
                                 title="Add to FAV COOPS"
@@ -525,14 +529,14 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
                                     )}
                                 </IconButton>
                             </Tooltip>
-                        ) : (
+                        ) : isOwner === true && userType === "manager" ? (
                             // Owner view
                             <Tooltip title="Delete Property">
                                 <IconButton onClick={handleDeleteProperty}>
                                     <DeleteOutlineIcon sx={{ color: "#AB191F" }} />
                                 </IconButton>
                             </Tooltip>
-                        )
+                        ) : ''
                     ) : (
                         // Not logged in view
                         ''
