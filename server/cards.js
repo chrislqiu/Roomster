@@ -107,6 +107,15 @@ router.get('/add-card', async (req, res) => {
     }
 });
 
+router.post('/get-company', (req, res) => { //company info and my coops on company object
+    Company.findOne({'companyInfo.name': req.body.companyName})
+    .then((result) => {
+        res.send(result);
+    }).catch((err) => {
+        console.log(err);
+    })
+})
+
 router.post('/getCompanyInfo', (req, res) => {
     companyName = req.body.companyName;
     CompanyInfo.findOne({name: companyName})
@@ -139,18 +148,43 @@ router.get('/all-cards', (req, res) => {
     });
 });
 
-// Route to get all cards
-router.get('/add-save/:id', async (req, res) => {
-    const { id } = req.params;
-    const property = await Property.findById(id);
-    const saves = property.propertyInfo.saves;
-    await Property.findByIdAndUpdate(id, {$set: {'propertyInfo.saves': saves + 1}})
-    .then((result) => {
-        res.send(result);
-    })
-    .catch((err) => {
-        console.log(err);
-    });
+// Route to add saved property
+router.post('/update-saves', async (req, res) => {
+    const id = req.body.id
+    const renter = await Renter.findOne({username: req.body.username})
+    const property = await Property.findById(id)
+    const coopExists = renter.renterInfo.favCoops.some(coop => coop._id.toString() === property._id.toString());
+    console.log(coopExists)
+    if (!coopExists) { //add save
+        //const updatedPropertyInfo = await PropertyInfo.findOneAndUpdate({propertyName: property.propertyInfo.propertyName}, {saves: property.propertyInfo.saves + 1})
+        const updatedProperty = await Property.findByIdAndUpdate(id, {$set:{'propertyInfo.saves': property.propertyInfo.saves + 1}}, {'returnDocument': 'after'})
+        renter.renterInfo.favCoops.push(updatedProperty)
+        renter.save()
+        //updatedPropertyInfo.save()
+        updatedProperty.save()
+        .then((result) => {
+            res.send(result);
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+    } else { //remove save
+        renter.renterInfo.favCoops.pull(id)
+        console.log(renter.renterInfo.favCoops.pull(id))
+        //const updatedPropertyInfo = await PropertyInfo.findOneAndUpdate({propertyName: property.propertyInfo.propertyName}, {saves: property.propertyInfo.saves - 1})
+        const updatedProperty = await Property.findByIdAndUpdate(id, {$set:{'propertyInfo.saves': property.propertyInfo.saves - 1}}, {'returnDocument': 'after'})
+        renter.save()
+        //updatedPropertyInfo.save()
+        updatedProperty.save()
+        .then((result) => {
+            console.log(result)
+            res.send(result);
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+    }
+
 });
 
 // Route to get featured cards
@@ -165,8 +199,9 @@ router.get('/featured-cards', (req, res) => {
 });
 
 // Route to get my coops cards
-router.get('/my-coops-cards', (req, res) => { //TODO: match req username
-    Manager.find({'company.myCoops': {}})
+router.post('/my-coops-cards', async (req, res) => {
+    const currentManager = await Manager.findOne({username: req.body.username})
+    const myCoops = await Property.find({'companyInfo.name': currentManager.company.myCoops})
     .then((result) => {
         res.send(result);
     })
@@ -176,8 +211,8 @@ router.get('/my-coops-cards', (req, res) => { //TODO: match req username
 });
 
 // Route to get fav coops cards
-router.get('/fav-coops-cards', (req, res) => { //TODO: match req username
-    Renter.find({'renterInfo.favCoops': {}})
+router.post('/fav-coops-cards', async (req, res) => {
+    const currentRenter = await Renter.findOne({username: req.body.username}, 'renterInfo.favCoops -_id') //format: {"renterInfo":{"favCoops":[{},{}]}}
     .then((result) => {
         res.send(result);
     })
