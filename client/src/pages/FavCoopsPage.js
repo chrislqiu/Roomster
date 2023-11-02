@@ -13,19 +13,28 @@ const FavCoopPage = ({ login }) => {
 
     useEffect(() => {
         const getUserInfo = async () => {
-            const res = await fetch('http://localhost:8000/auth/current-user', {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                credentials: 'include'
-            });
-            const getData = await res.json();
-            const obj = JSON.parse(JSON.stringify(getData));
-            setUsername(obj.username);
-            setUserData(obj);
-            setFavCoopsArr(obj.user.renterInfo.favCoops);
-            setLoading(false); 
+            try {
+                const res = await fetch('http://localhost:8000/auth/current-user', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    credentials: 'include'
+                });
+                
+                const getData = await res.json();
+                
+                const obj = JSON.parse(JSON.stringify(getData));
+                setUsername(obj.username);
+                setUserData(obj);
+                if(obj.user.renterInfo){
+                    setFavCoopsArr(obj.user.renterInfo.favCoops);
+                }
+                setLoading(false);
+            } catch (e) {
+                console.log("error: " + e)
+                
+            }
         };
 
         getUserInfo();
