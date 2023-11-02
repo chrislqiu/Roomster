@@ -33,11 +33,12 @@ const PropertyManagerPublicPage = () => {
                     companyName: searchparams.get("companyName")
                 })
             }).then(res => res.json())
-            .then(data => setCompanyInfo(data))
+            .then(data => setCompanyInfo(data.companyInfo))
         }
         sendCompanyName();
         getCompanyInfo();
     }, [])
+
     const styles = {
         header: {  
             fontWeight: "600",
@@ -89,6 +90,7 @@ const PropertyManagerPublicPage = () => {
             }}> 
                 {"Properties from " + searchparams.get("companyName")}
             </Typography >
+            {console.log(companyInfo)}
             <Box style ={{position:"fixed", bottom:"0", right:"0"}}>
                 <IconButton 
                     onMouseEnter={handleHovered}

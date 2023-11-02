@@ -118,8 +118,10 @@ router.post('/get-company', (req, res) => { //company info and my coops on compa
 
 router.post('/getCompanyInfo', (req, res) => {
     companyName = req.body.companyName;
-    CompanyInfo.findOne({name: companyName})
+    console.log(companyName)
+    Company.findOne({'companyInfo.name': companyName})
     .then((result) => {
+        console.log(result)
         res.send(result);
     }).catch((err) => {
         console.log(err);
