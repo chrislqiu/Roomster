@@ -60,7 +60,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
 
     const handleOpen = () => {
         setOpen(true)
-        
+
     }
     const handleClose = () => {
         setOpen(false)
@@ -69,7 +69,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
     //need user information for favCoops
     //if renter user and user.favCoops contains property then set favCoops to true
     //console.log(favCoops)
-    const [active, setActive]= React.useState(favCoops === true ? true : false)
+    const [active, setActive] = React.useState(favCoops === true ? true : false)
     const [hovered, setHovered] = React.useState(false);
     const handleHovered = () => {
         setHovered(true)
@@ -81,11 +81,11 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
     /*
      * Handle favorite button
      */
-    const handleFavorite = async() => {
+    const handleFavorite = async () => {
 
         /* the id of the single property */
-        const propertyId = data._id; 
-        
+        const propertyId = data._id;
+
         //var newSavesCount = active === true ? saves - 1 : saves + 1;
         /* update the active for the button */
         setActive(!active);
@@ -96,7 +96,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ id: propertyId, favCoop: data, updateOrRemove: updateOrRemove, username: userData.username}),
+                body: JSON.stringify({ id: propertyId, favCoop: data, updateOrRemove: updateOrRemove, username: userData.username }),
                 credentials: "include",
             });
 
@@ -113,7 +113,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
         window.location.reload(true)
 
     }
-    
+
     const styles = {
         divider: {
             height: "3px",
@@ -123,7 +123,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
         }
     }
 
-    const navigate=useNavigate()
+    const navigate = useNavigate()
     const openCompanyPage = (property) => {
         navigate({
             pathname: "/CompanyPage",
@@ -161,36 +161,36 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
                     boxShadow: featured === true ? "none" : "0px 0px 3px 3px rgba(0, 0, 0, .1)"
                 }}>
                 <CardActionArea>
-                        <CardMedia
-                            component="img"
-                            image={imgExample}
-                            //height="140px"
-                            style={{
-                                height: featured === true ? "120px" : "130px",
-                                width: featured === true ? "210px" : "230px",
-                                margin: "10px",
-                                borderRadius: "5px"
-                            }}
-                        />
-                        <CardContent>
+                    <CardMedia
+                        component="img"
+                        image={imgExample}
+                        //height="140px"
+                        style={{
+                            height: featured === true ? "120px" : "130px",
+                            width: featured === true ? "210px" : "230px",
+                            margin: "10px",
+                            borderRadius: "5px"
+                        }}
+                    />
+                    <CardContent>
                         <div style={{ display: 'flex', alignItems: 'center', marginLeft: 0 }}>
 
-                          <Typography variant="h6" style={{margin: "-20px 0 0px 0"}}
-                          > {data.propertyInfo.propertyName.split(":")[0]} </Typography>
-                         {/* {featured === true ? <StarIcon style={{margin: "-20px 0 0px 2.5"}} /> : ''} */}
-                          {/* {favCoops === true ? <FavoriteIcon style={{margin: "-20px 0 0px 2.5"}} sx={{color: "#AB191F", ":hover": {color: "#F6EBE1",},}}/> : ''} */}
-                          {/* <Typography variant="h6" style={{fontSize: "13pt", margin: "-20px 0 0px 0"}}> Property Name </Typography> */}
-                          {featured === true ? <StarIcon style={{margin: "-22px 0 0 5px", fontSize:"15pt"}} /> : ''}
-                          {favCoops === true ? <FavoriteIcon style={{margin: "-22px 0 0 5px", fontSize: "15pt"}} />: ''}
-                          {myCoops === true ? <BookmarkIcon style={{margin: "-22px 0 0 5px", fontSize: "15pt"}} /> : ''}
+                            <Typography variant="h6" style={{ margin: "-20px 0 0px 0" }}
+                            > {data.propertyInfo.propertyName.split(":")[0]} </Typography>
+                            {/* {featured === true ? <StarIcon style={{margin: "-20px 0 0px 2.5"}} /> : ''} */}
+                            {/* {favCoops === true ? <FavoriteIcon style={{margin: "-20px 0 0px 2.5"}} sx={{color: "#AB191F", ":hover": {color: "#F6EBE1",},}}/> : ''} */}
+                            {/* <Typography variant="h6" style={{fontSize: "13pt", margin: "-20px 0 0px 0"}}> Property Name </Typography> */}
+                            {featured === true ? <StarIcon style={{ margin: "-22px 0 0 5px", fontSize: "15pt" }} /> : ''}
+                            {favCoops === true ? <FavoriteIcon style={{ margin: "-22px 0 0 5px", fontSize: "15pt" }} /> : ''}
+                            {myCoops === true ? <BookmarkIcon style={{ margin: "-22px 0 0 5px", fontSize: "15pt" }} /> : ''}
 
                         </div>
-                          <Typography variant="body2" style={{margin: "0 0 5px 0"}}>{data.propertyInfo.address}</Typography>
-                          <Typography variant="body2">{data.propertyInfo.beds} bedroom </Typography>
-                          <Typography variant="body2" style={{marginBottom:"5px"}}>{data.propertyInfo.baths} bathroom</Typography>
-                          <Divider style={styles.divider}></Divider>
-                          <Typography variant="body1" style={{marginTop:"5px", textAlign:"right", fontWeight:"500"}}> ${data.propertyInfo.cost} per month</Typography>
-                        
+                        <Typography variant="body2" style={{ margin: "0 0 5px 0" }}>{data.propertyInfo.address}</Typography>
+                        <Typography variant="body2">{data.propertyInfo.beds} bedroom </Typography>
+                        <Typography variant="body2" style={{ marginBottom: "5px" }}>{data.propertyInfo.baths} bathroom</Typography>
+                        <Divider style={styles.divider}></Divider>
+                        <Typography variant="body1" style={{ marginTop: "5px", textAlign: "right", fontWeight: "500" }}> ${data.propertyInfo.cost} per month</Typography>
+
                     </CardContent>
                 </CardActionArea>
             </Card>
@@ -232,190 +232,197 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
                          * Stack direction row has each text 'chunk'
                          */
                     }
-                    <Stack direction={{'400px': "column", md: "row",lg: "row", xl: "row"}} spacing={5} sx={{ marginTop: 2, p: 1 }} >
+                    <Stack direction={{ '400px': "column", md: "row", lg: "row", xl: "row" }} spacing={5} sx={{ marginTop: 2, p: 1 }} >
 
                         <Box width='600'>
 
-                            <Tooltip 
+                            <Tooltip
                                 title="Go to Company Page"
                                 componentsProps={{
                                     tooltip: {
-                                      sx: {
-                                        bgcolor: 'rgba(171, 25, 31, 0.9)',
-                                        color: '#F6EBE1'
-                                      },
+                                        sx: {
+                                            bgcolor: 'rgba(171, 25, 31, 0.9)',
+                                            color: '#F6EBE1'
+                                        },
                                     },
                                 }}
+                            >
+                                <Link href="/CompanyPage"
+                                    underline="hover"
+                                    color="black"
+                                    sx={{
+                                        fontWeight: 600,
+                                        "&:hover":
+                                            { color: "#AB191F" }
+                                    }}
                                 >
-                            <Link href="/CompanyPage" 
-                                  underline="hover" 
-                                  color="black" 
-                                  sx={{fontWeight: 600, 
-                                        "&:hover": 
-                                          {color:"#AB191F"}}}
-                                       >
-                                {data.propertyInfo.propertyName}
-                            </Link>
-                        {/* Basic Property Info */}
-                        <Box width='600px' style={{marginTop:"5px", marginRight:"-25px"}}>
-                            <Tooltip title="Go to Company Page"
-                                     componentsProps={{
+                                    {data.propertyInfo.propertyName}
+                                </Link>
+                            </Tooltip>
+                            {/* Basic Property Info */}
+                            <Box width='600px' style={{ marginTop: "5px", marginRight: "-25px" }}>
+                                <Tooltip title="Go to Company Page"
+                                    componentsProps={{
                                         tooltip: {
                                             sx: {
                                                 bgcolor: 'rgba(171, 25, 31, 0.9)',
                                                 color: "#F6EBE1"
                                             },
                                         },
-                                     }}
-                                     >
-                                <Link onClick={openCompanyPage} underline="hover" color="black" sx={{fontWeight: 600, "&:hover": {cursor: "pointer", color:"#AB191F"}}}>
-                                    {data.propertyInfo.propertyName}
+                                    }}
+                                >
+                                    <Link onClick={openCompanyPage} underline="hover" color="black" sx={{ fontWeight: 600, "&:hover": { cursor: "pointer", color: "#AB191F" } }}>
+                                        {data.propertyInfo.propertyName}
+                                    </Link>
+                                </Tooltip>
+                                <Typography
+                                    sx={{
+                                        fontWeight: 300,
+                                        variant: "body2",
+                                        fontStyle: 'italic',
+                                        marginTop: .5
+                                    }}
+                                >
+                                    {data.propertyInfo.address}
+                                </Typography>
+                                <Typography
+                                    sx={{
+                                        fontWeight: 300,
+                                        variant: "body2",
+                                    }}
+                                >
+                                    {data.propertyInfo.beds} {data.propertyInfo.beds > 1 ? 'beds' : 'bed'}, {data.propertyInfo.baths} {data.propertyInfo.baths > 1 ? 'baths' : 'bath'}
+                                </Typography>
+                                <Divider orientation='horizontal' width={150} sx={{ borderBottomWidth: 3, color: "#AB191F", backgroundColor: "#AB191F", marginY: 1 }} />
+                                <Typography
+                                    sx={{
+                                        fontWeight: 500,
+                                        variant: "body2",
+                                    }}
+                                >
+                                    ${data.propertyInfo.cost} per month
+                                </Typography>
+                            </Box>
+                            <Divider orientation={{ xs: 'horizontal', md: 'vertical', lg: 'vertical', xl: 'vertical' }} width={3} sx={{ borderBottomWidth: 3, color: "#AB191F", backgroundColor: "#AB191F", marginY: 2 }} />
+
+                            {/* Amenitites */}
+                            <Box width='600px' style={{ marginTop: "-5px", marginRight: "-25px" }} >
+                                <Typography
+                                    sx={{
+                                        fontWeight: 600,
+                                        marginTop: 1,
+                                        marginLeft: "-25px",
+                                        variant: "body2"
+                                    }}
+                                >
+                                    Amenities
+                                </Typography>
+                                {data.propertyInfo.amenities.map((amenity) => {
+                                    return <List
+                                        sx={{
+                                            listStyleType: 'disc',
+                                            listStylePosition: 'inside',
+                                            marginLeft: "-40px",
+                                            marginTop: "-15px",
+                                            marginBottom: "-25px"
+                                        }}
+                                    >
+                                        <ListItem sx={{ display: 'list-item' }}>
+                                            {amenity}
+                                        </ListItem>
+                                    </List>
+                                })}
+
+                            </Box>
+                            <Divider orientation='verticle' width={3} sx={{ borderBottomWidth: 3, color: "#AB191F", backgroundColor: "#AB191F", marginY: 2 }} />
+
+                            {/* Utilities */}
+                            <Box width='600px' style={{ marginTop: "-5px", marginRight: "-25px" }} >
+                                <Typography
+                                    sx={{
+                                        fontWeight: 600,
+                                        marginTop: 1,
+                                        marginRight: "5px",
+                                        marginLeft: "-25px",
+                                        variant: "body2"
+                                    }}
+                                >
+                                    Utilities
+                                </Typography>
+                                {pullUtilities}
+                                <List
+                                    sx={{
+                                        listStyleType: 'disc',
+                                        listStylePosition: 'inside',
+                                        marginLeft: "-40px",
+                                        marginTop: "-15px",
+                                        marginBottom: "-25px"
+                                    }}
+                                >
+                                    <ListItem sx={{ display: 'list-item' }}>
+                                        {utilities}
+                                    </ListItem>
+                                </List>
+                            </Box>
+
+                            <Divider orientation='verticle' width={3} sx={{ borderBottomWidth: 3, color: "#AB191F", backgroundColor: "#AB191F", marginY: 2 }} />
+
+                            <Box width='600px' style={{ marginTop: "-5px" }} >
+                                <Typography
+                                    sx={{
+                                        fontWeight: 600,
+                                        marginTop: 1,
+                                        marginLeft: "-25px",
+                                        variant: "body2",
+                                    }}
+                                >
+                                    Contact Info
+                                </Typography>
+                                <Typography
+                                    sx={{
+                                        fontWeight: 300,
+                                        marginLeft: "-25px",
+                                        variant: "body2",
+                                    }}
+                                >
+                                    Company Name {<br />}
+                                </Typography>
+                                <Link href="https://riseonchauncey.com/" underline="always" color="#AB191F" marginLeft="-25px">
+                                    {'Website'}
                                 </Link>
-                            </Tooltip>
-                            <Typography
-                                sx={{
-                                    fontWeight: 300,
-                                    variant:"body2",
-                                    fontStyle: 'italic',
-                                    marginTop: .5
-                                }}
-                            >
-                                {data.propertyInfo.address}
-                            </Typography>
-                            <Typography
-                                sx={{
-                                    fontWeight: 300,
-                                    variant:"body2",
-                                }}
-                            >
-                                {data.propertyInfo.beds} {data.propertyInfo.beds > 1 ? 'beds' : 'bed'}, {data.propertyInfo.baths} {data.propertyInfo.baths > 1 ? 'baths' : 'bath'}
-                            </Typography>
-                            <Divider orientation='horizontal' width={150} sx={{ borderBottomWidth: 3, color: "#AB191F", backgroundColor: "#AB191F", marginY: 1 }} />
-                            <Typography
-                                sx={{
-                                    fontWeight: 500,
-                                    variant:"body2",
-                                }}
-                            >
-                                ${data.propertyInfo.cost} per month
-                            </Typography>
-                        </Box>
-                        <Divider orientation={{xs:'horizontal', md:'vertical', lg:'vertical', xl:'vertical'}} width={3} sx={{ borderBottomWidth: 3, color: "#AB191F", backgroundColor: "#AB191F", marginY: 2 }} />
-                        
-                        {/* Amenitites */}
-                        <Box width='600px' style={{marginTop:"-5px", marginRight:"-25px"}} >
-                            <Typography
-                                sx={{
-                                    fontWeight: 600,
-                                    marginTop: 1,
-                                    marginLeft:"-25px",
-                                    variant:"body2"
-                                }}
-                            >
-                                Amenities
-                            </Typography>
-                            {data.propertyInfo.amenities.map((amenity) => {
-                                return <List
-                                sx={{ 
-                                     listStyleType: 'disc',
-                                     listStylePosition: 'inside',
-                                     marginLeft:"-40px",
-                                     marginTop:"-15px",
-                                     marginBottom:"-25px"
-                                   }}
-                                 >
-                                    <ListItem sx={{ display: 'list-item' }}>
-                                        {amenity}
-                                    </ListItem>
-                                </List> 
-                            })}
-
-                        </Box>
-                        <Divider orientation='verticle' width={3} sx={{ borderBottomWidth: 3, color: "#AB191F", backgroundColor: "#AB191F", marginY: 2 }} />
-                        
-                        {/* Utilities */}
-                        <Box width='600px' style={{marginTop:"-5px", marginRight:"-25px"}} >
-                            <Typography
-                                sx={{
-                                    fontWeight: 600,
-                                    marginTop: 1,
-                                    marginRight:"5px",
-                                    marginLeft:"-25px",
-                                    variant:"body2"
-                                }}
-                            >
-                                Utilities
-                            </Typography>
-                            {pullUtilities}
-                            <List
-                                sx={{
-                                     listStyleType: 'disc',
-                                     listStylePosition: 'inside',
-                                     marginLeft:"-40px",
-                                     marginTop:"-15px",
-                                     marginBottom:"-25px"
-                                   }}
-                                 >
-                                    <ListItem sx={{ display: 'list-item' }}>
-                                        {utilities} 
-                                    </ListItem>
-                                </List> 
-                        </Box>
-
-                        <Divider orientation='verticle' width={3} sx={{ borderBottomWidth: 3, color: "#AB191F", backgroundColor: "#AB191F", marginY: 2 }} />
-
-                        <Box width='600px' style={{marginTop:"-5px"}} >
-                            <Typography
-                                sx={{
-                                    fontWeight: 600,
-                                    marginTop: 1,
-                                    marginLeft:"-25px",
-                                    variant:"body2",
-                                }}
-                            >
-                                Contact Info
-                            </Typography>
-                            <Typography
-                                sx={{
-                                    fontWeight: 300,
-                                    marginLeft:"-25px",
-                                    variant:"body2",
-                                }}
-                            >
-                                Company Name {<br />}
-                            </Typography>
-                            <Link href="https://riseonchauncey.com/" underline="always" color="#AB191F" marginLeft="-25px">
-                                {'Website'}
-                            </Link>
+                            </Box>
                         </Box>
                     </Stack>
                 </DialogContent>
-                <DialogActions>
-                    {login === true 
-                        ? <Tooltip 
-                            title="Add to FAV COOPS" 
-                            componentsProps={{
-                            tooltip: {
-                              sx: {
-                                bgcolor: 'rgba(171, 25, 31, 0.9)',
-                                color: '#F6EBE1'
-                              },
-                            },
-                        }}>
-                        <IconButton size="large" onClick={handleFavorite}>
-                            {/* {active ? <FavoriteIcon sx={{ color: "#AB191F" }} /> : <FavoriteBorderIcon sx={{ color: "#AB191F" }} />} */}
-                            {coopFavorited  ? <FavoriteIcon sx={{ color: "#AB191F" }} /> : <FavoriteBorderIcon sx={{ color: "#AB191F" }} />}
-                        </IconButton>
-                    </Tooltip>
-                    :
-                    ''
-                    }
-                     <Typography
-                        style={{margin: "0 5px 0 5px", padding: " 0 5px 0 0px"}}
-                     >
-                       {saves}
-                    </Typography>
-                </DialogActions>
+
+                <Dialog>
+                    <DialogActions>
+                        {login === true
+                            ? <Tooltip
+                                title="Add to FAV COOPS"
+                                componentsProps={{
+                                    tooltip: {
+                                        sx: {
+                                            bgcolor: 'rgba(171, 25, 31, 0.9)',
+                                            color: '#F6EBE1'
+                                        },
+                                    },
+                                }}>
+                                <IconButton size="large" onClick={handleFavorite}>
+                                    {/* {active ? <FavoriteIcon sx={{ color: "#AB191F" }} /> : <FavoriteBorderIcon sx={{ color: "#AB191F" }} />} */}
+                                    {coopFavorited ? <FavoriteIcon sx={{ color: "#AB191F" }} /> : <FavoriteBorderIcon sx={{ color: "#AB191F" }} />}
+                                </IconButton>
+                            </Tooltip>
+                            :
+                            ''
+                        }
+                        <Typography
+                            style={{ margin: "0 5px 0 5px", padding: " 0 5px 0 0px" }}
+                        >
+                            {saves}
+                        </Typography>
+                    </DialogActions>
+                </Dialog>
             </Dialog>
         </React.Fragment>
 
