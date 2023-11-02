@@ -20,6 +20,7 @@ import { useNavigate } from 'react-router-dom';
 /* 
  * Property Card (Rachel La)
  * More Property Detail Dialogue for the Property card (Tea Lazareto)
+ * 
  * Parameters:
  * (temporary until property cards) text: button text 
  * data : The property data from the database
