@@ -16,6 +16,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import { createSearchParams, useNavigate } from 'react-router-dom';
+import ContentPasteIcon from '@mui/icons-material/ContentPaste';
 
 
 /* 
@@ -27,7 +28,7 @@ import { createSearchParams, useNavigate } from 'react-router-dom';
  * featured : Boolean to determine whether the card is featured or not
  * favCoops : Boolean to determine if card is on favCoops page
  */
-const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
+const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, pageUrl}) => {
     /*
      * open, setOpen : controls the state of the dialogue popup
      */
@@ -48,6 +49,9 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
     }
     const handleLeave = () => {
         setHovered(false)
+    }
+    const handleCopy = (url) => {
+        navigator.clipboard.writeText(url)
     }
     const styles = {
         divider: {
@@ -255,6 +259,20 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
                     </Stack>
                 </DialogContent>
                 <DialogActions>
+                <Tooltip 
+                            title="Copy to Clipboard" 
+                            componentsProps={{
+                            tooltip: {
+                              sx: {
+                                bgcolor: 'rgba(171, 25, 31, 0.9)',
+                                color: '#F6EBE1'
+                              },
+                            },
+                        }}>
+                            <IconButton size="large" onClick={() => handleCopy(data._id)}>
+                                <ContentPasteIcon sx={{ color: "#AB191F" }}></ContentPasteIcon>
+                            </IconButton>
+                        </Tooltip>
 
                     {login == true 
                         ? <Tooltip 
