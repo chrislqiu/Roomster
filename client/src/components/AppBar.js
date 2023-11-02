@@ -25,8 +25,9 @@ const pages = ["Home", "Fav Coops", "My Coops", "Coopmates", "Log Out"];
  * RoomsterAppBar
  * login: boolean variable for now, keeps track if user is logged in or not
  */
-const RoomsterAppBar = ({ login }) => {
+const RoomsterAppBar = ({ login, userType }) => {
     console.log(login)
+    console.log("user pe:" + userType)
     let location = useLocation();
     console.log(location.pathname)
     let navigate = useNavigate();

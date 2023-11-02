@@ -197,7 +197,7 @@ class App extends React.Component {
                 // if login is false, appbar only has login/signup button
               }
 
-              {showAppBar ? <RoomsterAppBar login={showAppBarAdmin || showAppBarMain} /> : <div style={{ height: '64px' }}></div>}
+              {showAppBar ? <RoomsterAppBar login={showAppBarAdmin || showAppBarMain} userType={userType}/> : <div style={{ height: '64px' }}></div>}
               <div style={{ textAlign: "center", zIndex: "3", position: "relative", marginBottom: "50px" }}>
                 <Link href="/Home">
                   <img className="logo" src={logo} style={styles.logo}></img>
