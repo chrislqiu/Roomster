@@ -5,11 +5,11 @@ const Company = require('./company');
 const manager = new Schema({
     username: {
         type: String,
-        required: false
+        required: true
     },
     password: {
         type: String,
-        required: false
+        required: true
     },
     isVerified: {
         type: Boolean,
@@ -17,11 +17,11 @@ const manager = new Schema({
     },
     name: {
         type: String,
-        required: false //TODO: make true when name is a field on UI
+        required: false
     },
     email: {
         type: String,
-        required: true
+        required: false
     },
     phone: {
         type: String,
@@ -31,7 +31,7 @@ const manager = new Schema({
         type: String,
         default: "Hi! I'm a property manager here!"
     },
-    company: { //only attach company if user isVerfied is true
+    company: {
         type: Company.schema,
         required: true
     }

@@ -10,7 +10,7 @@ import LoginPage from "./pages/LoginPage"
 import GlobalStyles from "@mui/material/GlobalStyles";
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-import { Divider, Box } from "@mui/material";
+import { Divider, Box, Link } from "@mui/material";
 import theredthing from './images/theredthing.png'
 import logo from './images/logo2.png'
 import RoomsterAppBar from "./components/AppBar";
@@ -144,7 +144,7 @@ class App extends React.Component {
       });
 
       if (response.ok) {
-          // toast.success('User is verified');
+        // toast.success('User is verified');
       } else {
         toast.error('You are not verified, please check your email');
         // toast.error('Error during verification check');
@@ -168,7 +168,7 @@ class App extends React.Component {
     const faviconPath = "favicon.ico";
 
     return (
-      
+
       // <ThemeProvider theme={theme}>
       //   <GlobalStyles
       //     sx={{
@@ -199,7 +199,9 @@ class App extends React.Component {
 
               {showAppBar ? <RoomsterAppBar login={showAppBarAdmin || showAppBarMain} /> : <div style={{ height: '64px' }}></div>}
               <div style={{ textAlign: "center", zIndex: "3", position: "relative", marginBottom: "50px" }}>
-                <img className="logo" src={logo} style={styles.logo}></img>
+                <Link href="/Home">
+                  <img className="logo" src={logo} style={styles.logo}></img>
+                </Link>
               </div>
               <ToastContainer />
               <Routes>

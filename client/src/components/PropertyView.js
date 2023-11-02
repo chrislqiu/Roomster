@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Button from '@mui/material/Button';
-import { Box, Card, CardContent, CardMedia, IconButton, Tooltip, } from '@mui/material';
+import { List, ListItem, Box, Card, CardContent, CardMedia, IconButton, Tooltip, } from '@mui/material';
 import { CardActionArea } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
@@ -17,8 +17,7 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import CheckIcon from "@mui/icons-material/Check";
-
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, createSearchParams } from 'react-router-dom';
 
 
 /* 
@@ -31,10 +30,60 @@ import { useNavigate } from 'react-router-dom';
  * favCoops : Boolean to determine if card is on favCoops page
  */
 const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) => {
+    var image, propertyName, address, beds, baths, cost, amenities
+    if (myCoops) {
+        image = data.image;
+        propertyName = data.propertyName;
+        address = data.address;
+        beds = data.beds;
+        baths = data.baths;
+        cost = data.cost;
+        amenities = data.amenities;
+    } else {
+        image = data.propertyInfo.image;
+        propertyName = data.propertyInfo.propertyName;
+        address = data.propertyInfo.address;
+        beds = data.propertyInfo.beds;
+        baths = data.propertyInfo.baths;
+        cost = data.propertyInfo.cost;
+        amenities = data.propertyInfo.amenities;
+    }
     /*
      * open, setOpen : controls the state of the dialogue popup
      */
     const [open, setOpen] = React.useState(false)
+    const [utilities, setUtilities] = React.useState('')
+    const [saves, setSaves] = React.useState(myCoops === true ? data.saves : data.propertyInfo.saves)
+    const [updateOrRemove, setUpdateOrRemove] = React.useState('')
+    const [userData, setUserData] = React.useState('')
+    const [favCoopsArr, setFavCoopsArr] = React.useState([])
+    const [myCoopsArr, setMyCoopsArr] = React.useState([])
+    const coopFavorited = favCoopsArr.some(coops => coops._id.toString() === data._id.toString())
+
+    React.useEffect(() => {
+        const getUserInfo = async () => {
+            const res = await fetch('http://localhost:8000/auth/current-user', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include'
+            })
+            const getData = await res.json()
+            if (getData.userType == "renter") {
+                const obj = JSON.parse(JSON.stringify(getData));
+                setUserData(obj)
+                setFavCoopsArr(obj.user.renterInfo.favCoops)
+            } else if (getData.userType == "manager") {
+                const obj = JSON.parse(JSON.stringify(getData));
+                setUserData(obj)
+                setMyCoopsArr(obj.user.company.myCoops)
+            }
+            
+        }
+        getUserInfo()
+    }, [userData, favCoopsArr, myCoopsArr])
+
     const handleOpen = () => {
         setOpen(true)
     }
@@ -53,6 +102,40 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
     const handleLeave = () => {
         setHovered(false)
     }
+    /*
+    * Handle favorite button
+    */
+    const handleFavorite = async () => {
+
+        /* the id of the single property */
+        const propertyId = data._id;
+
+        //var newSavesCount = active === true ? saves - 1 : saves + 1;
+        /* update the active for the button */
+            setActive(!active);
+        /* send id, number of saves, coop to be added, the check for delete/add */
+        try {
+            const response = await fetch('http://localhost:8000/cards/update-saves', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ id: propertyId, favCoop: data, updateOrRemove: updateOrRemove, username: userData.username }),
+                credentials: "include",
+            });
+
+            if (response.ok) {
+                console.log('Update successful:', response);
+            } else {
+                console.error(`Failed to update: ${response.status}`);
+            }
+        } catch (error) {
+            console.error(`Error: ${error}`);
+        }
+
+        setSaves(data.propertyInfo.saves);
+        window.location.reload(true)
+    }
     const styles = {
         divider: {
             height: "3px",
@@ -60,6 +143,19 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
             padding: "0",
             margin: "15px 0 15x 0",
         }
+    }
+    const navigate = useNavigate()
+    const openCompanyPage = (property) => {
+        navigate({
+            pathname: "/CompanyPage",
+            search: createSearchParams({
+                companyName: data.companyInfo.name
+            }).toString()
+        })
+    }
+
+    const pullUtilities = () => {
+        setUtilities(Object.keys(utilities).filter(key => utilities[key] === true))
     }
 
     const handleDeleteProperty = async () => {
@@ -189,7 +285,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
                         <div style={{ display: 'flex', alignItems: 'center', marginLeft: 0 }}>
 
                             <Typography variant="h6" style={{ margin: "-20px 0 0px 0" }}
-                            > {data.propertyInfo.propertyName.split(":")[0]} </Typography>
+                            > {propertyName.split(":")[0]} </Typography>
                             {/* {featured === true ? <StarIcon style={{margin: "-20px 0 0px 2.5"}} /> : ''} */}
                             {/* {favCoops === true ? <FavoriteIcon style={{margin: "-20px 0 0px 2.5"}} sx={{color: "#AB191F", ":hover": {color: "#F6EBE1",},}}/> : ''} */}
                             {/* <Typography variant="h6" style={{fontSize: "13pt", margin: "-20px 0 0px 0"}}> Property Name </Typography> */}
@@ -198,11 +294,11 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
                             {myCoops === true ? <BookmarkIcon style={{ margin: "-22px 0 0 5px", fontSize: "15pt" }} sx={{ color: "#AB191F", ":hover": { color: "#F6EBE1", }, }} /> : ''}
 
                         </div>
-                        <Typography variant="body2" style={{ margin: "0 0 5px 0" }}>{data.propertyInfo.address}</Typography>
-                        <Typography variant="body2">{data.propertyInfo.beds} bedroom </Typography>
-                        <Typography variant="body2" style={{ marginBottom: "5px" }}>{data.propertyInfo.baths} bathroom</Typography>
+                        <Typography variant="body2" style={{ margin: "0 0 5px 0" }}>{address}</Typography>
+                        <Typography variant="body2">{beds} bedroom </Typography>
+                        <Typography variant="body2" style={{ marginBottom: "5px" }}>{baths} bathroom</Typography>
                         <Divider style={styles.divider}></Divider>
-                        <Typography variant="body1" style={{ marginTop: "5px", textAlign: "right", fontWeight: "500" }}> ${data.propertyInfo.cost} per month</Typography>
+                        <Typography variant="body1" style={{ marginTop: "5px", textAlign: "right", fontWeight: "500" }}> ${cost} per month</Typography>
 
                     </CardContent>
                 </CardActionArea>
@@ -246,10 +342,20 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
                          */
                     }
                     <Stack direction={{ '400px': "column", md: "row", lg: "row", xl: "row" }} spacing={5} sx={{ marginTop: 2, p: 1 }} >
-                        <Box width='600'>
-                            <Tooltip title="Go to Company Page">
-                                <Link href="/CompanyPage" underline="none" color="black" sx={{ fontWeight: 600 }}>
-                                    {data.propertyInfo.propertyName}
+                        {/* Basic Property Info */}
+                        <Box width='600px' style={{ marginTop: "5px", marginRight: "-25px" }}>
+                            <Tooltip title="Go to Company Page"
+                                componentsProps={{
+                                    tooltip: {
+                                        sx: {
+                                            bgcolor: 'rgba(171, 25, 31, 0.9)',
+                                            color: "#F6EBE1"
+                                        },
+                                    },
+                                }}
+                            >
+                                <Link onClick={openCompanyPage} underline="hover" color="black" sx={{ fontWeight: 600, "&:hover": { cursor: "pointer", color: "#AB191F" } }}>
+                                    {propertyName}
                                 </Link>
                             </Tooltip>
                             <Typography
@@ -260,7 +366,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
                                     marginTop: .5
                                 }}
                             >
-                                {data.propertyInfo.address}
+                                {address}
                             </Typography>
                             <Typography
                                 sx={{
@@ -268,63 +374,104 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
                                     variant: "body2",
                                 }}
                             >
-                                {data.propertyInfo.beds} {data.propertyInfo.beds > 1 ? 'beds' : 'bed'}, {data.propertyInfo.baths} {data.propertyInfo.baths > 1 ? 'baths' : 'bath'}
+                                {beds} {beds > 1 ? 'beds' : 'bed'}, {baths} {baths > 1 ? 'baths' : 'bath'}
                             </Typography>
-                            <Divider orientation='horizontal' width={200} sx={{ borderBottomWidth: 3, color: "#AB191F", backgroundColor: "#AB191F", marginY: 1 }} />
+                            <Divider orientation='horizontal' width={150} sx={{ borderBottomWidth: 3, color: "#AB191F", backgroundColor: "#AB191F", marginY: 1 }} />
                             <Typography
                                 sx={{
                                     fontWeight: 500,
                                     variant: "body2",
-
                                 }}
                             >
-                                ${data.propertyInfo.cost} per month
+                                ${cost} per month
                             </Typography>
                         </Box>
                         <Divider orientation={{ xs: 'horizontal', md: 'vertical', lg: 'vertical', xl: 'vertical' }} width={3} sx={{ borderBottomWidth: 3, color: "#AB191F", backgroundColor: "#AB191F", marginY: 2 }} />
-                        <Box width={'100%'}>
+
+                        {/* Amenitites */}
+                        <Box width='600px' style={{ marginTop: "-5px", marginRight: "-25px" }} >
                             <Typography
                                 sx={{
                                     fontWeight: 600,
                                     marginTop: 1,
+                                    marginLeft: "-25px",
                                     variant: "body2"
                                 }}
                             >
                                 Amenities
                             </Typography>
-                            {data.propertyInfo.amenities.map((amenity) => {
-                                return <Typography
+                            {amenities.map((amenity) => {
+                                return <List
                                     sx={{
-                                        fontWeight: 300,
-                                        variant: "body2",
+                                        listStyleType: 'disc',
+                                        listStylePosition: 'inside',
+                                        marginLeft: "-40px",
+                                        marginTop: "-15px",
+                                        marginBottom: "-25px"
                                     }}
                                 >
-                                    {amenity}
-                                </Typography>
+                                    <ListItem sx={{ display: 'list-item' }}>
+                                        {amenity}
+                                    </ListItem>
+                                </List>
                             })}
 
                         </Box>
                         <Divider orientation='verticle' width={3} sx={{ borderBottomWidth: 3, color: "#AB191F", backgroundColor: "#AB191F", marginY: 2 }} />
-                        <Box width={'100%'} sx={{ paddingRight: 1 }} >
+
+                        {/* Utilities */}
+                        <Box width='600px' style={{ marginTop: "-5px", marginRight: "-25px" }} >
                             <Typography
                                 sx={{
                                     fontWeight: 600,
                                     marginTop: 1,
+                                    marginRight: "5px",
+                                    marginLeft: "-25px",
+                                    variant: "body2"
+                                }}
+                            >
+                                Utilities
+                            </Typography>
+                            {pullUtilities}
+                            <List
+                                sx={{
+                                    listStyleType: 'disc',
+                                    listStylePosition: 'inside',
+                                    marginLeft: "-40px",
+                                    marginTop: "-15px",
+                                    marginBottom: "-25px"
+                                }}
+                            >
+                                <ListItem sx={{ display: 'list-item' }}>
+                                    {utilities}
+                                </ListItem>
+                            </List>
+                        </Box>
+
+                        <Divider orientation='verticle' width={3} sx={{ borderBottomWidth: 3, color: "#AB191F", backgroundColor: "#AB191F", marginY: 2 }} />
+
+                        <Box width='600px' style={{ marginTop: "-5px" }} >
+                            <Typography
+                                sx={{
+                                    fontWeight: 600,
+                                    marginTop: 1,
+                                    marginLeft: "-25px",
                                     variant: "body2",
                                 }}
                             >
-                                Contact Information
+                                Contact Info
                             </Typography>
                             <Typography
                                 sx={{
                                     fontWeight: 300,
+                                    marginLeft: "-25px",
                                     variant: "body2",
                                 }}
                             >
                                 Company Name {<br />}
                             </Typography>
-                            <Link href="https://riseonchauncey.com/" underline="always" color="#AB191F">
-                                {'Link'}
+                            <Link href="https://riseonchauncey.com/" underline="always" color="#AB191F" marginLeft="-25px">
+                                {'Website'}
                             </Link>
                         </Box>
                     </Stack>
@@ -332,7 +479,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
                 <DialogActions>
 
 
-                    {login === true && !admin ? (
+                    {login === true && favCoops === true && !admin ? (
                         isOwner === true ? (
                             <Tooltip title="Delete Property">
                                 <IconButton onClick={handleDeleteProperty}>
@@ -340,17 +487,21 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
                                 </IconButton>
                             </Tooltip>
                         ) : (
-                            <Tooltip title={active ? "Remove from FAV COOPS" : "Add to FAV COOPS"}>
-                                <IconButton size="large" onClick={e => {
-                                    setActive(!active);
-                                }}>
-                                    {active ? (
-                                        <FavoriteIcon sx={{ color: "#AB191F" }} />
-                                    ) : (
-                                        <FavoriteBorderIcon sx={{ color: "#AB191F" }} />
-                                    )}
-                                </IconButton>
-                            </Tooltip>
+                            <Tooltip 
+                            title="Add to FAV COOPS" 
+                            componentsProps={{
+                            tooltip: {
+                              sx: {
+                                bgcolor: 'rgba(171, 25, 31, 0.9)',
+                                color: '#F6EBE1'
+                              },
+                            },
+                        }}>
+                        <IconButton size="large" onClick={handleFavorite}>
+                            {/* {active ? <FavoriteIcon sx={{ color: "#AB191F" }} /> : <FavoriteBorderIcon sx={{ color: "#AB191F" }} />} */}
+                            {coopFavorited  ? <FavoriteIcon sx={{ color: "#AB191F" }} /> : <FavoriteBorderIcon sx={{ color: "#AB191F" }} />}
+                        </IconButton>
+                    </Tooltip>
                         )
                     ) : (login === true && admin === true ? (
                         <div sx={{ display: "flex", width: "100%" }}>
@@ -366,6 +517,14 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
                             </Tooltip>
                         </div>
                     ) : null)}
+                    
+                    {favCoops === true ?  
+                     <Typography
+                        style={{margin: "0 5px 0 5px", padding: " 0 5px 0 0px"}}
+                     >
+                       {saves}
+                    </Typography> : ''
+                    }  
 
 
 
