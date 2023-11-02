@@ -1,4 +1,4 @@
-import { CardActionArea } from '@mui/material';
+import { CardActionArea, TextField } from '@mui/material';
 
 import { AspectRatio } from '@mui/joy';
 import Divider from '@mui/material/Divider';
@@ -29,9 +29,20 @@ import { faTruckPlane } from '@fortawesome/free-solid-svg-icons';
 const CoopmatesView = ({ data }) => {
     const [open, setOpen] = React.useState(false)
     const [hovered, setHovered] = React.useState(false);
+
+    /* TODO: Pull this data from database */
     const name = "John Doe"
     const age = "22"
+    const email = "john.doe@purdue.edu"
+    const phoneNumber = "(847) 129 3801"
     const gender = "Male"
+    const pets = true
+    const smoke = false
+    const studious = 3
+    const cleanliness = 4
+    const guests = 1
+    const fromTime = "12 AM"
+    const toTime = "8 AM"
 
     const handleOpen = () => {
         setOpen(true)
@@ -63,7 +74,6 @@ const CoopmatesView = ({ data }) => {
             float: "left", 
             width: "50%", 
             marginLeft:"-30px"
-            //backgroundColor: "lightgreen"
         },
         header: {
             margin: "10px 0 5px 0",
@@ -72,12 +82,48 @@ const CoopmatesView = ({ data }) => {
             color: "#AB191F",
             padding: "0 25px",
         },
+        body:{
+            width:"40px",
+            justifyContent:"center",
+            fontSize: "10pt",
+            fontWeight:"450",
+            color:"black",
+            marginTop:"32px",
+            marginLeft:"5px",
+        },
+        times: {
+            width:"200px",
+            textAlign:"center",
+            fontSize: "10pt",
+            fontWeight:"550",
+            color:"#f5ebe0",
+            marginTop:"32px",
+            marginLeft:"-10px",
+            backgroundColor: "#AB191F",
+            borderRadius: "5px",
+            border: "2px solid #AB191F",
+            "&:hover": {
+                border: "2px solid #AB191F",
+                boxShadow:"0px 0px 3px 3px rgba(0, 0, 0, .1)", 
+            }
+        },
+        contact: {
+            margin: "0 0 10px 25px", 
+            width:"185px", 
+            height: "20px",
+            borderRadius: "5px",
+            border: "2px solid #AB191F",
+            padding: "5px",
+            "&:hover": {
+                border: "2px solid #AB191F",
+                boxShadow:"0px 0px 3px 3px rgba(0, 0, 0, .1)", 
+            }
+        },
         box: {
             float: "left",
             width: "100%",
             height: "100%",
             display: "inline-flex",
-            //backgroundColor: "blue"
         },
         boxPadding: {
             padding: "0 10px 0 0"
@@ -249,10 +295,12 @@ const CoopmatesView = ({ data }) => {
                         <Typography style={styles.subheader}> 
                             {"Contact info"}
                         </Typography >
-                        <InputBase placeholder="Purdue Email" id="email-textfield" sx={inputBaseSX} disabled="true"/>
-                        <InputBase placeholder="Phone number" id="number-textfield" sx={inputBaseSX} disabled="true"/>    
-
-                        
+                        <Typography sx={styles.contact}>
+                            {email}
+                        </Typography>
+                        <Typography sx={styles.contact}>
+                            {phoneNumber}
+                        </Typography>
                     </Box>
                     <Box width='100%' style={styles.column2}>
                         <Container style={styles.box}>
@@ -273,22 +321,22 @@ const CoopmatesView = ({ data }) => {
                                 {/* Pet */}
                                 <FormControl style={{marginLeft:"-55px", marginBottom:"-7px"}} disabled={true}>
                                     <RadioGroup row name="pets" style={{width: "150px", display: "flex", justifyContent:"center"}} > 
-                                        <FormControlLabel value="yes" control={<Radio sx={radioSX}/>} label="Yes"/>
-                                        <FormControlLabel value="no" control={<Radio sx={radioSX}/>} label="No"/>
+                                        <FormControlLabel checked={pets === true} value="yes" control={<Radio sx={radioSX}/>} label="Yes"/>
+                                        <FormControlLabel checked={pets === false}value="no" control={<Radio sx={radioSX}/>} label="No"/>
                                     </RadioGroup>
                                 </FormControl>
                                 {/* Smoke */}
                                 <FormControl style={{marginLeft:"-55px", marginBottom: "-7px"}} disabled={true}>
-                                    <RadioGroup row name="smoke" style={{width: "150px", display: "flex", justifyContent:"center"}} > 
-                                        <FormControlLabel value="yes" control={<Radio sx={radioSX}/>} label="Yes"/>
-                                        <FormControlLabel value="no" control={<Radio sx={radioSX}/>} label="No"/>
+                                    <RadioGroup row name="smoke" style={{width: "150px", display: "flex", justifyContent:"center"}}> 
+                                        <FormControlLabel checked={smoke === true} value="yes" control={<Radio sx={radioSX}/>} label="Yes"/>
+                                        <FormControlLabel checked={smoke === false} value="no" control={<Radio sx={radioSX}/>} label="No"/>
                                     </RadioGroup>
                                 </FormControl>
                                 <Container>
                                     {/* Studious */}
                                     <Slider
                                         size="small"
-                                        defaultValue={3}
+                                        defaultValue={studious}
                                         valueLabelDisplay="auto"
                                         step={1}
                                         marks
@@ -302,7 +350,7 @@ const CoopmatesView = ({ data }) => {
                                     {/* Cleanliness */}
                                     <Slider
                                         size="small"
-                                        defaultValue={3}
+                                        defaultValue={cleanliness}
                                         valueLabelDisplay="auto"
                                         step={1}
                                         marks
@@ -316,7 +364,7 @@ const CoopmatesView = ({ data }) => {
                                     {/* Guests */}
                                     <Slider
                                         size="small"
-                                        defaultValue={3}
+                                        defaultValue={guests}
                                         valueLabelDisplay="auto"
                                         step={1}
                                         marks
@@ -327,6 +375,28 @@ const CoopmatesView = ({ data }) => {
                                     />
                                 </Container>
                                 <Container style={{display: "flex", gap: "1rem", width: "200px", margin:"0 0 10px -50px", padding:"0"}}>
+                                    {/* <InputBase placeholder="From" sx={inputBaseSX} disabled="true"/> */}
+                                    <Typography
+                                        //variant='button'
+                                        style={styles.body}>
+                                        From
+                                    </Typography>
+                                    {/* From time */}
+                                    <Typography
+                                        //variant='button'
+                                        style={styles.times}>
+                                        {fromTime}
+                                    </Typography>
+                                    <Typography
+                                        //variant='button'
+                                        style={styles.body}>
+                                        To
+                                    </Typography>
+                                    {/* To time */}
+                                    <Typography
+                                        style={styles.times}>
+                                        {toTime}
+                                    </Typography>
 
                                 </Container>
 
