@@ -120,6 +120,9 @@ router.post("/check-owner", authorization, (req, res) => {
             // res.send({username: result.company.companyInfo.name});
             Property.findOne({ _id: req.body.id })
                 .then((resultProperty) => {
+                    if (!resultProperty) {
+                        return res.send({ match: false });
+                    }
                     const match = result.company.companyInfo.name === resultProperty.companyInfo.name;
                     res.send({ match: match });
                 })
