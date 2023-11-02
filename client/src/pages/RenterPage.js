@@ -145,6 +145,23 @@ const RenterPage = () => {
     const [studious, setStudious] = React.useState('')
     const [cleanliness, setCleanliness] = React.useState('')
     const [guestFreq, setGuestFreq] = React.useState('')
+    const [username, setUsername] = React.useState('')
+
+    React.useEffect(() => {
+        const getUserInfo = async () => {
+            const res = await fetch('http://localhost:8000/auth/current-user', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include'
+            })
+            const getData = await res.json()
+            const obj = JSON.parse(JSON.stringify(getData));
+            setUsername(obj.username)
+        }
+        getUserInfo()
+    }, [])
 
     const handleSleepFrom = (event) => {
       setSleepFrom(event.target.value);
@@ -192,7 +209,7 @@ const RenterPage = () => {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(dataToSend),
+            body: JSON.stringify(dataToSend, {username}),
             credentials: 'include'
         })
         .then(response => response.json())
@@ -243,7 +260,7 @@ const RenterPage = () => {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(dataToSend),
+            body: JSON.stringify(dataToSend, username),
             credentials: 'include'
         })
         .then(response => response.json())

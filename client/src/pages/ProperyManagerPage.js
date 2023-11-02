@@ -11,6 +11,23 @@ const PropertyManagerPage = () => {
     const [addr, setAddr] = useState('');
     const [officeNum, setOfficeNum] = useState('');
     const [disableButton, setDisableButton] = useState(true)
+    const [username, setUsername] = React.useState('')
+
+    React.useEffect(() => {
+        const getUserInfo = async () => {
+            const res = await fetch('http://localhost:8000/auth/current-user', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include'
+            })
+            const getData = await res.json()
+            const obj = JSON.parse(JSON.stringify(getData));
+            setUsername(obj.username)
+        }
+        getUserInfo()
+    }, [])
 
     const inputBaseSX = {
         margin: "5 0 10px 0px", 
@@ -60,7 +77,7 @@ const PropertyManagerPage = () => {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(dataToSend),
+            body: JSON.stringify(dataToSend, username),
             credentials: 'include'
         })
         .then(response => response.json())
