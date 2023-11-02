@@ -33,7 +33,7 @@ const PropertyManagerPublicPage = () => {
                     companyName: searchparams.get("companyName")
                 })
             }).then(res => res.json())
-            .then(data => setCompanyInfo(data))
+            .then(data => setCompanyInfo(data.companyInfo))
         }
         sendCompanyName();
         getCompanyInfo();
