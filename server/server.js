@@ -148,10 +148,9 @@ app.post('/sendProperty', async (req,res) => {
   })
 
   newProperty.save()
-  const company = Company.findOne({"companyInfo.name": manager.company.companyInfo.name})
-  //const updatedCoops = 
-  company.myCoops.push(newPropertyInfo)
+  manager.company.myCoops.push(newPropertyInfo)
   await company.save()
+  await manager.save()
   .then((result) => {
     res.send(result);
   })
