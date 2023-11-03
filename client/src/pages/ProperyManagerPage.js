@@ -195,7 +195,7 @@ const PropertyManagerPage = () => {
                         </Box>
                 </Box>
             
-                <Box width='40%' marginLeft={57} marginY={-39}>
+                <Box width='40%' marginLeft={57} marginY={-30}>
                     <Typography 
                         sx={{
                             fontWeight: 600,
