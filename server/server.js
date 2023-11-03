@@ -4,7 +4,6 @@ const authRouter = require("./auth");
 const mongoose = require('mongoose');
 const cardRoutes = require('./cards');
 
-const saveMProfileRoutes = require('./sendManagerProfile')
 const RenterInfo = require("./models/renterInfo")
 const Renter = require("./models/renter")
 const Manager = require("./models/manager")
@@ -107,7 +106,7 @@ app.post('/sendManagerProfile', async (req, res) => {
 
 app.post('/sendRenterProfile', async (req,res) => {
   const data = req.body.renterInfo
-  const renter = await Renter.findOne({username: req.body.username})
+  var renter = await Renter.findOne({username: req.body.username})
 
   const updatedLivingPref = {
       pets: data.livingPreferences.pets,
@@ -141,7 +140,7 @@ app.post('/sendRenterProfile', async (req,res) => {
   })
   renter = updatedRenter
 
-  const coopmates = await Renter.find({'coopmates': {$elemMath: {'renterInfo.name': renter.renterInfo.name, 'renterInfo.email': renter.renterInfo.email}}})
+  const coopmates = await Renter.find({'coopmates': {$elemMatch: {'renterInfo.name': renter.renterInfo.name, 'renterInfo.email': renter.renterInfo.email}}})
   coopmates.forEach(async function(mate) {
     mate.coopmates.pull(oldRenterInfo._id)
     mate.coopmates.addToSet(renter.renterInfo)

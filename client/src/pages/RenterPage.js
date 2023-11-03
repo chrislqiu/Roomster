@@ -132,6 +132,8 @@ const RenterPage = () => {
         }
     }
     const [toggleOn, setToggleOn] = React.useState(false);
+    const [name, setName] = React.useState('')
+    const [age, setAge] = React.useState('')
     const [hasPet, setHasPet] = React.useState(null);
     const [doesSmoke, setDoesSmoke] = React.useState(null);
     const [open, setOpen] = React.useState(false);
@@ -145,6 +147,40 @@ const RenterPage = () => {
     const [studious, setStudious] = React.useState('')
     const [cleanliness, setCleanliness] = React.useState('')
     const [guestFreq, setGuestFreq] = React.useState('')
+    const [username, setUsername] = React.useState('')
+    const [userData, setUserData] = React.useState('')
+
+    React.useEffect(() => {
+        const getUserInfo = async () => {
+            const res = await fetch('http://localhost:8000/auth/current-user', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include'
+            })
+            const getData = await res.json()
+            const obj = JSON.parse(JSON.stringify(getData));
+            setUsername(obj.username)
+            setUserData(obj);
+            console.log(obj)
+            console.log(obj.user)
+            console.log(obj.user.renterInfo)
+        }
+        getUserInfo()
+        setName(userData.user.renterInfo.name)
+        setAge(userData.user.renterInfo.age)
+        setEmail(userData.user.renterInfo.email)
+        setPhone(userData.user.renterInfo.phone)
+        setProfileImg(userData.user.renterInfo.pfp)
+        setHasPet(userData.user.renterInfo.livingPreferences.pets)
+        setDoesSmoke(userData.user.renterInfo.livingPreferences.smoke)
+        setStudious(userData.user.renterInfo.livingPreferences.studious)
+        setCleanliness(userData.user.renterInfo.livingPreferences.cleanliness)
+        setGuestFreq(userData.user.renterInfo.livingPreferences.guestFreq)
+        setSleepFrom(userData.user.renterInfo.livingPreferences.sleepSchedule.from)
+        setSleepTo(userData.user.renterInfo.livingPreferences.sleepSchedule.to)
+    }, [userData])
 
     const handleSleepFrom = (event) => {
       setSleepFrom(event.target.value);
@@ -273,9 +309,6 @@ const RenterPage = () => {
         profilePic = chicken;
         setOpen(false);
     }
-
-    const name = "John Doe"
-    const age = "22"
 
     return (
         
