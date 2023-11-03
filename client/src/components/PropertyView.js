@@ -20,6 +20,8 @@ import CheckIcon from "@mui/icons-material/Check";
 import { useNavigate, createSearchParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBuildingCircleCheck } from '@fortawesome/free-solid-svg-icons'
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 /* 
@@ -192,7 +194,9 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
 
             if (response.ok) {
                 console.log("good")
+                localStorage.setItem('propertyDeleted', 'true');
                 window.location.reload(true);
+
             } else {
                 console.log("nope")
             }
@@ -218,6 +222,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
 
             if (response.ok) {
                 console.log("good")
+                localStorage.setItem('propertyDeleted', 'true');
                 window.location.reload(true);
             } else {
                 console.log("nope")
@@ -309,10 +314,19 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
         getPropertyVerification();
     }, []);
 
+    React.useEffect(() => {
+        const propertyDeleted = localStorage.getItem('propertyDeleted');
+        if (propertyDeleted === 'true') {
+          toast.success('Property deleted successfully!', { position: toast.POSITION.TOP_CENTER });
+          localStorage.removeItem('propertyDeleted');
+        }
+      }, []);
+    
 
 
     return (
         <React.Fragment>
+            <ToastContainer />
             <Card
                 variant='contained'
                 onClick={() => {
@@ -621,6 +635,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
 
                 </DialogActions>
             </Dialog>
+            
         </React.Fragment>
 
     )
