@@ -365,6 +365,7 @@ const MyCoopsPage = ({ login }) => {
                                     id="baths-input"
                                     defaultValue={-1}
                                     disabled={disableButton}
+                                    value={bath}
                                     sx={{
                                         marginLeft: "-10px",
                                         marginRight: "-50px",
