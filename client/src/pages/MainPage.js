@@ -2,13 +2,15 @@ import PropertyViewMore from "../components/PropertyView";
 import FeaturedProperties from "../components/FeaturedProperties";
 import React from "react"
 import SearchBar from "../components/SearchBar";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import { Container, Box } from "@mui/material";
 
 /*
  * Main Page View with the property cards
  */
-const MainPage = ({login}) => {
+const MainPage = ({ login }) => {
     /*
      * propertyInfo, setPropertyInfo to hold the card information from the server
      */
@@ -46,7 +48,26 @@ const MainPage = ({login}) => {
         });
         /* SET DEFAULT PAGE TO ALL */
         setFilteredProperties(filteredPropertyInfo)
-      }, [input, propertyInfo]);
+    }, [input, propertyInfo]);
+
+    React.useEffect(() => {
+        const params = new URLSearchParams(window.location.search);
+        const toastMessage = params.get("toast");
+
+        if (toastMessage === "ResetErr") {
+            toast.error('Error resetting password', {
+                position: toast.POSITION.TOP_CENTER,
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: false,
+                style: {
+                    background: "#F6EBE1", 
+                  },
+            });
+        }
+    }, []);
     const styles = {
         feed: {
             display: "flex",
@@ -54,7 +75,7 @@ const MainPage = ({login}) => {
             maxWidth: "1200px",
             flexWrap: "wrap",
         },
-        
+
     }
     return (
         <Container sx={{ width: '100%' }}>
@@ -62,7 +83,7 @@ const MainPage = ({login}) => {
             {console.log(filteredProperties)}
             {(input === '' && numberSelected === 0) &&
             <Box sx={{ m: 4 }} style={styles.feed}>
-                <FeaturedProperties data={propertyInfo} style={styles.feed} login={login}/>
+                <FeaturedProperties data={propertyInfo} style={styles.feed} login={login} />
             </Box>
             }
             <Box sx={{ m: 1 }} style={styles.feed}>

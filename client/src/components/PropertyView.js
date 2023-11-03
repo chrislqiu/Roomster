@@ -15,7 +15,10 @@ import StarIcon from '@mui/icons-material/Star';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
-import { createSearchParams, useNavigate } from 'react-router-dom';
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import CheckIcon from "@mui/icons-material/Check";
+import { useNavigate, createSearchParams } from 'react-router-dom';
+
 
 /* 
  * Property Card (Rachel La)
@@ -26,7 +29,7 @@ import { createSearchParams, useNavigate } from 'react-router-dom';
  * featured : Boolean to determine whether the card is featured or not
  * favCoops : Boolean to determine if card is on favCoops page
  */
-const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
+const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) => {
     var image, propertyName, address, beds, baths, cost, amenities
     if (myCoops) {
         image = data.image;
@@ -53,32 +56,46 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
     const [saves, setSaves] = React.useState(myCoops === true ? data.saves : data.propertyInfo.saves)
     const [updateOrRemove, setUpdateOrRemove] = React.useState('')
     const [userData, setUserData] = React.useState('')
+    const [userType, setUserType] = React.useState('')
     const [favCoopsArr, setFavCoopsArr] = React.useState([])
     const [myCoopsArr, setMyCoopsArr] = React.useState([])
     const coopFavorited = favCoopsArr.some(coops => coops._id.toString() === data._id.toString())
 
     React.useEffect(() => {
+
         const getUserInfo = async () => {
-            const res = await fetch('http://localhost:8000/auth/current-user', {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                credentials: 'include'
-            })
-            const getData = await res.json()
-            if (getData.userType == "renter") {
-                const obj = JSON.parse(JSON.stringify(getData));
-                setUserData(obj)
-                setFavCoopsArr(obj.user.renterInfo.favCoops)
-            } else if (getData.userType == "manager") {
-                const obj = JSON.parse(JSON.stringify(getData));
-                setUserData(obj)
-                setMyCoopsArr(obj.user.company.myCoops)
+            try {
+                const res = await fetch('http://localhost:8000/auth/current-user', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    credentials: 'include'
+                })
+
+                if (res.ok) {
+                    const getData = await res.json()
+                    if (getData.user_type == "renter") {
+                        setUserType("renter")
+                        const obj = JSON.parse(JSON.stringify(getData));
+                        setUserData(getData)
+                        setFavCoopsArr(obj.user.renterInfo.favCoops)
+                    } else if (getData.user_type == "manager") {
+                        setUserType("manager")
+                        console.log("manager")
+                        const obj = JSON.parse(JSON.stringify(getData));
+                        setUserData(obj)
+                        setMyCoopsArr(obj.user.company.myCoops)
+                    }
+                }
+
+            } catch (e) {
+                console.log("Error: " + e)
             }
-            
         }
+
         getUserInfo()
+        console.log(favCoopsArr);
     }, [userData, favCoopsArr, myCoopsArr])
 
     const handleOpen = () => {
@@ -92,6 +109,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
     //console.log(favCoops)
     const [active, setActive] = React.useState(favCoops === true ? true : false)
     const [hovered, setHovered] = React.useState(false);
+    const [isOwner, setIsOwner] = React.useState(false);
     const handleHovered = () => {
         setHovered(true)
     }
@@ -108,7 +126,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
 
         //var newSavesCount = active === true ? saves - 1 : saves + 1;
         /* update the active for the button */
-            setActive(!active);
+        setActive(!active);
         /* send id, number of saves, coop to be added, the check for delete/add */
         try {
             const response = await fetch('http://localhost:8000/cards/update-saves', {
@@ -154,11 +172,99 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
         setUtilities(Object.keys(utilities).filter(key => utilities[key] === true))
     }
 
+    const handleDeleteProperty = async () => {
+        const id = data._id;
+        console.log("data: " + id);
+        try {
+            const response = await fetch('http://localhost:8000/auth/delete-property', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: JSON.stringify({ id: id }),
+            });
+
+            console.log(response)
+
+            if (response.ok) {
+                console.log("good")
+                window.location.reload(true);
+            } else {
+                console.log("nope")
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    };
+
+    const handleVerifyProperty = async () => {
+        const id = data._id;
+        console.log("data: " + id);
+        try {
+            const response = await fetch('http://localhost:8000/auth/verify-property', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: JSON.stringify({ id: id }),
+            });
+
+            console.log(response)
+
+            if (response.ok) {
+                console.log("good")
+                window.location.reload(true);
+            } else {
+                console.log("nope")
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    };
+
+    const checkOwner = async () => {
+        const id = data._id;
+        // console.log(id)
+        try {
+            const response = await fetch('http://localhost:8000/auth/check-owner', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: JSON.stringify({ id: id }),
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                console.log(data.match)
+                setIsOwner(data.match)
+            } else {
+                console.log('Authentication check failed');
+            }
+        } catch (error) {
+            console.error('Error during authentication check:', error);
+        }
+    };
+
+
+    React.useEffect(() => {
+        // Call checkAuthentication when the component mounts
+        checkOwner();
+    }, []);
+
+
+
     return (
         <React.Fragment>
             <Card
                 variant='contained'
-                onClick={handleOpen}
+                onClick={() => {
+                    handleOpen();
+                    // checkOwner();
+                }}
                 onMouseEnter={handleHovered}
                 onMouseLeave={handleLeave}
                 sx={{
@@ -385,32 +491,66 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login }) => {
                     </Stack>
                 </DialogContent>
                 <DialogActions>
-                    {favCoops === true && login === true 
-                        ? <Tooltip 
-                            title="Add to FAV COOPS" 
-                            componentsProps={{
-                            tooltip: {
-                              sx: {
-                                bgcolor: 'rgba(171, 25, 31, 0.9)',
-                                color: '#F6EBE1'
-                              },
-                            },
-                        }}>
-                        <IconButton size="large" onClick={handleFavorite}>
-                            {/* {active ? <FavoriteIcon sx={{ color: "#AB191F" }} /> : <FavoriteBorderIcon sx={{ color: "#AB191F" }} />} */}
-                            {coopFavorited  ? <FavoriteIcon sx={{ color: "#AB191F" }} /> : <FavoriteBorderIcon sx={{ color: "#AB191F" }} />}
-                        </IconButton>
-                    </Tooltip>
-                    :
-                    ''
-                    }
-                    {favCoops === true ?  
-                     <Typography
-                        style={{margin: "0 5px 0 5px", padding: " 0 5px 0 0px"}}
-                     >
-                       {saves}
-                    </Typography> : ''
-                    }  
+
+
+                    {login === true ? (
+                        admin === true ? (
+                            // Admin view
+                            <div sx={{ display: "flex", width: "100%" }}>
+                                <Tooltip title="Delete Property">
+                                    <IconButton onClick={handleDeleteProperty}>
+                                        <DeleteOutlineIcon sx={{ color: "#AB191F" }} />
+                                    </IconButton>
+                                </Tooltip>
+                                <Tooltip title="Verify Property">
+                                    <IconButton onClick={handleVerifyProperty}>
+                                        <CheckIcon sx={{ color: "green" }} />
+                                    </IconButton>
+                                </Tooltip>
+                            </div>
+                        ) : isOwner === false && userType !== "manager" ? (
+                            // User view (not owner)
+                            <Tooltip
+                                title="Add to FAV COOPS"
+                                componentsProps={{
+                                    tooltip: {
+                                        sx: {
+                                            bgcolor: 'rgba(171, 25, 31, 0.9)',
+                                            color: '#F6EBE1'
+                                        },
+                                    },
+                                }}
+                            >
+                                <IconButton size="large" onClick={handleFavorite}>
+                                    {coopFavorited ? (
+                                        <FavoriteIcon sx={{ color: "#AB191F" }} />
+                                    ) : (
+                                        <FavoriteBorderIcon sx={{ color: "#AB191F" }} />
+                                    )}
+                                </IconButton>
+                            </Tooltip>
+                        ) : isOwner === true && userType === "manager" ? (
+                            // Owner view
+                            <Tooltip title="Delete Property">
+                                <IconButton onClick={handleDeleteProperty}>
+                                    <DeleteOutlineIcon sx={{ color: "#AB191F" }} />
+                                </IconButton>
+                            </Tooltip>
+                        ) : ''
+                    ) : (
+                        // Not logged in view
+                        ''
+                    )}
+
+
+                    <Typography
+                        style={{ margin: "0 5px 0 5px", padding: " 0 5px 0 0px" }}
+                    >
+                        {saves}
+                    </Typography>
+
+
+
                 </DialogActions>
             </Dialog>
         </React.Fragment>

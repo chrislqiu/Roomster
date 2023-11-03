@@ -12,6 +12,9 @@ import CloseIcon from '@mui/icons-material/Close';
 import RenterCreateAccountView from './RenterCreateAccountView';
 import RenterCreateAccountPage from '../pages/RenterCreateAccountPage';
 import ManagerCreateAccountView from './PropertyManagerCreateAccountView';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import ForgotPwView from './ForgotPwView';
 
 
@@ -27,7 +30,7 @@ import ForgotPwView from './ForgotPwView';
 
 
 
-const LoginView = ({ text}) => {
+const LoginView = ({ text }) => {
     const [open, setOpen] = React.useState(false)
     const [rCreateOpen, setRCreateOpen] = React.useState(false)
     const [mCreateOpen, setMCreateOpen] = React.useState(false)
@@ -35,6 +38,21 @@ const LoginView = ({ text}) => {
     const [email, setEmail] = React.useState('')
     const [password, setPassword] = React.useState('')
     const [loginStatus, setLoginStatus] = React.useState(null)
+    const [resetPasswordOpen, setResetPasswordOpen] = React.useState(false);
+    const [resetPasswordUsername, setResetPasswordUsername] = React.useState('');
+
+    const handleResetPasswordOpen = () => {
+        setResetPasswordOpen(true);
+        handleClose();
+
+    };
+
+    const handleResetPasswordClose = () => {
+        setResetPasswordOpen(false);
+        setResetPasswordUsername('');
+        setOpen(true);
+    };
+
 
     const handleOpen = () => {
         setOpen(true)
@@ -83,12 +101,63 @@ const LoginView = ({ text}) => {
                 color: '#AB191F',
             });
         }
-
-
     }
+
+    const handleResetPassword = async () => {
+        try {
+            const response = await fetch('http://localhost:8000/auth/send-pw-reset', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                // credentials: 'include',
+                body: JSON.stringify({ username: resetPasswordUsername }),
+            });
+
+            console.log(response)
+
+            if (response.ok) {
+                toast.success('Reset email sent', {
+                    position: toast.POSITION.TOP_CENTER,
+                    autoClose: 3000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: false,
+                    style: {
+                        background: "#F6EBE1", 
+                      },
+                });
+                handleResetPasswordClose();
+                handleClose();
+            } else {
+                toast.error('User does not exist', {
+                    position: toast.POSITION.TOP_CENTER,
+                    autoClose: 3000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: false,
+                    style: {
+                        background: "#F6EBE1", 
+                      },
+                });
+
+            }
+        } catch (error) {
+            setLoginStatus({
+                message: 'Error logging in',
+                color: '#AB191F',
+            });
+        }
+        
+    };
+
+
 
     return (
         <React.Fragment>
+            <ToastContainer />
             <Button
                 variant='contained'
                 onClick={handleOpen}
@@ -126,16 +195,16 @@ const LoginView = ({ text}) => {
                     }
                 }}
             >
-                <div sx={{justifyContent: "left"}}>
+                <div sx={{ justifyContent: "left" }}>
                     <IconButton
                         style={{ position: "absolute", top: "0", right: "0" }}
                         onClick={() => handleClose()}
                     >
                         <CloseIcon style={{ color: "black" }} />
                     </IconButton>
-                    <DialogTitle sx={{fontWeight: 600, fontSize:25, marginBottom: "-40px"}}> Welcome, </DialogTitle>
-                    <DialogTitle sx={{fontWeight: 600, fontSize:25, marginBottom: "-15px"}}>Create Account</DialogTitle>
-                    <Divider variant="middle" sx = {{borderBottomWidth: 3, color:"#AB191F", backgroundColor:"#AB191F", marginY:1}}/>
+                    <DialogTitle sx={{ fontWeight: 600, fontSize: 25, marginBottom: "-40px" }}> Welcome, </DialogTitle>
+                    <DialogTitle sx={{ fontWeight: 600, fontSize: 25, marginBottom: "-15px" }}>Create Account</DialogTitle>
+                    <Divider variant="middle" sx={{ borderBottomWidth: 3, color: "#AB191F", backgroundColor: "#AB191F", marginY: 1 }} />
                 </div>
 
                 <DialogContent sx={{ maxWidth: "400px" }}>
@@ -144,40 +213,40 @@ const LoginView = ({ text}) => {
                             Are you a...
                         </Typography>
 
-                        <div style = {{justifyContent: "center", display: "inline", marginLeft:"70px", marginRight:"70px"}}>
-                            
-                           
-                                <Button
-                                    type = "RCreate"
-                                    onClick={()=> setRCreateOpen(true)}
-                                    sx={{
-                                        ":hover": {
-                                            borderColor:"#AB191F", bgcolor:"#AB191F", color:"#F6EBE1", 
-                                            borderWidth: 1.5, width:"45%", fontWeight:600
-                                        },
-                                        borderColor:"#F6EBE1", bgcolor:"#F6EBE1", color:"black", 
-                                        borderWidth: 1.5, width:"45%", fontWeight:600, 
-                                        boxShadow: "0px 0px 3px 3px rgba(0, 0, 0, .1)", justifyContent: "center", maxWidth:"95px", maxHeight: "50px"
-                                    }} 
-                                    variant="outlined">RENTER
-                                </Button>
-                            
-                            <Button 
-                                onClick={()=> setMCreateOpen(true)}
+                        <div style={{ justifyContent: "center", display: "inline", marginLeft: "70px", marginRight: "70px" }}>
+
+
+                            <Button
+                                type="RCreate"
+                                onClick={() => setRCreateOpen(true)}
                                 sx={{
                                     ":hover": {
-                                        borderColor:"#AB191F", bgcolor:"#AB191F", color:"#F6EBE1", 
-                                        borderWidth: 1.5, width:"45%", fontWeight:600
+                                        borderColor: "#AB191F", bgcolor: "#AB191F", color: "#F6EBE1",
+                                        borderWidth: 1.5, width: "45%", fontWeight: 600
                                     },
-                                    borderColor:"#F6EBE1", bgcolor:"#F6EBE1", color:"black", 
-                                    borderWidth: 1.5, width:"45%", fontWeight:600, lineHeight:"15px",
-                                    boxShadow: "0px 0px 3px 3px rgba(0, 0, 0, .1)", marginLeft: "15px", maxWidth:"95px", maxHeight: "50px"
+                                    borderColor: "#F6EBE1", bgcolor: "#F6EBE1", color: "#AB191F",
+                                    borderWidth: 1.5, width: "45%", fontWeight: 600,
+                                    boxShadow: 5, justifyContent: "center", maxWidth: "95px", maxHeight: "50px"
+                                }}
+                                variant="outlined">RENTER
+                            </Button>
+
+                            <Button
+                                onClick={() => setMCreateOpen(true)}
+                                sx={{
+                                    ":hover": {
+                                        borderColor: "#AB191F", bgcolor: "#AB191F", color: "#F6EBE1",
+                                        borderWidth: 1.5, width: "45%", fontWeight: 600
+                                    },
+                                    borderColor: "#F6EBE1", bgcolor: "#F6EBE1", color: "#AB191F",
+                                    borderWidth: 1.5, width: "45%", fontWeight: 600, lineHeight: "15px",
+                                    boxShadow: 5, marginLeft: "15px", maxWidth: "95px", maxHeight: "50px"
 
                                 }}
                                 variant="outlined">PROPERTY MANAGER
                             </Button>
-                            {rCreateOpen && <RenterCreateAccountView/>}
-                            {mCreateOpen && <ManagerCreateAccountView/>}
+                            {rCreateOpen && <RenterCreateAccountView />}
+                            {mCreateOpen && <ManagerCreateAccountView />}
                         </div>
 
                         <Typography sx={{ margin: 1.5, marginLeft: "auto", marginTop: "15px", marginBottom: "-5px" }}>
@@ -212,17 +281,7 @@ const LoginView = ({ text}) => {
                                 </p>
                             )}
 
-                            <Typography onClick={handleForgotPw} sx={{ 
-                                margin: "5px 0 5px 2px",
-                                fontSize: "10pt",
-                                color: "black",
-                                textDecoration: "underline",
-                                "&:hover": {
-                                    cursor: "pointer",
-                                    color: "#AB191F"
-                                }}}>
-                                Forgot your password?
-                            </Typography>
+                            
                             {forgotPwOpen === true && <ForgotPwView setOpen={setOpen}></ForgotPwView>}
                             <Button
                                 onClick={handleLogin}
@@ -238,8 +297,110 @@ const LoginView = ({ text}) => {
                                 }}
                                 variant="outlined">LOGIN
                             </Button>
+                            <Typography
+                                sx={{ margin: 1.5, marginLeft: "auto", marginTop: "15px", color: "#AB191F", cursor: "pointer" }}
+                                onClick={handleResetPasswordOpen}
+                            >
+                                Reset Password
+                            </Typography>
                         </div>
                     </Box>
+                    
+                </DialogContent>
+            </Dialog>
+            <Dialog
+                open={resetPasswordOpen}
+                onClose={handleResetPasswordClose}
+                sx={{
+                    "& .MuiDialog-container": {
+                        "& .MuiPaper-root": {
+                            width: "100%",
+                            maxWidth: "400px",
+                            maxHeight: "1000px",
+                            bgcolor: '#F6EBE1'
+                        }
+                    }
+                }}
+            >
+                <DialogTitle sx={{ fontWeight: 600, fontSize: 25 }}>Reset Password</DialogTitle>                <DialogContent sx={{ maxWidth: "400px" }}>
+                    <TextField
+                        label="Username"
+                        id="username-textfield"
+                        variant="outlined"
+                        fullWidth
+                        sx={{
+                            boxShadow: "3",
+                            margin: "dense",
+                            marginBottom: "15px",
+                            marginTop: "10px"
+                        }}
+                        value={resetPasswordUsername}
+                        onChange={(e) => setResetPasswordUsername(e.target.value)}
+                    />
+
+                    <Button
+                        onClick={handleResetPassword}
+                        sx={{
+                            ":hover": {
+                                borderColor: "black", bgcolor: "#F6EBE1", color: "black",
+                                borderWidth: 1.5, width: "100%", fontWeight: 600
+                            },
+                            borderColor: "black", bgcolor: "#AB191F", color: "#F6EBE1",
+                            borderWidth: 1.5, width: "100%", fontWeight: 600, maxWidth: "150px",
+                            boxShadow: 5, justifyContent: "center", float: "right"
+                        }}
+                        variant="outlined"
+                    >
+                        Reset Password
+                    </Button>
+                </DialogContent>
+            </Dialog>
+            <Dialog
+                open={resetPasswordOpen}
+                onClose={handleResetPasswordClose}
+                sx={{
+                    "& .MuiDialog-container": {
+                        "& .MuiPaper-root": {
+                            width: "100%",
+                            maxWidth: "400px",
+                            maxHeight: "1000px",
+                            bgcolor: '#F6EBE1'
+                        }
+                    }
+                }}
+            >
+                <DialogTitle sx={{ fontWeight: 600, fontSize: 25 }}>Reset Password</DialogTitle>                <DialogContent sx={{ maxWidth: "400px" }}>
+                    <TextField
+                        label="Username"
+                        id="username-textfield"
+                        variant="outlined"
+                        fullWidth
+                        sx={{
+                            boxShadow: "3",
+                            margin: "dense",
+                            marginBottom: "15px",
+                            marginTop: "10px"
+                        }}
+                        value={resetPasswordUsername}
+                        onChange={(e) => setResetPasswordUsername(e.target.value)}
+                    />
+
+                    <Button
+                        onClick={handleResetPassword}
+                        sx={{
+                            ":hover": {
+                                borderColor: "black", bgcolor: "#F6EBE1", color: "black",
+                                borderWidth: 1.5, width: "100%", fontWeight: 600
+                            },
+                            borderColor: "black", bgcolor: "#AB191F", color: "#F6EBE1",
+                            borderWidth: 1.5, width: "100%", fontWeight: 600, maxWidth: "150px",
+                            boxShadow: 5, justifyContent: "center", float: "right"
+                        }}
+                        variant="outlined"
+                    >
+                        Reset Password
+                    </Button>
+                    
                 </DialogContent>
             </Dialog>
         </React.Fragment>

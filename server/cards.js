@@ -72,7 +72,8 @@ router.get('/add-card', async (req, res) => {
 
     const newProperty = new Property({
         propertyInfo: newPropertyInfo,
-        companyInfo: newCompanyInfo
+        companyInfo: newCompanyInfo,
+        isVerified: false
     });
 
     const existingCompany = await Company.findOne({'companyInfo.name': newCompanyInfo.name});
@@ -148,6 +149,26 @@ router.get('/all-cards', (req, res) => {
     });
 });
 
+router.get('/unverified-cards', (req, res) => {
+    Property.find({ isVerified: false })  
+        .then((result) => {
+            res.send(result);
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+});
+
+router.get('/unverified-cards', (req, res) => {
+    Property.find({ isVerified: false })  
+        .then((result) => {
+            res.send(result);
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+});
+
 // Route to add saved property
 router.post('/update-saves', async (req, res) => {
     const id = req.body.id
@@ -186,7 +207,6 @@ router.post('/update-saves', async (req, res) => {
     }
 
 });
-
 // Route to get featured cards
 router.get('/featured-cards', (req, res) => {
     Property.find({'propertyInfo.featured': true})
