@@ -332,8 +332,8 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
                             {/* {favCoops === true ? <FavoriteIcon style={{margin: "-20px 0 0px 2.5"}} sx={{color: "#AB191F", ":hover": {color: "#F6EBE1",},}}/> : ''} */}
                             {/* <Typography variant="h6" style={{fontSize: "13pt", margin: "-20px 0 0px 0"}}> Property Name </Typography> */}
                             {featured === true ? <StarIcon style={{ margin: "-22px 0 0 5px", fontSize: "15pt" }} /> : ''}
-                            {favCoops === true ? <FavoriteIcon style={{ margin: "-22px 0 0 5px", fontSize: "15pt" }} sx={{ color: "#AB191F", ":hover": { color: "#F6EBE1", }, }} /> : ''}
-                            {myCoops === true ? <BookmarkIcon style={{ margin: "-22px 0 0 5px", fontSize: "15pt" }} sx={{ color: "#AB191F", ":hover": { color: "#F6EBE1", }, }} /> : ''}
+                            {favCoops === true ? <FavoriteIcon style={{ margin: "-22px 0 0 5px", fontSize: "15pt" }}  /> : ''}
+                            {myCoops === true ? <BookmarkIcon style={{ margin: "-22px 0 0 5px", fontSize: "15pt" }} /> : ''}
 
                         </div>
                         <Typography variant="body2" style={{ margin: "0 0 5px 0" }}>{address}</Typography>
@@ -520,24 +520,24 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
                 </DialogContent>
                 <DialogActions>
 
-                {console.log(isVerified)}
-                { isVerified === true ?
-                <Tooltip title="Verified Property"
-                componentsProps={{
-                    tooltip: {
-                        sx: {
-                            bgcolor: 'rgba(171, 25, 31, 0.9)',
-                            color: "#F6EBE1"
-                        },
-                    },
-                }}
-                >
-                    <IconButton sx={{ color: "#AB191F" }}>
-                        <FontAwesomeIcon icon={faBuildingCircleCheck} />
-                    </IconButton>
-                </Tooltip>
-                :
-                ''}
+                    {console.log(isVerified)}
+                    {isVerified === true ?
+                        <Tooltip title="Verified Property"
+                            componentsProps={{
+                                tooltip: {
+                                    sx: {
+                                        bgcolor: 'rgba(171, 25, 31, 0.9)',
+                                        color: "#F6EBE1"
+                                    },
+                                },
+                            }}
+                        >
+                            <IconButton sx={{ color: "#AB191F" }}>
+                                <FontAwesomeIcon icon={faBuildingCircleCheck} />
+                            </IconButton>
+                        </Tooltip>
+                        :
+                        ''}
 
                     {login === true ? (
                         admin === true ? (
@@ -587,15 +587,11 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
                         // Not logged in view
                         ''
                     )}
-
-
                     <Typography
                         style={{ margin: "0 5px 0 5px", padding: " 0 5px 0 0px" }}
                     >
                         {saves}
                     </Typography>
-
-
 
                 </DialogActions>
             </Dialog>
