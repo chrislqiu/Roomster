@@ -109,14 +109,14 @@ router.get("/authorize-admin", authorizationAdmin, (req, res) => {
 });
 
 router.post("/check-owner", authorization, (req, res) => {
-    console.log(req.user.username)
-    console.log(req.body.id)
+    // console.log(req.user.username)
+    // console.log(req.body.id)
     Manager.findOne({ username: req.user.username })
         .then((result) => {
             if (!result) {
                 return res.send({ match: false });
             }
-            console.log(result.company.companyInfo.name)
+            // console.log(result.company.companyInfo.name)
             // res.send({username: result.company.companyInfo.name});
             Property.findOne({ _id: req.body.id })
                 .then((resultProperty) => {
