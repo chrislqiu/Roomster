@@ -163,23 +163,23 @@ const RenterPage = () => {
             const obj = JSON.parse(JSON.stringify(getData));
             setUsername(obj.username)
             setUserData(obj);
-            console.log(obj)
-            console.log(obj.user)
-            console.log(obj.user.renterInfo)
         }
         getUserInfo()
-        setName(userData.user.renterInfo.name)
-        setAge(userData.user.renterInfo.age)
-        setEmail(userData.user.renterInfo.email)
-        setPhone(userData.user.renterInfo.phone)
-        setProfileImg(userData.user.renterInfo.pfp)
-        setHasPet(userData.user.renterInfo.livingPreferences.pets)
-        setDoesSmoke(userData.user.renterInfo.livingPreferences.smoke)
-        setStudious(userData.user.renterInfo.livingPreferences.studious)
-        setCleanliness(userData.user.renterInfo.livingPreferences.cleanliness)
-        setGuestFreq(userData.user.renterInfo.livingPreferences.guestFreq)
-        setSleepFrom(userData.user.renterInfo.livingPreferences.sleepSchedule.from)
-        setSleepTo(userData.user.renterInfo.livingPreferences.sleepSchedule.to)
+        //console.log(userData)
+        if (userData.user) {
+            setName(userData.user.renterInfo.name)
+            setAge(userData.user.renterInfo.age)
+            setEmail(userData.user.renterInfo.email)
+            setPhone(userData.user.renterInfo.phone)
+            setProfileImg(userData.user.renterInfo.pfp)
+            setHasPet(userData.user.renterInfo.livingPreferences.pets)
+            setDoesSmoke(userData.user.renterInfo.livingPreferences.smoke)
+            setStudious(userData.user.renterInfo.livingPreferences.studious)
+            setCleanliness(userData.user.renterInfo.livingPreferences.cleanliness)
+            setGuestFreq(userData.user.renterInfo.livingPreferences.guestFreq)
+            setSleepFrom(userData.user.renterInfo.livingPreferences.sleepSchedule.from)
+            setSleepTo(userData.user.renterInfo.livingPreferences.sleepSchedule.to)
+        }
     }, [userData])
 
     const handleSleepFrom = (event) => {
@@ -341,8 +341,8 @@ const RenterPage = () => {
                     <Typography style={styles.subheader}> 
                         {"Contact info"}
                     </Typography >
-                    <InputBase placeholder="Purdue Email" defaultValue="hi" id="email-textfield" sx={inputBaseSX}onChange={(e) => setEmail(e.target.value)}disabled={disableButton}/>
-                    <InputBase placeholder="Phone number" id="number-textfield" sx={inputBaseSX}onChange={(e) => setPhone(e.target.value)}disabled={disableButton}/>
+                    <InputBase placeholder="Purdue Email" defaultValue={email} id="email-textfield" sx={inputBaseSX}onChange={(e) => setEmail(e.target.value)}disabled={disableButton}/>
+                    <InputBase placeholder="Phone number" defaultValue={phone} id="number-textfield" sx={inputBaseSX}onChange={(e) => setPhone(e.target.value)}disabled={disableButton}/>
                     <Button variant="contained" style={{backgroundColor: "#AB191F", float: "right", margin: "0 35px 0 0", visibility: toggleOn ? "hidden" : "visible"}} 
                         onClick={() => {
                             if (disableButton) {
@@ -387,7 +387,7 @@ const RenterPage = () => {
                                 </RadioGroup>
                             </FormControl>
                             <FormControl style={{marginLeft:"-55px", marginBottom: "-7px"}} disabled={disableButton}>
-                                <RadioGroup defaultValue={"yes"} row name="smoke" style={{width: "150px", display: "flex", justifyContent:"center"}} > 
+                                <RadioGroup defaultValue={"yes"} row name="smoke" style={{width: "150px", display: "flex", justifyContent:"center"}} >
                                     <FormControlLabel value="yes" control={<Radio sx={radioSX}/>} label="Yes" onChange={() => setDoesSmoke(true)}/>
                                     <FormControlLabel value="no" control={<Radio sx={radioSX}/>} label="No" onChange={() => setDoesSmoke(false)}
                                     />
