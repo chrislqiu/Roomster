@@ -18,7 +18,10 @@ import DoubleArrowIcon from '@mui/icons-material/DoubleArrow';
 import { Grow } from "@mui/material";
 import Settings from "../pages/Settings"
 
-const pages = ["Home", "Fav Coops", "My Coops", "Coopmates", "Log Out"];
+const pages = ["Home", "My Coops", "Fav Coops", "Coopmates", "Log Out"];
+const pagesManager = ["Home", "My Coops", "Log Out"];
+const pagesRenter = ["Home", "Fav Coops", "Coopmates", "Log Out"];
+
 //const routePage = ["/Home", "/FavCoops", "/Coopmates", "/Logout"]
 
 /* 
@@ -27,7 +30,6 @@ const pages = ["Home", "Fav Coops", "My Coops", "Coopmates", "Log Out"];
  */
 const RoomsterAppBar = ({ login, userType }) => {
     console.log(login)
-    console.log("user pe:" + userType)
     let location = useLocation();
     console.log(location.pathname)
     let navigate = useNavigate();
@@ -102,7 +104,7 @@ const RoomsterAppBar = ({ login, userType }) => {
           }
       };
 
-    return (
+      return (
         <AppBar
             position="static"
             style={{ background: "transparent", boxShadow: "none" }}
@@ -138,11 +140,15 @@ const RoomsterAppBar = ({ login, userType }) => {
                                 display: { xs: "block", md: "none" }
                             }}
                         >
-                            {pages.map((page) => (
+                             {userType === "renter" ? pagesRenter.map((page) => (
                                 <MenuItem key={page} onClick={handleCloseNavMenu}>
                                     <Typography textAlign="center">{page}</Typography>
                                 </MenuItem>
-                            ))}
+                            )): pagesManager.map((page) => (
+                              <MenuItem key={page} onClick={handleCloseNavMenu}>
+                                  <Typography textAlign="center">{page}</Typography>
+                              </MenuItem>
+                          ))}
                         </Menu>
                     </Box>
                     { login === true ? 
@@ -162,20 +168,15 @@ const RoomsterAppBar = ({ login, userType }) => {
                     {login === true ?
                         <Grow orientation="horizontal" in={!isToolbarVisible}>
                         <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex", zIndex: 5} }}>
-                            {pages.map((page, i) => {
+                            {userType === "renter" ? pagesRenter.map((page, i) => {
                                 return (
                                     <Button
                                         key={page}
-                                        //onClick={() => navigate(`${routePage[i]}`)}
                                         onClick={() => {
                                             if (page === "Home") {
                                                 navigate("/Home")
                                             } else if (page === "Fav Coops") {
-                                                //Hide Fav Coops once we separate the User types
                                                 navigate("/FavCoops")
-                                            } else if (page == "My Coops") {
-                                                //Hide My Coops once we separate the User types
-                                                navigate("/MyCoops")
                                             } else if (page === "Coopmates") {
                                                 navigate("/Coopmates")
                                             } else if (page === "Log Out") {
@@ -202,7 +203,41 @@ const RoomsterAppBar = ({ login, userType }) => {
                                         {page}
                                     </Button>
                                 );
-                            })}
+                            }) : pagesManager.map((page, i) => {
+                              return (
+                                  <Button
+                                      key={page}
+                                      onClick={() => {
+                                          if (page === "Home") {
+                                              navigate("/Home")
+                                          } else if (page == "My Coops") {
+                                              navigate("/MyCoops")
+                                          } else if (page === "Log Out") {
+                                              handleLogout();
+                                          }
+                                          handleCloseNavMenu();
+                                        }}
+                                      sx={{
+                                          my: 2,
+                                          ":hover": {
+                                              bgcolor: "#AB191F",
+                                              color: "#f5ebe0",
+                                              cursor: "pointer"
+                                          },
+                                          color: "#AB191F",
+                                          backgroundColor: "#F6EBE1",
+                                          display: "block",
+                                          mx: .5,
+                                          fontWeight: 600,
+                                          padding: 1,
+                                          boxShadow: "0px 0px 3px 3px rgba(0, 0, 0, .1)"
+                                      }}
+                                  >
+                                      {page}
+                                  </Button>
+                              );
+                          })}
+                            
                         </Box>
                         </Grow>
                         :
@@ -220,7 +255,7 @@ const RoomsterAppBar = ({ login, userType }) => {
             :
             <LoginView text={"Login/Signup"} />
           }
-
+    
           {login && (
             <Settings open={settingsOpen} handleClose={handleCloseSettings} />
           )}
@@ -228,5 +263,6 @@ const RoomsterAppBar = ({ login, userType }) => {
             </Container>
         </AppBar>
     );
+    
 }
 export default RoomsterAppBar;

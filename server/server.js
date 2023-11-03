@@ -32,6 +32,7 @@ mongoose.connect(dbURI, {useNewUrlParser: true, useUnifiedTopology: true})
 
 app.use(cors(corsOptions));
 app.use(express.json());
+app.use(cookieParser())
 const secretKey = "E.3AvP1]&r7;-vBSAL|3AyetV%H*fIEy";
 
 
@@ -67,7 +68,7 @@ app.post('/sendManagerProfile', async (req, res) => {
   const data = req.body;
   console.log(data)
 
-  const token = (req.headers.cookie).split('; ')[0].split('=')[1];
+  const token = req.cookies.access_token;
   const decoded = jwt.verify(token, secretKey);
   const username = decoded.username
   const manager = await Manager.findOne({username: username})
@@ -91,7 +92,7 @@ app.post('/sendManagerProfile', async (req, res) => {
 app.post('/sendRenterProfile', async (req,res) => {
   const data = req.body.renterInfo;
 
-  const token = (req.headers.cookie).split('; ')[0].split('=')[1];
+  const token = req.cookies.access_token;
   const decoded = jwt.verify(token, secretKey);
   const username = decoded.username
   const renter = await Renter.findOne({username: username})
@@ -122,7 +123,10 @@ app.post('/sendRenterProfile', async (req,res) => {
 
 app.post('/sendProperty', async (req,res) => {
   const data = req.body
-  const token = (req.headers.cookie).split('; ')[0].split('=')[1];
+  const token = req.cookies.access_token;
+
+  // console.log(token1)
+  // const token = (req.headers.cookie).split('; ')[0].split('=')[1];
   const decoded = jwt.verify(token, secretKey);
   const username = decoded.username
   const manager = await Manager.findOne({username: username})
@@ -141,6 +145,8 @@ app.post('/sendProperty', async (req,res) => {
   })
 
   const existingCompanyInfo = await CompanyInfo.findOne({name: manager.company.companyInfo.name})
+
+  // console.log(existingCompanyInfo)
 
   const newProperty = new Property({
     propertyInfo: newPropertyInfo,

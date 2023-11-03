@@ -96,6 +96,7 @@ const MyCoopsPage = ({ login }) => {
             setUserData(obj);
             if (obj.user.company) {
                 setMyCoopsArr(obj.user.company.myCoops);
+                // console.log(obj.user.company.myCoops)
             }
             setLoading(false);
         };
@@ -143,7 +144,7 @@ const MyCoopsPage = ({ login }) => {
         setUtilities((prevUtilities) => new Map(prevUtilities.set(key, value)));
     };
 
-    const handleAppCoop = () => {
+    const handleAppCoop = async () => {
         if (propertyName === '' || propertyAddress === '' || price === '' || bed === -1 || bath === -1) {
             toast.error("Please fill in all the textfileds and dropdown!", { style: customToastStyle })
             return;
@@ -166,7 +167,7 @@ const MyCoopsPage = ({ login }) => {
             }
         }
 
-        fetch('http://localhost:8000/sendProperty', {
+        await fetch('http://localhost:8000/sendProperty', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -801,7 +802,7 @@ const MyCoopsPage = ({ login }) => {
                                 color: "#AB191F",
                             }}
                         >
-                            No properties favorited!
+                            You have no properties!
                         </Typography>
                     )
                 )}
