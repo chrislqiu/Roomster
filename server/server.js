@@ -63,11 +63,10 @@ app.get("/message", (req, res) => {
 app.use("/auth", authRouter);
 app.use('/cards', cardRoutes);
 app.post('/sendManagerProfile', async (req, res) => {
-  const manager = await Manager.findOne({username: req.body.username})
-  const token = req.headers.cookie.access_token
+  const token = req.cookies.access_token
   const decoded = jwt.verify(token, secretKey)
   const username = decoded.username
-  console.log(username)
+  var manager = await Manager.findOne({username: username})
 
   const updatedCompanyInfo = new CompanyInfo({
     name: req.body.company.name,
@@ -76,6 +75,8 @@ app.post('/sendManagerProfile', async (req, res) => {
     email: manager.company.companyInfo.email,
     phone: req.body.company.phone
   })
+
+ console.log(updatedCompanyInfo)
 
   const property = await Property.find({'companyInfo.name': manager.company.companyInfo.name})
   property.forEach(async function(prop) {
@@ -87,7 +88,7 @@ app.post('/sendManagerProfile', async (req, res) => {
   updatedCompany.companyInfo = updatedCompanyInfo
   await updatedCompany.save()
 
-  const updatedManager = new Manager({
+  var updatedManager = new Manager({
     username: manager.username,
     password: manager.password,
     isVerified: manager.isVerified,
@@ -110,7 +111,10 @@ app.post('/sendManagerProfile', async (req, res) => {
 
 app.post('/sendRenterProfile', async (req,res) => {
   const data = req.body.renterInfo
-  var renter = await Renter.findOne({username: req.body.renterInfo.email})
+  const token = req.cookies.access_token
+  const decoded = jwt.verify(token, secretKey)
+  const username = decoded.username
+  var renter = await Renter.findOne({username: username})
   //console.log(data)
 
 
