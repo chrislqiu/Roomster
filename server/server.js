@@ -4,6 +4,7 @@ const authRouter = require("./auth");
 const mongoose = require('mongoose');
 const cardRoutes = require('./cards');
 
+const saveMProfileRoutes = require('./sendManagerProfile')
 const RenterInfo = require("./models/renterInfo")
 const Renter = require("./models/renter")
 const Manager = require("./models/manager")
