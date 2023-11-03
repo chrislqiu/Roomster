@@ -5,7 +5,7 @@ import SearchBar from "../components/SearchBar";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import { Container, Box } from "@mui/material";
+import { Container, Box, Typography } from "@mui/material";
 
 /*
  * Main Page View with the property cards
@@ -91,11 +91,21 @@ const MainPage = ({ login }) => {
                    /*
                     * Maps each Property Information object to its own "card"
                     */
-
+                    filteredProperties.length > 0 ?
                     filteredProperties.map((cards) => {
-                        return <PropertyViewMore data={cards} login={login}/>
+                          return <PropertyViewMore data={cards} login={login}/>
                         }
                     )
+                    :
+                    <Typography
+                            sx={{
+                                fontWeight: 600,
+                                fontSize: 25,
+                                color: "#AB191F",
+                            }}
+                        >
+                            No properties match your search!
+                        </Typography>
                 }
             </Box>
         </Container>
