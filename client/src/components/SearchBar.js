@@ -342,7 +342,7 @@ const SearchBar = ({ data, setInput, setFilteredOptions, setNumberSelected, setS
                                     Amenities
                                     <FormControlLabel
                                         control={<Checkbox
-                                            value="lounge"
+                                            value="Gym"
                                             onChange={handleAmenity}
                                             sx={{
                                                 color: "black",
@@ -350,11 +350,23 @@ const SearchBar = ({ data, setInput, setFilteredOptions, setNumberSelected, setS
                                                     color: "#AB191F",
                                                 }
                                             }} />}
-                                        label="Lounge"
+                                        label="Gym"
                                     />
                                     <FormControlLabel
                                         control={<Checkbox
-                                            value="parking"
+                                            value="In Unit W/D"
+                                            onChange={handleAmenity}
+                                            sx={{
+                                                color: "black",
+                                                '&.Mui-checked': {
+                                                    color: "#AB191F",
+                                                }
+                                            }} />}
+                                        label="In Unit W/D"
+                                    />
+                                    <FormControlLabel
+                                        control={<Checkbox
+                                            value="Furnished"
                                             onChange={handleAmenity}
                                             sx={{
                                                 color: "black",
@@ -363,12 +375,12 @@ const SearchBar = ({ data, setInput, setFilteredOptions, setNumberSelected, setS
                                                 }
                                             }} />
                                         }
-                                        label="Parking"
+                                        label="Furnished"
                                     />
                                     <FormControlLabel
                                         control={
                                             <Checkbox
-                                                value="pool"
+                                                value="Pool"
                                                 onChange={handleAmenity}
                                                 sx={{
                                                     color: "black",
@@ -378,6 +390,48 @@ const SearchBar = ({ data, setInput, setFilteredOptions, setNumberSelected, setS
                                                 }} />
                                         }
                                         label="Pool"
+                                    />
+                                    <FormControlLabel
+                                        control={
+                                            <Checkbox
+                                                value="Parking"
+                                                onChange={handleAmenity}
+                                                sx={{
+                                                    color: "black",
+                                                    '&.Mui-checked': {
+                                                        color: "#AB191F",
+                                                    }
+                                                }} />
+                                        }
+                                        label="Parking"
+                                    />
+                                    <FormControlLabel
+                                        control={
+                                            <Checkbox
+                                                value="Pet Friendly"
+                                                onChange={handleAmenity}
+                                                sx={{
+                                                    color: "black",
+                                                    '&.Mui-checked': {
+                                                        color: "#AB191F",
+                                                    }
+                                                }} />
+                                        }
+                                        label="Pet Friendly"
+                                    />
+                                    <FormControlLabel
+                                        control={
+                                            <Checkbox
+                                                value="Kitchen Appliance"
+                                                onChange={handleAmenity}
+                                                sx={{
+                                                    color: "black",
+                                                    '&.Mui-checked': {
+                                                        color: "#AB191F",
+                                                    }
+                                                }} />
+                                        }
+                                        label="Kitchen Appliances"
                                     />
                                 </FormGroup>
                             </Stack>
