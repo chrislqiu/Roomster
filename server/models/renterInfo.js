@@ -26,7 +26,7 @@ const renterInfo = new Schema({
     },
     pfp: {
         type: String,
-        default: "og pfp"
+        default: "chickenpfp"
     },
     livingPreferences: {
         pets: {
