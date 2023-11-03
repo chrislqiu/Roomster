@@ -201,6 +201,32 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
         }
     };
 
+    const handleDeletePropertyAdmin = async () => {
+        const id = data._id;
+        console.log("data: " + id);
+        try {
+            const response = await fetch('http://localhost:8000/auth/delete-property-admin', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: JSON.stringify({ id: id }),
+            });
+
+            console.log(response)
+
+            if (response.ok) {
+                console.log("good")
+                window.location.reload(true);
+            } else {
+                console.log("nope")
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    };
+
     const handleVerifyProperty = async () => {
         const id = data._id;
         console.log("data: " + id);
@@ -544,7 +570,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
                             // Admin view
                             <div sx={{ display: "flex", width: "100%" }}>
                                 <Tooltip title="Delete Property">
-                                    <IconButton onClick={handleDeleteProperty}>
+                                    <IconButton onClick={handleDeletePropertyAdmin}>
                                         <DeleteOutlineIcon sx={{ color: "#AB191F" }} />
                                     </IconButton>
                                 </Tooltip>
