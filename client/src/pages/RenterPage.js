@@ -380,14 +380,14 @@ const RenterPage = () => {
                         </Container>
                         <Container style={{float: "right", width: "45%"}}>
                             <FormControl style={{marginLeft:"-55px", marginBottom:"-7px"}} disabled={disableButton}>
-                                <RadioGroup row name="pets" style={{width: "150px", display: "flex", justifyContent:"center"}} > 
+                                <RadioGroup row name="pets" defaultValue={hasPet==true ? "yes": "no"} style={{width: "150px", display: "flex", justifyContent:"center"}} >
                                     <FormControlLabel value="yes" control={<Radio sx={radioSX}/>} label="Yes" onChange={() => setHasPet(true)}/>
                                     <FormControlLabel value="no" control={<Radio sx={radioSX}/>} label="No" onChange={() => setHasPet(false)}
                                     />
                                 </RadioGroup>
                             </FormControl>
                             <FormControl style={{marginLeft:"-55px", marginBottom: "-7px"}} disabled={disableButton}>
-                                <RadioGroup row name="smoke" style={{width: "150px", display: "flex", justifyContent:"center"}} > 
+                                <RadioGroup row name="smoke" defaultValue={doesSmoke==true ? "yes": "no"} style={{width: "150px", display: "flex", justifyContent:"center"}} >
                                     <FormControlLabel value="yes" control={<Radio sx={radioSX}/>} label="Yes" onChange={() => setDoesSmoke(true)}/>
                                     <FormControlLabel value="no" control={<Radio sx={radioSX}/>} label="No" onChange={() => setDoesSmoke(false)}
                                     />

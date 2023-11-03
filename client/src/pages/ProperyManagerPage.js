@@ -31,13 +31,15 @@ const PropertyManagerPage = () => {
             setUserData(obj);
         }
         getUserInfo()
-        setName(userData.user.name)
-        setPhoneNumber(userData.user.phone)
-        setEmail(userData.user.email)
-        setBio(userData.user.bio)
-        setCompanyName(userData.user.company.companyInfo.name)
-        setAddr(userData.user.company.companyInfo.address)
-        setOfficeNum(userData.user.company.companyInfo.phone)
+        if (userData.user) {
+            setName(userData.user.name)
+            setPhoneNumber(userData.user.phone)
+            setEmail(userData.user.email)
+            setBio(userData.user.bio)
+            setCompanyName(userData.user.company.companyInfo.name)
+            setAddr(userData.user.company.companyInfo.address)
+            setOfficeNum(userData.user.company.companyInfo.phone)
+        }
     }, [userData])
 
     const inputBaseSX = {
@@ -146,7 +148,7 @@ const PropertyManagerPage = () => {
                             type="text"
                             name="phoneNum"
                             placeholder="Phone Number" style={{width:200}}
-                            value={phoneNumber}
+                            defaultValue={phoneNumber}
                             onChange={(e) => setPhoneNumber(e.target.value)}
                             disabled={disableButton}
                             />
@@ -163,7 +165,7 @@ const PropertyManagerPage = () => {
                             type="text"
                             name="email"
                             placeholder="Email Address" style={{width:200}} 
-                            value={email}
+                            defaultValue={email}
                             onChange={(e) => setEmail(e.target.value)}
                             disabled={disableButton}
                             />
@@ -187,7 +189,7 @@ const PropertyManagerPage = () => {
                             <TextField
                             type="text"
                             name="bio"
-                            value={bio}
+                            defaultValue={bio}
                             onChange={(e) => setBio(e.target.value)}
                             multiline rows={4} maxRows={4} 
                             disabled={disableButton}
@@ -233,7 +235,7 @@ const PropertyManagerPage = () => {
                             type="text"
                             name="addr"
                             placeholder="" style={{width:200}} 
-                            value={addr}
+                            defaultValue={addr}
                             onChange={(e) => setAddr(e.target.value)}
                             disabled={disableButton}
                             />
@@ -256,8 +258,8 @@ const PropertyManagerPage = () => {
                             sx={inputBaseSX} 
                             type="text"
                             name="officeNum"
-                            placeholder="" style={{width:200}} 
-                            value={officeNum}
+                            placeholder="" style={{width:200}}
+                            defaultValue={officeNum}
                             onChange={(e) => setOfficeNum(e.target.value)}
                             disabled={disableButton}
                             />
