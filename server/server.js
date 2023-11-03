@@ -149,17 +149,18 @@ app.post('/sendRenterProfile', async (req,res) => {
     coopmates: renter.coopmates
   })
 
-  console.log(updatedRenter)
-  renter = updatedRenter
+  const update = await Renter.findOneAndUpdate({username:username}, {findingCoopmates: req.body.findingCoopmates, renterInfo: updatedRenterInfo, coopmates: renter.coopmates}, {new: true})
+  console.log(update)
+  // renter = updatedRenter
 
-  const coopmates = await Renter.find({'coopmates': {$elemMatch: {'renterInfo.name': renter.renterInfo.name, 'renterInfo.email': renter.renterInfo.email}}})
+  const coopmates = await Renter.find({'coopmates': {$elemMatch: {'renterInfo.name': update.renterInfo.name, 'renterInfo.email': update.renterInfo.email}}})
   coopmates.forEach(async function(mate) {
     mate.coopmates.pull(oldRenterInfo._id)
-    mate.coopmates.addToSet(renter.renterInfo)
+    mate.coopmates.addToSet(update.renterInfo)
     await mate.save()
   })
 
-  await renter.save()
+  await update.save()
   .then((result) => {
     res.send(result);
   })
