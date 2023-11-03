@@ -591,7 +591,7 @@ router.post("/pw-reset/:token", async (req, res) => {
         const salt = await bcrypt.genSalt();
         const hashedNewPassword = await bcrypt.hash(req.body.newPassword, salt);
 
-        await User.updateOne({ username: decoded.username }, { password: hashedNewPassword });
+        await user.updateOne({ username: decoded.username }, { password: hashedNewPassword });
 
         return res.status(200).send("Password reset");
     } catch (err) {
