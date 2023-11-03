@@ -725,7 +725,7 @@ router.post("/admin/pw-set/:token", async (req, res) => {
     }
 });
 
-router.post("/delete-property", authorization, async (req, res) => {
+router.post("/delete-property", authorizationAdmin, async (req, res) => {
     try {
         const propertyId = req.body.id
         console.log(propertyId);
