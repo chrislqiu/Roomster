@@ -150,7 +150,7 @@ app.post('/sendProperty', async (req,res) => {
   newProperty.save()
 
   const company = Company.findOne({"companyInfo.name": manager.company.companyInfo.name})
-  company.myCoop.addToSet(property.propertyInfo)
+  company.myCoop.addToSet(newPropertyInfo)
   await company.save()
   .then((result) => {
     res.send(result);
