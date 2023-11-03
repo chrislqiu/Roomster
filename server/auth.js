@@ -109,7 +109,7 @@ router.get("/authorize-admin", authorizationAdmin, (req, res) => {
 });
 
 router.post("/check-owner", authorization, async (req, res) => {
-    console.log(req.body.id)
+    //console.log(req.body.id)
     Manager.findOne({ username: req.user.username })
         .then((result) => {
             if (!result) {
