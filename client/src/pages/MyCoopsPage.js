@@ -6,7 +6,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { AspectRatio } from "@mui/joy";
 import toast, { Toaster } from 'react-hot-toast'
 import PropertyView from "../components/PropertyView";
-import AddCoopView from "../components/AddCoopView";
+
 
 const MyCoopsPage = ({ login }) => {
     /* propertyInfo, setPropertyInfo to hold the card information from the server */
@@ -242,8 +242,6 @@ const MyCoopsPage = ({ login }) => {
     }
 
     return (
-        
-        /*
         <Container sx={{ width: '100%' }}>
             <Box style={{ position: "fixed", bottom: "0", right: "0" }}>
                 <IconButton
@@ -319,7 +317,7 @@ const MyCoopsPage = ({ login }) => {
                         <Stack direction={{ '400px': "column", md: "row", lg: "row", xl: "row" }} spacing={5} sx={{ marginTop: 2, p: 1 }}>
 
 
-                            {/* Property Details }
+                            {/* Property Details */}
                             <Box width='600'>
                                 <InputBase
                                     placeholder="Enter property name"
@@ -367,7 +365,6 @@ const MyCoopsPage = ({ login }) => {
                                     id="baths-input"
                                     defaultValue={-1}
                                     disabled={disableButton}
-                                    value={bath}
                                     sx={{
                                         marginLeft: "-10px",
                                         marginRight: "-50px",
@@ -395,7 +392,7 @@ const MyCoopsPage = ({ login }) => {
                                 </Select>
                             </Box>
 
-                            {/* Amenities }
+                            {/* Amenities */}
                             <Divider orientation={{ xs: 'horizontal', md: 'vertical', lg: 'vertical', xl: 'vertical' }} width={3} sx={{ borderBottomWidth: 3, color: "#AB191F", backgroundColor: "#AB191F", marginY: 2, marginX: 0, maxHeight: "175px" }} />
                             <Box height="175px" style={{ marginRight: "-45px", }}>
                                 <Box width='200px' height='600px' style={{ margin: "-10px 0 0 -30px", textAlign: "left", padding: "0" }}>
@@ -411,7 +408,7 @@ const MyCoopsPage = ({ login }) => {
                                         Amenities
                                     </Typography>
 
-                                    {/* Furnished }
+                                    {/* Furnished */}
                                     <Container style={{ float: "left", width: "100%" }}>
                                         <FormControlLabel style={{ margin: "-10px 0 0 -30px" }} label={<Typography style={{ fontSize: "11pt" }}>Furnished</Typography>} control={
                                             <Checkbox style={{}}
@@ -437,7 +434,7 @@ const MyCoopsPage = ({ login }) => {
                                         />
                                     </Container> {<br />}{<br />}
 
-                                    {/* Kitchen Appliances }
+                                    {/* Kitchen Appliances */}
                                     <Container style={{ float: "left", width: "100%" }}>
                                         <FormControlLabel style={{ margin: "-20px 0 0 -30px" }} label={<Typography style={{ fontSize: "11pt" }}>Kitchen Appliances</Typography>} control={
                                             <Checkbox style={{}}
@@ -463,7 +460,7 @@ const MyCoopsPage = ({ login }) => {
                                         />
                                     </Container> {<br />}{<br />}
 
-                                    {/* In-Unit Washer Dryer }
+                                    {/* In-Unit Washer Dryer */}
                                     <Container style={{ float: "left", width: "100%" }}>
                                         <FormControlLabel style={{ margin: "-40px 0 0 -30px" }} label={<Typography style={{ fontSize: "11pt" }}>In-Unit Washer Dryer</Typography>} control={
                                             <Checkbox style={{}}
@@ -489,7 +486,7 @@ const MyCoopsPage = ({ login }) => {
                                         />
                                     </Container> {<br />}{<br />}
 
-                                    {/* Parking }
+                                    {/* Parking */}
                                     <Container style={{ float: "left", width: "50%" }}>
                                         <FormControlLabel style={{ margin: "-60px 0 0 -30px" }} label={<Typography style={{ fontSize: "11pt" }}>Parking</Typography>} control={
                                             <Checkbox style={{}}
@@ -515,7 +512,7 @@ const MyCoopsPage = ({ login }) => {
                                         />
                                     </Container> {<br />}{<br />}
 
-                                    {/* Pet Friendly}
+                                    {/* Pet Friendly */}
                                     <Container style={{ float: "left", width: "100%" }}>
                                         <FormControlLabel style={{ margin: "-80px 0 0 -30px" }} label={<Typography style={{ fontSize: "11pt" }}>Pet Friendly</Typography>} control={
                                             <Checkbox style={{}}
@@ -541,7 +538,7 @@ const MyCoopsPage = ({ login }) => {
                                         />
                                     </Container> {<br />}{<br />}
 
-                                    {/* Gym }
+                                    {/* Gym */}
                                     <Container style={{ float: "left", width: "100%" }}>
                                         <FormControlLabel style={{ margin: "-100px 0 0 -30px" }} label={<Typography style={{ fontSize: "11pt" }}>Gym</Typography>} control={
                                             <Checkbox style={{}}
@@ -569,7 +566,7 @@ const MyCoopsPage = ({ login }) => {
                                 </Box>
                             </Box>
 
-                            {/* Utilities }
+                            {/* Utilities */}
                             <Divider orientation={{ xs: 'horizontal', md: 'vertical', lg: 'vertical', xl: 'vertical' }} width={3} sx={{ borderBottomWidth: 3, color: "#AB191F", backgroundColor: "#AB191F", marginY: 2, marginX: 0, maxHeight: "175px" }} />
                             <Box height="175px" style={{ marginRight: "-25px", }}>
                                 <Box width='200px' height='600px' style={{ margin: "-10px 0 0 -30px", textAlign: "left", padding: "0" }}>
@@ -585,7 +582,7 @@ const MyCoopsPage = ({ login }) => {
                                         Utilities
                                     </Typography>
 
-                                    {/* Water}
+                                    {/* Water */}
                                     <Container style={{ float: "left", width: "100%", }}>
                                         <FormControlLabel style={{ margin: "-10px 0 0 -30px" }} label={<Typography style={{ fontSize: "11pt" }}>Water</Typography>} control={
                                             <Checkbox style={{}}
@@ -611,7 +608,7 @@ const MyCoopsPage = ({ login }) => {
                                         />
                                     </Container> {<br />}{<br />}
 
-                                    {/* Electricity }
+                                    {/* Electricity */}
                                     <Container style={{ float: "left", width: "100%" }}>
                                         <FormControlLabel style={{ margin: "-20px 0 0 -30px" }} label={<Typography style={{ fontSize: "11pt" }}>Electricity</Typography>} control={
                                             <Checkbox style={{}}
@@ -637,7 +634,7 @@ const MyCoopsPage = ({ login }) => {
                                         />
                                     </Container> {<br />}{<br />}
 
-                                    {/* Gas }
+                                    {/* Gas */}
                                     <Container style={{ float: "left", width: "100%", }}>
                                         <FormControlLabel style={{ margin: "-40px 0 0 -30px" }} label={<Typography style={{ fontSize: "11pt" }}>Gas</Typography>} control={
                                             <Checkbox style={{}}
@@ -663,7 +660,7 @@ const MyCoopsPage = ({ login }) => {
                                         />
                                     </Container> {<br />}{<br />}
 
-                                    {/* Trash }
+                                    {/* Trash */}
                                     <Container style={{ float: "left", width: "100%", }}>
                                         <FormControlLabel style={{ margin: "-60px 0 0 -30px" }} label={<Typography style={{ fontSize: "11pt" }}>Trash</Typography>} control={
                                             <Checkbox style={{}}
@@ -689,7 +686,7 @@ const MyCoopsPage = ({ login }) => {
                                         />
                                     </Container> {<br />}{<br />}
 
-                                    {/* Sewage }
+                                    {/* Sewage */}
                                     <Container style={{ float: "left", width: "100%", }}>
                                         <FormControlLabel style={{ margin: "-80px 0 0 -30px" }} label={<Typography style={{ fontSize: "11pt" }}>Sewage</Typography>} control={
                                             <Checkbox style={{}}
@@ -715,7 +712,7 @@ const MyCoopsPage = ({ login }) => {
                                         />
                                     </Container> {<br />}{<br />}
 
-                                    {/* Internet }
+                                    {/* Internet */}
                                     <Container style={{ float: "left", width: "100%", }}>
                                         <FormControlLabel style={{ margin: "-100px 0 0 -30px" }} label={<Typography style={{ fontSize: "11pt" }}>Internet</Typography>} control={
                                             <Checkbox style={{}}
@@ -743,7 +740,7 @@ const MyCoopsPage = ({ login }) => {
                                 </Box>
                             </Box>
 
-                            {/* Add Coop button }
+                            {/* Add Coop button */}
                             <Toaster
                                 toastOptions={{
                                     success: {
@@ -785,33 +782,8 @@ const MyCoopsPage = ({ login }) => {
                     </Container>
                 </DialogContent>
             </Dialog>
-            */
-        <Container sx={{ width: '100%' }}>
-            <Box style={{ position: "fixed", bottom: "0", right: "0" }}>
-                <IconButton
-                    onMouseEnter={handleHovered}
-                    onMouseLeave={handleLeave}
-                    onClick={() => setOpen(true)}
-                    sx={{ m: 3 }}
-                    style={{
-                        borderRadius: '50%',
-                        width: "75px",
-                        height: "75px",
-                        backgroundColor: hovered === true ? "#f5ebe0" : "#AB191F",
-                        display: "flex",
-                        justifyContent: "center",
-                        boxShadow: "0px 0px 3px 3px rgba(0, 0, 0, .2)",
-                    }}>
-                    <AddHomeIcon
-                        style={{
-                            color: hovered === true ? "#AB191F" : "#f5ebe0",
-                            fontSize: "25pt",
-                            justifyContent: "center"
-                        }}
-                    />
-                </IconButton>
-            </Box>
-            {open === true ? <AddCoopView setOpen={setOpen}></AddCoopView> : ''}
+
+
             <Box sx={{ marginTop: 3 }} style={styles.feed}>
                 {loading ? ( // Display loading spinner while loading
                     <CircularProgress style={styles.loadingSpinner}>

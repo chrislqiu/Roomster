@@ -84,7 +84,7 @@ app.post('/sendManagerProfile', async (req, res) => {
   updatedCompany.companyInfo = updatedCompanyInfo
   await updatedCompany.save()
 
-  const updatedManager = new Manager({
+  var updatedManager = new Manager({
     username: manager.username,
     password: manager.password,
     isVerified: manager.isVerified,

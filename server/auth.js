@@ -109,7 +109,7 @@ router.get("/authorize-admin", authorizationAdmin, (req, res) => {
 });
 
 router.post("/check-owner", authorization, async (req, res) => {
-    // console.log(req.body.id)
+    //console.log(req.body.id)
     Manager.findOne({ username: req.user.username })
         .then((result) => {
             if (!result) {
@@ -117,12 +117,10 @@ router.post("/check-owner", authorization, async (req, res) => {
             }
             // console.log(result.company.companyInfo.name)
             // res.send({username: result.company.companyInfo.name});
-            Property.findOne({
-                $or: [
-                    { _id: req.body.id },
-                    { 'propertyInfo._id': req.body.id }
-                ]
-            })
+            Property.findOne({ $or: [
+                { _id: req.body.id },
+                { 'propertyInfo._id': req.body.id }
+            ] })
                 .then((resultProperty) => {
                     if (!resultProperty) {
                         return res.send({ match: false });
@@ -179,7 +177,7 @@ router.get("/current-user", authorization, async (req, res) => {
         return res.status(400).send("User does not exist");
     }
 
-    res.status(200).json({ user: user, username: username, user_type: userType })
+    res.status(200).json({user: user, username: username, user_type: userType})
 });
 
 router.get("/current-user", authorization, async (req, res) => {
@@ -264,7 +262,7 @@ router.post("/manager-signup", async (req, res) => {
         const salt = await bcrypt.genSalt();
         const hashedPW = await bcrypt.hash(req.body.password, salt);
 
-        var existingCompany = await Company.findOne({ 'companyInfo.name': req.body.companyName });
+        var existingCompany = await Company.findOne({'companyInfo.name': req.body.companyName});
         if (!existingCompany) {
             const newCompanyInfo = new CompanyInfo({
                 name: req.body.companyName,
@@ -285,11 +283,9 @@ router.post("/manager-signup", async (req, res) => {
         const newManager = new Manager({
             username: req.body.username,
             password: hashedPW,
-            name: req.body.name,
-            email: req.body.email,
-            company: existingCompany,
-            bio: '',
-            phone: ''
+            name: req.body.managerName,
+            email: req.body.managerEmail,
+            company: existingCompany
         });
 
         newManager.save()
@@ -371,7 +367,7 @@ router.post("/delete", authorization, async (req, res) => {
 
         if (isPasswordValid) {
             if (userType === "renter") {
-                await RenterInfo.deleteOne({ _id: user.renterInfo._id });
+                await RenterInfo.deleteOne({ _id: user.renterInfo._id});
                 await Renter.deleteOne({ username: req.body.username });
             } else if (userType === "manager") {
                 await Manager.deleteOne({ username: req.body.username });
@@ -475,15 +471,7 @@ router.get("/check-verify", authorization, async (req, res) => {
 });
 
 router.post("/send-pw-reset", async (req, res) => {
-    var user = await Renter.findOne({ username: req.body.username });
-    var userType = "renter";
-    if (user === null) {
-        user = await Manager.findOne({ username: req.body.username });
-        userType = "manager";
-        if (user === null) {
-            return res.status(400).send("User does not exist");
-        }
-    }
+    const user = await User.findOne({ username: req.body.username });
 
     if (!user) {
         return res.status(400).send("User does not exist");
@@ -547,20 +535,12 @@ router.get("/verify-pw-reset/:token", async (req, res) => {
         const decoded = jwt.verify(token, secretKey);
         console.log(decoded.username);
 
-        var user = await Renter.findOne({ username: decoded.username });
-        var userType = "renter";
-        if (user === null) {
-            user = await Manager.findOne({ username: decoded.username });
-            userType = "manager";
-            if (user === null) {
-                return res.redirect(`http://localhost:3001/?toast=ResetErr`);
-            }
-        }
+        const user = await User.findOne({ username: decoded.username });
 
-        // if (!user) {
-        //     // return res.status(404).send("User not found");
-        //     return res.redirect(`http://localhost:3001/?toast=ResetErr`);
-        // }
+        if (!user) {
+            // return res.status(404).send("User not found");
+            return res.redirect(`http://localhost:3001/?toast=ResetErr`);
+        }
 
         const resetToken = jwt.sign({ username: decoded.username }, secretKey, { expiresIn: '10m' });
 
@@ -577,25 +557,16 @@ router.post("/pw-reset/:token", async (req, res) => {
         const decoded = jwt.verify(token, secretKey);
         console.log("decoded" + decoded.username);
 
-        var user = await Renter.findOne({ username: decoded.username });
-        var userType = "renter";
-        if (user === null) {
-            user = await Manager.findOne({ username: decoded.username });
-            userType = "manager";
-            if (user === null) {
-                return res.status(404).send("User not found");
-            }
-        }
+        const user = await User.findOne({ username: decoded.username });
 
+        if (!user) {
+            return res.status(404).send("User not found");
+        }
 
         const salt = await bcrypt.genSalt();
         const hashedNewPassword = await bcrypt.hash(req.body.newPassword, salt);
 
-        if(userType === "renter"){
-            await Renter.updateOne({ username: decoded.username }, { password: hashedNewPassword });
-        } else if (userType === "manager"){
-            await Manager.updateOne({ username: decoded.username }, { password: hashedNewPassword });
-        }
+        await User.updateOne({ username: decoded.username }, { password: hashedNewPassword });
 
         return res.status(200).send("Password reset");
     } catch (err) {
@@ -753,20 +724,6 @@ router.post("/admin/pw-set/:token", async (req, res) => {
 });
 
 router.post("/delete-property", authorization, async (req, res) => {
-    try {
-        const propertyId = req.body.id
-        console.log(propertyId);
-        const result = await Property.deleteOne(
-            { _id: propertyId },)
-        return res.status(200).send("Property deleted");
-
-    } catch (err) {
-        console.log(err)
-        res.status(500).send("Error deleting property");
-    }
-})
-
-router.post("/delete-property-admin", authorizationAdmin, async (req, res) => {
     try {
         const propertyId = req.body.id
         console.log(propertyId);

@@ -18,11 +18,8 @@ import BookmarkIcon from '@mui/icons-material/Bookmark';
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import CheckIcon from "@mui/icons-material/Check";
 import { useNavigate, createSearchParams } from 'react-router-dom';
-import AddCoopView from './AddCoopView';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBuildingCircleCheck } from '@fortawesome/free-solid-svg-icons'
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
 
 /* 
@@ -110,12 +107,6 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
     const handleClose = () => {
         setOpen(false)
     }
-
-    const [editMode, setEditMode] = React.useState(false);
-
-    const handleEdit = () => {
-        setEditMode(true);
-    }
     //need user information for favCoops
     //if renter user and user.favCoops contains property then set favCoops to true
     //console.log(favCoops)
@@ -201,35 +192,6 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
 
             if (response.ok) {
                 console.log("good")
-                localStorage.setItem('propertyDeleted', 'true');
-                window.location.reload(true);
-
-            } else {
-                console.log("nope")
-            }
-        } catch (error) {
-            console.log(error)
-        }
-    };
-
-    const handleDeletePropertyAdmin = async () => {
-        const id = data._id;
-        console.log("data: " + id);
-        try {
-            const response = await fetch('http://localhost:8000/auth/delete-property-admin', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                credentials: 'include',
-                body: JSON.stringify({ id: id }),
-            });
-
-            console.log(response)
-
-            if (response.ok) {
-                console.log("good")
-                localStorage.setItem('propertyDeleted', 'true');
                 window.location.reload(true);
             } else {
                 console.log("nope")
@@ -321,19 +283,10 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
         getPropertyVerification();
     }, []);
 
-    React.useEffect(() => {
-        const propertyDeleted = localStorage.getItem('propertyDeleted');
-        if (propertyDeleted === 'true') {
-          toast.success('Property deleted successfully!', { position: toast.POSITION.TOP_CENTER });
-          localStorage.removeItem('propertyDeleted');
-        }
-      }, []);
-    
 
 
     return (
         <React.Fragment>
-            <ToastContainer />
             <Card
                 variant='contained'
                 onClick={() => {
@@ -586,32 +539,12 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
                         :
                         ''}
 
-                    {myCoops === true ? 
-                        <Button
-                            sx={{
-                                ":hover": {
-                                    borderColor: "#F6EBE1", bgcolor: "#F6EBE1", color: "#AB191F",
-                                    borderWidth: 1.5
-                                },
-                                borderColor: "#AB191F", bgcolor: "#AB191F", color: "#F6EBE1",
-                                borderWidth: 1.5, width: "112px", height: "35px", fontWeight: 600, lineHeight: "11px",
-                                boxShadow: 5, float: "right", bottom: 20, right: 30,
-                                marginBottom: "30px",
-                                marginLeft: "210px",
-                                position: "absolute"
-                            }}
-                            onClick={handleEdit}
-                            variant="outlined">{'EDIT'}
-                        </Button>    
-                    : ''}
-
-                    {editMode === true ? <AddCoopView setOpen={setOpen} editMode={true} data={data}></AddCoopView> : ''}
                     {login === true ? (
                         admin === true ? (
                             // Admin view
                             <div sx={{ display: "flex", width: "100%" }}>
                                 <Tooltip title="Delete Property">
-                                    <IconButton onClick={handleDeletePropertyAdmin}>
+                                    <IconButton onClick={handleDeleteProperty}>
                                         <DeleteOutlineIcon sx={{ color: "#AB191F" }} />
                                     </IconButton>
                                 </Tooltip>
@@ -662,7 +595,6 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
 
                 </DialogActions>
             </Dialog>
-            
         </React.Fragment>
 
     )
