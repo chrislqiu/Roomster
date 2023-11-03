@@ -30,7 +30,6 @@ const pagesRenter = ["Home", "Fav Coops", "Coopmates", "Log Out"];
  */
 const RoomsterAppBar = ({ login, userType }) => {
     console.log(login)
-    console.log("user pe:" + userType)
     let location = useLocation();
     console.log(location.pathname)
     let navigate = useNavigate();

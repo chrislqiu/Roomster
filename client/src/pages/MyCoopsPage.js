@@ -802,7 +802,7 @@ const MyCoopsPage = ({ login }) => {
                                 color: "#AB191F",
                             }}
                         >
-                            No properties favorited!
+                            You have no properties!
                         </Typography>
                     )
                 )}
