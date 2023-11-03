@@ -159,15 +159,6 @@ router.get('/unverified-cards', (req, res) => {
         });
 });
 
-router.get('/unverified-cards', (req, res) => {
-    Property.find({ isVerified: false })  
-        .then((result) => {
-            res.send(result);
-        })
-        .catch((err) => {
-            console.log(err);
-        });
-});
 
 // Route to add saved property
 router.post('/update-saves', async (req, res) => {

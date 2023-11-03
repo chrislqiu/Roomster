@@ -224,6 +224,31 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
         }
     };
 
+    const getPropertyVerification = async () => {
+        const id = data._id;
+        console.log("data: " + id);
+        try {
+            const response = await fetch('http://localhost:8000/auth/property-verification', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                // credentials: 'include',
+                body: JSON.stringify({ id: id }),
+            });
+
+            console.log(response)
+
+            if (response.ok) {
+                console.log("Property verified")
+            } else {
+                console.log("Property not verified")
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    };
+
     const checkOwner = async () => {
         const id = data._id;
         // console.log(id)
@@ -251,8 +276,8 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
 
 
     React.useEffect(() => {
-        // Call checkAuthentication when the component mounts
         checkOwner();
+        getPropertyVerification();
     }, []);
 
 
