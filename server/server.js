@@ -147,12 +147,9 @@ app.post('/sendProperty', async (req,res) => {
     companyInfo: existingCompanyInfo
   })
 
-  await fetch('http://localhost:8000/link-coops')
-  //const existingCompany = await Company.findOne({'companyInfo.name': manager.company.companyInfo.name})
-  //existingCompany.myCoops.addToSet(newPropertyInfo)
-
-  //existingCompany.save()
   newProperty.save()
+  existingCompanyInfo.myCoop.addToSet(property.propertyInfo)
+  await company.save()
   .then((result) => {
     res.send(result);
   })
