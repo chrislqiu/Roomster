@@ -31,6 +31,20 @@ router.get('/link-cards', async (req, res) => {
     res.status(200).send(`Linked ${counter} properties`)
 });
 
+router.get('/add-coop', async (req, res) => {
+    const id = req.body.id;
+
+    const manager = await Manager.findOne({username: req.body.username})
+    const company = await Company.findOne({'companyInfo.name': manager.company.companyInfo.name})
+    const property = await Property.findById(id)
+
+    const foundCoop = await company.find({myCoops: {$elemMatch: {_id: id}}})
+    if (foundCoop === null) {
+        company.myCoops.addToSet(property.propertyInfo)
+        await company.save()
+    }
+})
+
 // Route to add a card for testing use
 router.get('/add-card', async (req, res) => {
     const newCompanyInfo = new CompanyInfo({
@@ -231,5 +245,20 @@ router.post('/fav-coops-cards', async (req, res) => {
         console.log(err);
     });
 });
+
+router.get('/link-coops', async (req, res) => {
+    const property = await Property.find({})
+    property.forEach(async function(prop) {
+        const company = await Company.findOne({'companyInfo.name': prop.companyInfo.name})
+        const propertyInfo = await PropertyInfo.findOne({'propertyName': prop.propertyInfo.propertyName})
+
+        company.myCoops.addToSet(propertyInfo);
+        await company.save()
+        .catch((err) => {
+            console.log(err);
+        });
+    });
+    res.status(200).send("Linked Coops")
+})
 
 module.exports = router;

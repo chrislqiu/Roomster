@@ -130,7 +130,7 @@ app.post('/sendProperty', async (req,res) => {
   const decoded = jwt.verify(token, secretKey);
   const username = decoded.username
   const manager = await Manager.findOne({username: username})
-  // console.log(req.body)
+  //console.log(req.body)
   const newPropertyInfo = new PropertyInfo({
     image: data.propertyInfo.image,
     propertyName: data.propertyInfo.propertyName,
@@ -153,11 +153,12 @@ app.post('/sendProperty', async (req,res) => {
     companyInfo: existingCompanyInfo
   })
 
-  // const existingCompany = await Company.findOne({'companyInfo.name': manager.company.companyInfo.name})
-  // existingCompany.myCoops.push(newProperty)
-
-  // existingCompany.save()
   newProperty.save()
+  const company = await Company.findOne({"companyInfo.name": manager.company.companyInfo.name})
+  company.myCoops.push(newPropertyInfo)
+  company.save()
+  manager.company.myCoops = company.myCoops
+  await manager.save()
   .then((result) => {
     res.send(result);
   })
