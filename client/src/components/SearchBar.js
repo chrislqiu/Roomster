@@ -75,10 +75,10 @@ const SearchBar = ({ data, setInput, setFilteredOptions, setNumberSelected, setS
       };
 
     const sortData = (data, sortingOption) => {    
-        if (sortingOption === 'Price') {
+        if (sortingOption === 'Low to High') {
           return data.sort((a, b) => a.propertyInfo.cost - b.propertyInfo.cost);
-        } else if (sortingOption === 'Distance') {
-          return data.sort((a, b) => a.propertyInfo.distance - b.propertyInfo.distance);
+        } else if (sortingOption === 'High to Low') {
+          return data.sort((a, b) => b.propertyInfo.cost - a.propertyInfo.cost);
         } else {
           return data;
         }
@@ -110,6 +110,11 @@ const SearchBar = ({ data, setInput, setFilteredOptions, setNumberSelected, setS
 
     const handleClick = () => {
         setOpen(!open);
+        if (open === true) {
+            setSelectBed([])
+            setSelectedBath([])
+            setSelectedAmenities([])
+        }
     };
 
     const styles = {
@@ -420,15 +425,15 @@ const SearchBar = ({ data, setInput, setFilteredOptions, setNumberSelected, setS
             >
                 <MenuItem
                     style={styles.menuItems}
-                    onClick={() => handleSortOptionClick('Price')}
+                    onClick={() => handleSortOptionClick('Low to High')}
                 >
-                    Price
+                    Price: Low to High
                 </MenuItem>
                 <MenuItem
                     style={styles.menuItems}
-                    onClick={() => handleSortOptionClick('Distance')}
+                    onClick={() => handleSortOptionClick('High to Low')}
                     >  
-                    Distance
+                    Price: High to Low
                 </MenuItem>
             </Menu>
         </Box>
