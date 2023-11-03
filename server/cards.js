@@ -40,7 +40,7 @@ router.get('/add-coop', async (req, res) => {
 
     const foundCoop = await company.find({myCoops: {$elemMatch: {_id: id}}})
     if (foundCoop === null) {
-        company.myCoop.addToSet(property.propertyInfo)
+        company.myCoops.addToSet(property.propertyInfo)
         await company.save()
     }
 })
