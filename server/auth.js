@@ -756,7 +756,7 @@ router.post("/property-verification", async (req, res) => {
         const property = await Property.findOne(
             { _id: propertyId },
         );
-        if(property.isVerified){
+        if(property && property.isVerified){
             return res.status(200).send("Property verified");
         } else {
             return res.status(401).send("Property not verified");
