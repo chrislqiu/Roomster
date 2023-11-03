@@ -4,19 +4,19 @@ const Schema = mongoose.Schema;
 const propertyInfo = new Schema({
     image: {
         type: String,
-        required: false
+        default: "link"
     },
     propertyName: {
         type: String,
-        required: true
+        default: "New Property"
     },
     address: {
         type: String,
-        required: true
+        default: "Address"
     },
     beds: {
         type: Number,
-        required: true
+        default: 1
     },
     baths: Schema.Types.Mixed,
     cost: Schema.Types.Mixed,
@@ -24,7 +24,7 @@ const propertyInfo = new Schema({
     distance: Schema.Types.Mixed, //distance from memorial mall in miles
     amenities: {
         type: [String],
-        required: false
+        //required: false
     },
     utilities: {
         type: Map,
