@@ -308,7 +308,7 @@ const RenterPage = () => {
                     <Typography style={styles.subheader}> 
                         {"Contact info"}
                     </Typography >
-                    <InputBase placeholder="Purdue Email" id="email-textfield" sx={inputBaseSX}onChange={(e) => setEmail(e.target.value)}disabled={disableButton}/>
+                    <InputBase placeholder="Purdue Email" defaultValue="hi" id="email-textfield" sx={inputBaseSX}onChange={(e) => setEmail(e.target.value)}disabled={disableButton}/>
                     <InputBase placeholder="Phone number" id="number-textfield" sx={inputBaseSX}onChange={(e) => setPhone(e.target.value)}disabled={disableButton}/>
                     <Button variant="contained" style={{backgroundColor: "#AB191F", float: "right", margin: "0 35px 0 0", visibility: toggleOn ? "hidden" : "visible"}} 
                         onClick={() => {
@@ -354,7 +354,7 @@ const RenterPage = () => {
                                 </RadioGroup>
                             </FormControl>
                             <FormControl style={{marginLeft:"-55px", marginBottom: "-7px"}} disabled={disableButton}>
-                                <RadioGroup row name="smoke" style={{width: "150px", display: "flex", justifyContent:"center"}} > 
+                                <RadioGroup defaultValue={"yes"} row name="smoke" style={{width: "150px", display: "flex", justifyContent:"center"}} > 
                                     <FormControlLabel value="yes" control={<Radio sx={radioSX}/>} label="Yes" onChange={() => setDoesSmoke(true)}/>
                                     <FormControlLabel value="no" control={<Radio sx={radioSX}/>} label="No" onChange={() => setDoesSmoke(false)}
                                     />

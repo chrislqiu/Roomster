@@ -18,6 +18,7 @@ import BookmarkIcon from '@mui/icons-material/Bookmark';
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import CheckIcon from "@mui/icons-material/Check";
 import { useNavigate, createSearchParams } from 'react-router-dom';
+import AddCoopView from './AddCoopView';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBuildingCircleCheck } from '@fortawesome/free-solid-svg-icons'
 import { toast, ToastContainer } from 'react-toastify';
@@ -108,6 +109,12 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
     }
     const handleClose = () => {
         setOpen(false)
+    }
+
+    const [editMode, setEditMode] = React.useState(false);
+
+    const handleEdit = () => {
+        setEditMode(true);
     }
     //need user information for favCoops
     //if renter user and user.favCoops contains property then set favCoops to true
@@ -579,6 +586,26 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
                         :
                         ''}
 
+                    {myCoops === true ? 
+                        <Button
+                            sx={{
+                                ":hover": {
+                                    borderColor: "#F6EBE1", bgcolor: "#F6EBE1", color: "#AB191F",
+                                    borderWidth: 1.5
+                                },
+                                borderColor: "#AB191F", bgcolor: "#AB191F", color: "#F6EBE1",
+                                borderWidth: 1.5, width: "112px", height: "35px", fontWeight: 600, lineHeight: "11px",
+                                boxShadow: 5, float: "right", bottom: 20, right: 30,
+                                marginBottom: "30px",
+                                marginLeft: "210px",
+                                position: "absolute"
+                            }}
+                            onClick={handleEdit}
+                            variant="outlined">{'EDIT'}
+                        </Button>    
+                    : ''}
+
+                    {editMode === true ? <AddCoopView setOpen={setOpen} editMode={true} data={data}></AddCoopView> : ''}
                     {login === true ? (
                         admin === true ? (
                             // Admin view
