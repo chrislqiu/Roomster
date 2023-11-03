@@ -108,9 +108,8 @@ router.get("/authorize-admin", authorizationAdmin, (req, res) => {
     res.status(200).json({ message: 'Authorized', user: req.user, userType: req.userType });
 });
 
-router.post("/check-owner", authorization, (req, res) => {
-    // console.log(req.user.username)
-    // console.log(req.body.id)
+router.post("/check-owner", authorization, async (req, res) => {
+    console.log(req.body.id)
     Manager.findOne({ username: req.user.username })
         .then((result) => {
             if (!result) {
@@ -118,7 +117,10 @@ router.post("/check-owner", authorization, (req, res) => {
             }
             // console.log(result.company.companyInfo.name)
             // res.send({username: result.company.companyInfo.name});
-            Property.findOne({ _id: req.body.id })
+            Property.findOne({ $or: [
+                { _id: req.body.id },
+                { 'propertyInfo._id': req.body.id }
+            ] })
                 .then((resultProperty) => {
                     if (!resultProperty) {
                         return res.send({ match: false });
@@ -126,6 +128,9 @@ router.post("/check-owner", authorization, (req, res) => {
                     const match = result.company.companyInfo.name === resultProperty.companyInfo.name;
                     res.send({ match: match });
                 })
+                .catch((err) => {
+                    console.log(err);
+                });
         })
         .catch((err) => {
             console.log(err);

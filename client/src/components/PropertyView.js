@@ -268,7 +268,6 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
 
             if (response.ok) {
                 const data = await response.json();
-                console.log(data.match)
                 setIsOwner(data.match)
             } else {
                 console.log('Authentication check failed');
