@@ -19,6 +19,11 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import CheckIcon from "@mui/icons-material/Check";
 import { useNavigate, createSearchParams } from 'react-router-dom';
 import AddCoopView from './AddCoopView';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faBuildingCircleCheck } from '@fortawesome/free-solid-svg-icons'
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import AddCoopView from './AddCoopView';
 
 
 /* 
@@ -60,6 +65,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
     const [userType, setUserType] = React.useState('')
     const [favCoopsArr, setFavCoopsArr] = React.useState([])
     const [myCoopsArr, setMyCoopsArr] = React.useState([])
+    const [isVerified, setIsVerified] = React.useState(false)
     const coopFavorited = favCoopsArr.some(coops => coops._id.toString() === data._id.toString())
 
     React.useEffect(() => {
@@ -196,6 +202,35 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
 
             if (response.ok) {
                 console.log("good")
+                localStorage.setItem('propertyDeleted', 'true');
+                window.location.reload(true);
+
+            } else {
+                console.log("nope")
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    };
+
+    const handleDeletePropertyAdmin = async () => {
+        const id = data._id;
+        console.log("data: " + id);
+        try {
+            const response = await fetch('http://localhost:8000/auth/delete-property-admin', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: JSON.stringify({ id: id }),
+            });
+
+            console.log(response)
+
+            if (response.ok) {
+                console.log("good")
+                localStorage.setItem('propertyDeleted', 'true');
                 window.location.reload(true);
             } else {
                 console.log("nope")
@@ -247,6 +282,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
             console.log(response)
 
             if (response.ok) {
+                setIsVerified(true)
                 console.log("Property verified")
             } else {
                 console.log("Property not verified")
@@ -271,7 +307,6 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
 
             if (response.ok) {
                 const data = await response.json();
-                console.log(data.match)
                 setIsOwner(data.match)
             } else {
                 console.log('Authentication check failed');
@@ -287,10 +322,19 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
         getPropertyVerification();
     }, []);
 
+    React.useEffect(() => {
+        const propertyDeleted = localStorage.getItem('propertyDeleted');
+        if (propertyDeleted === 'true') {
+          toast.success('Property deleted successfully!', { position: toast.POSITION.TOP_CENTER });
+          localStorage.removeItem('propertyDeleted');
+        }
+      }, []);
+    
 
 
     return (
         <React.Fragment>
+            <ToastContainer />
             <Card
                 variant='contained'
                 onClick={() => {
@@ -336,8 +380,8 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
                             {/* {favCoops === true ? <FavoriteIcon style={{margin: "-20px 0 0px 2.5"}} sx={{color: "#AB191F", ":hover": {color: "#F6EBE1",},}}/> : ''} */}
                             {/* <Typography variant="h6" style={{fontSize: "13pt", margin: "-20px 0 0px 0"}}> Property Name </Typography> */}
                             {featured === true ? <StarIcon style={{ margin: "-22px 0 0 5px", fontSize: "15pt" }} /> : ''}
-                            {favCoops === true ? <FavoriteIcon style={{ margin: "-22px 0 0 5px", fontSize: "15pt" }} sx={{ color: "#AB191F", ":hover": { color: "#F6EBE1", }, }} /> : ''}
-                            {myCoops === true ? <BookmarkIcon style={{ margin: "-22px 0 0 5px", fontSize: "15pt" }} sx={{ color: "#AB191F", ":hover": { color: "#F6EBE1", }, }} /> : ''}
+                            {favCoops === true ? <FavoriteIcon style={{ margin: "-22px 0 0 5px", fontSize: "15pt" }}  /> : ''}
+                            {myCoops === true ? <BookmarkIcon style={{ margin: "-22px 0 0 5px", fontSize: "15pt" }} /> : ''}
 
                         </div>
                         <Typography variant="body2" style={{ margin: "0 0 5px 0" }}>{address}</Typography>
@@ -523,31 +567,52 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
                     </Stack>
                 </DialogContent>
                 <DialogActions>
+
+                    {console.log(isVerified)}
+                    {isVerified === true ?
+                        <Tooltip title="Verified Property"
+                            componentsProps={{
+                                tooltip: {
+                                    sx: {
+                                        bgcolor: 'rgba(171, 25, 31, 0.9)',
+                                        color: "#F6EBE1"
+                                    },
+                                },
+                            }}
+                        >
+                            <IconButton sx={{ color: "#AB191F" }}>
+                                <FontAwesomeIcon icon={faBuildingCircleCheck} />
+                            </IconButton>
+                        </Tooltip>
+                        :
+                        ''}
+
                     {myCoops === true ? 
-                    <Button
-                        sx={{
-                            ":hover": {
-                                borderColor: "#F6EBE1", bgcolor: "#F6EBE1", color: "#AB191F",
-                                borderWidth: 1.5
-                            },
-                            borderColor: "#AB191F", bgcolor: "#AB191F", color: "#F6EBE1",
-                            borderWidth: 1.5, width: "112px", height: "35px", fontWeight: 600, lineHeight: "11px",
-                            boxShadow: 5, float: "right", bottom: 20, right: 30,
-                            marginBottom: "30px",
-                            marginLeft: "210px",
-                            position: "absolute"
-                        }}
-                        onClick={handleEdit}
-                        variant="outlined">{'EDIT'}
-                    </Button>    
+                        <Button
+                            sx={{
+                                ":hover": {
+                                    borderColor: "#F6EBE1", bgcolor: "#F6EBE1", color: "#AB191F",
+                                    borderWidth: 1.5
+                                },
+                                borderColor: "#AB191F", bgcolor: "#AB191F", color: "#F6EBE1",
+                                borderWidth: 1.5, width: "112px", height: "35px", fontWeight: 600, lineHeight: "11px",
+                                boxShadow: 5, float: "right", bottom: 20, right: 30,
+                                marginBottom: "30px",
+                                marginLeft: "210px",
+                                position: "absolute"
+                            }}
+                            onClick={handleEdit}
+                            variant="outlined">{'EDIT'}
+                        </Button>    
                     : ''}
+
                     {editMode === true ? <AddCoopView setOpen={setOpen} editMode={true} data={data}></AddCoopView> : ''}
                     {login === true ? (
                         admin === true ? (
                             // Admin view
                             <div sx={{ display: "flex", width: "100%" }}>
                                 <Tooltip title="Delete Property">
-                                    <IconButton onClick={handleDeleteProperty}>
+                                    <IconButton onClick={handleDeletePropertyAdmin}>
                                         <DeleteOutlineIcon sx={{ color: "#AB191F" }} />
                                     </IconButton>
                                 </Tooltip>
@@ -590,18 +655,15 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
                         // Not logged in view
                         ''
                     )}
-
-
                     <Typography
                         style={{ margin: "0 5px 0 5px", padding: " 0 5px 0 0px" }}
                     >
                         {saves}
                     </Typography>
 
-
-
                 </DialogActions>
             </Dialog>
+            
         </React.Fragment>
 
     )

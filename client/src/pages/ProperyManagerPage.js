@@ -5,31 +5,31 @@ import { useState } from 'react';
 
 const PropertyManagerPage = () => {
 
-    const [name, setName] = useState('');
+    //const [name, setName] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
     const [email, setEmail] = useState('');
     const [bio, setBio] = useState('');
-    const [companyName, setCompanyName] = useState('');
+    //const [companyName, setCompanyName] = useState('');
     const [addr, setAddr] = useState('');
     const [officeNum, setOfficeNum] = useState('');
     const [disableButton, setDisableButton] = useState(true)
 
-    React.useEffect(() => {
-        const getUserInfo = async () => {
-            const res = await fetch('http://localhost:8000/auth/current-user')
-            if (res.ok) {
-                const userData = await res.json()
-                setName(userData.user.name)
-                setPhoneNumber(userData.user.phone)
-                setEmail(userData.user.email)
-                setBio(userData.user.bio)
-                setCompanyName(userData.user.company.companyInfo.name)
-                setAddr(userData.user.company.companyInfo.address)
-                setOfficeNum(userData.user.company.companyInfo.phone)
-            }
-        }
-        getUserInfo()
-    }, [])
+    // React.useEffect(() => {
+    //     const getUserInfo = async () => {
+    //         const res = await fetch('http://localhost:8000/auth/current-user')
+    //         if (res.ok) {
+    //             const userData = await res.json()
+    //             setName(userData.user.name)
+    //             setPhoneNumber(userData.user.phone)
+    //             setEmail(userData.user.email)
+    //             setBio(userData.user.bio)
+    //             setCompanyName(userData.user.company.companyInfo.name)
+    //             setAddr(userData.user.company.companyInfo.address)
+    //             setOfficeNum(userData.user.company.companyInfo.phone)
+    //         }
+    //     }
+    //     getUserInfo()
+    // }, [])
 
     const inputBaseSX = {
         margin: "5 0 10px 0px", 
@@ -90,6 +90,8 @@ const PropertyManagerPage = () => {
             console.error('ERRORRR: ', error);
         });
     };
+    const name = "John Doe"
+    const companyName = "Campus Edge"
 
     return (
             <Card

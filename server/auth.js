@@ -108,9 +108,8 @@ router.get("/authorize-admin", authorizationAdmin, (req, res) => {
     res.status(200).json({ message: 'Authorized', user: req.user, userType: req.userType });
 });
 
-router.post("/check-owner", authorization, (req, res) => {
-    // console.log(req.user.username)
-    // console.log(req.body.id)
+router.post("/check-owner", authorization, async (req, res) => {
+    console.log(req.body.id)
     Manager.findOne({ username: req.user.username })
         .then((result) => {
             if (!result) {
@@ -118,7 +117,10 @@ router.post("/check-owner", authorization, (req, res) => {
             }
             // console.log(result.company.companyInfo.name)
             // res.send({username: result.company.companyInfo.name});
-            Property.findOne({ _id: req.body.id })
+            Property.findOne({ $or: [
+                { _id: req.body.id },
+                { 'propertyInfo._id': req.body.id }
+            ] })
                 .then((resultProperty) => {
                     if (!resultProperty) {
                         return res.send({ match: false });
@@ -126,6 +128,9 @@ router.post("/check-owner", authorization, (req, res) => {
                     const match = result.company.companyInfo.name === resultProperty.companyInfo.name;
                     res.send({ match: match });
                 })
+                .catch((err) => {
+                    console.log(err);
+                });
         })
         .catch((err) => {
             console.log(err);
@@ -278,9 +283,11 @@ router.post("/manager-signup", async (req, res) => {
         const newManager = new Manager({
             username: req.body.username,
             password: hashedPW,
-            name: req.body.managerName,
-            email: req.body.managerEmail,
-            company: existingCompany
+            name: req.body.name,
+            email: req.body.email,
+            company: existingCompany,
+            bio: '',
+            phone: ''
         });
 
         newManager.save()
@@ -719,6 +726,20 @@ router.post("/admin/pw-set/:token", async (req, res) => {
 });
 
 router.post("/delete-property", authorization, async (req, res) => {
+    try {
+        const propertyId = req.body.id
+        console.log(propertyId);
+        const result = await Property.deleteOne(
+            { _id: propertyId },)
+        return res.status(200).send("Property deleted");
+
+    } catch (err) {
+        console.log(err)
+        res.status(500).send("Error deleting property");
+    }
+})
+
+router.post("/delete-property-admin", authorizationAdmin, async (req, res) => {
     try {
         const propertyId = req.body.id
         console.log(propertyId);
