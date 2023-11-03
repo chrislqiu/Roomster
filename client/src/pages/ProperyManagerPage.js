@@ -31,13 +31,15 @@ const PropertyManagerPage = () => {
             setUserData(obj);
         }
         getUserInfo()
-        setName(userData.user.name)
-        setPhoneNumber(userData.user.phone)
-        setEmail(userData.user.email)
-        setBio(userData.user.bio)
-        setCompanyName(userData.user.company.companyInfo.name)
-        setAddr(userData.user.company.companyInfo.address)
-        setOfficeNum(userData.user.company.companyInfo.phone)
+        if (userData.user) {
+            setName(userData.user.name)
+            setPhoneNumber(userData.user.phone)
+            setEmail(userData.user.email)
+            setBio(userData.user.bio)
+            setCompanyName(userData.user.company.companyInfo.name)
+            setAddr(userData.user.company.companyInfo.address)
+            setOfficeNum(userData.user.company.companyInfo.phone)
+        }
     }, [userData])
 
     const inputBaseSX = {
