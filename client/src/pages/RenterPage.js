@@ -397,7 +397,7 @@ const RenterPage = () => {
                             <Slider
                                 onChange={(e, val) => setStudious(val)}
                                 size="small"
-                                defaultValue={3}
+                                defaultValue={studious}
                                 valueLabelDisplay="auto"
                                 step={1}
                                 marks
@@ -411,7 +411,7 @@ const RenterPage = () => {
                             <Slider
                                 onChange={(e, val) => setCleanliness(val)}
                                 size="small"
-                                defaultValue={3}
+                                defaultValue={cleanliness}
                                 valueLabelDisplay="auto"
                                 step={1}
                                 marks
@@ -425,7 +425,7 @@ const RenterPage = () => {
                             <Slider
                                 onChange={(e, val) => setGuestFreq(val)}
                                 size="small"
-                                defaultValue={3}
+                                defaultValue={guestFreq}
                                 valueLabelDisplay="auto"
                                 step={1}
                                 marks
