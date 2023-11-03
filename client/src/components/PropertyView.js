@@ -18,6 +18,8 @@ import BookmarkIcon from '@mui/icons-material/Bookmark';
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import CheckIcon from "@mui/icons-material/Check";
 import { useNavigate, createSearchParams } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faBuildingCircleCheck } from '@fortawesome/free-solid-svg-icons'
 
 
 /* 
@@ -59,6 +61,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
     const [userType, setUserType] = React.useState('')
     const [favCoopsArr, setFavCoopsArr] = React.useState([])
     const [myCoopsArr, setMyCoopsArr] = React.useState([])
+    const [isVerified, setIsVerified] = React.useState(false)
     const coopFavorited = favCoopsArr.some(coops => coops._id.toString() === data._id.toString())
 
     React.useEffect(() => {
@@ -240,6 +243,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
             console.log(response)
 
             if (response.ok) {
+                setIsVerified(true)
                 console.log("Property verified")
             } else {
                 console.log("Property not verified")
@@ -517,6 +521,24 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
                 </DialogContent>
                 <DialogActions>
 
+                {console.log(isVerified)}
+                { isVerified === true ?
+                <Tooltip title="Verified Property"
+                componentsProps={{
+                    tooltip: {
+                        sx: {
+                            bgcolor: 'rgba(171, 25, 31, 0.9)',
+                            color: "#F6EBE1"
+                        },
+                    },
+                }}
+                >
+                    <IconButton sx={{ color: "#AB191F" }}>
+                        <FontAwesomeIcon icon={faBuildingCircleCheck} />
+                    </IconButton>
+                </Tooltip>
+                :
+                ''}
 
                     {login === true ? (
                         admin === true ? (
