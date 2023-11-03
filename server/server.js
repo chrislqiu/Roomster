@@ -3,7 +3,6 @@ const cors = require("cors");
 const authRouter = require("./auth");
 const mongoose = require('mongoose');
 const cardRoutes = require('./cards');
-
 const RenterInfo = require("./models/renterInfo")
 const Renter = require("./models/renter")
 const Manager = require("./models/manager")
@@ -36,7 +35,6 @@ app.use(cookieParser())
 const secretKey = "E.3AvP1]&r7;-vBSAL|3AyetV%H*fIEy";
 
 
-
 const authorization = (req, res, next) => {
   const token = req.cookies.access_token;
 
@@ -65,37 +63,57 @@ app.get("/message", (req, res) => {
 app.use("/auth", authRouter);
 app.use('/cards', cardRoutes);
 app.post('/sendManagerProfile', async (req, res) => {
-  const data = req.body;
-  console.log(data)
-
-  const token = req.cookies.access_token;
-  const decoded = jwt.verify(token, secretKey);
+  const manager = await Manager.findOne({username: req.body.username})
+  const token = req.headers.cookie.access_token
+  const decoded = jwt.verify(token, secretKey)
   const username = decoded.username
-  const manager = await Manager.findOne({username: username})
+  console.log(username)
 
-  const updatedCompanyInfo = await CompanyInfo.findOneAndUpdate({name: manager.company.companyInfo.name}, {name: data.company.name, address: data.company.address, phone: data.company.phone}).setOptions({returnDocument: after})
-  const updatedCompany = await Company.findOneAndUpdate({'companyInfo.name': manager.company.companyInfo.name}, {companyInfo: updatedCompanyInfo}).setOptions({returnDocument: after})
-  const updatedManager = await Manager.findOneAndUpdate({username: username}, {email: data.email, phone: data.phone, bio: data.bio, company: updatedCompany}).setOptions({returnDocument: after})
+  const updatedCompanyInfo = new CompanyInfo({
+    name: req.body.company.name,
+    address: req.body.company.address,
+    site: manager.company.companyInfo.site,
+    email: manager.company.companyInfo.email,
+    phone: req.body.company.phone
+  })
 
-  updatedCompanyInfo.save()
-  updatedCompany.save()
-  updatedManager.save()
+  const property = await Property.find({'companyInfo.name': manager.company.companyInfo.name})
+  property.forEach(async function(prop) {
+    prop.companyInfo = updatedCompanyInfo;
+    await prop.save()
+  })
+
+  const updatedCompany = await Company.findOne({'companyInfo.name': manager.company.companyInfo.name})
+  updatedCompany.companyInfo = updatedCompanyInfo
+  await updatedCompany.save()
+
+  const updatedManager = new Manager({
+    username: manager.username,
+    password: manager.password,
+    isVerified: manager.isVerified,
+    name: req.body.name,
+    email: req.body.email,
+    phone: req.body.phone,
+    bio: req.body.bio,
+    company: updatedCompany
+  })
+
+  manager = updatedManager
+  await manager.save()
   .then((result) => {
     res.send(result);
   })
   .catch((err) => {
       console.log(err);
   });
-  
 })
 
 app.post('/sendRenterProfile', async (req,res) => {
-  const data = req.body.renterInfo;
+  const data = req.body.renterInfo
+  var renter = await Renter.findOne({username: req.body.renterInfo.email})
+  //console.log(data)
 
-  const token = req.cookies.access_token;
-  const decoded = jwt.verify(token, secretKey);
-  const username = decoded.username
-  const renter = await Renter.findOne({username: username})
+
   const updatedLivingPref = {
       pets: data.livingPreferences.pets,
       smoke: data.livingPreferences.smoke,
@@ -108,10 +126,36 @@ app.post('/sendRenterProfile', async (req,res) => {
       }
   }
 
-  const updatedRenterInfo = await RenterInfo.findOneAndUpdate({name: renter.renterInfo.name}, {name: data.name, age: data.age, email: data.email, phone: data.phone, pfp: data.pfp, livingPreferences: updatedLivingPref}).setOptions({returnDocument: after})
-  const updatedRenter = await Renter.findOneAndUpdate({username: username}, {findingCoopmates: req.body.findingCoopmates, renterInfo: updatedRenterInfo}).setOptions({returnDocument: after})
+  const oldRenterInfo = renter
+  const updatedRenterInfo = new RenterInfo({
+    name: data.name,
+    age: data.age,
+    email: data.email,
+    phone: data.phone,
+    pfp: data.pfp,
+    livingPreferences: updatedLivingPref
+  })
 
-  updatedRenter.save()
+  var updatedRenter = new Renter({
+    username: renter.username,
+    password: renter.password,
+    isVerified: renter.isVerified,
+    findingCoopmates: req.body.findingCoopmates,
+    renterInfo: updatedRenterInfo,
+    coopmates: renter.coopmates
+  })
+
+  console.log(updatedRenter)
+  renter = updatedRenter
+
+  const coopmates = await Renter.find({'coopmates': {$elemMatch: {'renterInfo.name': renter.renterInfo.name, 'renterInfo.email': renter.renterInfo.email}}})
+  coopmates.forEach(async function(mate) {
+    mate.coopmates.pull(oldRenterInfo._id)
+    mate.coopmates.addToSet(renter.renterInfo)
+    await mate.save()
+  })
+
+  await renter.save()
   .then((result) => {
     res.send(result);
   })
@@ -119,7 +163,6 @@ app.post('/sendRenterProfile', async (req,res) => {
       console.log(err);
   });
 })
-
 
 app.post('/sendProperty', async (req,res) => {
   const data = req.body
@@ -166,7 +209,6 @@ app.post('/sendProperty', async (req,res) => {
       console.log(err);
   });
 })
-
 
 app.listen(8000, () => {
   console.log(`Server is running on port 8000.`);
