@@ -241,4 +241,19 @@ router.post('/fav-coops-cards', async (req, res) => {
     });
 });
 
+router.get('/link-coops', async (req, res) => {
+    const property = await Property.find({})
+    property.forEach(async function(prop) {
+        const company = await Company.findOne({'companyInfo.name': prop.companyInfo.name})
+        const propertyInfo = await PropertyInfo.findOne({'propertyName': prop.propertyInfo.propertyName})
+
+        company.myCoops.addToSet(propertyInfo);
+        await company.save()
+        .catch((err) => {
+            console.log(err);
+        });
+    });
+    res.status(200).send("Linked Coops")
+})
+
 module.exports = router;
