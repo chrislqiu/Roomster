@@ -120,6 +120,10 @@ app.post('/sendRenterProfile', async (req,res) => {
   });
 })
 
+app.post('/updateProperty', async (req, res) => {
+
+})
+
 
 app.post('/sendProperty', async (req,res) => {
   const data = req.body
@@ -130,41 +134,72 @@ app.post('/sendProperty', async (req,res) => {
   const decoded = jwt.verify(token, secretKey);
   const username = decoded.username
   const manager = await Manager.findOne({username: username})
-  //console.log(req.body)
-  const newPropertyInfo = new PropertyInfo({
-    image: data.propertyInfo.image,
-    propertyName: data.propertyInfo.propertyName,
-    address: data.propertyInfo.address,
-    beds: data.propertyInfo.beds,
-    baths: data.propertyInfo.baths,
-    cost: data.propertyInfo.cost,
-    sqft: data.propertyInfo.sqft,
-    distance: data.propertyInfo.distance,
-    amenities: data.propertyInfo.amenities,
-    utilities: data.propertyInfo.utilities
-  })
+  const newInfo = {
+      image: data.propertyInfo.image,
+      propertyName: data.propertyInfo.propertyName,
+      address: data.propertyInfo.address,
+      beds: data.propertyInfo.beds,
+      baths: data.propertyInfo.baths,
+      cost: data.propertyInfo.cost,
+      sqft: data.propertyInfo.sqft,
+      distance: data.propertyInfo.distance,
+      amenities: data.propertyInfo.amenities,
+      utilities: data.propertyInfo.utilities  
+  }
+  if (data.propertyInfo._id != '') {
+    const existingPropertyInfo = await PropertyInfo.findById(data.propertyInfo._id);
+    const updatePropertyInfo = await PropertyInfo.findByIdAndUpdate(data.propertyInfo._id, newInfo, {new: true})
+    //updatePropertyInfo.save();
+    const existingProperty = await Property.findOneAndUpdate({'propertyInfo._id':data.propertyInfo._id}, {propertyInfo: updatePropertyInfo}, {new: true})
+    existingProperty.save()
+    .then((result) => {
+      console.log(result);
+      res.send(result);
+    })
+    .catch((err) => {
+        console.log(err);
+    });
+  } else {
+    //console.log(req.body)
+    const newPropertyInfo = new PropertyInfo({
+      image: data.propertyInfo.image,
+      propertyName: data.propertyInfo.propertyName,
+      address: data.propertyInfo.address,
+      beds: data.propertyInfo.beds,
+      baths: data.propertyInfo.baths,
+      cost: data.propertyInfo.cost,
+      sqft: data.propertyInfo.sqft,
+      distance: data.propertyInfo.distance,
+      amenities: data.propertyInfo.amenities,
+      utilities: data.propertyInfo.utilities
+    })
 
-  const existingCompanyInfo = await CompanyInfo.findOne({name: manager.company.companyInfo.name})
+    newPropertyInfo.save()
 
-  // console.log(existingCompanyInfo)
 
-  const newProperty = new Property({
-    propertyInfo: newPropertyInfo,
-    companyInfo: existingCompanyInfo
-  })
+    const existingCompanyInfo = await CompanyInfo.findOne({name: manager.company.companyInfo.name})
 
-  newProperty.save()
-  const company = await Company.findOne({"companyInfo.name": manager.company.companyInfo.name})
-  company.myCoops.push(newPropertyInfo)
-  company.save()
-  manager.company.myCoops = company.myCoops
-  await manager.save()
-  .then((result) => {
-    res.send(result);
-  })
-  .catch((err) => {
-      console.log(err);
-  });
+    // console.log(existingCompanyInfo)
+
+    const newProperty = new Property({
+      propertyInfo: newPropertyInfo,
+      companyInfo: existingCompanyInfo
+    })
+
+    newProperty.save()
+    const company = await Company.findOne({"companyInfo.name": manager.company.companyInfo.name})
+    company.myCoops.push(newPropertyInfo)
+    company.save()
+    manager.company.myCoops = company.myCoops
+    await manager.save()
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((err) => {
+        console.log(err);
+    });
+  }
+  
 })
 
 

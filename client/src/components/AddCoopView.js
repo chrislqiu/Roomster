@@ -6,11 +6,10 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { AspectRatio } from "@mui/joy";
 import toast, { Toaster } from 'react-hot-toast'
 import PropertyView from "../components/PropertyView";
-import AddCoopView from "../components/AddCoopView";
 
-const MyCoopsPage = ({ login }) => {
+
+const AddCoopView = ({setOpen, editMode, data}) => {
     /* propertyInfo, setPropertyInfo to hold the card information from the server */
-    const [open, setOpen] = React.useState(false)
     const [propertyInfo, setPropertyInfo] = React.useState([])
     const [hovered, setHovered] = React.useState(false);
     const [openMessage, setOpenMessage] = React.useState(false);
@@ -77,54 +76,6 @@ const MyCoopsPage = ({ login }) => {
     const handleLeave = () => {
         setHovered(false)
     }
-    const [username, setUsername] = useState('');
-    const [userData, setUserData] = useState('');
-    const [myCoopsArr, setMyCoopsArr] = useState([]);
-    const [loading, setLoading] = useState(true); // Add loading state
-    React.useEffect(() => {
-        const getUserInfo = async () => {
-            const res = await fetch('http://localhost:8000/auth/current-user', {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                credentials: 'include'
-            });
-            const getData = await res.json();
-            const obj = JSON.parse(JSON.stringify(getData));
-            setUsername(obj.username);
-            setUserData(obj);
-            if (obj.user.company) {
-                setMyCoopsArr(obj.user.company.myCoops);
-                // console.log(obj.user.company.myCoops)
-            }
-            setLoading(false);
-        };
-
-        getUserInfo();
-        /*const getPropertyInfo = async () => {
-            const data = await fetch('http://localhost:8000/auth/current-user', {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                credentials: 'include'
-            })
-            const userData = await data.json()
-            const res = await fetch('http://localhost:8000/cards/my-coops-cards', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({username: userData.username}),
-                credentials: 'include'
-            })
-            const getData = await res.json()
-            const obj = JSON.parse(JSON.stringify(getData));
-            setPropertyInfo(obj);
-        }
-        getPropertyInfo()*/
-    }, [userData, myCoopsArr])
 
     const customToastStyle = {
         color: 'white',
@@ -154,6 +105,7 @@ const MyCoopsPage = ({ login }) => {
 
         const dataToSend = {
             propertyInfo: {
+                _id: editMode === true ? data._id : '',
                 image: propertyImage,
                 propertyName: propertyName,
                 address: propertyAddress,
@@ -167,21 +119,25 @@ const MyCoopsPage = ({ login }) => {
             }
         }
 
-        await fetch('http://localhost:8000/sendProperty', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(dataToSend),
-            credentials: 'include'
-        })
-            .then(response => response.json())
-            .then(data => {
-                console.log('DATA SAVEDDDD: ', data.message);
+        
+            await fetch('http://localhost:8000/sendProperty', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(dataToSend),
+                credentials: 'include'
             })
-            .catch(error => {
-                console.error('ERRORRR: ', error);
-            });
+                .then(response => response.json())
+                .then(data => {
+                    console.log('DATA SAVEDDDD: ', data.message);
+                })
+                .catch(error => {
+                    console.error('ERRORRR: ', error);
+                });
+        
+
+        
     }
 
     function handleAddPhotos(event) {
@@ -241,36 +197,10 @@ const MyCoopsPage = ({ login }) => {
 
     }
 
-    return (
-        
-        /*
-        <Container sx={{ width: '100%' }}>
-            <Box style={{ position: "fixed", bottom: "0", right: "0" }}>
-                <IconButton
-                    onMouseEnter={handleHovered}
-                    onMouseLeave={handleLeave}
-                    onClick={handleOpen}
-                    sx={{ m: 3 }}
-                    style={{
-                        borderRadius: '50%',
-                        width: "75px",
-                        height: "75px",
-                        backgroundColor: hovered === true ? "#f5ebe0" : "#AB191F",
-                        display: "flex",
-                        justifyContent: "center",
-                        boxShadow: "0px 0px 3px 3px rgba(0, 0, 0, .2)",
-                    }}>
-                    <AddHomeIcon
-                        style={{
-                            color: hovered === true ? "#AB191F" : "#f5ebe0",
-                            fontSize: "25pt",
-                            justifyContent: "center"
-                        }}
-                    />
-                </IconButton>
-            </Box>
+    
+    return ( 
             <Dialog
-                open={open}
+                open={setOpen}
                 onClose={handleClose}
                 sx={{
                     "& .MuiDialog-container": {
@@ -284,11 +214,9 @@ const MyCoopsPage = ({ login }) => {
                 }}
             >
                 <DialogContent>
-
                     <Container
                         sx={{
                             marginTop: "15px",
-
                         }}
                         style={{
                             backgroundColor: "#F6EBE1",
@@ -319,14 +247,14 @@ const MyCoopsPage = ({ login }) => {
                         <Stack direction={{ '400px': "column", md: "row", lg: "row", xl: "row" }} spacing={5} sx={{ marginTop: 2, p: 1 }}>
 
 
-                            {/* Property Details }
+                            {/* Property Details */}
                             <Box width='600'>
                                 <InputBase
                                     placeholder="Enter property name"
                                     id="name-textfield"
                                     sx={inputBaseSX}
                                     disabled={disableButton}
-                                    value={propertyName}
+                                    defaultValue={editMode === true ? data.propertyName : propertyName}
                                     onChange={(e) => setPropertyName(e.target.value)}
                                 /> {<br />}{<br />}
                                 <InputBase
@@ -334,7 +262,7 @@ const MyCoopsPage = ({ login }) => {
                                     id="addr-textfield"
                                     sx={inputBaseSX}
                                     disabled={disableButton}
-                                    value={propertyAddress}
+                                    defaultValue={editMode === true ? data.address : propertyAddress}
                                     onChange={(e) => setPropertyAddress(e.target.value)}
                                 /> {<br />}{<br />}
                                 <InputBase
@@ -343,17 +271,16 @@ const MyCoopsPage = ({ login }) => {
                                     startAdornment={<InputAdornment position="start">$</InputAdornment>}
                                     sx={inputBaseSX}
                                     disabled={disableButton}
-                                    value={price}
+                                    defaultValue={editMode === true ? data.cost : price}
                                     onChange={(e) => setPrice(e.target.value)}
                                 /> {<br />}{<br />}
 
                                 <Select
                                     id="beds-input"
-                                    defaultValue="# beds"
+                                    defaultValue={editMode === true ? data.beds : bed}
                                     sx={selectSX}
                                     disabled={disableButton}
                                     onChange={(e) => setBed(e.target.value)}
-                                    value={bed}
                                 >
                                     <MenuItem value={-1}># beds</MenuItem>
                                     <MenuItem value={1} sx={menuItemSX}>1</MenuItem>
@@ -365,7 +292,7 @@ const MyCoopsPage = ({ login }) => {
                                 </Select>
                                 <Select
                                     id="baths-input"
-                                    defaultValue={-1}
+                                    defaultValue={editMode === true ? data.baths : bath}
                                     disabled={disableButton}
                                     sx={{
                                         marginLeft: "-10px",
@@ -380,7 +307,8 @@ const MyCoopsPage = ({ login }) => {
                                             border: "2px solid #AB191F"
                                         },
                                     }}
-                                    onChange={(e) => setBath(e.target.value)}>
+                                    onChange={(e) => setBath(e.target.value)}
+                                    >
                                     <MenuItem value={-1}># baths</MenuItem>
                                     <MenuItem value={1} sx={menuItemSX}>1</MenuItem>
                                     <MenuItem value={1.5} sx={menuItemSX}>1.5</MenuItem>
@@ -394,7 +322,7 @@ const MyCoopsPage = ({ login }) => {
                                 </Select>
                             </Box>
 
-                            {/* Amenities }
+                            {/* Amenities */}
                             <Divider orientation={{ xs: 'horizontal', md: 'vertical', lg: 'vertical', xl: 'vertical' }} width={3} sx={{ borderBottomWidth: 3, color: "#AB191F", backgroundColor: "#AB191F", marginY: 2, marginX: 0, maxHeight: "175px" }} />
                             <Box height="175px" style={{ marginRight: "-45px", }}>
                                 <Box width='200px' height='600px' style={{ margin: "-10px 0 0 -30px", textAlign: "left", padding: "0" }}>
@@ -410,11 +338,11 @@ const MyCoopsPage = ({ login }) => {
                                         Amenities
                                     </Typography>
 
-                                    {/* Furnished }
+                                    {/* Furnished */}
                                     <Container style={{ float: "left", width: "100%" }}>
                                         <FormControlLabel style={{ margin: "-10px 0 0 -30px" }} label={<Typography style={{ fontSize: "11pt" }}>Furnished</Typography>} control={
                                             <Checkbox style={{}}
-                                                checked={isFurnished}
+                                                defaultChecked={editMode === true ? (data.amenities.includes("Furnished") ? () => setIsFurnished(true) : isFurnished) : isFurnished}
                                                 onChange={() => {
                                                     if (!isFurnished) {
                                                         setIsFurnished(true)
@@ -436,11 +364,11 @@ const MyCoopsPage = ({ login }) => {
                                         />
                                     </Container> {<br />}{<br />}
 
-                                    {/* Kitchen Appliances }
+                                    {/* Kitchen Appliances */}
                                     <Container style={{ float: "left", width: "100%" }}>
                                         <FormControlLabel style={{ margin: "-20px 0 0 -30px" }} label={<Typography style={{ fontSize: "11pt" }}>Kitchen Appliances</Typography>} control={
                                             <Checkbox style={{}}
-                                                checked={hasKitchenApp}
+                                                defaultChecked={editMode === true ? (data.amenities.includes("Kitchen Appliance") ? () => setHasKitchenApp(true) : hasKitchenApp) : hasKitchenApp}
                                                 onChange={() => {
                                                     if (!hasKitchenApp) {
                                                         setHasKitchenApp(true)
@@ -462,11 +390,11 @@ const MyCoopsPage = ({ login }) => {
                                         />
                                     </Container> {<br />}{<br />}
 
-                                    {/* In-Unit Washer Dryer }
+                                    {/* In-Unit Washer Dryer */}
                                     <Container style={{ float: "left", width: "100%" }}>
                                         <FormControlLabel style={{ margin: "-40px 0 0 -30px" }} label={<Typography style={{ fontSize: "11pt" }}>In-Unit Washer Dryer</Typography>} control={
                                             <Checkbox style={{}}
-                                                checked={hasInUnitWD}
+                                                defaultChecked={editMode === true ? (data.amenities.includes("In Unit W/D") ? () => setHasInUnitWD(true) : hasInUnitWD) : hasInUnitWD}
                                                 onChange={() => {
                                                     if (!hasInUnitWD) {
                                                         setHasInUnitWD(true)
@@ -488,11 +416,11 @@ const MyCoopsPage = ({ login }) => {
                                         />
                                     </Container> {<br />}{<br />}
 
-                                    {/* Parking }
+                                    {/* Parking */}
                                     <Container style={{ float: "left", width: "50%" }}>
                                         <FormControlLabel style={{ margin: "-60px 0 0 -30px" }} label={<Typography style={{ fontSize: "11pt" }}>Parking</Typography>} control={
                                             <Checkbox style={{}}
-                                                checked={hasParking}
+                                                defaultChecked={editMode === true ? (data.amenities.includes("Parking") ? () => setHasParking(true) : hasParking) : hasParking}
                                                 onChange={() => {
                                                     if (!hasParking) {
                                                         setHasParking(true)
@@ -514,11 +442,11 @@ const MyCoopsPage = ({ login }) => {
                                         />
                                     </Container> {<br />}{<br />}
 
-                                    {/* Pet Friendly}
+                                    {/* Pet Friendly */}
                                     <Container style={{ float: "left", width: "100%" }}>
                                         <FormControlLabel style={{ margin: "-80px 0 0 -30px" }} label={<Typography style={{ fontSize: "11pt" }}>Pet Friendly</Typography>} control={
                                             <Checkbox style={{}}
-                                                checked={isPetFriendly}
+                                                defaultChecked={editMode === true ? (data.amenities.includes("Pet Friendly") ? () => setIsPetFriendly(true) : isPetFriendly) : isPetFriendly}
                                                 onChange={() => {
                                                     if (!isPetFriendly) {
                                                         setIsPetFriendly(true)
@@ -540,11 +468,11 @@ const MyCoopsPage = ({ login }) => {
                                         />
                                     </Container> {<br />}{<br />}
 
-                                    {/* Gym }
+                                    {/* Gym */}
                                     <Container style={{ float: "left", width: "100%" }}>
                                         <FormControlLabel style={{ margin: "-100px 0 0 -30px" }} label={<Typography style={{ fontSize: "11pt" }}>Gym</Typography>} control={
                                             <Checkbox style={{}}
-                                                checked={hasGym}
+                                                defaultChecked={editMode === true ? (data.amenities.includes("Gym") ? () => setHasGym(true) : hasGym) : hasGym}
                                                 onChange={() => {
                                                     if (!hasGym) {
                                                         setHasGym(true)
@@ -568,7 +496,7 @@ const MyCoopsPage = ({ login }) => {
                                 </Box>
                             </Box>
 
-                            {/* Utilities }
+                            {/* Utilities */}
                             <Divider orientation={{ xs: 'horizontal', md: 'vertical', lg: 'vertical', xl: 'vertical' }} width={3} sx={{ borderBottomWidth: 3, color: "#AB191F", backgroundColor: "#AB191F", marginY: 2, marginX: 0, maxHeight: "175px" }} />
                             <Box height="175px" style={{ marginRight: "-25px", }}>
                                 <Box width='200px' height='600px' style={{ margin: "-10px 0 0 -30px", textAlign: "left", padding: "0" }}>
@@ -584,11 +512,11 @@ const MyCoopsPage = ({ login }) => {
                                         Utilities
                                     </Typography>
 
-                                    {/* Water}
+                                    {/* Water */}
                                     <Container style={{ float: "left", width: "100%", }}>
                                         <FormControlLabel style={{ margin: "-10px 0 0 -30px" }} label={<Typography style={{ fontSize: "11pt" }}>Water</Typography>} control={
                                             <Checkbox style={{}}
-                                                checked={includeWater}
+                                                defaultChecked={editMode === true ? data.utilities.water : includeWater}
                                                 onChange={() => {
                                                     if (!includeWater) {
                                                         setIncludeWater(true)
@@ -610,11 +538,11 @@ const MyCoopsPage = ({ login }) => {
                                         />
                                     </Container> {<br />}{<br />}
 
-                                    {/* Electricity }
+                                    {/* Electricity */}
                                     <Container style={{ float: "left", width: "100%" }}>
                                         <FormControlLabel style={{ margin: "-20px 0 0 -30px" }} label={<Typography style={{ fontSize: "11pt" }}>Electricity</Typography>} control={
                                             <Checkbox style={{}}
-                                                checked={includeElec}
+                                                defaultChecked={editMode === true ? data.utilities.electricity : includeElec}
                                                 onChange={() => {
                                                     if (!includeElec) {
                                                         setIncludeElec(true)
@@ -636,11 +564,11 @@ const MyCoopsPage = ({ login }) => {
                                         />
                                     </Container> {<br />}{<br />}
 
-                                    {/* Gas }
+                                    {/* Gas */}
                                     <Container style={{ float: "left", width: "100%", }}>
                                         <FormControlLabel style={{ margin: "-40px 0 0 -30px" }} label={<Typography style={{ fontSize: "11pt" }}>Gas</Typography>} control={
                                             <Checkbox style={{}}
-                                                checked={includeGas}
+                                                defaultChecked={editMode === true ? data.utilities.gas : includeGas}
                                                 onChange={() => {
                                                     if (!includeGas) {
                                                         setIncludeGas(true)
@@ -662,11 +590,11 @@ const MyCoopsPage = ({ login }) => {
                                         />
                                     </Container> {<br />}{<br />}
 
-                                    {/* Trash }
+                                    {/* Trash */}
                                     <Container style={{ float: "left", width: "100%", }}>
                                         <FormControlLabel style={{ margin: "-60px 0 0 -30px" }} label={<Typography style={{ fontSize: "11pt" }}>Trash</Typography>} control={
                                             <Checkbox style={{}}
-                                                checked={includeTrash}
+                                                defaultChecked={editMode === true ? data.utilities.trash : includeTrash}
                                                 onChange={() => {
                                                     if (!includeTrash) {
                                                         setIncludeTrash(true)
@@ -688,11 +616,11 @@ const MyCoopsPage = ({ login }) => {
                                         />
                                     </Container> {<br />}{<br />}
 
-                                    {/* Sewage }
+                                    {/* Sewage */}
                                     <Container style={{ float: "left", width: "100%", }}>
                                         <FormControlLabel style={{ margin: "-80px 0 0 -30px" }} label={<Typography style={{ fontSize: "11pt" }}>Sewage</Typography>} control={
                                             <Checkbox style={{}}
-                                                checked={includeSewage}
+                                                defaultChecked={editMode === true ? data.utilities.sewage : includeSewage}
                                                 onChange={() => {
                                                     if (!includeSewage) {
                                                         setIncludeSewage(true)
@@ -714,11 +642,11 @@ const MyCoopsPage = ({ login }) => {
                                         />
                                     </Container> {<br />}{<br />}
 
-                                    {/* Internet }
+                                    {/* Internet */}
                                     <Container style={{ float: "left", width: "100%", }}>
                                         <FormControlLabel style={{ margin: "-100px 0 0 -30px" }} label={<Typography style={{ fontSize: "11pt" }}>Internet</Typography>} control={
                                             <Checkbox style={{}}
-                                                checked={includeInternet}
+                                                defaultChecked={editMode === true ? data.utilities.internet : includeInternet}
                                                 onChange={() => {
                                                     if (!includeInternet) {
                                                         setInternet(true)
@@ -742,7 +670,7 @@ const MyCoopsPage = ({ login }) => {
                                 </Box>
                             </Box>
 
-                            {/* Add Coop button }
+                            {/* Add Coop button */}
                             <Toaster
                                 toastOptions={{
                                     success: {
@@ -771,6 +699,7 @@ const MyCoopsPage = ({ login }) => {
                                 }}
                                 onClick={() => {
                                     if (disableButton) {
+                                        editMode = false;
                                         setDisableButton(false)
                                     } else {
                                         handleAppCoop()
@@ -784,58 +713,6 @@ const MyCoopsPage = ({ login }) => {
                     </Container>
                 </DialogContent>
             </Dialog>
-            */
-        <Container sx={{ width: '100%' }}>
-            <Box style={{ position: "fixed", bottom: "0", right: "0" }}>
-                <IconButton
-                    onMouseEnter={handleHovered}
-                    onMouseLeave={handleLeave}
-                    onClick={() => setOpen(true)}
-                    sx={{ m: 3 }}
-                    style={{
-                        borderRadius: '50%',
-                        width: "75px",
-                        height: "75px",
-                        backgroundColor: hovered === true ? "#f5ebe0" : "#AB191F",
-                        display: "flex",
-                        justifyContent: "center",
-                        boxShadow: "0px 0px 3px 3px rgba(0, 0, 0, .2)",
-                    }}>
-                    <AddHomeIcon
-                        style={{
-                            color: hovered === true ? "#AB191F" : "#f5ebe0",
-                            fontSize: "25pt",
-                            justifyContent: "center"
-                        }}
-                    />
-                </IconButton>
-            </Box>
-            {open === true ? <AddCoopView setOpen={setOpen}></AddCoopView> : ''}
-            <Box sx={{ marginTop: 3 }} style={styles.feed}>
-                {loading ? ( // Display loading spinner while loading
-                    <CircularProgress style={styles.loadingSpinner}>
-                        Loading coops!
-                    </CircularProgress>
-                ) : (
-                    myCoopsArr.length > 0 ? (
-                        myCoopsArr.map(cards => {
-                            return <PropertyView data={cards} myCoops={true} login={login} />;
-                        })
-                    ) : (
-                        <Typography
-                            sx={{
-                                fontWeight: 600,
-                                fontSize: 25,
-                                color: "#AB191F",
-                            }}
-                        >
-                            You have no properties!
-                        </Typography>
-                    )
-                )}
-            </Box>
-
-        </Container>
     )
 }
-export default MyCoopsPage;
+export default AddCoopView;
