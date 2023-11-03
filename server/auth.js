@@ -283,9 +283,11 @@ router.post("/manager-signup", async (req, res) => {
         const newManager = new Manager({
             username: req.body.username,
             password: hashedPW,
-            name: req.body.managerName,
-            email: req.body.managerEmail,
-            company: existingCompany
+            name: req.body.name,
+            email: req.body.email,
+            company: existingCompany,
+            bio: '',
+            phone: ''
         });
 
         newManager.save()
