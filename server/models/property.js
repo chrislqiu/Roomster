@@ -10,7 +10,7 @@ const property = new Schema({
     },
     companyInfo: {
         type: CompanyInfo.schema,
-        required: true
+        //required: true
     },
     isVerified: {
         type: Boolean,

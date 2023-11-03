@@ -4,23 +4,23 @@ const Schema = mongoose.Schema;
 const companyInfo = new Schema({
     name: {
       type: String,
-      required: true
+      default: "Your Company Name"
     },
     address: {
       type: String,
-      required: true
+      default: "Your Company Address"
     },
     site: {
       type: String,
-      required: false
+      default: "yourcompanysite.com"
     },
     email: {
       type: String,
-      required: true
+      default: "info@yourcompanyname.com"
     },
     phone: {
       type: String,
-      required: false
+      default: "(765) 123-4567"
     }
 });
 

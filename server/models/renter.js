@@ -21,7 +21,7 @@ const renter = new Schema({
     },
     renterInfo: {
         type: RenterInfo.schema,
-        required: true
+        //required: true
     },
     coopmates: {
         type: [RenterInfo.schema],

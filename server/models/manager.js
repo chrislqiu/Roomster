@@ -17,15 +17,15 @@ const manager = new Schema({
     },
     name: {
         type: String,
-        required: false
+        default: "Your Name"
     },
     email: {
         type: String,
-        required: false
+        default: "yourname@yourcompanyname.com"
     },
     phone: {
         type: String,
-        required: false
+        required: "(765) 123-4567"
     },
     bio: {
         type: String,
@@ -33,7 +33,7 @@ const manager = new Schema({
     },
     company: {
         type: Company.schema,
-        required: true
+        //required: true
     }
 });
 

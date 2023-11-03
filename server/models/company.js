@@ -6,7 +6,7 @@ const CompanyInfo = require('./companyInfo');
 const company = new Schema({
     companyInfo: {
         type: CompanyInfo.schema,
-        required: true
+        //required: true
     },
     myCoops: {
         type: [PropertyInfo.schema],
