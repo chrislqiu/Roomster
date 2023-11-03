@@ -88,19 +88,19 @@ app.post('/sendManagerProfile', async (req, res) => {
   updatedCompany.companyInfo = updatedCompanyInfo
   await updatedCompany.save()
 
-  var updatedManager = new Manager({
-    username: manager.username,
-    password: manager.password,
-    isVerified: manager.isVerified,
-    name: req.body.name,
-    email: req.body.email,
-    phone: req.body.phone,
-    bio: req.body.bio,
-    company: updatedCompany
-  })
-
-  manager = updatedManager
-  await manager.save()
+  // var updatedManager = new Manager({
+  //   username: manager.username,
+  //   password: manager.password,
+  //   isVerified: manager.isVerified,
+  //   name: req.body.name,
+  //   email: req.body.email,
+  //   phone: req.body.phone,
+  //   bio: req.body.bio,
+  //   company: updatedCompany
+  // })
+  const update = await Manager.findOneAndUpdate({username: username}, {name: req.body.name, email:req.body.email, phone: req.body.phone, bio:req.body.bio, company: updatedCompany}, {new: true})
+  console.log(update)
+  await update.save()
   .then((result) => {
     res.send(result);
   })

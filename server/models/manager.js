@@ -29,7 +29,7 @@ const manager = new Schema({
     },
     bio: {
         type: String,
-        default: "Hi! I'm a property manager here!"
+        //default: "Hi! I'm a property manager here!"
     },
     company: {
         type: Company.schema,
