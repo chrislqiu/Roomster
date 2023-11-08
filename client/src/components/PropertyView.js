@@ -12,6 +12,7 @@ import { Stack } from '@mui/material';
 import { Link } from '@mui/material';
 import imgExample from "../images/apartment-pic.jpg"
 import StarIcon from '@mui/icons-material/Star';
+import StarIconOutlined from '@mui/icons-material/StarOutline';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
@@ -20,8 +21,9 @@ import CheckIcon from "@mui/icons-material/Check";
 import { useNavigate, createSearchParams } from 'react-router-dom';
 import AddCoopView from './AddCoopView';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBuildingCircleCheck } from '@fortawesome/free-solid-svg-icons'
+import { faBuildingCircleCheck, faStar } from '@fortawesome/free-solid-svg-icons'
 import { toast, ToastContainer } from 'react-toastify';
+import StarBorderOutlinedIcon from '@mui/icons-material/StarBorderOutlined';
 import 'react-toastify/dist/ReactToastify.css';
 
 
@@ -65,6 +67,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
     const [favCoopsArr, setFavCoopsArr] = React.useState([])
     const [myCoopsArr, setMyCoopsArr] = React.useState([])
     const [isVerified, setIsVerified] = React.useState(false)
+    const [isFeatured, setIsFeatured] = React.useState(false)
     const coopFavorited = favCoopsArr.some(coops => coops._id.toString() === data._id.toString())
 
     React.useEffect(() => {
@@ -291,6 +294,32 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
         }
     };
 
+    const getPropertyFeatured = async () => {
+        const id = data._id;
+        console.log("data: " + id);
+        try {
+            const response = await fetch('http://localhost:8000/cards/get-featured', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                // credentials: 'include',
+                body: JSON.stringify({ id: id }),
+            });
+
+            console.log(response)
+
+            if (response.ok) {
+                setIsFeatured(true)
+                console.log("Property featured")
+            } else {
+                console.log("Property not featured")
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    };
+
     const checkOwner = async () => {
         const id = data._id;
         // console.log(id)
@@ -319,16 +348,17 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
     React.useEffect(() => {
         checkOwner();
         getPropertyVerification();
+        getPropertyFeatured();
     }, []);
 
     React.useEffect(() => {
         const propertyDeleted = localStorage.getItem('propertyDeleted');
         if (propertyDeleted === 'true') {
-          toast.success('Property deleted successfully!', { position: toast.POSITION.TOP_CENTER });
-          localStorage.removeItem('propertyDeleted');
+            toast.success('Property deleted successfully!', { position: toast.POSITION.TOP_CENTER });
+            localStorage.removeItem('propertyDeleted');
         }
-      }, []);
-    
+    }, []);
+
 
 
     return (
@@ -379,7 +409,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
                             {/* {favCoops === true ? <FavoriteIcon style={{margin: "-20px 0 0px 2.5"}} sx={{color: "#AB191F", ":hover": {color: "#F6EBE1",},}}/> : ''} */}
                             {/* <Typography variant="h6" style={{fontSize: "13pt", margin: "-20px 0 0px 0"}}> Property Name </Typography> */}
                             {featured === true ? <StarIcon style={{ margin: "-22px 0 0 5px", fontSize: "15pt" }} /> : ''}
-                            {favCoops === true ? <FavoriteIcon style={{ margin: "-22px 0 0 5px", fontSize: "15pt" }}  /> : ''}
+                            {favCoops === true ? <FavoriteIcon style={{ margin: "-22px 0 0 5px", fontSize: "15pt" }} /> : ''}
                             {myCoops === true ? <BookmarkIcon style={{ margin: "-22px 0 0 5px", fontSize: "15pt" }} /> : ''}
 
                         </div>
@@ -586,7 +616,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
                         :
                         ''}
 
-                    {myCoops === true ? 
+                    {myCoops === true ?
                         <Button
                             sx={{
                                 ":hover": {
@@ -602,8 +632,8 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
                             }}
                             onClick={handleEdit}
                             variant="outlined">{'EDIT'}
-                        </Button>    
-                    : ''}
+                        </Button>
+                        : ''}
 
                     {editMode === true ? <AddCoopView setOpen={setOpen} editMode={true} data={data}></AddCoopView> : ''}
                     {login === true ? (
@@ -645,32 +675,39 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
                         ) : isOwner === true && userType === "manager" ? (
                             // Owner view
                             <div>
-                            <Tooltip title="Delete Property">
-                                <IconButton onClick={handleDeleteProperty}>
-                                    <DeleteOutlineIcon sx={{ color: "#AB191F" }} />
+                                {!isFeatured ?
+                                    <Tooltip title="Request Property Feature">
+                                        <IconButton onClick={null} >
+                                        <StarIconOutlined sx={{ color: "#AB191F" }}/>
+                                        </IconButton>
+                                    </Tooltip>
+                                    : ''}
+                                <Tooltip title="Delete Property">
+                                    <IconButton onClick={handleDeleteProperty}>
+                                        <DeleteOutlineIcon sx={{ color: "#AB191F" }} />
+                                    </IconButton>
+                                </Tooltip>
+                                <IconButton size="large" disabled={true}>
+                                    <FavoriteIcon />
                                 </IconButton>
-                            </Tooltip>
-                            <IconButton size="large" disabled={true}>
-                                <FavoriteIcon  />
-                            </IconButton>
                             </div>
-                        ) : 
-                        (
-                            <Tooltip title="Saves"
-                            componentsProps={{
-                                tooltip: {
-                                    sx: {
-                                        bgcolor: 'rgba(171, 25, 31, 0.9)',
-                                        color: "#F6EBE1"
-                                    },
-                                },
-                            }}
-                        >
-                            <IconButton size="large" disabled={true}>
-                                <FavoriteIcon />
-                            </IconButton>
-                        </Tooltip>
-                        )
+                        ) :
+                            (
+                                <Tooltip title="Saves"
+                                    componentsProps={{
+                                        tooltip: {
+                                            sx: {
+                                                bgcolor: 'rgba(171, 25, 31, 0.9)',
+                                                color: "#F6EBE1"
+                                            },
+                                        },
+                                    }}
+                                >
+                                    <IconButton size="large" disabled={true}>
+                                        <FavoriteIcon />
+                                    </IconButton>
+                                </Tooltip>
+                            )
                     ) : (
                         // Not logged in view
                         <Tooltip title="Saves"
@@ -688,21 +725,21 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
                             </IconButton>
                         </Tooltip>
                     )}
-                    
+
                     <Typography
-                        style={{ 
-                            display: "flex",     
+                        style={{
+                            display: "flex",
                             alignItems: "center",
                             margin: "0 5px 0 -10px",
                             padding: "0 5px 0 5px",
                             fontWeight: 600
-                          }}
+                        }}
                     >
-                        {saves} 
+                        {saves}
                     </Typography>
                 </DialogActions>
             </Dialog>
-            
+
         </React.Fragment>
 
     )

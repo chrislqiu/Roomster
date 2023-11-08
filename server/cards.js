@@ -141,6 +141,8 @@ router.post('/getCompanyInfo', (req, res) => {
     })
 })
 
+
+
 router.post('/sendCompanyName', (req, res) => {
     companyName = req.body.companyName;
     Property.find({'companyInfo.name': companyName})
@@ -222,6 +224,26 @@ router.get('/featured-cards', (req, res) => {
         console.log(err);
     });
 });
+
+router.post("/get-featured", async (req, res) => {
+    try {
+        const propertyId = req.body.id
+        // console.log("id:" + propertyId);
+        const property = await Property.findOne(
+            { _id: propertyId },
+        );
+        if (property && property.propertyInfo.featured) {
+            return res.status(200).send("Property featured");
+        } else {
+            return res.status(401).send("Property not featured");
+
+        }
+
+    } catch (err) {
+        console.log(err)
+        res.status(500).send("Error finding property");
+    }
+})
 
 // Route to get my coops cards
 router.post('/my-coops-cards', async (req, res) => {
