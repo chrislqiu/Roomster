@@ -245,6 +245,28 @@ router.post("/get-featured", async (req, res) => {
     }
 })
 
+router.post("/request-featured", async (req, res) => {
+    try {
+        const propertyId = req.body.id
+        // console.log("id:" + propertyId);
+        const property = await Property.findOne(
+            { _id: propertyId },
+        );
+        if (property && !property.propertyInfo.featureRequest) {
+            property.propertyInfo.featureRequest = true;
+            await property.save();
+            return res.status(200).send("Property feature request sent");
+        } else {
+            return res.status(401).send("Property already featured");
+
+        }
+
+    } catch (err) {
+        console.log(err)
+        res.status(500).send("Error finding property");
+    }
+})
+
 // Route to get my coops cards
 router.post('/my-coops-cards', async (req, res) => {
     const currentManager = await Manager.findOne({username: req.body.username})

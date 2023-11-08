@@ -320,6 +320,32 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
         }
     };
 
+    const handleFeatureProperty = async () => {
+        const id = data._id;
+        console.log("data: " + id);
+        try {
+            const response = await fetch('http://localhost:8000/cards/request-featured', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: JSON.stringify({ id: id }),
+            });
+
+            console.log(response)
+
+            if (response.ok) {
+                console.log("good")
+                window.location.reload(true);
+            } else {
+                console.log("nope")
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    };
+
     const checkOwner = async () => {
         const id = data._id;
         // console.log(id)
@@ -677,7 +703,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
                             <div>
                                 {!isFeatured ?
                                     <Tooltip title="Request Property Feature">
-                                        <IconButton onClick={null} >
+                                        <IconButton onClick={handleFeatureProperty} >
                                         <StarIconOutlined sx={{ color: "#AB191F" }}/>
                                         </IconButton>
                                     </Tooltip>
