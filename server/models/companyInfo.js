@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const companyInfo = new Schema({
     name: {
       type: String,
-      required: true
+      required: false
     },
     address: {
       type: String,
