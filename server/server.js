@@ -76,8 +76,6 @@ app.post('/sendManagerProfile', async (req, res) => {
     phone: req.body.company.phone
   })
 
- console.log(updatedCompanyInfo)
-
   const property = await Property.find({'companyInfo.name': manager.company.companyInfo.name})
   property.forEach(async function(prop) {
     prop.companyInfo = updatedCompanyInfo;
@@ -99,7 +97,7 @@ app.post('/sendManagerProfile', async (req, res) => {
   //   company: updatedCompany
   // })
   const update = await Manager.findOneAndUpdate({username: username}, {name: req.body.name, email:req.body.email, phone: req.body.phone, bio:req.body.bio, company: updatedCompany}, {new: true})
-  console.log(update)
+  
   await update.save()
   .then((result) => {
     res.send(result);
