@@ -5,42 +5,58 @@ import { useState } from 'react';
 
 const PropertyManagerPage = () => {
 
-    const [name, setName] = useState('');
+
     const [phoneNumber, setPhoneNumber] = useState('');
     const [email, setEmail] = useState('');
     const [bio, setBio] = useState('');
-    const [companyName, setCompanyName] = useState('');
+
     const [addr, setAddr] = useState('');
     const [officeNum, setOfficeNum] = useState('');
     const [disableButton, setDisableButton] = useState(true)
     const [username, setUsername] = React.useState('')
     const [userData, setUserData] = React.useState('')
 
-    React.useEffect(() => {
-        const getUserInfo = async () => {
-            const res = await fetch('http://localhost:8000/auth/current-user', {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                credentials: 'include'
-            })
-            const getData = await res.json()
-            const obj = JSON.parse(JSON.stringify(getData));
-            setUsername(obj.username)
-            setUserData(obj);
-        }
-        getUserInfo()
-        if (userData.user) {
-            setName(userData.user.name)
-            setPhoneNumber(userData.user.phone)
-            setEmail(userData.user.email)
-            setBio(userData.user.bio)
-            setCompanyName(userData.user.company.companyInfo.name)
-            setAddr(userData.user.company.companyInfo.address)
-            setOfficeNum(userData.user.company.companyInfo.phone)
-        }
-    }, [userData])
+
+    //Placeholders for existing info
+    const [nameHolder, setNameHolder] = useState('')
+    const [CompanyNameHolder, setCompanyNameHolder] = useState('')
+    const [phoneHolder, setPhoneHolder] = useState('')
+    const [emailHolder, setEmailHolder] = useState('')
+    const [bioHolder, setBioHolder] = useState('')
+    const [addressHolder, setAddressHolder] = useState('')
+    const [OPhoneHolder, setOPhoneHolder] = useState('')
+    const [site, setSite] = useState('')
+
+    fetch('http://localhost:8000/auth/current-user', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        credentials: 'include'
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Handle the JSON response
+            setNameHolder(data.user.name)
+            setPhoneHolder(data.user.phone)
+            setEmailHolder(data.user.email)
+            setBioHolder(data.user.bio)
+            setCompanyNameHolder(data.user.company.companyInfo.name)
+            setAddressHolder(data.user.company.companyInfo.address)
+            setOPhoneHolder(data.user.company.companyInfo.phone)
+            setSite(data.user.company.companyInfo.site)
+            // Access user data, e.g., data.user
+        })
+        .catch(error => {
+            // Handle errors
+            console.error('Fetch error:', error);
+        });
+
 
     const inputBaseSX = {
         margin: "5 0 10px 0px", 
@@ -60,7 +76,6 @@ const PropertyManagerPage = () => {
       };
 
     const handleSave = () => {
-
         const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9]+\.[a-zA-Z]+$/;
         
         if (phoneNumber === '' || email === '' || addr === '' || officeNum === '') {
@@ -74,12 +89,12 @@ const PropertyManagerPage = () => {
         }
         
         const dataToSend ={
-            name: name,
+            name: nameHolder,
             phone: phoneNumber,
             email: email,
             bio: bio,
             company: {
-                name: companyName,
+                name: CompanyNameHolder,
                 address: addr,
                 phone: officeNum
             }
@@ -126,7 +141,7 @@ const PropertyManagerPage = () => {
                             color: "black",
                             width: "310px",
                         }}>
-                            {name}
+                            {nameHolder}
                         </Typography >
                         <Typography
                         sx={{
@@ -147,8 +162,8 @@ const PropertyManagerPage = () => {
                             sx={inputBaseSX} 
                             type="text"
                             name="phoneNum"
-                            placeholder="Phone Number" style={{width:200}}
-                            defaultValue={phoneNumber}
+                            placeholder={phoneHolder} style={{width:200}}
+                            value={phoneNumber}
                             onChange={(e) => setPhoneNumber(e.target.value)}
                             disabled={disableButton}
                             />
@@ -164,8 +179,8 @@ const PropertyManagerPage = () => {
                             sx={inputBaseSX}
                             type="text"
                             name="email"
-                            placeholder="Email Address" style={{width:200}} 
-                            defaultValue={email}
+                            placeholder={emailHolder} style={{width:200}} 
+                            value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             disabled={disableButton}
                             />
@@ -189,7 +204,8 @@ const PropertyManagerPage = () => {
                             <TextField
                             type="text"
                             name="bio"
-                            defaultValue={bio}
+                            placeholder={bioHolder}
+                            value={bio}
                             onChange={(e) => setBio(e.target.value)}
                             multiline rows={4} maxRows={4} 
                             disabled={disableButton}
@@ -214,7 +230,7 @@ const PropertyManagerPage = () => {
                             variant: "h1",
                             color: "black"
                         }}>
-                            {companyName}
+                            {CompanyNameHolder}
                     </Typography >
                     <Typography
                         sx={{
@@ -234,8 +250,8 @@ const PropertyManagerPage = () => {
                             sx={inputBaseSX} 
                             type="text"
                             name="addr"
-                            placeholder="" style={{width:200}} 
-                            defaultValue={addr}
+                            placeholder={addressHolder} style={{width:200}} 
+                            value={addr}
                             onChange={(e) => setAddr(e.target.value)}
                             disabled={disableButton}
                             />
@@ -258,13 +274,13 @@ const PropertyManagerPage = () => {
                             sx={inputBaseSX} 
                             type="text"
                             name="officeNum"
-                            placeholder="" style={{width:200}} 
-                            defaultValue={officeNum}
+                            placeholder={OPhoneHolder} style={{width:200}} 
+                            value={officeNum}
                             onChange={(e) => setOfficeNum(e.target.value)}
                             disabled={disableButton}
                             />
                         </Box>
-                        <Link href="https://www.google.com" underline="always" color="#AB191F" fontWeight={600} >
+                        <Link href={`http://${site}`} underline="always" color="#AB191F" fontWeight={600} >
                                 {'Leasing Site'}
                         </Link>
                         <Box marginLeft={28} marginY={10} width={"200px"}>
