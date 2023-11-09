@@ -644,22 +644,62 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
                             </Tooltip>
                         ) : isOwner === true && userType === "manager" ? (
                             // Owner view
+                            <div>
                             <Tooltip title="Delete Property">
                                 <IconButton onClick={handleDeleteProperty}>
                                     <DeleteOutlineIcon sx={{ color: "#AB191F" }} />
                                 </IconButton>
                             </Tooltip>
-                        ) : ''
+                            <IconButton size="large" disabled={true}>
+                                <FavoriteIcon  />
+                            </IconButton>
+                            </div>
+                        ) : 
+                        (
+                            <Tooltip title="Saves"
+                            componentsProps={{
+                                tooltip: {
+                                    sx: {
+                                        bgcolor: 'rgba(171, 25, 31, 0.9)',
+                                        color: "#F6EBE1"
+                                    },
+                                },
+                            }}
+                        >
+                            <IconButton size="large" disabled={true}>
+                                <FavoriteIcon />
+                            </IconButton>
+                        </Tooltip>
+                        )
                     ) : (
                         // Not logged in view
-                        ''
+                        <Tooltip title="Saves"
+                            componentsProps={{
+                                tooltip: {
+                                    sx: {
+                                        bgcolor: 'rgba(171, 25, 31, 0.9)',
+                                        color: "#F6EBE1"
+                                    },
+                                },
+                            }}
+                        >
+                            <IconButton size="large" disabled={true}>
+                                <FavoriteIcon />
+                            </IconButton>
+                        </Tooltip>
                     )}
+                    
                     <Typography
-                        style={{ margin: "0 5px 0 5px", padding: " 0 5px 0 0px" }}
+                        style={{ 
+                            display: "flex",     
+                            alignItems: "center",
+                            margin: "0 5px 0 -10px",
+                            padding: "0 5px 0 5px",
+                            fontWeight: 600
+                          }}
                     >
-                        {saves}
+                        {saves} 
                     </Typography>
-
                 </DialogActions>
             </Dialog>
             

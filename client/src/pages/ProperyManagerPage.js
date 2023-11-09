@@ -5,12 +5,17 @@ import { useState } from 'react';
 
 const PropertyManagerPage = () => {
 
+
     const [phoneNumber, setPhoneNumber] = useState('');
     const [email, setEmail] = useState('');
     const [bio, setBio] = useState('');
+
     const [addr, setAddr] = useState('');
     const [officeNum, setOfficeNum] = useState('');
     const [disableButton, setDisableButton] = useState(true)
+    const [username, setUsername] = React.useState('')
+    const [userData, setUserData] = React.useState('')
+
 
     //Placeholders for existing info
     const [nameHolder, setNameHolder] = useState('')
@@ -51,6 +56,7 @@ const PropertyManagerPage = () => {
             // Handle errors
             console.error('Fetch error:', error);
         });
+
 
     const inputBaseSX = {
         margin: "5 0 10px 0px", 
@@ -99,7 +105,7 @@ const PropertyManagerPage = () => {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(dataToSend),
+            body: JSON.stringify(dataToSend, username),
             credentials: 'include'
         })
         .then(response => response.json())

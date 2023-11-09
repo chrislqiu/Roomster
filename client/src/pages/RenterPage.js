@@ -132,6 +132,8 @@ const RenterPage = () => {
         }
     }
     const [toggleOn, setToggleOn] = React.useState(false);
+    const [name, setName] = React.useState('')
+    const [age, setAge] = React.useState('')
     const [hasPet, setHasPet] = React.useState(null);
     const [doesSmoke, setDoesSmoke] = React.useState(null);
     const [open, setOpen] = React.useState(false);
@@ -145,6 +147,40 @@ const RenterPage = () => {
     const [studious, setStudious] = React.useState('')
     const [cleanliness, setCleanliness] = React.useState('')
     const [guestFreq, setGuestFreq] = React.useState('')
+    const [username, setUsername] = React.useState('')
+    const [userData, setUserData] = React.useState('')
+
+    React.useEffect(() => {
+        const getUserInfo = async () => {
+            const res = await fetch('http://localhost:8000/auth/current-user', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include'
+            })
+            const getData = await res.json()
+            const obj = JSON.parse(JSON.stringify(getData));
+            setUsername(obj.username)
+            setUserData(obj);
+        }
+        getUserInfo()
+        //console.log(userData)
+        if (userData.user) {
+            setName(userData.user.renterInfo.name)
+            setAge(userData.user.renterInfo.age)
+            setEmail(userData.user.renterInfo.email)
+            setPhone(userData.user.renterInfo.phone)
+            setProfileImg(userData.user.renterInfo.pfp)
+            setHasPet(userData.user.renterInfo.livingPreferences.pets)
+            setDoesSmoke(userData.user.renterInfo.livingPreferences.smoke)
+            setStudious(userData.user.renterInfo.livingPreferences.studious)
+            setCleanliness(userData.user.renterInfo.livingPreferences.cleanliness)
+            setGuestFreq(userData.user.renterInfo.livingPreferences.guestFreq)
+            setSleepFrom(userData.user.renterInfo.livingPreferences.sleepSchedule.from)
+            setSleepTo(userData.user.renterInfo.livingPreferences.sleepSchedule.to)
+        }
+    }, [userData])
 
     const handleSleepFrom = (event) => {
       setSleepFrom(event.target.value);
@@ -192,7 +228,7 @@ const RenterPage = () => {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(dataToSend),
+            body: JSON.stringify(dataToSend, username),
             credentials: 'include'
         })
         .then(response => response.json())
@@ -243,7 +279,7 @@ const RenterPage = () => {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(dataToSend),
+            body: JSON.stringify(dataToSend, username),
             credentials: 'include'
         })
         .then(response => response.json())
@@ -274,18 +310,15 @@ const RenterPage = () => {
         setOpen(false);
     }
 
-    const name = "John Doe"
-    const age = "22"
-
     return (
-        
+
         <Grid container spacing={0} direction="column" alignItems="center" justify="center">
             <Card
                 variant='contained'
                 style={styles.card}>
                 <CardContent>
                 <Box width='100%' style={styles.column1}>
-                    <Typography style={styles.header}> 
+                    <Typography style={styles.header}>
                         {"USER INFORMATION"}
                     </Typography >
                     <Container style={styles.box}>
@@ -297,20 +330,20 @@ const RenterPage = () => {
                             </Tooltip>
                         </Box>
 
-                        <Typography style={Object.assign(styles.name, styles.boxPadding, {marginTop: "20px"})}> 
+                        <Typography style={Object.assign(styles.name, styles.boxPadding, {marginTop: "20px"})}>
                             {name}
                         </Typography >
-                        <Typography style={Object.assign(styles.age, {padding: "0 10px 0 20px", marginTop: "20px"})}> 
+                        <Typography style={Object.assign(styles.age, {padding: "0 10px 0 20px", marginTop: "20px"})}>
                             {age}
                         </Typography >
                         <FontAwesomeIcon icon={faMars} style={Object.assign(styles.icon, {marginTop: "22px"})}/>
                     </Container>
-                    <Typography style={styles.subheader}> 
+                    <Typography style={styles.subheader}>
                         {"Contact info"}
                     </Typography >
-                    <InputBase placeholder="Purdue Email" defaultValue="hi" id="email-textfield" sx={inputBaseSX}onChange={(e) => setEmail(e.target.value)}disabled={disableButton}/>
-                    <InputBase placeholder="Phone number" id="number-textfield" sx={inputBaseSX}onChange={(e) => setPhone(e.target.value)}disabled={disableButton}/>
-                    <Button variant="contained" style={{backgroundColor: "#AB191F", float: "right", margin: "0 35px 0 0", visibility: toggleOn ? "hidden" : "visible"}} 
+                    <InputBase placeholder="Purdue Email" defaultValue={email} id="email-textfield" sx={inputBaseSX}onChange={(e) => setEmail(e.target.value)}disabled={disableButton}/>
+                    <InputBase placeholder="Phone number" defaultValue={phone} id="number-textfield" sx={inputBaseSX}onChange={(e) => setPhone(e.target.value)}disabled={disableButton}/>
+                    <Button variant="contained" style={{backgroundColor: "#AB191F", float: "right", margin: "0 35px 0 0", visibility: toggleOn ? "hidden" : "visible"}}
                         onClick={() => {
                             if (disableButton) {
                             // Enable edit mode
@@ -319,14 +352,14 @@ const RenterPage = () => {
                             // Save changes and disable edit mode
                             handleSaveLeft();
                             setDisableButton(true);
-                            }  
+                            }
                         }}>
                         {disableButton ? 'Edit' : 'Save'}
                     </Button>
                 </Box>
                 <Box width='100%' style={styles.column2}>
                     <Container style={styles.box}>
-                        <Typography style={styles.header}> 
+                        <Typography style={styles.header}>
                             {"FINDING COOPMATES?"}
                         </Typography >
                         <Switch style={{verticalAlign:"center", marginTop:"2px"}}
@@ -347,14 +380,14 @@ const RenterPage = () => {
                         </Container>
                         <Container style={{float: "right", width: "45%"}}>
                             <FormControl style={{marginLeft:"-55px", marginBottom:"-7px"}} disabled={disableButton}>
-                                <RadioGroup row name="pets" style={{width: "150px", display: "flex", justifyContent:"center"}} > 
+                                <RadioGroup row name="pets" defaultValue={hasPet==true ? "yes": "no"} style={{width: "150px", display: "flex", justifyContent:"center"}} >
                                     <FormControlLabel value="yes" control={<Radio sx={radioSX}/>} label="Yes" onChange={() => setHasPet(true)}/>
                                     <FormControlLabel value="no" control={<Radio sx={radioSX}/>} label="No" onChange={() => setHasPet(false)}
                                     />
                                 </RadioGroup>
                             </FormControl>
                             <FormControl style={{marginLeft:"-55px", marginBottom: "-7px"}} disabled={disableButton}>
-                                <RadioGroup defaultValue={"yes"} row name="smoke" style={{width: "150px", display: "flex", justifyContent:"center"}} > 
+                                <RadioGroup row name="smoke" defaultValue={doesSmoke==true ? "yes": "no"} style={{width: "150px", display: "flex", justifyContent:"center"}} >
                                     <FormControlLabel value="yes" control={<Radio sx={radioSX}/>} label="Yes" onChange={() => setDoesSmoke(true)}/>
                                     <FormControlLabel value="no" control={<Radio sx={radioSX}/>} label="No" onChange={() => setDoesSmoke(false)}
                                     />
@@ -364,7 +397,7 @@ const RenterPage = () => {
                             <Slider
                                 onChange={(e, val) => setStudious(val)}
                                 size="small"
-                                defaultValue={3}
+                                defaultValue={studious}
                                 valueLabelDisplay="auto"
                                 step={1}
                                 marks
@@ -378,7 +411,7 @@ const RenterPage = () => {
                             <Slider
                                 onChange={(e, val) => setCleanliness(val)}
                                 size="small"
-                                defaultValue={3}
+                                defaultValue={cleanliness}
                                 valueLabelDisplay="auto"
                                 step={1}
                                 marks
@@ -392,7 +425,7 @@ const RenterPage = () => {
                             <Slider
                                 onChange={(e, val) => setGuestFreq(val)}
                                 size="small"
-                                defaultValue={3}
+                                defaultValue={guestFreq}
                                 valueLabelDisplay="auto"
                                 step={1}
                                 marks
