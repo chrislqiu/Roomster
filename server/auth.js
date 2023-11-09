@@ -591,7 +591,11 @@ router.post("/pw-reset/:token", async (req, res) => {
         const salt = await bcrypt.genSalt();
         const hashedNewPassword = await bcrypt.hash(req.body.newPassword, salt);
 
-        await User.updateOne({ username: decoded.username }, { password: hashedNewPassword });
+        if(userType === "renter"){
+            await Renter.updateOne({ username: decoded.username }, { password: hashedNewPassword });
+        } else if (userType === "manager"){
+            await Manager.updateOne({ username: decoded.username }, { password: hashedNewPassword });
+        }
 
         return res.status(200).send("Password reset");
     } catch (err) {

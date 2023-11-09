@@ -5,31 +5,42 @@ import { useState } from 'react';
 
 const PropertyManagerPage = () => {
 
-    //const [name, setName] = useState('');
+    const [name, setName] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
     const [email, setEmail] = useState('');
     const [bio, setBio] = useState('');
-    //const [companyName, setCompanyName] = useState('');
+    const [companyName, setCompanyName] = useState('');
     const [addr, setAddr] = useState('');
     const [officeNum, setOfficeNum] = useState('');
     const [disableButton, setDisableButton] = useState(true)
+    const [username, setUsername] = React.useState('')
+    const [userData, setUserData] = React.useState('')
 
-    // React.useEffect(() => {
-    //     const getUserInfo = async () => {
-    //         const res = await fetch('http://localhost:8000/auth/current-user')
-    //         if (res.ok) {
-    //             const userData = await res.json()
-    //             setName(userData.user.name)
-    //             setPhoneNumber(userData.user.phone)
-    //             setEmail(userData.user.email)
-    //             setBio(userData.user.bio)
-    //             setCompanyName(userData.user.company.companyInfo.name)
-    //             setAddr(userData.user.company.companyInfo.address)
-    //             setOfficeNum(userData.user.company.companyInfo.phone)
-    //         }
-    //     }
-    //     getUserInfo()
-    // }, [])
+    React.useEffect(() => {
+        const getUserInfo = async () => {
+            const res = await fetch('http://localhost:8000/auth/current-user', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include'
+            })
+            const getData = await res.json()
+            const obj = JSON.parse(JSON.stringify(getData));
+            setUsername(obj.username)
+            setUserData(obj);
+        }
+        getUserInfo()
+        if (userData.user) {
+            setName(userData.user.name)
+            setPhoneNumber(userData.user.phone)
+            setEmail(userData.user.email)
+            setBio(userData.user.bio)
+            setCompanyName(userData.user.company.companyInfo.name)
+            setAddr(userData.user.company.companyInfo.address)
+            setOfficeNum(userData.user.company.companyInfo.phone)
+        }
+    }, [userData])
 
     const inputBaseSX = {
         margin: "5 0 10px 0px", 
@@ -79,7 +90,7 @@ const PropertyManagerPage = () => {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(dataToSend),
+            body: JSON.stringify(dataToSend, username),
             credentials: 'include'
         })
         .then(response => response.json())
@@ -90,8 +101,6 @@ const PropertyManagerPage = () => {
             console.error('ERRORRR: ', error);
         });
     };
-    const name = "John Doe"
-    const companyName = "Campus Edge"
 
     return (
             <Card
@@ -139,7 +148,7 @@ const PropertyManagerPage = () => {
                             type="text"
                             name="phoneNum"
                             placeholder="Phone Number" style={{width:200}}
-                            value={phoneNumber}
+                            defaultValue={phoneNumber}
                             onChange={(e) => setPhoneNumber(e.target.value)}
                             disabled={disableButton}
                             />
@@ -156,7 +165,7 @@ const PropertyManagerPage = () => {
                             type="text"
                             name="email"
                             placeholder="Email Address" style={{width:200}} 
-                            value={email}
+                            defaultValue={email}
                             onChange={(e) => setEmail(e.target.value)}
                             disabled={disableButton}
                             />
@@ -180,7 +189,7 @@ const PropertyManagerPage = () => {
                             <TextField
                             type="text"
                             name="bio"
-                            value={bio}
+                            defaultValue={bio}
                             onChange={(e) => setBio(e.target.value)}
                             multiline rows={4} maxRows={4} 
                             disabled={disableButton}
@@ -226,7 +235,7 @@ const PropertyManagerPage = () => {
                             type="text"
                             name="addr"
                             placeholder="" style={{width:200}} 
-                            value={addr}
+                            defaultValue={addr}
                             onChange={(e) => setAddr(e.target.value)}
                             disabled={disableButton}
                             />
@@ -250,7 +259,7 @@ const PropertyManagerPage = () => {
                             type="text"
                             name="officeNum"
                             placeholder="" style={{width:200}} 
-                            value={officeNum}
+                            defaultValue={officeNum}
                             onChange={(e) => setOfficeNum(e.target.value)}
                             disabled={disableButton}
                             />
