@@ -15,6 +15,8 @@ import chicken from "../images/profile-pic.png"
 import LoginView from "./LoginView";
 import { useNavigate, useLocation } from "react-router-dom";
 import DoubleArrowIcon from '@mui/icons-material/DoubleArrow';
+import DarkMode from '@mui/icons-material/DarkMode';
+
 import { Grow } from "@mui/material";
 import Settings from "../pages/Settings"
 
@@ -244,6 +246,9 @@ const RoomsterAppBar = ({ login, userType }) => {
                         <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}></Box>
                     }
                     <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}></Box>
+                    <IconButton sx={{color:"#F6EBE1", ":hover": {backgroundColor:"#F6EBE1", color: "#AB191F"}}}>
+                      <DarkMode/>
+                    </IconButton>
                     {login ?
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Open Profile" sx={{ color: "#AB191F" }}  onClick={() => {userType === "renter" ? navigate("/RProfile") : navigate("/MProfile")}}> 

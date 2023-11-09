@@ -9,7 +9,6 @@ import MyCoopsPage from "./pages/MyCoopsPage";
 import LoginPage from "./pages/LoginPage"
 import GlobalStyles from "@mui/material/GlobalStyles";
 import { BrowserRouter, Routes, Route } from "react-router-dom"
-import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { Divider, Box, Link } from "@mui/material";
 import theredthing from './images/theredthing.png'
 import logo from './images/logo2.png'
@@ -30,6 +29,7 @@ import AdminDenyPage from "./pages/AdminDenyPage";
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 const styles = {
   background: {
@@ -38,7 +38,7 @@ const styles = {
     minHeight: "100vh",
     margin: "0",
     padding: "0",
-    backgroundColor: "#f5ebe0",
+    backgroundColor: "#F6EBE1",
     zIndex: "-1",
   },
   logo: {
@@ -52,13 +52,7 @@ const styles = {
   }
 };
 
-const theme = createTheme({
-  palette: {
-    background: {
-      default: "#F6EBE1"
-    }
-  }
-});
+
 
 
 class App extends React.Component {
@@ -158,6 +152,16 @@ class App extends React.Component {
 
 
   render() {
+    const theme = createTheme({
+      palette: {
+        ochre: {
+          main: '#E3D026',
+          light: '#E9DB5D',
+          dark: '#A29415',
+          contrastText: '#242105',
+        },
+      },
+    });
     const { isAuthenticated, isAuthenticatedAdmin, userType } = this.state;
     const pathname = window.location.pathname
     const showAppBar = pathname !== "/Admin" || isAuthenticatedAdmin;
@@ -176,7 +180,7 @@ class App extends React.Component {
       //     }}
       //   />
 
-
+      
       <HelmetProvider>
         <Helmet>
           <title>Roomster</title>
@@ -185,7 +189,7 @@ class App extends React.Component {
 
         </Helmet>
 
-
+        <ThemeProvider theme={theme}>
         <html>
           <body style={styles.background}>
             <div style={{ zIndex: "0" }}>
@@ -227,6 +231,7 @@ class App extends React.Component {
             </BrowserRouter>
           </body>
         </html>
+      </ThemeProvider>
       </HelmetProvider >
     );
   }
