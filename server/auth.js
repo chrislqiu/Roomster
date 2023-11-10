@@ -251,6 +251,16 @@ router.post("/renter-signup", async (req, res) => {
     }
 });
 
+router.get("/coopmates", async (req, res) => {
+    await Renter.find({findingCoopmates: true})
+        .then((result) => {
+            res.send(result);
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+});
+
 router.post("/manager-signup", async (req, res) => {
     const existingManager = await Manager.findOne({ username: req.body.username });
     const existingRenter = await Renter.findOne({ username: req.body.username });

@@ -5,6 +5,7 @@ const Company = require('./models/company');
 const CompanyInfo = require('./models/companyInfo');
 const Manager = require('./models/manager');
 const Renter = require('./models/renter');
+const RenterInfo = require('./models/renterInfo');
 const router = express.Router();
 
 // for testing use (create a property from each property info and attach company)
@@ -212,6 +213,37 @@ router.post('/update-saves', async (req, res) => {
     }
 
 });
+
+router.post('/update-coopmates', async (req, res) => {
+    const id = req.body.id; //coopmates renterinfo
+    const renter = await Renter.findOne({username: req.body.currentUser.username});
+    const coopmate = await Renter.findOne({username : req.body.coopmate.username})
+    console.log(req.body.coopmate)
+    console.log(id)
+    console.log(renter)
+    console.log(renter.coopmates)
+    const coopmateExists = renter.coopmates.some(mate => mate.renterInfo._id.toString() === coopmate.renterInfo._id.toString());
+    if (!coopmateExists) {
+        renter.coopmates.push(coopmate)
+        renter.save()
+        .then((result) => {
+            res.send(result);
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+    } else {
+        renter.coopmates.pull(id)
+        renter.save()
+        .then((result) => {
+            res.send(result);
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+    }
+})
+
 // Route to get featured cards
 router.get('/featured-cards', (req, res) => {
     Property.find({'propertyInfo.featured': true})

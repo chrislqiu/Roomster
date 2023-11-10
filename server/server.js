@@ -180,6 +180,7 @@ app.post('/sendProperty', async (req,res) => {
       utilities: data.propertyInfo.utilities  
   }
   var newProperty;
+  
   const company = await Company.findOne({"companyInfo.name": manager.company.companyInfo.name})
   if (data.propertyInfo._id != '') {
     const updatePropertyInfo = await PropertyInfo.findByIdAndUpdate(data.propertyInfo._id, newInfo, {new: true})

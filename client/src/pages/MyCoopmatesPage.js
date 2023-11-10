@@ -1,12 +1,21 @@
 import * as React from 'react';
-import { Container, Box, Typography } from "@mui/material";
+import { Container, Box, Typography} from "@mui/material";
 import { useState, useEffect } from "react";
 import CoopmatesView from '../components/CoopmateView';
 
-const CoopmatesPage = ({ }) => {
-    const [coopmateInfo, setCoopmateInfo] = React.useState([])
-    const [coopmates, setMyCoopmates] = React.useState([]);
-    const [userData, setUserData] = React.useState('');
+const MyCoopmatesPage = () => {
+    const [userData, setUserData] = useState('');
+    const [coopmates, setMyCoopmates] = useState([]);
+    const [loading, setLoading] = useState(true); // Add loading state
+    const styles = {
+        feed: {
+            display: "flex",
+            justifyContent: "center",
+            maxWidth: "1200px",
+            flexWrap: "wrap",
+        },
+        
+    }
     useEffect(() => {
         const getUserInfo = async () => {
             try {
@@ -25,6 +34,7 @@ const CoopmatesPage = ({ }) => {
                 if(obj.user.renterInfo){
                     setMyCoopmates(obj.user.coopmates);
                 }
+                setLoading(false);
             } catch (e) {
                 console.log("error: " + e)
                 
@@ -33,33 +43,14 @@ const CoopmatesPage = ({ }) => {
 
         getUserInfo();
     }, [userData, coopmates]);
-    React.useEffect(() => {
-        const getCoopmateInfo = async () => {
-            const res = await fetch('http://localhost:8000/auth/coopmates')
-            const getData = await res.json()
-            const obj = JSON.parse(JSON.stringify(getData));
-            setCoopmateInfo(obj);
-        }
-        getCoopmateInfo()
-    }, [coopmateInfo])
-    const styles = {
-        feed: {
-            display: "flex",
-            justifyContent: "center",
-            maxWidth: "1200px",
-            flexWrap: "wrap",
-        },
-        
-    }
+
     return (
         <Container sx={{ width: '100%' }}>
-            {console.log(userData.username)}
-        <Box sx={{ m: 1 }} style={styles.feed}>
-              {
-                    coopmateInfo.length > 0 ? (
-                        coopmateInfo.map(coopmate => {
-                            
-                            return <CoopmatesView coopmate={coopmate} coopmates={coopmates} username={userData.username} userData={userData}/>;
+            <Box sx={{ m: 1 }} style={styles.feed}>
+                {
+                    coopmates.length > 0 ? (
+                        coopmates.map(coopmate => {
+                            return <CoopmatesView coopmate={coopmate} coopmateArr={coopmates} username={userData.username}/>;
                         })
                     ) : (
                         <Typography
@@ -69,14 +60,12 @@ const CoopmatesPage = ({ }) => {
                                 color: "#AB191F",
                             }}
                         >
-                            No Coopmates!
+                            No Coopmates saved!
                         </Typography>
                     )
                 }
-        </Box>
-    </Container>
-
-    );
-    
+            </Box>
+        </Container>
+    )
 }
-export default CoopmatesPage;
+export default MyCoopmatesPage
