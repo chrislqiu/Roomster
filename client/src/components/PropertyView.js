@@ -624,7 +624,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
                         ) : isOwner === false && userType !== "manager" ? (
                             // User view (not owner)
                             <Tooltip
-                                title="Add to FAV COOPS"
+                                title= {coopFavorited ? "Remove from FAV COOPS" : "Add to FAV COOPS"}
                                 componentsProps={{
                                     tooltip: {
                                         sx: {
