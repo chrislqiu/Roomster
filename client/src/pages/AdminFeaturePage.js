@@ -79,7 +79,7 @@ const AdminFeaturePage = () => {
                                 </Typography>
                             ) : (
                                 filteredPropertyInfo.map((cards) => (
-                                    <PropertyViewMore data={cards} login={true} admin={true} />
+                                    <PropertyViewMore data={cards} login={true} featureRequest={true} />
                                 ))
                             )}
                         </Box>

@@ -23,6 +23,7 @@ import AddCoopView from './AddCoopView';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBuildingCircleCheck, faStar } from '@fortawesome/free-solid-svg-icons'
 import { toast, ToastContainer } from 'react-toastify';
+import DoDisturbIcon from '@mui/icons-material/DoDisturb';
 import StarBorderOutlinedIcon from '@mui/icons-material/StarBorderOutlined';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -36,7 +37,7 @@ import 'react-toastify/dist/ReactToastify.css';
  * featured : Boolean to determine whether the card is featured or not
  * favCoops : Boolean to determine if card is on favCoops page
  */
-const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) => {
+const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProperty, featureRequest }) => {
     var image, propertyName, address, beds, baths, cost, amenities
     if (myCoops) {
         image = data.image;
@@ -247,6 +248,58 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
         console.log("data: " + id);
         try {
             const response = await fetch('http://localhost:8000/auth/verify-property', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: JSON.stringify({ id: id }),
+            });
+
+            console.log(response)
+
+            if (response.ok) {
+                console.log("good")
+                window.location.reload(true);
+            } else {
+                console.log("nope")
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    };
+
+    const handleAcceptFeature = async () => {
+        const id = data._id;
+        console.log("data: " + id);
+        try {
+            const response = await fetch('http://localhost:8000/auth/accept-feature', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: JSON.stringify({ id: id }),
+            });
+
+            console.log(response)
+
+            if (response.ok) {
+                console.log("good")
+                window.location.reload(true);
+            } else {
+                console.log("nope")
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    };
+
+    const handleDenyFeature = async () => {
+        const id = data._id;
+        console.log("data: " + id);
+        try {
+            const response = await fetch('http://localhost:8000/auth/deny-feature', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -663,7 +716,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
 
                     {editMode === true ? <AddCoopView setOpen={setOpen} editMode={true} data={data}></AddCoopView> : ''}
                     {login === true ? (
-                        admin === true ? (
+                        verifyProperty === true ? (
                             // Admin view
                             <div sx={{ display: "flex", width: "100%" }}>
                                 <Tooltip title="Delete Property">
@@ -677,7 +730,20 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
                                     </IconButton>
                                 </Tooltip>
                             </div>
-                        ) : isOwner === false && userType !== "manager" ? (
+                        ) : featureRequest === true ? (
+                            <div sx={{ display: "flex", width: "100%" }}>
+                                <Tooltip title="Deny Feature Request">
+                                    <IconButton onClick={handleDenyFeature}>
+                                        <DoDisturbIcon sx={{ color: "#AB191F" }} />
+                                    </IconButton>
+                                </Tooltip>
+                                <Tooltip title="Accept Feature Request">
+                                    <IconButton onClick={handleAcceptFeature}>
+                                        <CheckIcon sx={{ color: "green" }} />
+                                    </IconButton>
+                                </Tooltip>
+                            </div>
+                        ): isOwner === false && userType !== "manager" ? (
                             // User view (not owner)
                             <Tooltip
                                 title="Add to FAV COOPS"

@@ -787,6 +787,40 @@ router.post("/verify-property", authorizationAdmin, async (req, res) => {
     }
 })
 
+router.post("/accept-feature", authorizationAdmin, async (req, res) => {
+    try {
+        const propertyId = req.body.id
+        console.log(propertyId);
+        const updatedProperty = await Property.findOneAndUpdate(
+            { _id: propertyId },
+            { 'propertyInfo.featureRequest': false, 'propertyInfo.featured': true },
+            { new: true }
+        );
+        return res.status(200).send("Property feature accepted");
+
+    } catch (err) {
+        console.log(err)
+        res.status(500).send("Error accepting feature");
+    }
+})
+
+router.post("/deny-feature", authorizationAdmin, async (req, res) => {
+    try {
+        const propertyId = req.body.id
+        console.log(propertyId);
+        const updatedProperty = await Property.findOneAndUpdate(
+            { _id: propertyId },
+            { 'propertyInfo.featureRequest': false },
+            { new: true }
+        );
+        return res.status(200).send("Property feature accepted");
+
+    } catch (err) {
+        console.log(err)
+        res.status(500).send("Error accepting feature");
+    }
+})
+
 router.post("/property-verification", async (req, res) => {
     try {
         const propertyId = req.body.id
