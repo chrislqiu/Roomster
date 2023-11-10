@@ -27,6 +27,7 @@ import AdminPage from "./pages/AdminPage";
 import ResetPWPage from "./pages/ResetPWPage"
 import SetAdminPWPage from "./pages/SetAdminPWPage";
 import AdminDenyPage from "./pages/AdminDenyPage";
+import AdminFeaturePage from "./pages/AdminFeaturePage";
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -124,9 +125,8 @@ class App extends React.Component {
       if (response.ok) {
         this.setState({ isAuthenticatedAdmin: true });
         const data = await response.json();
-        const userType = data.userType;
-        this.setState({ userType: userType });
-        console.log("user type: " + userType)
+        this.setState({ userType: "admin" });
+        console.log("user type: admin")
       } else {
         console.log('Authentication check failed');
       }
@@ -160,10 +160,10 @@ class App extends React.Component {
   render() {
     const { isAuthenticated, isAuthenticatedAdmin, userType } = this.state;
     const pathname = window.location.pathname
-    const showAppBar = pathname !== "/Admin" || isAuthenticatedAdmin;
+    const showAppBar = !pathname.startsWith("/Admin") || isAuthenticatedAdmin;
 
-    const showAppBarAdmin = pathname === "/Admin" && isAuthenticatedAdmin;
-    const showAppBarMain = pathname !== "/Admin" && isAuthenticated;
+    const showAppBarAdmin = pathname.startsWith("/Admin") && isAuthenticatedAdmin;
+    const showAppBarMain = !pathname.startsWith("/Admin") && isAuthenticated;
 
     const faviconPath = "favicon.ico";
 
@@ -221,6 +221,7 @@ class App extends React.Component {
                 <Route path="/Coopmates" element={<CoopmatesPage />} />
                 <Route path="/CompanyPage" element={<PropertyManagerPublicPage />} />
                 <Route path="/Admin" element={<AdminPage />} />
+                <Route path="/Admin/Featured" element={<AdminFeaturePage />} />
                 <Route path="/ResetPW/:token" element={<ResetPWPage />} />
                 <Route path="/SetAdminPW/:token" element={<SetAdminPWPage />} />
               </Routes>

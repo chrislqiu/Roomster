@@ -47,14 +47,6 @@ const authorization = async (req, res, next) => {
             return res.status(401).send("Unauthorized");
         }
 
-        if (userType && userType === "admin") {
-            const adminUser = await Admin.findOne({ username: user.username });
-
-            if (!adminUser) {
-                return res.status(401).send("Unauthorized");
-            }
-        }
-
         req.user = user;
         req.userType = userType;
 
@@ -90,8 +82,6 @@ const authorizationAdmin = async (req, res, next) => {
                 return res.status(401).send("Unauthorized");
             }
         }
-
-
 
         req.user = user;
         req.userType = userType;

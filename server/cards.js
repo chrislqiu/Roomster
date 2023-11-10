@@ -267,6 +267,16 @@ router.post("/request-featured", async (req, res) => {
     }
 })
 
+router.get("/get-feature-request", async (req, res) => {
+    Property.find({'propertyInfo.featureRequest': true})
+    .then((result) => {
+        res.send(result);
+    })
+    .catch((err) => {
+        console.log(err);
+    });
+})
+
 // Route to get my coops cards
 router.post('/my-coops-cards', async (req, res) => {
     const currentManager = await Manager.findOne({username: req.body.username})
