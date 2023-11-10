@@ -474,6 +474,18 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
                             >
                                 ${cost} per month
                             </Typography>
+                            <Button
+                                sx={{
+                                    ":hover": {
+                                        borderColor: "#F6EBE1", bgcolor: "#F6EBE1", color: "#AB191F",
+                                        borderWidth: 1.5, width: "175px", fontWeight: 600, fontSize:"11pt", padding:"0"
+                                    },
+                                    borderColor: "#AB191F", bgcolor: "#AB191F", color: "#F6EBE1",
+                                    borderWidth: 1.5, width: "175px", fontWeight: 600, fontSize:"11pt", padding:"0",
+                                    boxShadow: 5, justifyContent: "center", maxHeight: "50px", position:"absolute", bottom:15, left:25
+                                }}
+                                variant="outlined">REQUEST A TOUR
+                            </Button>
                         </Box>
                         <Divider orientation={{ xs: 'horizontal', md: 'vertical', lg: 'vertical', xl: 'vertical' }} width={3} sx={{ borderBottomWidth: 3, color: "#AB191F", backgroundColor: "#AB191F", marginY: 2 }} />
 
