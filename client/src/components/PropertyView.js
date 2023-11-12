@@ -37,7 +37,7 @@ import 'react-toastify/dist/ReactToastify.css';
  * featured : Boolean to determine whether the card is featured or not
  * favCoops : Boolean to determine if card is on favCoops page
  */
-const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProperty, featureRequest }) => {
+const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProperty, featureRequest, featureRequestManage }) => {
     var image, propertyName, address, beds, baths, cost, amenities
     if (myCoops) {
         image = data.image;
@@ -740,6 +740,14 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
                                 <Tooltip title="Accept Feature Request">
                                     <IconButton onClick={handleAcceptFeature}>
                                         <CheckIcon sx={{ color: "green" }} />
+                                    </IconButton>
+                                </Tooltip>
+                            </div>
+                        ) : featureRequestManage === true ? (
+                            <div sx={{ display: "flex", width: "100%" }}>
+                                <Tooltip title="Remove Feature">
+                                    <IconButton onClick={handleDenyFeature}>
+                                        <DoDisturbIcon sx={{ color: "#AB191F" }} />
                                     </IconButton>
                                 </Tooltip>
                             </div>

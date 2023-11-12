@@ -46,6 +46,7 @@ const authorization = async (req, res, next) => {
         if (req.body.username && req.body.username !== user.username) {
             return res.status(401).send("Unauthorized");
         }
+        
 
         req.user = user;
         req.userType = userType;
@@ -115,9 +116,11 @@ router.post("/check-owner", authorization, async (req, res) => {
             })
                 .then((resultProperty) => {
                     if (!resultProperty) {
+                        console.log("no match")
                         return res.send({ match: false });
                     }
                     const match = result.company.companyInfo.name === resultProperty.companyInfo.name;
+                    console.log(match)
                     res.send({ match: match });
                 })
                 .catch((err) => {
@@ -810,7 +813,7 @@ router.post("/deny-feature", authorizationAdmin, async (req, res) => {
         console.log(propertyId);
         const updatedProperty = await Property.findOneAndUpdate(
             { _id: propertyId },
-            { 'propertyInfo.featureRequest': false },
+            { 'propertyInfo.featureRequest': false, 'propertyInfo.featured': false },
             { new: true }
         );
         return res.status(200).send("Property feature accepted");

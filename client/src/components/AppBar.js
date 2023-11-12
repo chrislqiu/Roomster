@@ -21,7 +21,7 @@ import Settings from "../pages/Settings"
 const pages = ["Home", "My Coops", "Fav Coops", "Coopmates", "Log Out"];
 const pagesManager = ["Home", "My Coops", "Log Out"];
 const pagesRenter = ["Home", "Fav Coops", "Coopmates", "Log Out"];
-const pagesAdmin = ["Unverified Properties", "Property Feature Requests", "Log Out"]
+const pagesAdmin = ["Unverified Properties", "Property Feature Requests", "Featured Properties", "Log Out"]
 
 //const routePage = ["/Home", "/FavCoops", "/Coopmates", "/Logout"]
 
@@ -258,7 +258,9 @@ const RoomsterAppBar = ({ login, userType }) => {
                           navigate("/Admin/Featured");
                         } else if (adminPage === "Log Out") {
                           handleLogout();
-                        }
+                        } else if (adminPage === "Featured Properties") {
+                          navigate("/Admin/FeaturedManage");
+                        } 
                         handleCloseNavMenu();
                       }}
                       sx={{
