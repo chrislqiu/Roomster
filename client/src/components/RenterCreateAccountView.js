@@ -13,6 +13,8 @@ import CloseIcon from '@mui/icons-material/Close';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import LoginView from './LoginView';
 import MainPage from '../pages/MainPage';
+import { createTheme, ThemeProvider, useTheme } from '@mui/material/styles';
+
 /**
  * Display for Renter Create Account Pop-up
  * Jillian Urgello 
@@ -23,6 +25,7 @@ import MainPage from '../pages/MainPage';
  */
 
 const RenterCreateAccountView = ({ }) => {
+    const theme = useTheme();
     const [open, setOpen] = React.useState(true)
     const [name, setName] = React.useState("")
     const [email, setEmail] = React.useState("")
@@ -30,7 +33,18 @@ const RenterCreateAccountView = ({ }) => {
     const [confirmedPassword, setConfirmedPassword] = React.useState("")
     const [signupStatus, setSignupStatus] = React.useState(null);
     const [backButton, setBackButton] = React.useState(false)
-
+    const textfieldSX = {
+        input: {
+            color: "textColor",
+            "&::placeholder": {
+                opacity: 0.7,
+                color: "textColor",
+                },
+        },
+        "& fieldset": { border: 'none', },
+        boxShadow: theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 3px rgba(245, 235, 224, .1)",
+        marginBottom: "15px"
+    }
     const handleOpen = () => {
         setOpen(true)
     }
@@ -121,8 +135,8 @@ const RenterCreateAccountView = ({ }) => {
                             width: "100%",
                             height: "100%",
                             maxWidth: "400px",
-                            maxHeight: "550px",
-                            bgcolor: '#F6EBE1'
+                            maxHeight: "475px",
+                            bgcolor: 'primaryColor'
                         }
                     }
                 }}>
@@ -132,54 +146,38 @@ const RenterCreateAccountView = ({ }) => {
                         style={{ position: "absolute", top: "0", right: "0" }}
                         onClick={() => handleClose()}
                     >
-                        <CloseIcon style={{ color: "black" }} />
+                        <CloseIcon sx={{ color: "textColor" }} />
                     </IconButton>
 
 
 
-                    <DialogTitle sx={{ fontWeight: 600, fontSize: 25, marginBottom: "-40px" }}> Welcome, </DialogTitle>
-                    <DialogTitle sx={{ fontWeight: 600, fontSize: 25, marginBottom: "-15px" }}>Create Account</DialogTitle>
-                    <Divider variant="middle" sx={{ borderBottomWidth: 3, color: "#AB191F", backgroundColor: "#AB191F", marginY: 1 }} />
+                    <DialogTitle sx={{ fontWeight: 600, fontSize: 25, marginBottom: "-40px", color: "textColor" }}> Welcome, </DialogTitle>
+                    <DialogTitle sx={{ fontWeight: 600, fontSize: 25, marginBottom: "-15px", color: "textColor" }}>Create Account</DialogTitle>
+                    <Divider variant="middle" sx={{ borderBottomWidth: 3, backgroundColor: "secondaryColor", marginY: 1 }} />
                 </div>
                 <DialogContent sx={{ maxWidth: "400px" }}>
                     <div>
                         <TextField
-                            label="Name" id="name-textfield" variant="outlined" fullWidth
-                            inputProps={{ style: { fontSize: 15 } }}
-                            inputLabelProps={{ style: { fontSize: 15 } }}
-                            sx={{
-                                boxShadow: "3", margin: "dense", marginBottom: "15px"
-                            }}
+                            placeholder="Name" id="name-textfield" variant="outlined" fullWidth
+                            sx={textfieldSX}
                             onChange={(e) => setName(e.target.value)}
                         />
                         <TextField
-                            label="Purdue Email" id="email-textfield" variant="outlined" fullWidth
-                            inputProps={{ style: { fontSize: 15 } }}
-                            inputLabelProps={{ style: { fontSize: 15, marginBottom: "15px" } }}
-                            sx={{
-                                boxShadow: "3", margin: "dense", marginBottom: "15px",
-                            }}
+                            placeholder="Purdue Email" id="email-textfield" variant="outlined" fullWidth
+                            sx={textfieldSX}
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                         />
                         <TextField
-                            label="Password" id="psw-textfield" variant="outlined" type="password" fullWidth
-                            inputProps={{ style: { fontSize: 15 } }}
-                            inputLabelProps={{ style: { fontSize: 15 } }}
-                            sx={{
-                                boxShadow: "3", margin: "dense", marginBottom: "15px"
-                            }}
+                            placeholder="Password" id="psw-textfield" variant="outlined" type="password" fullWidth
+                            sx={textfieldSX}
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                         />
 
                         <TextField
-                            label="Confirm Password" id="confirm-psw-textfield" variant="outlined" type="password" fullWidth
-                            inputProps={{ style: { fontSize: 15 } }}
-                            inputLabelProps={{ style: { fontSize: 15 } }}
-                            sx={{
-                                boxShadow: "3", margin: "dense", marginBottom: "15px"
-                            }}
+                            placeholder="Confirm Password" id="confirm-psw-textfield" variant="outlined" type="password" fullWidth
+                            sx={textfieldSX}
                             value={confirmedPassword}
                             onChange={(e) => setConfirmedPassword(e.target.value)}
                         />
@@ -191,13 +189,15 @@ const RenterCreateAccountView = ({ }) => {
                         <Button
                             sx={{
                                 ":hover": {
-                                    borderColor: "#F6EBE1", bgcolor: "#F6EBE1", color: "#AB191F",
-                                    borderWidth: 1.5, width: "45%", fontWeight: 600, position:"sticky"
+                                    backgroundColor: "secondaryColor", border: "none",
+                                    boxShadow: theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 3px rgba(245, 235, 224, .1)",
                                 },
-                                borderColor: "#AB191F", bgcolor: "#AB191F", color: "#F6EBE1",
-                                borderWidth: 1.5, width: "45%", fontWeight: 600, maxWidth: "100px",
-                                boxShadow: 5, justifyContent: "center", float: "right", position:"sticky"
-
+                                border: "none",
+                                backgroundColor: "secondaryColor", 
+                                color: theme.palette.type === "light" ? "primaryColor" : "textColor",
+                                width: "45%", fontWeight: 600, 
+                                maxWidth: "100px",
+                                justifyContent: "center", float: "right"
                             }}
                             variant="outlined"
                             onClick={handleSignUp}
