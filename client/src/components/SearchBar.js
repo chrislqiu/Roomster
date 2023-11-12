@@ -135,12 +135,19 @@ const SearchBar = ({ data, setInput, setFilteredOptions, setNumberSelected, setS
             fontSize: "22px",
         },
         menuItems: {
-            color: "secondaryColor",
+            color: "textColor",
             fontWeight: '600'
         },
         tooltip: {
             backgroundColor: 'secondaryColor',
             color: 'primaryColor'
+        }
+    }
+
+    const checkboxSX = {
+        color: "textColor",
+        '&.Mui-checked': {
+            color: "secondaryColor",
         }
     }
 
@@ -243,24 +250,14 @@ const SearchBar = ({ data, setInput, setFilteredOptions, setNumberSelected, setS
                                         control={<Checkbox
                                             value="1"
                                             onChange={handleBedroom}
-                                            sx={{
-                                                color: "textColor",
-                                                '&.Mui-checked': {
-                                                    color: "secondaryColor",
-                                                }
-                                            }} />}
+                                            sx={checkboxSX} />}
                                         label="1 bed"
                                     />
                                     <FormControlLabel
                                         control={<Checkbox
                                             value="2"
                                             onChange={handleBedroom}
-                                            sx={{
-                                                color: "textColor",
-                                                '&.Mui-checked': {
-                                                    color: "secondaryColor",
-                                                }
-                                            }} />
+                                            sx={checkboxSX}/>
                                         }
                                         label="2 beds"
                                     />
@@ -268,12 +265,7 @@ const SearchBar = ({ data, setInput, setFilteredOptions, setNumberSelected, setS
                                         control={<Checkbox
                                             value="3"
                                             onChange={handleBedroom}
-                                            sx={{
-                                                color: "textColor",
-                                                '&.Mui-checked': {
-                                                    color: "secondaryColor",
-                                                }
-                                            }} />
+                                            sx={checkboxSX} />
                                         }
                                         label="3 beds"
                                     />
@@ -281,12 +273,7 @@ const SearchBar = ({ data, setInput, setFilteredOptions, setNumberSelected, setS
                                         control={<Checkbox
                                             value="4"
                                             onChange={handleBedroom}
-                                            sx={{
-                                                color: "textColor",
-                                                '&.Mui-checked': {
-                                                    color: "secondaryColor",
-                                                }
-                                            }} />
+                                            sx={checkboxSX}/>
                                         }
                                         label="4 beds"
                                     />
@@ -297,24 +284,14 @@ const SearchBar = ({ data, setInput, setFilteredOptions, setNumberSelected, setS
                                         control={<Checkbox
                                             value="1"
                                             onChange={handleBathroom}
-                                            sx={{
-                                                color: "textColor",
-                                                '&.Mui-checked': {
-                                                    color: "secondaryColor",
-                                                }
-                                            }} />}
+                                            sx={checkboxSX} />}
                                         label="1 bath"
                                     />
                                     <FormControlLabel
                                         control={<Checkbox
                                             value="2"
                                             onChange={handleBathroom}
-                                            sx={{
-                                                color: "textColor",
-                                                '&.Mui-checked': {
-                                                    color: "secondaryColor",
-                                                }
-                                            }} />
+                                            sx={checkboxSX} />
                                         }
                                         label="2 baths"
                                     />
@@ -322,12 +299,7 @@ const SearchBar = ({ data, setInput, setFilteredOptions, setNumberSelected, setS
                                         control={<Checkbox
                                             value="3"
                                             onChange={handleBathroom}
-                                            sx={{
-                                                color: "textColor",
-                                                '&.Mui-checked': {
-                                                    color: "secondaryColor",
-                                                }
-                                            }} />
+                                            sx={checkboxSX} />
                                         }
                                         label="3 baths"
                                     />
@@ -335,12 +307,7 @@ const SearchBar = ({ data, setInput, setFilteredOptions, setNumberSelected, setS
                                         control={<Checkbox
                                             value="4"
                                             onChange={handleBathroom}
-                                            sx={{
-                                                color: "textColor",
-                                                '&.Mui-checked': {
-                                                    color: "secondaryColor",
-                                                }
-                                            }} />
+                                            sx={checkboxSX} />
                                         }
                                         label="4 baths"
                                     />
@@ -348,12 +315,7 @@ const SearchBar = ({ data, setInput, setFilteredOptions, setNumberSelected, setS
                                         control={<Checkbox
                                             value="5"
                                             onChange={handleBathroom}
-                                            sx={{
-                                                color: "textColor",
-                                                '&.Mui-checked': {
-                                                    color: "secondaryColor",
-                                                }
-                                            }} />
+                                            sx={checkboxSX} />
                                         }
                                         label="5 baths"
                                     />
@@ -364,36 +326,21 @@ const SearchBar = ({ data, setInput, setFilteredOptions, setNumberSelected, setS
                                         control={<Checkbox
                                             value="Gym"
                                             onChange={handleAmenity}
-                                            sx={{
-                                                color: "textColor",
-                                                '&.Mui-checked': {
-                                                    color: "secondaryColor",
-                                                }
-                                            }} />}
+                                            sx={checkboxSX} />}
                                         label="Gym"
                                     />
                                     <FormControlLabel
                                         control={<Checkbox
                                             value="In Unit W/D"
                                             onChange={handleAmenity}
-                                            sx={{
-                                                color: "textColor",
-                                                '&.Mui-checked': {
-                                                    color: "secondaryColor",
-                                                }
-                                            }} />}
+                                            sx={checkboxSX} />}
                                         label="In Unit W/D"
                                     />
                                     <FormControlLabel
                                         control={<Checkbox
                                             value="Furnished"
                                             onChange={handleAmenity}
-                                            sx={{
-                                                color: "textColor",
-                                                '&.Mui-checked': {
-                                                    color: "secondaryColor",
-                                                }
-                                            }} />
+                                            sx={checkboxSX} />
                                         }
                                         label="Furnished"
                                     />
@@ -402,12 +349,7 @@ const SearchBar = ({ data, setInput, setFilteredOptions, setNumberSelected, setS
                                             <Checkbox
                                                 value="Pool"
                                                 onChange={handleAmenity}
-                                                sx={{
-                                                    color: "textColor",
-                                                    '&.Mui-checked': {
-                                                        color: "secondaryColor",
-                                                    }
-                                                }} />
+                                                sx={checkboxSX} />
                                         }
                                         label="Pool"
                                     />
@@ -416,12 +358,7 @@ const SearchBar = ({ data, setInput, setFilteredOptions, setNumberSelected, setS
                                             <Checkbox
                                                 value="Parking"
                                                 onChange={handleAmenity}
-                                                sx={{
-                                                    color: "textColor",
-                                                    '&.Mui-checked': {
-                                                        color: "secondaryColor",
-                                                    }
-                                                }} />
+                                                sx={checkboxSX}/>
                                         }
                                         label="Parking"
                                     />
@@ -430,12 +367,7 @@ const SearchBar = ({ data, setInput, setFilteredOptions, setNumberSelected, setS
                                             <Checkbox
                                                 value="Pet Friendly"
                                                 onChange={handleAmenity}
-                                                sx={{
-                                                    color: "textColor",
-                                                    '&.Mui-checked': {
-                                                        color: "secondaryColor",
-                                                    }
-                                                }} />
+                                                sx={checkboxSX}/>
                                         }
                                         label="Pet Friendly"
                                     />
@@ -444,12 +376,7 @@ const SearchBar = ({ data, setInput, setFilteredOptions, setNumberSelected, setS
                                             <Checkbox
                                                 value="Kitchen Appliance"
                                                 onChange={handleAmenity}
-                                                sx={{
-                                                    color: "textColor",
-                                                    '&.Mui-checked': {
-                                                        color: "secondaryColor",
-                                                    }
-                                                }} />
+                                                sx={checkboxSX}/>
                                         }
                                         label="Kitchen Appliances"
                                     />
@@ -466,8 +393,8 @@ const SearchBar = ({ data, setInput, setFilteredOptions, setNumberSelected, setS
                 componentsProps={{
                     tooltip: {
                         sx: {
-                            bgcolor: 'rgba(171, 25, 31, 0.9)',
-                            color: 'primaryColor'
+                            bgcolor: theme.palette.type === "light" ? 'rgba(171, 25, 31, 0.9)' : "rgba(245, 235, 224, .8)",
+                            color: "primaryColor"
                         },
                     },
                 }}
@@ -493,18 +420,19 @@ const SearchBar = ({ data, setInput, setFilteredOptions, setNumberSelected, setS
                 PaperProps={{
                     sx: {
                         backgroundColor: "primaryColor",
+                        boxShadow: theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 3px rgba(245, 235, 224, .1)",
 
                     },
                 }}
             >
                 <MenuItem
-                    style={styles.menuItems}
+                    sx={styles.menuItems}
                     onClick={() => handleSortOptionClick('Low to High')}
                 >
                     Price: Low to High
                 </MenuItem>
                 <MenuItem
-                    style={styles.menuItems}
+                    sx={styles.menuItems}
                     onClick={() => handleSortOptionClick('High to Low')}
                     >  
                     Price: High to Low
