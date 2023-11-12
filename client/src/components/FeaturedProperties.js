@@ -10,12 +10,6 @@ import { createTheme, ThemeProvider, useTheme } from '@mui/material/styles';
 const FeaturedProperties = ({ data, style, login }) => {
     const theme = useTheme();
     const styles = {
-        divider: {
-            borderTop: "3px solid #AB191F",
-            padding: "0",
-            marginBottom: "10px",
-            width: '1100px',
-        },
         box: {
             backgroundColor: "primaryColor", 
             boxShadow: theme.palette.type === "light" ? "0px 0px 3px 2px rgba(0, 0, 0, .1)" : "0px 0px 3px 2px rgba(245, 235, 224, .3)",
@@ -31,8 +25,7 @@ const FeaturedProperties = ({ data, style, login }) => {
         <Container sx={styles.box}>
             <Container style={{}}>
                 <Typography
-d                    color="#AB191F"
-                    sx={{ marginTop: 1, textAlign: "center", fontWeight: "600", fontSize:"20pt"}}
+                    sx={{color:"secondaryColor", marginTop: 1, textAlign: "center", fontWeight: "600", fontSize:"20pt"}}
                     >
                     FEATURED PROPERTIES
                 </Typography>
@@ -52,9 +45,7 @@ d                    color="#AB191F"
             {(data.filter(property => property.propertyInfo.featured == true).length == 0)
                 && <Typography
                     variant="h5"
-                    color="#AB191F"
-                    sx={{ m: 10, textAlign: 'center' }}
-                    fontWeight={500}
+                    sx={{color: "secondaryColor", fontWeight: 500, m: 10, textAlign: 'center' }}
                 >
                     No Featured Properties
                 </Typography>}

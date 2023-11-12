@@ -158,6 +158,7 @@ const SearchBar = ({ data, setInput, setFilteredOptions, setNumberSelected, setS
                     placeholder='Search'
                     sx={{
                         input: {
+                            color: "textColor",
                             "&::placeholder": {
                                 opacity: 0.7,
                                 color: "textColor",
@@ -186,7 +187,11 @@ const SearchBar = ({ data, setInput, setFilteredOptions, setNumberSelected, setS
             </Box>
             {open && (
                 <Collapse direction="down" in={open} >
-                    <Paper elevation={3} sx={{ backgroundColor: "primaryColor", color: "textColor" }}>
+                    <Paper elevation={3} 
+                    sx={{ 
+                        backgroundColor: "primaryColor", color: "textColor", 
+                        boxShadow: theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 2px rgba(245, 235, 224, .3)",
+                        marginTop: "10px"}}>
                         <Box style={{ padding: '20px' }}>
                             <Stack direction="row" spacing={1}>
                                 <Typography

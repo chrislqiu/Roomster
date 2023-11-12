@@ -674,7 +674,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
                                 </IconButton>
                             </Tooltip>
                             <IconButton size="large" disabled={true}>
-                                <FavoriteIcon  />
+                                <FavoriteIcon  sx={{color: theme.palette.type === "dark" ? "rgba(245, 235, 224, .8)" : ""}}/>
                             </IconButton>
                             </div>
                         ) : 
