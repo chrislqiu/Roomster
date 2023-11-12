@@ -81,11 +81,11 @@ const MainPage = ({ login }) => {
         <Container sx={{ width: '100%' }}>
             <SearchBar data={propertyInfo} setInput={setInput} setFilteredOptions={setFilteredProperties} setNumberSelected={setNumberSelected} setSortOptions={setSortOption}/>
             {console.log(filteredProperties)}
-            {(input === '' && numberSelected === 0) &&
+            {/* {(input === '' && numberSelected === 0) && */}
             <Box sx={{ m: 4 }} style={styles.feed}>
-                <FeaturedProperties data={propertyInfo} style={styles.feed} login={login} />
+                <FeaturedProperties data={filteredProperties} style={styles.feed} login={login} />
             </Box>
-            }
+            
             <Box sx={{ m: 1 }} style={styles.feed}>
                 {
                    /*
