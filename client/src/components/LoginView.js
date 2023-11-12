@@ -162,6 +162,7 @@ const LoginView = ({ text }) => {
                 variant='contained'
                 onClick={handleOpen}
                 sx={{
+                    zIndex: "5",
                     my: 2,
                     ":hover": {
                         bgcolor: "#AB191F",

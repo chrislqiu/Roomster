@@ -33,6 +33,7 @@ const Settings = () => {
                     backgroundColor: "#AB191F",
                     color: "#F6EBE1",
                     margin: 1, 
+                    zIndex: "5"
                 }}
             >
                 <SettingsIcon />

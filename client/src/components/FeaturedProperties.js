@@ -3,10 +3,12 @@ import { Box, Paper, List, ListItem, Container } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { Stack, Divider } from '@mui/material';
 import PropertyViewMore from './PropertyView';
+import { createTheme, ThemeProvider, useTheme } from '@mui/material/styles';
 
 
 
 const FeaturedProperties = ({ data, style, login }) => {
+    const theme = useTheme();
     const styles = {
         divider: {
             borderTop: "3px solid #AB191F",
@@ -15,8 +17,8 @@ const FeaturedProperties = ({ data, style, login }) => {
             width: '1100px',
         },
         box: {
-            backgroundColor: "#f5ebe0", 
-            boxShadow: "0px 0px 3px 2px rgba(0, 0, 0, .1)",
+            backgroundColor: "primaryColor", 
+            boxShadow: theme.palette.type === "light" ? "0px 0px 3px 2px rgba(0, 0, 0, .1)" : "0px 0px 3px 2px rgba(245, 235, 224, .3)",
             margin: "-30px 0 0 0",
             padding: "0",
             width: "1250px",
@@ -26,7 +28,7 @@ const FeaturedProperties = ({ data, style, login }) => {
         }
     }
     return (
-        <Container sx={{}} style={styles.box}>
+        <Container sx={styles.box}>
             <Container style={{}}>
                 <Typography
 d                    color="#AB191F"

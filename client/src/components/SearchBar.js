@@ -2,9 +2,10 @@ import { Typography, Box, TextField, Collapse, Paper, FormGroup, FormControlLabe
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass, faCaretDown, faCaretUp, faArrowUp19 } from '@fortawesome/free-solid-svg-icons'
 import React from "react"
+import { useTheme } from '@mui/material/styles';
 
 const SearchBar = ({ data, setInput, setFilteredOptions, setNumberSelected, setSortOptions }) => {
-
+    const theme = useTheme();
     const [selectBed, setSelectBed] = React.useState([]);
     const [selectBath, setSelectedBath] = React.useState([]);
     const [selectAmenities, setSelectedAmenities] = React.useState([]);
@@ -126,32 +127,46 @@ const SearchBar = ({ data, setInput, setFilteredOptions, setNumberSelected, setS
         searchBox: {
             width: "500px",
             height: "50px",
-            border: "3px solid #AB191F",
+            border: "3px solid secondaryColor",
             borderRadius: "25px",
         },
         buttons: {
-            color: "#AB191F",
+            color: "secondaryColor",
             fontSize: "22px",
         },
         menuItems: {
-            color: "#AB191F",
+            color: "secondaryColor",
             fontWeight: '600'
         },
         tooltip: {
-            backgroundColor: '#AB191F',
-            color: '#F6EBE1'
+            backgroundColor: 'secondaryColor',
+            color: 'primaryColor'
         }
     }
 
-    return <Box style={styles.search}>
+    return <Box sx={styles.search}>
         <Stack direction='column'>
-            <Box style={styles.searchBox}>
+            <Box sx={{
+                width: "500px",
+                height: "50px",
+                borderStyle: "solid",
+                borderWidth: "3px",
+                borderColor: "secondaryColor",
+                borderRadius: "25px",
+            }}>
                 <TextField
                     placeholder='Search'
                     sx={{
+                        input: {
+                            "&::placeholder": {
+                                opacity: 0.7,
+                                color: "textColor",
+                             },
+                        },
                         "& fieldset": { border: 'none', },
                         width: "350px",
-                        height: "50px"
+                        height: "50px",
+                        
                     }}
                     inputProps={{
                         style: {
@@ -164,26 +179,26 @@ const SearchBar = ({ data, setInput, setFilteredOptions, setNumberSelected, setS
                 <Box style={{ float: "right", marginTop: "7px" }}>
                     <IconButton
                         onClick={handleClick}
-                        style={styles.buttons}>
+                        sx={styles.buttons}>
                         <FontAwesomeIcon icon={open ? faCaretUp : faCaretDown} />
                     </IconButton>
                 </Box>
             </Box>
             {open && (
                 <Collapse direction="down" in={open} >
-                    <Paper elevation={3} sx={{ backgroundColor: "#F6EBE1", color: "black" }}>
+                    <Paper elevation={3} sx={{ backgroundColor: "primaryColor", color: "textColor" }}>
                         <Box style={{ padding: '20px' }}>
                             <Stack direction="row" spacing={1}>
                                 <Typography
                                     sx={{
-                                        color: "#AB191F",
+                                        color: "secondaryColor",
                                         fontWeight: 600
                                     }}
                                 >
                                     Filter by:
                                 </Typography>
                                 <Box sx={{ paddingY: 5 }}>
-                                    <FormGroup>
+                                    <FormGroup sx={{color: "textColor"}}>
                                         Distance
                                         <FormControlLabel
                                             control={
@@ -195,7 +210,7 @@ const SearchBar = ({ data, setInput, setFilteredOptions, setNumberSelected, setS
                                                     marks
                                                     min={0}
                                                     max={5}
-                                                    sx={{ color: "#AB191F", width: "100px", height: "5px", marginBottom: 2 }}
+                                                    sx={{ color: "secondaryColor", width: "100px", height: "5px", marginBottom: 2 }}
                                                 />
                                             }
                                         />
@@ -211,22 +226,22 @@ const SearchBar = ({ data, setInput, setFilteredOptions, setNumberSelected, setS
                                                     marks
                                                     min={0}
                                                     max={3000}
-                                                    sx={{ color: "#AB191F", width: "100px", height: "5px" }}
+                                                    sx={{ color: "secondaryColor", width: "100px", height: "5px" }}
                                                 />
                                             }
                                         />
                                     </FormGroup>
                                 </Box>
-                                <FormGroup>
+                                <FormGroup sx={{color: "textColor"}}>
                                     Bedroom
                                     <FormControlLabel
                                         control={<Checkbox
                                             value="1"
                                             onChange={handleBedroom}
                                             sx={{
-                                                color: "black",
+                                                color: "textColor",
                                                 '&.Mui-checked': {
-                                                    color: "#AB191F",
+                                                    color: "secondaryColor",
                                                 }
                                             }} />}
                                         label="1 bed"
@@ -236,9 +251,9 @@ const SearchBar = ({ data, setInput, setFilteredOptions, setNumberSelected, setS
                                             value="2"
                                             onChange={handleBedroom}
                                             sx={{
-                                                color: "black",
+                                                color: "textColor",
                                                 '&.Mui-checked': {
-                                                    color: "#AB191F",
+                                                    color: "secondaryColor",
                                                 }
                                             }} />
                                         }
@@ -249,9 +264,9 @@ const SearchBar = ({ data, setInput, setFilteredOptions, setNumberSelected, setS
                                             value="3"
                                             onChange={handleBedroom}
                                             sx={{
-                                                color: "black",
+                                                color: "textColor",
                                                 '&.Mui-checked': {
-                                                    color: "#AB191F",
+                                                    color: "secondaryColor",
                                                 }
                                             }} />
                                         }
@@ -262,9 +277,9 @@ const SearchBar = ({ data, setInput, setFilteredOptions, setNumberSelected, setS
                                             value="4"
                                             onChange={handleBedroom}
                                             sx={{
-                                                color: "black",
+                                                color: "textColor",
                                                 '&.Mui-checked': {
-                                                    color: "#AB191F",
+                                                    color: "secondaryColor",
                                                 }
                                             }} />
                                         }
@@ -278,9 +293,9 @@ const SearchBar = ({ data, setInput, setFilteredOptions, setNumberSelected, setS
                                             value="1"
                                             onChange={handleBathroom}
                                             sx={{
-                                                color: "black",
+                                                color: "textColor",
                                                 '&.Mui-checked': {
-                                                    color: "#AB191F",
+                                                    color: "secondaryColor",
                                                 }
                                             }} />}
                                         label="1 bath"
@@ -290,9 +305,9 @@ const SearchBar = ({ data, setInput, setFilteredOptions, setNumberSelected, setS
                                             value="2"
                                             onChange={handleBathroom}
                                             sx={{
-                                                color: "black",
+                                                color: "textColor",
                                                 '&.Mui-checked': {
-                                                    color: "#AB191F",
+                                                    color: "secondaryColor",
                                                 }
                                             }} />
                                         }
@@ -303,9 +318,9 @@ const SearchBar = ({ data, setInput, setFilteredOptions, setNumberSelected, setS
                                             value="3"
                                             onChange={handleBathroom}
                                             sx={{
-                                                color: "black",
+                                                color: "textColor",
                                                 '&.Mui-checked': {
-                                                    color: "#AB191F",
+                                                    color: "secondaryColor",
                                                 }
                                             }} />
                                         }
@@ -316,9 +331,9 @@ const SearchBar = ({ data, setInput, setFilteredOptions, setNumberSelected, setS
                                             value="4"
                                             onChange={handleBathroom}
                                             sx={{
-                                                color: "black",
+                                                color: "textColor",
                                                 '&.Mui-checked': {
-                                                    color: "#AB191F",
+                                                    color: "secondaryColor",
                                                 }
                                             }} />
                                         }
@@ -329,9 +344,9 @@ const SearchBar = ({ data, setInput, setFilteredOptions, setNumberSelected, setS
                                             value="5"
                                             onChange={handleBathroom}
                                             sx={{
-                                                color: "black",
+                                                color: "textColor",
                                                 '&.Mui-checked': {
-                                                    color: "#AB191F",
+                                                    color: "secondaryColor",
                                                 }
                                             }} />
                                         }
@@ -345,9 +360,9 @@ const SearchBar = ({ data, setInput, setFilteredOptions, setNumberSelected, setS
                                             value="Gym"
                                             onChange={handleAmenity}
                                             sx={{
-                                                color: "black",
+                                                color: "textColor",
                                                 '&.Mui-checked': {
-                                                    color: "#AB191F",
+                                                    color: "secondaryColor",
                                                 }
                                             }} />}
                                         label="Gym"
@@ -357,9 +372,9 @@ const SearchBar = ({ data, setInput, setFilteredOptions, setNumberSelected, setS
                                             value="In Unit W/D"
                                             onChange={handleAmenity}
                                             sx={{
-                                                color: "black",
+                                                color: "textColor",
                                                 '&.Mui-checked': {
-                                                    color: "#AB191F",
+                                                    color: "secondaryColor",
                                                 }
                                             }} />}
                                         label="In Unit W/D"
@@ -369,9 +384,9 @@ const SearchBar = ({ data, setInput, setFilteredOptions, setNumberSelected, setS
                                             value="Furnished"
                                             onChange={handleAmenity}
                                             sx={{
-                                                color: "black",
+                                                color: "textColor",
                                                 '&.Mui-checked': {
-                                                    color: "#AB191F",
+                                                    color: "secondaryColor",
                                                 }
                                             }} />
                                         }
@@ -383,9 +398,9 @@ const SearchBar = ({ data, setInput, setFilteredOptions, setNumberSelected, setS
                                                 value="Pool"
                                                 onChange={handleAmenity}
                                                 sx={{
-                                                    color: "black",
+                                                    color: "textColor",
                                                     '&.Mui-checked': {
-                                                        color: "#AB191F",
+                                                        color: "secondaryColor",
                                                     }
                                                 }} />
                                         }
@@ -397,9 +412,9 @@ const SearchBar = ({ data, setInput, setFilteredOptions, setNumberSelected, setS
                                                 value="Parking"
                                                 onChange={handleAmenity}
                                                 sx={{
-                                                    color: "black",
+                                                    color: "textColor",
                                                     '&.Mui-checked': {
-                                                        color: "#AB191F",
+                                                        color: "secondaryColor",
                                                     }
                                                 }} />
                                         }
@@ -411,9 +426,9 @@ const SearchBar = ({ data, setInput, setFilteredOptions, setNumberSelected, setS
                                                 value="Pet Friendly"
                                                 onChange={handleAmenity}
                                                 sx={{
-                                                    color: "black",
+                                                    color: "textColor",
                                                     '&.Mui-checked': {
-                                                        color: "#AB191F",
+                                                        color: "secondaryColor",
                                                     }
                                                 }} />
                                         }
@@ -425,9 +440,9 @@ const SearchBar = ({ data, setInput, setFilteredOptions, setNumberSelected, setS
                                                 value="Kitchen Appliance"
                                                 onChange={handleAmenity}
                                                 sx={{
-                                                    color: "black",
+                                                    color: "textColor",
                                                     '&.Mui-checked': {
-                                                        color: "#AB191F",
+                                                        color: "secondaryColor",
                                                     }
                                                 }} />
                                         }
@@ -447,7 +462,7 @@ const SearchBar = ({ data, setInput, setFilteredOptions, setNumberSelected, setS
                     tooltip: {
                         sx: {
                             bgcolor: 'rgba(171, 25, 31, 0.9)',
-                            color: '#F6EBE1'
+                            color: 'primaryColor'
                         },
                     },
                 }}
@@ -456,9 +471,9 @@ const SearchBar = ({ data, setInput, setFilteredOptions, setNumberSelected, setS
                     aria-controls="sorting-menu"
                     aria-haspopup="true"
                     onClick={handleSortButtonClick}
-                    style={styles.buttons}
-                    sx={{
-                        marginTop: 1
+                    sx={styles.buttons}
+                    style={{
+                        marginTop: "10px"
                     }}
 
                 >
@@ -472,7 +487,7 @@ const SearchBar = ({ data, setInput, setFilteredOptions, setNumberSelected, setS
                 onClose={handleSortButtonClose}
                 PaperProps={{
                     sx: {
-                        backgroundColor: "#F6EBE1",
+                        backgroundColor: "primaryColor",
 
                     },
                 }}

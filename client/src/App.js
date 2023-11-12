@@ -9,9 +9,11 @@ import MyCoopsPage from "./pages/MyCoopsPage";
 import LoginPage from "./pages/LoginPage"
 import GlobalStyles from "@mui/material/GlobalStyles";
 import { BrowserRouter, Routes, Route } from "react-router-dom"
-import { Divider, Box, Link } from "@mui/material";
+import { Grid, Switch, Divider, Box, Link, Paper, IconButton } from "@mui/material";
 import theredthing from './images/theredthing.png'
 import logo from './images/logo2.png'
+import logoDarkMode from './images/logo-darkmode.png'
+import theredthingDarkMode from './images/theredthing-darkmode.png'
 import RoomsterAppBar from "./components/AppBar";
 import FavCoopsPage from "./pages/FavCoopsPage";
 import Settings from "./pages/Settings"
@@ -29,33 +31,41 @@ import AdminDenyPage from "./pages/AdminDenyPage";
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { createTheme, ThemeProvider, useTheme } from '@mui/material/styles';
+import DarkMode from '@mui/icons-material/DarkMode';
+import LightMode from '@mui/icons-material/LightMode';
 
-const styles = {
-  background: {
-    position: "absolute",
-    width: "100%",
-    minHeight: "100vh",
-    margin: "0",
-    padding: "0",
-    backgroundColor: "#F6EBE1",
-    zIndex: "-1",
+const font =  "'Lato', sans-serif";
+const lightTheme = {
+  palette: {
+      type: "light",
+      primaryColor: '#F6EBE1',
+      secondaryColor: '#AB191F',
+      textColor: '#000000',
+      hoverColor: "#F6EBE1",
+      textFieldBorder: "black",
   },
-  logo: {
-    marginTop: "-50px",
-    width: '35%',
-    zIndex: "0",
-  },
-  theredthing: {
-    position: "absolute",
-    width: "100%",
+  typography: {
+    color: "#000000",
+    fontFamily: font,
   }
-};
-
-
-
+}
+const darkTheme = {
+  palette: {
+      type: "dark",
+      primaryColor: '#18100e',
+      secondaryColor: '#962c1e',
+      textColor: '#F6EBE1',
+      hoverColor: "#F6EBE1",
+      textFieldBorder: "#962c1e",
+  },
+  typography: {
+      fontFamily: font,
+  }
+}
 
 class App extends React.Component {
+
   constructor(props) {
     super(props);
     this.state = {
@@ -64,7 +74,8 @@ class App extends React.Component {
       isAuthenticatedAdmin: false,
       isPopupOpen: false,
       popupMessage: "",
-      userType: ""
+      userType: "",
+      darkMode: false
     };
   }
 
@@ -149,20 +160,11 @@ class App extends React.Component {
     }
   };
 
-
-
   render() {
-    const theme = createTheme({
-      palette: {
-        ochre: {
-          main: '#E3D026',
-          light: '#E9DB5D',
-          dark: '#A29415',
-          contrastText: '#242105',
-        },
-      },
-    });
-    const { isAuthenticated, isAuthenticatedAdmin, userType } = this.state;
+    
+    const { isAuthenticated, isAuthenticatedAdmin, userType, darkMode } = this.state;
+    let theme = darkMode ? createTheme(darkTheme) : createTheme(lightTheme);
+    //const theme = useTheme();
     const pathname = window.location.pathname
     const showAppBar = pathname !== "/Admin" || isAuthenticatedAdmin;
 
@@ -172,14 +174,6 @@ class App extends React.Component {
     const faviconPath = "favicon.ico";
 
     return (
-
-      // <ThemeProvider theme={theme}>
-      //   <GlobalStyles
-      //     sx={{
-      //       body: { backgroundColor: "#F6EBE1" }
-      //     }}
-      //   />
-
       
       <HelmetProvider>
         <Helmet>
@@ -190,23 +184,105 @@ class App extends React.Component {
         </Helmet>
 
         <ThemeProvider theme={theme}>
-        <html>
-          <body style={styles.background}>
+          <Paper sx={{
+            backgroundColor: "primaryColor",
+            width: "100%",
+            minHeight: "100vh",
+            margin: "0",
+            padding: "0",
+            zIndex: "-1",
+            justifyContent: "center"
+          }}>
+          <div style={{ zIndex: "0" }}>
+              <img src={darkMode ? theredthingDarkMode : theredthing}
+              style={{
+                  position: "absolute",  
+                  width: "100%",
+              }}/>  
+          </div>
+            
+          <BrowserRouter>
+            {
+              // if login is true (for now), app bar with login buttons will show
+              // if login is false, appbar only has login/signup button
+            }
+            <IconButton 
+              onClick={() => this.setState({darkMode: !this.state.darkMode})}
+              sx={{position: "absolute", 
+                zIndex: 5,
+                textALign: "right",
+                margin: "10px 0 0 1025px",
+                color:'primaryColor', 
+                ":hover": 
+                {backgroundColor:'primaryColor', 
+                color: 'secondaryColor'}
+              }}
+              >
+              {darkMode ? 
+              <LightMode/>
+              :
+              <DarkMode/>
+              }
+            </IconButton>
+
+            {showAppBar ? <RoomsterAppBar login={showAppBarAdmin || showAppBarMain} userType={userType}/> : <div style={{ height: '64px' }}></div>}
+            
+            <div style={{ textAlign: "center", zIndex: "3", position: "relative", marginBottom: "50px" }}>
+              <Link href="/Home">
+                  <img className="logo" src={darkMode ? logoDarkMode : logo} style={{width: '35%', zIndex: "0",}}/>
+              </Link>
+            </div>
+
+            <ToastContainer />
+            <Routes>
+              <Route path="/" element={<MainPage login={isAuthenticated} />} />
+              <Route path="/Home" element={<MainPage login={isAuthenticated} />} />
+              <Route path="/RProfile" element={<RenterPage />} />
+              <Route path="/MProfile" element={<PropertyManagerPage />} />
+              <Route path="/FavCoops" element={<FavCoopsPage login={isAuthenticated} />} />
+              <Route path="/MyCoops" element={<MyCoopsPage login={isAuthenticated} />} />
+              <Route path="/Login" element={<LoginPage />} />
+              <Route path="/RCreate" element={<RenterCreateAccountView />} />
+              <Route path="/MCreate" element={<ManagerCreateAccountView />} />
+              <Route path="/Settings" element={<Settings />} />
+              <Route path="/VerifyPage" element={<VerifyPage />} />
+              <Route path="/AdminVerifyPage" element={<AdminVerifyPage />} />
+              <Route path="/AdminDenyPage" element={<AdminDenyPage />} />
+              <Route path="/Coopmates" element={<CoopmatesPage />} />
+              <Route path="/CompanyPage" element={<PropertyManagerPublicPage />} />
+              <Route path="/Admin" element={<AdminPage />} />
+              <Route path="/ResetPW/:token" element={<ResetPWPage />} />
+              <Route path="/SetAdminPW/:token" element={<SetAdminPWPage />} />
+            </Routes>
+            
+          </BrowserRouter>
+
+          </Paper>
+          
+        </ThemeProvider>
+        
+        
+          
+
+          
+          {/*<body style={styles.background}>
             <div style={{ zIndex: "0" }}>
               <img className="theredthing" src={theredthing} style={styles.theredthing}></img>
-            </div>
+    </div> 
             <BrowserRouter>
               {
                 // if login is true (for now), app bar with login buttons will show
                 // if login is false, appbar only has login/signup button
               }
-
+              <Layout>
               {showAppBar ? <RoomsterAppBar login={showAppBarAdmin || showAppBarMain} userType={userType}/> : <div style={{ height: '64px' }}></div>}
+              {/*
               <div style={{ textAlign: "center", zIndex: "3", position: "relative", marginBottom: "50px" }}>
                 <Link href="/Home">
                   <img className="logo" src={logo} style={styles.logo}></img>
                 </Link>
               </div>
+              
               <ToastContainer />
               <Routes>
                 <Route path="/" element={<MainPage login={isAuthenticated} />} />
@@ -228,10 +304,11 @@ class App extends React.Component {
                 <Route path="/ResetPW/:token" element={<ResetPWPage />} />
                 <Route path="/SetAdminPW/:token" element={<SetAdminPWPage />} />
               </Routes>
+              </Layout>
             </BrowserRouter>
-          </body>
-        </html>
-      </ThemeProvider>
+          
+            */}
+      
       </HelmetProvider >
     );
   }
