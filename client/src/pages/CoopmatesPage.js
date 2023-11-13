@@ -4,8 +4,8 @@ import { useState, useEffect } from "react";
 import CoopmatesView from '../components/CoopmateView';
 
 const CoopmatesPage = ({ }) => {
-    const [coopmateInfo, setCoopmateInfo] = React.useState([])
-    const [coopmates, setMyCoopmates] = React.useState([]);
+    const [allCoopmates, setAllCoopmates] = React.useState([])
+    const [myCoopmates, setMyCoopmates] = React.useState([]);
     const [userData, setUserData] = React.useState('');
     useEffect(() => {
         const getUserInfo = async () => {
@@ -19,12 +19,10 @@ const CoopmatesPage = ({ }) => {
                 });
                 
                 const getData = await res.json();
-                
                 const obj = JSON.parse(JSON.stringify(getData));
                 setUserData(obj);
-                if(obj.user.renterInfo){
-                    setMyCoopmates(obj.user.coopmates);
-                }
+                setMyCoopmates(obj.user.coopmates);
+                
             } catch (e) {
                 console.log("error: " + e)
                 
@@ -32,16 +30,16 @@ const CoopmatesPage = ({ }) => {
         };
 
         getUserInfo();
-    }, [userData, coopmates]);
+    }, [ myCoopmates]);
     React.useEffect(() => {
         const getCoopmateInfo = async () => {
             const res = await fetch('http://localhost:8000/auth/coopmates')
             const getData = await res.json()
             const obj = JSON.parse(JSON.stringify(getData));
-            setCoopmateInfo(obj);
+            setAllCoopmates(obj);
         }
         getCoopmateInfo()
-    }, [coopmateInfo])
+    }, [allCoopmates])
     const styles = {
         feed: {
             display: "flex",
@@ -55,11 +53,12 @@ const CoopmatesPage = ({ }) => {
         <Container sx={{ width: '100%' }}>
             {console.log(userData.username)}
         <Box sx={{ m: 1 }} style={styles.feed}>
+            {console.log(myCoopmates)}
               {
-                    coopmateInfo.length > 0 ? (
-                        coopmateInfo.map(coopmate => {
-                            
-                            return <CoopmatesView coopmate={coopmate} coopmates={coopmates} username={userData.username} userData={userData}/>;
+                    allCoopmates.length > 0 ? (
+                        allCoopmates.map(coopmate => {
+                            console.log(userData)
+                            return <CoopmatesView coopmate={coopmate} coopmatesArr={myCoopmates} username={userData.username} userData={userData}/>;
                         })
                     ) : (
                         <Typography

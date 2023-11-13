@@ -5,8 +5,9 @@ import CoopmatesView from '../components/CoopmateView';
 
 const MyCoopmatesPage = () => {
     const [userData, setUserData] = useState('');
-    const [coopmates, setMyCoopmates] = useState([]);
+    const [myCoopmates, setMyCoopmates] = useState([]);
     const [loading, setLoading] = useState(true); // Add loading state
+    const [allCoopmates, setAllCoopmates] = React.useState([])
     const styles = {
         feed: {
             display: "flex",
@@ -16,6 +17,21 @@ const MyCoopmatesPage = () => {
         },
         
     }
+    React.useEffect(() => {
+        const getAllCoopmates = async () => {
+            const res = await fetch('http://localhost:8000/auth/coopmates')
+            const getData = await res.json()
+            const obj = JSON.parse(JSON.stringify(getData));
+            console.log(obj)
+            console.log(myCoopmates.map(coopmate => console.log(`myCoopmates: ${coopmate._id}`)))
+            console.log(obj.map(coopmate => console.log(`allCoopmates: ${coopmate._id}`)))
+            //const filteredCoopmates = obj.filter(coopmate => myCoopmates.includes(coopmate.renterInfo._id));
+            setAllCoopmates(obj);
+        }
+        //console.log(allCoopmates.map(coopmate => console.log(coopmate._id)))
+        getAllCoopmates()
+    }, [allCoopmates])
+
     useEffect(() => {
         const getUserInfo = async () => {
             try {
@@ -42,15 +58,20 @@ const MyCoopmatesPage = () => {
         };
 
         getUserInfo();
-    }, [userData, coopmates]);
+    }, [userData, myCoopmates]);
+
+    //const filteredCoopmates = allCoopmates.filter(coopmate => myCoopmates.includes(coopmate._id));
+    //setAllCoopmates(filteredCoopmates)
 
     return (
         <Container sx={{ width: '100%' }}>
             <Box sx={{ m: 1 }} style={styles.feed}>
+       
                 {
-                    coopmates.length > 0 ? (
-                        coopmates.map(coopmate => {
-                            return <CoopmatesView coopmate={coopmate} coopmateArr={coopmates} username={userData.username}/>;
+                    allCoopmates.filter(coopmate => userData.user.coopmates.includes(coopmate._id)).length > 0 ? 
+                    (
+                        allCoopmates.map(coopmate => {
+                            return <CoopmatesView coopmate={coopmate} coopmateArr={allCoopmates} username={userData.username}/>;
                         })
                     ) : (
                         <Typography

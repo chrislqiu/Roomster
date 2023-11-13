@@ -214,33 +214,37 @@ router.post('/update-saves', async (req, res) => {
 
 });
 
+//save coopmates
 router.post('/update-coopmates', async (req, res) => {
-    const id = req.body.id; //coopmates renterinfo
-    const renter = await Renter.findOne({username: req.body.currentUser.username});
-    const coopmate = await Renter.findOne({username : req.body.coopmate.username})
-    console.log(req.body.coopmate)
-    console.log(id)
-    console.log(renter)
-    console.log(renter.coopmates)
-    const coopmateExists = renter.coopmates.some(mate => mate.renterInfo._id.toString() === coopmate.renterInfo._id.toString());
-    if (!coopmateExists) {
-        renter.coopmates.push(coopmate)
-        renter.save()
-        .then((result) => {
-            res.send(result);
-        })
-        .catch((err) => {
-            console.log(err);
-        });
-    } else {
-        renter.coopmates.pull(id)
-        renter.save()
-        .then((result) => {
-            res.send(result);
-        })
-        .catch((err) => {
-            console.log(err);
-        });
+    try {
+        const currentUser = req.body.currentUser;
+        const coopmateUsername = req.body.coopmate.username;
+        const renter = await Renter.findOne({ username: currentUser.username });
+        const coopmate = await Renter.findOne({ username: coopmateUsername });
+
+        if (!coopmate) {
+            return res.status(404).json({ error: 'Coopmate not found' });
+        }
+
+        renter.coopmates = renter.coopmates.filter(coopmate => coopmate !== null);
+        //console.log(coopmate)
+        //console.log(renter.coopmates)
+        renter.coopmates.map(mate => console.log(mate._id.toString()))
+        //console.log(coopmate._id.toString())
+        const coopmateExists = renter.coopmates.some(mate => mate._id.toString() === coopmate._id.toString());
+        //console.log(`coopmateExists: ${coopmateExists}`)
+        if (!coopmateExists) {
+            console.log("ok doesnt exist")
+            renter.coopmates.push(req.body.coopmate);
+        } else {
+            console.log("ok no duplicates pls")
+            renter.coopmates = renter.coopmates.filter(mate => mate._id.toString() !== coopmate._id.toString());
+        }
+        await renter.save();
+        res.status(200).json({ message: 'Coopmates updated successfully', coopmates: renter.coopmates });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal Server Error' });
     }
 })
 

@@ -48,9 +48,12 @@ const CoopmatesView = ({ coopmate, coopmatesArr, username, userData  }) => {
     const toTime = coopmate.renterInfo.livingPreferences.sleepSchedule.to
 
     //console.log(coopmatesArr)
-    console.log(coopmate)
-    const coopmateFavorited = coopmatesArr === undefined ? false : coopmatesArr.some(existingCoopmates => existingCoopmates.renterInfo._id.toString() === coopmate.renterInfo._id.toString())
-
+    console.log(userData)
+    //userData.coopmates = coopmatesArr.filter(coopmate => coopmate !== null);
+    
+    const coopmateFavorited = coopmatesArr.some(existingCoopmates => existingCoopmates._id.toString() === coopmate._id.toString())
+    //const [active, setActive] = React.useState(coo === true ? true : false)
+    console.log(coopmateFavorited)
     const handleOpen = () => {
         setOpen(true)
     }
@@ -69,6 +72,8 @@ const CoopmatesView = ({ coopmate, coopmatesArr, username, userData  }) => {
     const handleFavorite = async () => {
         const coopmateId = coopmate.renterInfo._id;
         console.log(username)
+       // setActive(!active);
+
         try {
             const response = await fetch('http://localhost:8000/cards/update-coopmates', {
                 method: 'POST',

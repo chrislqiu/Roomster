@@ -5,7 +5,7 @@ const Property = require('./property');
 const renterInfo = new Schema({
     name: {
         type: String,
-        required: true
+        required: false
     },
     age: {
         type: Number,
@@ -18,7 +18,7 @@ const renterInfo = new Schema({
     },
     email: {
         type: String,
-        required: true
+        required: false
     },
     phone: {
         type: String,
