@@ -136,7 +136,8 @@ const RenterCreateAccountView = ({ }) => {
                             height: "100%",
                             maxWidth: "400px",
                             maxHeight: "475px",
-                            bgcolor: 'primaryColor'
+                            bgcolor: 'primaryColor',
+                            boxShadow: theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 3px rgba(245, 235, 224, .1)",
                         }
                     }
                 }}>

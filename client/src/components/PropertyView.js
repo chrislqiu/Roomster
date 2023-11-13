@@ -407,7 +407,8 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
                             width: "70%",
                             maxWidth: 750,
                             maxHeight: 500,
-                            backgroundColor: "primaryColor"
+                            backgroundColor: "primaryColor",
+                            boxShadow: theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 3px rgba(245, 235, 224, .1)",
                         },
                     },
                 }}

@@ -211,7 +211,7 @@ class App extends React.Component {
               sx={{position: "absolute", 
                 zIndex: 5,
                 textALign: "right",
-                margin: "10px 0 0 1025px",
+                margin: "15px 0 0 1075px",
                 color:'primaryColor', 
                 ":hover": 
                 {backgroundColor:'primaryColor', 

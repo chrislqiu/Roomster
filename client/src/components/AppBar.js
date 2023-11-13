@@ -111,7 +111,7 @@ const RoomsterAppBar = ({ login, userType }) => {
       return (
         <AppBar
             position="static"
-            style={{ background: "blue", boxShadow: "none", height: "30px", zIndex: "5"}}
+            style={{ boxShadow: "none", height: "30px", zIndex: "5"}}
         >
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
