@@ -20,7 +20,7 @@ import Settings from "../pages/Settings"
 
 const pages = ["Home", "My Coops", "Fav Coops", "Coopmates", "Log Out"];
 const pagesManager = ["Home", "My Coops", "Log Out"];
-const pagesRenter = ["Home", "Fav Coops", "Coopmates", "Log Out"];
+const pagesRenter = ["Home", "Fav Coops", "Coopmates", "My Tours", "Log Out" ];
 
 //const routePage = ["/Home", "/FavCoops", "/Coopmates", "/Logout"]
 
@@ -179,6 +179,8 @@ const RoomsterAppBar = ({ login, userType }) => {
                                                 navigate("/FavCoops")
                                             } else if (page === "Coopmates") {
                                                 navigate("/Coopmates")
+                                            } else if (page === "My Tours") {
+                                                navigate("/MyTours")
                                             } else if (page === "Log Out") {
                                                 handleLogout();
                                             }

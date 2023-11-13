@@ -23,6 +23,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBuildingCircleCheck } from '@fortawesome/free-solid-svg-icons'
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import ScheduleTourView from './ScheduleTourView';
 
 
 /* 
@@ -66,6 +67,14 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
     const [myCoopsArr, setMyCoopsArr] = React.useState([])
     const [isVerified, setIsVerified] = React.useState(false)
     const coopFavorited = favCoopsArr.some(coops => coops._id.toString() === data._id.toString())
+
+    /* Scheduling Tour */
+    const [requestTourOpen, setRequestTourOpen] = React.useState(false)
+
+    const handleRequestTour = () => {
+        setRequestTourOpen(!requestTourOpen)
+    }
+
 
     React.useEffect(() => {
 
@@ -128,6 +137,8 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
     const handleLeave = () => {
         setHovered(false)
     }
+
+    
     /*
     * Handle favorite button
     */
@@ -474,7 +485,10 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
                             >
                                 ${cost} per month
                             </Typography>
+
+                            {/* Schedule Tour */}
                             <Button
+                                onClick={() => setRequestTourOpen(true)}
                                 sx={{
                                     ":hover": {
                                         borderColor: "#F6EBE1", bgcolor: "#F6EBE1", color: "#AB191F",
@@ -486,6 +500,9 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
                                 }}
                                 variant="outlined">REQUEST A TOUR
                             </Button>
+                            
+                            {requestTourOpen && <ScheduleTourView/>}
+
                         </Box>
                         <Divider orientation={{ xs: 'horizontal', md: 'vertical', lg: 'vertical', xl: 'vertical' }} width={3} sx={{ borderBottomWidth: 3, color: "#AB191F", backgroundColor: "#AB191F", marginY: 2 }} />
 

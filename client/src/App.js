@@ -30,6 +30,7 @@ import AdminDenyPage from "./pages/AdminDenyPage";
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import MyToursPage from "./pages/MyToursPage";
 
 const styles = {
   background: {
@@ -211,6 +212,7 @@ class App extends React.Component {
                 <Route path="/MProfile" element={<PropertyManagerPage />} />
                 <Route path="/FavCoops" element={<FavCoopsPage login={isAuthenticated} />} />
                 <Route path="/MyCoops" element={<MyCoopsPage login={isAuthenticated} />} />
+                <Route path="/MyTours" element={<MyToursPage login={isAuthenticated} />} />
                 <Route path="/Login" element={<LoginPage />} />
                 <Route path="/RCreate" element={<RenterCreateAccountView />} />
                 <Route path="/MCreate" element={<ManagerCreateAccountView />} />
