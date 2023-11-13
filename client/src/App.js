@@ -29,6 +29,7 @@ import SetAdminPWPage from "./pages/SetAdminPWPage";
 import AdminDenyPage from "./pages/AdminDenyPage";
 import AdminFeaturePage from "./pages/AdminFeaturePage";
 import AdminFeatureManagePage from "./pages/AdminFeatureManagePage";
+import AdminUserPage from "./pages/AdminUserPage";
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -229,6 +230,7 @@ class App extends React.Component {
                 <Route path="/Admin/FeaturedManage" element={<AdminFeatureManagePage />} />
                 <Route path="/ResetPW/:token" element={<ResetPWPage />} />
                 <Route path="/SetAdminPW/:token" element={<SetAdminPWPage />} />
+                <Route path="/Admin/Users" element={<AdminUserPage />} />
               </Routes>
             </BrowserRouter>
           </body>
