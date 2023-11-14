@@ -22,10 +22,10 @@ const MyCoopmatesPage = () => {
             const res = await fetch('http://localhost:8000/auth/coopmates')
             const getData = await res.json()
             const obj = JSON.parse(JSON.stringify(getData));
-            console.log(obj)
-            console.log(myCoopmates.map(coopmate => console.log(`myCoopmates: ${coopmate._id}`)))
-            console.log(obj.map(coopmate => console.log(`allCoopmates: ${coopmate._id}`)))
-            //const filteredCoopmates = obj.filter(coopmate => myCoopmates.includes(coopmate.renterInfo._id));
+           // console.log(obj)
+           // console.log(myCoopmates.map(coopmate => console.log(`myCoopmates: ${coopmate._id}`)))
+           // console.log(obj.map(coopmate => console.log(`allCoopmates: ${coopmate._id}`)))
+            const filteredCoopmates = obj.filter(coopmate => myCoopmates.includes(coopmate.renterInfo._id));
             setAllCoopmates(obj);
         }
         //console.log(allCoopmates.map(coopmate => console.log(coopmate._id)))
@@ -47,9 +47,16 @@ const MyCoopmatesPage = () => {
                 
                 const obj = JSON.parse(JSON.stringify(getData));
                 setUserData(obj);
-                if(obj.user.renterInfo){
-                    setMyCoopmates(obj.user.coopmates);
-                }
+                setMyCoopmates(obj.user.coopmates);
+                //allCoopmates.map(mate => console.log("all ", mate._id.toString()))
+                //obj.user.coopmates.map(mate => console.log("my ", mate._id.toString()))
+                const favCoopmates = allCoopmates.filter(coopmateUnsaved =>
+                    obj.user.coopmates.some(coopmateSaved => coopmateUnsaved._id.toString() === coopmateSaved._id.toString())
+                );
+
+                setMyCoopmates(favCoopmates);
+
+                console.log(myCoopmates)
                 setLoading(false);
             } catch (e) {
                 console.log("error: " + e)
@@ -58,7 +65,7 @@ const MyCoopmatesPage = () => {
         };
 
         getUserInfo();
-    }, [userData, myCoopmates]);
+    }, [myCoopmates]);
 
     //const filteredCoopmates = allCoopmates.filter(coopmate => myCoopmates.includes(coopmate._id));
     //setAllCoopmates(filteredCoopmates)
@@ -68,10 +75,11 @@ const MyCoopmatesPage = () => {
             <Box sx={{ m: 1 }} style={styles.feed}>
        
                 {
-                    allCoopmates.filter(coopmate => userData.user.coopmates.includes(coopmate._id)).length > 0 ? 
+                    myCoopmates.length > 0 ? 
                     (
-                        allCoopmates.map(coopmate => {
-                            return <CoopmatesView coopmate={coopmate} coopmateArr={allCoopmates} username={userData.username}/>;
+                        myCoopmates.map(coopmate => {
+                            return <CoopmatesView coopmate={coopmate} coopmatesArr={myCoopmates} username={userData.username}
+                            />;
                         })
                     ) : (
                         <Typography

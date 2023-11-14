@@ -65,7 +65,7 @@ const FavCoopPage = ({ login }) => {
                          */
                     }
                     
-                        <CardPlaceholder/>
+                        <CardPlaceholder isCoopmateCard={false}/>
                     </div> 
                 ) : (
                     favCoopsArr.length > 0 ? (

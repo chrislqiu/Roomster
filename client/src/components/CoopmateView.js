@@ -48,12 +48,12 @@ const CoopmatesView = ({ coopmate, coopmatesArr, username, userData  }) => {
     const toTime = coopmate.renterInfo.livingPreferences.sleepSchedule.to
 
     //console.log(coopmatesArr)
-    console.log(userData)
+    //console.log(userData)
     //userData.coopmates = coopmatesArr.filter(coopmate => coopmate !== null);
-    
+    //console.log(coopmate)
     const coopmateFavorited = coopmatesArr.some(existingCoopmates => existingCoopmates._id.toString() === coopmate._id.toString())
     //const [active, setActive] = React.useState(coo === true ? true : false)
-    console.log(coopmateFavorited)
+    //console.log(coopmateFavorited)
     const handleOpen = () => {
         setOpen(true)
     }
@@ -71,7 +71,6 @@ const CoopmatesView = ({ coopmate, coopmatesArr, username, userData  }) => {
 
     const handleFavorite = async () => {
         const coopmateId = coopmate.renterInfo._id;
-        console.log(username)
        // setActive(!active);
 
         try {
@@ -85,6 +84,7 @@ const CoopmatesView = ({ coopmate, coopmatesArr, username, userData  }) => {
             });
 
             if (response.ok) {
+
                 console.log('Update successful:', response);
             } else {
                 console.error(`Failed to update: ${response.status}`);
@@ -224,6 +224,7 @@ const CoopmatesView = ({ coopmate, coopmatesArr, username, userData  }) => {
     return (
         <React.Fragment>
             {/* Coopmate Card View */}
+            {
             <Card
                 variant='contained'
                 alignContent='center'
@@ -286,6 +287,7 @@ const CoopmatesView = ({ coopmate, coopmatesArr, username, userData  }) => {
                     </CardContent>
                 </CardActionArea>
             </Card>
+}
 
             {/* Coopmate Detail View */}
             <Dialog 
