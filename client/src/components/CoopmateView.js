@@ -25,25 +25,35 @@ import MaleIcon from '@mui/icons-material/Male';
 import FemaleIcon from '@mui/icons-material/Female';
 import TransgenderIcon from '@mui/icons-material/Transgender';
 import { faTruckPlane } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-const CoopmatesView = ({ data }) => {
+
+const CoopmatesView = ({ coopmate, coopmatesArr, username, userData  }) => {
     const [open, setOpen] = React.useState(false)
     const [hovered, setHovered] = React.useState(false);
 
     /* TODO: Pull this data from database */
-    const name = "John Doe"
-    const age = "22"
-    const email = "john.doe@purdue.edu"
-    const phoneNumber = "(847) 129 3801"
-    const gender = "Male"
-    const pets = true
-    const smoke = false
-    const studious = 3
-    const cleanliness = 4
-    const guests = 1
-    const fromTime = "12 AM"
-    const toTime = "8 AM"
+    /* will have same format as the data.renterInfo */
+    const name = coopmate.renterInfo.name
+    const age = coopmate.renterInfo.age
+    const email = coopmate.renterInfo.email
+    const phoneNumber = coopmate.renterInfo.phone
+    const gender = coopmate.renterInfo.gender ? coopmate.renterInfo.gender : 'other'
+    const pets = coopmate.renterInfo.livingPreferences.pets
+    const smoke = coopmate.renterInfo.livingPreferences.smoke
+    const studious = coopmate.renterInfo.livingPreferences.studious
+    const cleanliness = coopmate.renterInfo.livingPreferences.cleanliness
+    const guests = coopmate.renterInfo.livingPreferences.guestFreq
+    const fromTime = coopmate.renterInfo.livingPreferences.sleepSchedule.from
+    const toTime = coopmate.renterInfo.livingPreferences.sleepSchedule.to
 
+    //console.log(coopmatesArr)
+    //console.log(userData)
+    //userData.coopmates = coopmatesArr.filter(coopmate => coopmate !== null);
+    //console.log(coopmate)
+    const coopmateFavorited = coopmatesArr.some(existingCoopmates => existingCoopmates._id.toString() === coopmate._id.toString())
+    //const [active, setActive] = React.useState(coo === true ? true : false)
+    //console.log(coopmateFavorited)
     const handleOpen = () => {
         setOpen(true)
     }
@@ -57,6 +67,31 @@ const CoopmatesView = ({ data }) => {
     }
     const handleLeave = () => {
         setHovered(false)
+    }
+
+    const handleFavorite = async () => {
+        const coopmateId = coopmate.renterInfo._id;
+       // setActive(!active);
+
+        try {
+            const response = await fetch('http://localhost:8000/cards/update-coopmates', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ id: coopmateId, coopmate: coopmate,  username: username, currentUser: userData }),
+                credentials: "include",
+            });
+
+            if (response.ok) {
+
+                console.log('Update successful:', response);
+            } else {
+                console.error(`Failed to update: ${response.status}`);
+            }
+        } catch (error) {
+            console.error(`Error: ${error}`);
+        }
     }
     const styles = {
         divider: {
@@ -189,6 +224,7 @@ const CoopmatesView = ({ data }) => {
     return (
         <React.Fragment>
             {/* Coopmate Card View */}
+            {
             <Card
                 variant='contained'
                 alignContent='center'
@@ -251,6 +287,7 @@ const CoopmatesView = ({ data }) => {
                     </CardContent>
                 </CardActionArea>
             </Card>
+}
 
             {/* Coopmate Detail View */}
             <Dialog 
@@ -407,6 +444,27 @@ const CoopmatesView = ({ data }) => {
                     </Box>
 
                 </DialogContent>
+                <DialogActions>
+                <Tooltip
+                        title={coopmateFavorited ? "Remove from My Coopmates" : "Add to My Coopmates"}
+                        componentsProps={{
+                            tooltip: {
+                                sx: {
+                                    bgcolor: 'rgba(171, 25, 31, 0.9)',
+                                    color: '#F6EBE1'
+                                },
+                            },
+                        }}
+                    >
+                        <IconButton size="large" onClick={handleFavorite}>
+                            {coopmateFavorited ? (
+                                <FavoriteIcon sx={{ color: "#AB191F" }} />
+                            ) : (
+                                <FavoriteBorderIcon sx={{ color: "#AB191F" }} />
+                            )}
+                        </IconButton>
+                    </Tooltip>
+                </DialogActions>
 
             </Dialog>
         </React.Fragment>

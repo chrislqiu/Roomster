@@ -815,7 +815,7 @@ const MyCoopsPage = ({ login }) => {
             {open === true ? <AddCoopView setOpen={setOpen}></AddCoopView> : ''}
             <Box sx={{ marginTop: 3 }} style={styles.feed}>
                 {loading ? ( // Display loading spinner while loading
-                    <CardPlaceholder/>
+                    <CardPlaceholder isCoopmateCard={false}/>
                 ) : (
                     myCoopsArr.length > 0 ? (
                         myCoopsArr.map(cards => {

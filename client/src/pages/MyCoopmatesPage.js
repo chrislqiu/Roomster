@@ -1,16 +1,22 @@
 import * as React from 'react';
-import { Container, Box, Typography } from "@mui/material";
+import { Container, Box, Typography} from "@mui/material";
 import { useState, useEffect } from "react";
 import CoopmatesView from '../components/CoopmateView';
-import FavoriteCoopmates from '../components/FavoriteCoopmate';
-import CardPlaceholder from '../components/CardPlaceholder';
 
-const CoopmatesPage = ({ }) => {
-    const [allCoopmates, setAllCoopmates] = React.useState([])
-    const [myCoopmates, setMyCoopmates] = React.useState([]);
-    const [userData, setUserData] = React.useState('');
+const MyCoopmatesPage = () => {
+    const [userData, setUserData] = useState('');
+    const [myCoopmates, setMyCoopmates] = useState([]);
     const [loading, setLoading] = useState(true); // Add loading state
-
+    const [allCoopmates, setAllCoopmates] = React.useState([])
+    const styles = {
+        feed: {
+            display: "flex",
+            justifyContent: "center",
+            maxWidth: "1200px",
+            flexWrap: "wrap",
+        },
+        
+    }
     React.useEffect(() => {
         const getAllCoopmates = async () => {
             const res = await fetch('http://localhost:8000/auth/coopmates')
@@ -21,7 +27,6 @@ const CoopmatesPage = ({ }) => {
            // console.log(obj.map(coopmate => console.log(`allCoopmates: ${coopmate._id}`)))
             const filteredCoopmates = obj.filter(coopmate => myCoopmates.includes(coopmate.renterInfo._id));
             setAllCoopmates(obj);
-            
         }
         //console.log(allCoopmates.map(coopmate => console.log(coopmate._id)))
         getAllCoopmates()
@@ -50,9 +55,9 @@ const CoopmatesPage = ({ }) => {
                 );
 
                 setMyCoopmates(favCoopmates);
-                setLoading(false);
+
                 console.log(myCoopmates)
-             
+                setLoading(false);
             } catch (e) {
                 console.log("error: " + e)
                 
@@ -61,52 +66,35 @@ const CoopmatesPage = ({ }) => {
 
         getUserInfo();
     }, [myCoopmates]);
-    const styles = {
-        feed: {
-            display: "flex",
-            justifyContent: "center",
-            maxWidth: "1200px",
-            flexWrap: "wrap",
-        },
-        
-    }
+
+    //const filteredCoopmates = allCoopmates.filter(coopmate => myCoopmates.includes(coopmate._id));
+    //setAllCoopmates(filteredCoopmates)
+
     return (
         <Container sx={{ width: '100%' }}>
-            {console.log(userData.username)}
-            <Box sx={{ m: 4 }} style={styles.feed}>
-                { <FavoriteCoopmates coopmateArr={myCoopmates} username={userData.username} userData={userData} style={styles.feed}  />}
-            </Box>
-        <Box sx={{ m: 1 }} style={styles.feed}>
-              { loading === false  ? 
-                    (allCoopmates.length > 0 ? (
-                        allCoopmates.map(coopmate => {
-                           // console.log(userData)
-                            return <CoopmatesView coopmate={coopmate} coopmatesArr={myCoopmates} username={userData.username} userData={userData}/>;
+            <Box sx={{ m: 1 }} style={styles.feed}>
+       
+                {
+                    myCoopmates.length > 0 ? 
+                    (
+                        myCoopmates.map(coopmate => {
+                            return <CoopmatesView coopmate={coopmate} coopmatesArr={myCoopmates} username={userData.username}
+                            />;
                         })
                     ) : (
-
-                    <Box>
-                       
                         <Typography
-                    variant="h5"
-                    color="#AB191F"
-                    sx={{ m: 10, textAlign: 'center' }}
-                    fontWeight={500}
-                >
-                            No Coopmates!
+                            sx={{
+                                fontWeight: 600,
+                                fontSize: 25,
+                                color: "#AB191F",
+                            }}
+                        >
+                            No Coopmates saved!
                         </Typography>
-                        </Box>
-                    ))
-                    :
-                    <Box>
-                        <CardPlaceholder isCoopmateCard={true}/>
-                    </Box>
-
+                    )
                 }
-        </Box>
-    </Container>
-
-    );
-    
+            </Box>
+        </Container>
+    )
 }
-export default CoopmatesPage;
+export default MyCoopmatesPage

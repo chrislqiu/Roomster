@@ -5,6 +5,7 @@ const Company = require('./models/company');
 const CompanyInfo = require('./models/companyInfo');
 const Manager = require('./models/manager');
 const Renter = require('./models/renter');
+const RenterInfo = require('./models/renterInfo');
 const router = express.Router();
 
 // for testing use (create a property from each property info and attach company)
@@ -212,6 +213,41 @@ router.post('/update-saves', async (req, res) => {
     }
 
 });
+
+//save coopmates
+router.post('/update-coopmates', async (req, res) => {
+    try {
+        const currentUser = req.body.currentUser;
+        const coopmateUsername = req.body.coopmate.username;
+        const renter = await Renter.findOne({ username: currentUser.username });
+        const coopmate = await Renter.findOne({ username: coopmateUsername });
+
+        if (!coopmate) {
+            return res.status(404).json({ error: 'Coopmate not found' });
+        }
+
+        renter.coopmates = renter.coopmates.filter(coopmate => coopmate !== null);
+        //console.log(coopmate)
+        //console.log(renter.coopmates)
+        renter.coopmates.map(mate => console.log(mate._id.toString()))
+        //console.log(coopmate._id.toString())
+        const coopmateExists = renter.coopmates.some(mate => mate._id.toString() === coopmate._id.toString());
+        //console.log(`coopmateExists: ${coopmateExists}`)
+        if (!coopmateExists) {
+            console.log("ok doesnt exist")
+            renter.coopmates.push(req.body.coopmate);
+        } else {
+            console.log("ok no duplicates pls")
+            renter.coopmates = renter.coopmates.filter(mate => mate._id.toString() !== coopmate._id.toString());
+        }
+        await renter.save();
+        res.status(200).json({ message: 'Coopmates updated successfully', coopmates: renter.coopmates });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+})
+
 // Route to get featured cards
 router.get('/featured-cards', (req, res) => {
     Property.find({'propertyInfo.featured': true})
