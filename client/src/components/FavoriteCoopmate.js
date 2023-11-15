@@ -3,8 +3,9 @@ import { Box, Paper, List, ListItem, Container } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { Stack, Divider } from '@mui/material';
 import CoopmateView from './CoopmateView';
+import CardPlaceholder from './CardPlaceholder';
 
-const FavoriteCoopmates = ({ coopmateArr, style, login, username, userData }) => {
+const FavoriteCoopmates = ({ coopmateArr, style, login, username, userData, loading }) => {
     console.log(coopmateArr)
     const styles = {
         divider: {
@@ -38,7 +39,8 @@ const FavoriteCoopmates = ({ coopmateArr, style, login, username, userData }) =>
 
             <List component={Stack} direction="row" sx={{ overflow: 'auto', marginTop: -1 }} maxWidth='xl' spacing={-4}>
                 {
-                    coopmateArr.length > 0 ?
+                    loading === false ?
+                    (coopmateArr.length > 0 ?
                         coopmateArr.map(favCoopmate => {
                             return <ListItem>
                                 <CoopmateView coopmate={favCoopmate} coopmatesArr={coopmateArr} username={username} userData={userData} />
@@ -56,6 +58,10 @@ const FavoriteCoopmates = ({ coopmateArr, style, login, username, userData }) =>
                             >
                                 No Liked Coopmates!
                             </Typography>
+                        </Box>)
+                        :
+                        <Box>
+                        <CardPlaceholder isCoopmateCard={true}/>
                         </Box>
 
                 }

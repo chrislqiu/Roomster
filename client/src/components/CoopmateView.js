@@ -46,6 +46,7 @@ const CoopmatesView = ({ coopmate, coopmatesArr, username, userData  }) => {
     const guests = coopmate.renterInfo.livingPreferences.guestFreq
     const fromTime = coopmate.renterInfo.livingPreferences.sleepSchedule.from
     const toTime = coopmate.renterInfo.livingPreferences.sleepSchedule.to
+    const pfp = coopmate.renterInfo.pfp
 
     //console.log(coopmatesArr)
     //console.log(userData)
@@ -251,7 +252,7 @@ const CoopmatesView = ({ coopmate, coopmatesArr, username, userData  }) => {
                     {/* Profile Picture */}
                     <CardMedia
                         component="img"
-                        image={defaultPic}
+                        image={pfp}
                         style={{
                             height: "130px",
                             width: "130px",
@@ -313,7 +314,7 @@ const CoopmatesView = ({ coopmate, coopmatesArr, username, userData  }) => {
                         <Container style={styles.box}> 
                             <Box sx={{ flexGrow: 0, margin: "15px 50px 20px 20px"}}>
                                 <IconButton sx={{ p: 0, }} >
-                                    <Avatar alt="chickenpfp" src={profilePic} style={{transform: `scale(1.90, 1.90)` }} />
+                                    <Avatar alt="chickenpfp" src={pfp} style={{transform: `scale(1.90, 1.90)` }} />
                                 </IconButton>
                             </Box>
 
