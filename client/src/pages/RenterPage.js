@@ -195,6 +195,15 @@ const RenterPage = () => {
                 setDefGuest(data.user.renterInfo.livingPreferences.guestFreq)
                 setDefFrom(data.user.renterInfo.livingPreferences.sleepSchedule.from)
                 setDefTo(data.user.renterInfo.livingPreferences.sleepSchedule.to)
+
+                // Set default values for the sliders
+                setNewStudious(data.user.renterInfo.livingPreferences.studious);
+                setNewClean(data.user.renterInfo.livingPreferences.cleanliness);
+                setNewGuest(data.user.renterInfo.livingPreferences.guestFreq);
+
+                // Set default values for the Select components
+                setSleepFrom(data.user.renterInfo.livingPreferences.sleepSchedule.from);
+                setSleepTo(data.user.renterInfo.livingPreferences.sleepSchedule.to);
                 // Access user data, e.g., data.user
             })
             .catch(error => {
@@ -210,22 +219,38 @@ const RenterPage = () => {
     }, [pfp]);
 
     var [newStudious, setNewStudious] = useState(defStudious)
-    useEffect(() => {
-        // Set newImg after pfp is updated
-        setNewStudious(defStudious);
-    }, [defStudious]);
+    // useEffect(() => {
+    //     // Set newImg after pfp is updated
+    //     setNewStudious(defStudious);
+    // }, [defStudious]);
 
     var [newClean, setNewClean] = useState(defClean)
-    useEffect(() => {
-        // Set newImg after pfp is updated
-        setNewClean(defClean);
-    }, [defClean]);
+    // useEffect(() => {
+    //     // Set newImg after pfp is updated
+    //     setNewClean(defClean);
+    // }, [defClean]);
 
     var [newGuest, setNewGuest] = useState(defGuest)
+    // useEffect(() => {
+    //     // Set newImg after pfp is updated
+    //     setNewGuest(defGuest);
+    // }, [defGuest]);
+
     useEffect(() => {
-        // Set newImg after pfp is updated
-        setNewGuest(defGuest);
-    }, [defGuest]);
+        // Check if data is available
+        if (data) {
+            setNewStudious(data.livingPreferences.studious);
+            setStudious(data.livingPreferences.studious)
+            setNewClean(data.livingPreferences.cleanliness);
+            setCleanliness(data.livingPreferences.cleanliness);
+            setNewGuest(data.livingPreferences.guestFreq);
+            setGuestFreq(data.livingPreferences.guestFreq)
+            setSleepFrom(data.livingPreferences.sleepSchedule.from);
+            setSleepTo(data.livingPreferences.sleepSchedule.to);
+            setDoesSmoke(data.livingPreferences.smoke);
+            setHasPet(data.livingPreferences.pets);
+        }
+    }, [data]);
 
     const handleSleepFrom = (event) => {
         setSleepFrom(event.target.value);
@@ -446,7 +471,7 @@ const RenterPage = () => {
                                     </FormControl>
                                     <Container>
                                         <Slider
-                                            onChange={(e, val) => setStudious(val)}
+                                            onChange={(e, val) => setStudious(e.target.value)}
                                             size="small"
                                             defaultValue={newStudious}
                                             valueLabelDisplay="auto"
