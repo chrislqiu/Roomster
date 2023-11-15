@@ -114,6 +114,7 @@ app.post('/sendRenterProfile', async (req,res) => {
           from: data.livingPreferences.sleepSchedule.from,
           to: data.livingPreferences.sleepSchedule.to
       }
+
   }
 
   const oldRenterInfo = renter
@@ -123,7 +124,8 @@ app.post('/sendRenterProfile', async (req,res) => {
     email: data.email,
     phone: data.phone,
     pfp: data.pfp,
-    livingPreferences: updatedLivingPref
+    livingPreferences: updatedLivingPref,
+    favCoops: data.favCoops
   })
 
   var updatedRenter = new Renter({

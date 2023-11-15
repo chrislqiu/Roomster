@@ -150,6 +150,7 @@ const RenterPage = () => {
     const [username, setUsername] = React.useState('')
 
     //Existing Information
+    const [allRenterData, setAllRenterData] = React.useState('')
     const [data, setData] = React.useState('')
     var [pfp, setPfp] = useState('')
     const [defEmail, setDefEmail] = useState('')
@@ -179,6 +180,7 @@ const RenterPage = () => {
             })
             .then(data => {
                 // Handle the JSON response
+                setAllRenterData(data.user)
                 setData(data.user.renterInfo)
                 setToggleOn(data.user.findingCoopmates)
                 setPfp(data.user.renterInfo.pfp)
@@ -231,8 +233,10 @@ const RenterPage = () => {
     const handleSleepTo = (event) => {
         setSleepTo(event.target.value);
     };
+    console.log(allRenterData.coopmates)
     const handleSaveRight = () => {
         console.log(defStudious)
+        console.log(data)
         const emailRegex = /^[a-zA-Z0-9._-]+@purdue\.edu$/;
 
         if (sleepFrom === "" || sleepTo === "" || email === '' || phone === '') {
@@ -247,6 +251,7 @@ const RenterPage = () => {
 
         const dataToSend = {
             findingCoopmates: toggleOn,
+            coopmates: allRenterData.coopmates,
             renterInfo: {
                 name: name,
                 age: age,
@@ -263,7 +268,8 @@ const RenterPage = () => {
                         from: sleepFrom,
                         to: sleepTo
                     }
-                }
+                },
+                favCoops: data.favCoops,
             }
         }
 
@@ -315,7 +321,8 @@ const RenterPage = () => {
                         from: sleepFrom,
                         to: sleepTo
                     }
-                }
+                },
+                favCoops: data.favCoops,
             }
         }
         fetch('http://localhost:8000/sendRenterProfile', {
