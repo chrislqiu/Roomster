@@ -180,6 +180,7 @@ const RenterPage = () => {
             .then(data => {
                 // Handle the JSON response
                 setData(data.user.renterInfo)
+                setToggleOn(data.user.findingCoopmates)
                 setPfp(data.user.renterInfo.pfp)
                 setName(data.user.renterInfo.name)
                 setAge(data.user.renterInfo.age)
