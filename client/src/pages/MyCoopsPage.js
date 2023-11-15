@@ -7,6 +7,7 @@ import { AspectRatio } from "@mui/joy";
 import toast, { Toaster } from 'react-hot-toast'
 import PropertyView from "../components/PropertyView";
 import AddCoopView from "../components/AddCoopView";
+import CardPlaceholder from "../components/CardPlaceholder";
 
 const MyCoopsPage = ({ login }) => {
     /* propertyInfo, setPropertyInfo to hold the card information from the server */
@@ -814,9 +815,7 @@ const MyCoopsPage = ({ login }) => {
             {open === true ? <AddCoopView setOpen={setOpen}></AddCoopView> : ''}
             <Box sx={{ marginTop: 3 }} style={styles.feed}>
                 {loading ? ( // Display loading spinner while loading
-                    <CircularProgress style={styles.loadingSpinner}>
-                        Loading coops!
-                    </CircularProgress>
+                    <CardPlaceholder isCoopmateCard={false}/>
                 ) : (
                     myCoopsArr.length > 0 ? (
                         myCoopsArr.map(cards => {

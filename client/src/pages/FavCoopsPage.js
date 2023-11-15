@@ -4,6 +4,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import PropertyView from "../components/PropertyView";
 import { faWindowRestore } from "@fortawesome/free-solid-svg-icons";
+import CardPlaceholder from "../components/CardPlaceholder";
 
 const FavCoopPage = ({ login }) => {
     const [username, setUsername] = useState('');
@@ -56,9 +57,16 @@ const FavCoopPage = ({ login }) => {
         <Container sx={{ width: '100%' }}>
             <Box sx={{ marginTop: 3 }} style={styles.feed}>
                 {loading ? ( // Display loading spinner while loading
-                    <CircularProgress style={styles.loadingSpinner}>
-                        Loading coops!
-                    </CircularProgress>
+                    <div>
+                    {
+                        /*
+                         * TODO:
+                         * add a full screen of placeholders
+                         */
+                    }
+                    
+                        <CardPlaceholder isCoopmateCard={false}/>
+                    </div> 
                 ) : (
                     favCoopsArr.length > 0 ? (
                         favCoopsArr.map(cards => {
