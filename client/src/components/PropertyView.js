@@ -54,6 +54,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
         cost = data.propertyInfo.cost;
         amenities = data.propertyInfo.amenities;
     }
+    
     /*
      * open, setOpen : controls the state of the dialogue popup
      */
@@ -417,7 +418,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
                             width: "70%",
                             maxWidth: 750,
                             maxHeight: 500,
-                            backgroundColor: "#F6EBE1"
+                            backgroundColor: "#F6EBE1",
                         },
                     },
                 }}
@@ -500,8 +501,8 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
                                 }}
                                 variant="outlined">REQUEST A TOUR
                             </Button>
-                            
-                            {requestTourOpen && <ScheduleTourView/>}
+
+                            {requestTourOpen && <ScheduleTourView data={data}/>}
 
                         </Box>
                         <Divider orientation={{ xs: 'horizontal', md: 'vertical', lg: 'vertical', xl: 'vertical' }} width={3} sx={{ borderBottomWidth: 3, color: "#AB191F", backgroundColor: "#AB191F", marginY: 2 }} />
