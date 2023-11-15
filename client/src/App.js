@@ -37,6 +37,37 @@ import LightMode from '@mui/icons-material/LightMode';
 
 const font =  "'Lato', sans-serif";
 const lightTheme = {
+  components: {
+    MuiFormControlLabel: {
+      styleOverrides: {
+        label: {
+          color: "#000000"
+        }
+      },
+    },
+    MuiSwitch: {
+      styleOverrides: {
+        switchBase: {
+          // Controls default (unchecked) color for the thumb
+          color: "#AB191F",
+        },
+        colorPrimary: {
+          "&.Mui-checked": {
+            // Controls checked color for the thumb
+            color: "#AB191F"
+          }
+        },
+        track: {
+          opacity: 0.2,
+          backgroundColor: "#AB191F",
+          ".Mui-checked.Mui-checked + &": {
+            opacity: 0.7,
+            backgroundColor: "#AB191F"
+          }
+        }
+      }
+    }
+  },
   palette: {
       type: "light",
       primaryColor: '#F6EBE1',
@@ -51,6 +82,37 @@ const lightTheme = {
   }
 }
 const darkTheme = {
+  components: {
+    MuiFormControlLabel: {
+      styleOverrides: {
+        label: {
+          color: "#F6EBE1"
+        }
+      },
+    },
+    MuiSwitch: {
+      styleOverrides: {
+        switchBase: {
+          // Controls default (unchecked) color for the thumb
+          color: "#962c1e",
+        },
+        colorPrimary: {
+          "&.Mui-checked": {
+            // Controls checked color for the thumb
+            color: "#962c1e"
+          }
+        },
+        track: {
+          opacity: 0.2,
+          backgroundColor: "#962c1e",
+          ".Mui-checked.Mui-checked + &": {
+            opacity: 0.7,
+            backgroundColor: "#962c1e"
+          }
+        }
+      }
+    }
+  },
   palette: {
       type: "dark",
       primaryColor: '#18100e',
