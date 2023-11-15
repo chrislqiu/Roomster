@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Button from '@mui/material/Button';
-import { List, ListItem, Box, Card, CardContent, CardMedia, IconButton, Tooltip, } from '@mui/material';
+import { List, ListItem, Box, Card, CardContent, CardMedia, IconButton, Tooltip, CircularProgress, } from '@mui/material';
 import { CardActionArea } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
@@ -69,44 +69,51 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
     const [myCoopsArr, setMyCoopsArr] = React.useState([])
     const [isVerified, setIsVerified] = React.useState(false)
     const [isFeatured, setIsFeatured] = React.useState(false)
+    const [loading, setLoading] = React.useState(true);
     const coopFavorited = favCoopsArr.some(coops => coops._id.toString() === data._id.toString())
 
-    React.useEffect(() => {
+    // React.useEffect(() => {
 
-        const getUserInfo = async () => {
-            try {
-                const res = await fetch('http://localhost:8000/auth/current-user', {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    credentials: 'include'
-                })
+    const getUserInfo = async () => {
+        try {
+            const res = await fetch('http://localhost:8000/auth/current-user', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include'
+            })
 
-                if (res.ok) {
-                    const getData = await res.json()
-                    if (getData.user_type == "renter") {
-                        setUserType("renter")
-                        const obj = JSON.parse(JSON.stringify(getData));
-                        setUserData(getData)
-                        setFavCoopsArr(obj.user.renterInfo.favCoops)
-                    } else if (getData.user_type == "manager") {
-                        setUserType("manager")
-                        console.log("manager")
-                        const obj = JSON.parse(JSON.stringify(getData));
-                        setUserData(obj)
-                        setMyCoopsArr(obj.user.company.myCoops)
-                    }
+            if (res.ok) {
+                const getData = await res.json()
+                if (getData.user_type == "renter") {
+                    setUserType("renter")
+                    const obj = JSON.parse(JSON.stringify(getData));
+                    setUserData(getData)
+                    setFavCoopsArr(obj.user.renterInfo.favCoops)
+                } else if (getData.user_type == "manager") {
+                    setUserType("manager")
+                    console.log("manager")
+                    // const jsonData = JSON.stringify(getData, null, 2); // The third parameter (2) is for indentation
+
+                    // Log the raw JSON data to the console
+                    // console.log("datatatatat" + jsonData);
+                    console.log("please: " + getData.user.company.companyInfo._id)
+                    const obj = JSON.parse(JSON.stringify(getData));
+                    setUserData(obj)
+                    setMyCoopsArr(obj.user.company.myCoops)
+                    // console.log("matcharoo" + data.companyInfo._id === userData.companyInfo._id)
                 }
-
-            } catch (e) {
-                console.log("Error: " + e)
             }
-        }
 
-        getUserInfo()
-        console.log(favCoopsArr);
-    }, [userData, favCoopsArr, myCoopsArr])
+        } catch (e) {
+            console.log("Error: " + e)
+        }
+    }
+
+    //     getUserInfo()
+    //     console.log(favCoopsArr);
+    // }, [userData, favCoopsArr, myCoopsArr])
 
     const handleOpen = () => {
         setOpen(true)
@@ -338,6 +345,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
 
             if (response.ok) {
                 setIsVerified(true)
+
                 console.log("Property verified")
             } else {
                 console.log("Property not verified")
@@ -414,10 +422,13 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
 
             if (response.ok) {
                 const data = await response.json();
+                console.log("is a owner: " + data.match)
                 setIsOwner(data.match)
             } else {
                 console.log('Authentication check failed');
             }
+            setLoading(false);
+
         } catch (error) {
             console.error('Error during authentication check:', error);
         }
@@ -425,7 +436,8 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
 
 
     React.useEffect(() => {
-        checkOwner();
+        // checkOwner();
+        // getUserInfo();
         getPropertyVerification();
         getPropertyFeatured();
     }, []);
@@ -446,8 +458,13 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
             <Card
                 variant='contained'
                 onClick={() => {
+                    if (userType === '') {
+                        setLoading(true);
+                    }
                     handleOpen();
-                    // checkOwner();
+                    getUserInfo();
+                    checkOwner();
+
                 }}
                 onMouseEnter={handleHovered}
                 onMouseLeave={handleLeave}
@@ -715,116 +732,120 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
                         : ''}
 
                     {editMode === true ? <AddCoopView setOpen={setOpen} editMode={true} data={data}></AddCoopView> : ''}
-                    {login === true ? (
-                        verifyProperty === true ? (
-                            // Admin view
-                            <div sx={{ display: "flex", width: "100%" }}>
-                                <Tooltip title="Delete Property">
-                                    <IconButton onClick={handleDeletePropertyAdmin}>
-                                        <DeleteOutlineIcon sx={{ color: "#AB191F" }} />
-                                    </IconButton>
-                                </Tooltip>
-                                <Tooltip title="Verify Property">
-                                    <IconButton onClick={handleVerifyProperty}>
-                                        <CheckIcon sx={{ color: "green" }} />
-                                    </IconButton>
-                                </Tooltip>
-                            </div>
-                        ) : featureRequest === true ? (
-                            <div sx={{ display: "flex", width: "100%" }}>
-                                <Tooltip title="Deny Feature Request">
-                                    <IconButton onClick={handleDenyFeature}>
-                                        <DoDisturbIcon sx={{ color: "#AB191F" }} />
-                                    </IconButton>
-                                </Tooltip>
-                                <Tooltip title="Accept Feature Request">
-                                    <IconButton onClick={handleAcceptFeature}>
-                                        <CheckIcon sx={{ color: "green" }} />
-                                    </IconButton>
-                                </Tooltip>
-                            </div>
-                        ) : featureRequestManage === true ? (
-                            <div sx={{ display: "flex", width: "100%" }}>
-                                <Tooltip title="Remove Feature">
-                                    <IconButton onClick={handleDenyFeature}>
-                                        <DoDisturbIcon sx={{ color: "#AB191F" }} />
-                                    </IconButton>
-                                </Tooltip>
-                            </div>
-                        ): isOwner === false && userType !== "manager" ? (
-                            // User view (not owner)
-                            <Tooltip
-                                title="Add to FAV COOPS"
-                                componentsProps={{
-                                    tooltip: {
-                                        sx: {
-                                            bgcolor: 'rgba(171, 25, 31, 0.9)',
-                                            color: '#F6EBE1'
-                                        },
-                                    },
-                                }}
-                            >
-                                <IconButton size="large" onClick={handleFavorite}>
-                                    {coopFavorited ? (
-                                        <FavoriteIcon sx={{ color: "#AB191F" }} />
-                                    ) : (
-                                        <FavoriteBorderIcon sx={{ color: "#AB191F" }} />
-                                    )}
-                                </IconButton>
-                            </Tooltip>
-                        ) : isOwner === true && userType === "manager" ? (
-                            // Owner view
-                            <div>
-                                {!isFeatured ?
-                                    <Tooltip title="Request Property Feature">
-                                        <IconButton onClick={handleFeatureProperty} >
-                                        <StarIconOutlined sx={{ color: "#AB191F" }}/>
+                    {/* {loading && <CircularProgress />} */}
+                    {loading ? (
+                        <CircularProgress size={20} sx={{ color: "#AB191F", marginRight: 2 }} />
+                    ) : (
+                        login === true ? (
+                            verifyProperty === true ? (
+                                // Admin view
+                                <div sx={{ display: "flex", width: "100%" }}>
+                                    <Tooltip title="Delete Property">
+                                        <IconButton onClick={handleDeletePropertyAdmin}>
+                                            <DeleteOutlineIcon sx={{ color: "#AB191F" }} />
                                         </IconButton>
                                     </Tooltip>
-                                    : ''}
-                                <Tooltip title="Delete Property">
-                                    <IconButton onClick={handleDeleteProperty}>
-                                        <DeleteOutlineIcon sx={{ color: "#AB191F" }} />
-                                    </IconButton>
-                                </Tooltip>
-                                <IconButton size="large" disabled={true}>
-                                    <FavoriteIcon />
-                                </IconButton>
-                            </div>
-                        ) :
-                            (
-                                <Tooltip title="Saves"
+                                    <Tooltip title="Verify Property">
+                                        <IconButton onClick={handleVerifyProperty}>
+                                            <CheckIcon sx={{ color: "green" }} />
+                                        </IconButton>
+                                    </Tooltip>
+                                </div>
+                            ) : featureRequest === true ? (
+                                <div sx={{ display: "flex", width: "100%" }}>
+                                    <Tooltip title="Deny Feature Request">
+                                        <IconButton onClick={handleDenyFeature}>
+                                            <DoDisturbIcon sx={{ color: "#AB191F" }} />
+                                        </IconButton>
+                                    </Tooltip>
+                                    <Tooltip title="Accept Feature Request">
+                                        <IconButton onClick={handleAcceptFeature}>
+                                            <CheckIcon sx={{ color: "green" }} />
+                                        </IconButton>
+                                    </Tooltip>
+                                </div>
+                            ) : featureRequestManage === true ? (
+                                <div sx={{ display: "flex", width: "100%" }}>
+                                    <Tooltip title="Remove Feature">
+                                        <IconButton onClick={handleDenyFeature}>
+                                            <DoDisturbIcon sx={{ color: "#AB191F" }} />
+                                        </IconButton>
+                                    </Tooltip>
+                                </div>
+                            ) : isOwner === false && userType !== "manager" ? (
+                                // User view (not owner)
+                                <Tooltip
+                                    title="Add to FAV COOPS"
                                     componentsProps={{
                                         tooltip: {
                                             sx: {
                                                 bgcolor: 'rgba(171, 25, 31, 0.9)',
-                                                color: "#F6EBE1"
+                                                color: '#F6EBE1'
                                             },
                                         },
                                     }}
                                 >
+                                    <IconButton size="large" onClick={handleFavorite}>
+                                        {coopFavorited ? (
+                                            <FavoriteIcon sx={{ color: "#AB191F" }} />
+                                        ) : (
+                                            <FavoriteBorderIcon sx={{ color: "#AB191F" }} />
+                                        )}
+                                    </IconButton>
+                                </Tooltip>
+                            ) : isOwner === true && userType === "manager" ? (
+                                // Owner view
+                                <div>
+                                    {!isFeatured ?
+                                        <Tooltip title="Request Property Feature">
+                                            <IconButton onClick={handleFeatureProperty} >
+                                                <StarIconOutlined sx={{ color: "#AB191F" }} />
+                                            </IconButton>
+                                        </Tooltip>
+                                        : ''}
+                                    <Tooltip title="Delete Property">
+                                        <IconButton onClick={handleDeleteProperty}>
+                                            <DeleteOutlineIcon sx={{ color: "#AB191F" }} />
+                                        </IconButton>
+                                    </Tooltip>
                                     <IconButton size="large" disabled={true}>
                                         <FavoriteIcon />
                                     </IconButton>
-                                </Tooltip>
-                            )
-                    ) : (
-                        // Not logged in view
-                        <Tooltip title="Saves"
-                            componentsProps={{
-                                tooltip: {
-                                    sx: {
-                                        bgcolor: 'rgba(171, 25, 31, 0.9)',
-                                        color: "#F6EBE1"
+                                </div>
+                            ) :
+                                (
+                                    <Tooltip title="Saves"
+                                        componentsProps={{
+                                            tooltip: {
+                                                sx: {
+                                                    bgcolor: 'rgba(171, 25, 31, 0.9)',
+                                                    color: "#F6EBE1"
+                                                },
+                                            },
+                                        }}
+                                    >
+                                        <IconButton size="large" disabled={true}>
+                                            <FavoriteIcon />
+                                        </IconButton>
+                                    </Tooltip>
+                                )
+                        ) : (
+                            // Not logged in view
+                            <Tooltip title="Saves"
+                                componentsProps={{
+                                    tooltip: {
+                                        sx: {
+                                            bgcolor: 'rgba(171, 25, 31, 0.9)',
+                                            color: "#F6EBE1"
+                                        },
                                     },
-                                },
-                            }}
-                        >
-                            <IconButton size="large" disabled={true}>
-                                <FavoriteIcon />
-                            </IconButton>
-                        </Tooltip>
-                    )}
+                                }}
+                            >
+                                <IconButton size="large" disabled={true}>
+                                    <FavoriteIcon />
+                                </IconButton>
+                            </Tooltip>
+                        ))}
 
                     <Typography
                         style={{
