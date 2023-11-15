@@ -74,7 +74,9 @@ const CoopmatesPage = ({ }) => {
         <Container sx={{ width: '100%' }}>
             {console.log(userData.username)}
             <Box sx={{ m: 4 }} style={styles.feed}>
-                { <FavoriteCoopmates coopmateArr={myCoopmates} username={userData.username} userData={userData} style={styles.feed}  />}
+            {
+                <FavoriteCoopmates coopmateArr={myCoopmates} username={userData.username} userData={userData} style={styles.feed}  loading={loading}/> 
+               }
             </Box>
         <Box sx={{ m: 1 }} style={styles.feed}>
               { loading === false  ? 
