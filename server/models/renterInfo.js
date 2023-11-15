@@ -5,11 +5,12 @@ const Property = require('./property');
 const renterInfo = new Schema({
     name: {
         type: String,
-        required: true
+        required: false
     },
     age: {
         type: Number,
-        required: false
+        required: false,
+        default: 20
     },
     gender: {
         type: String,
@@ -22,46 +23,52 @@ const renterInfo = new Schema({
     },
     phone: {
         type: String,
-        required: false
+        required: false,
+        default: "Phone Number"
     },
     pfp: {
         type: String,
-        default: "chickenpfp"
+        default: ''
     },
     livingPreferences: {
         pets: {
             type: Boolean,
-            default: null
+            default: false
         },
         smoke: {
             type: Boolean,
-            default: null
+            default: false
         },
         studious: {
             type: Number,
             min: 0,
-            max: 5
+            max: 5,
+            default: 3
         },
         cleanliness: {
             type: Number,
             min: 0,
-            max: 5
+            max: 5,
+            default: 3
         },
         guestFreq: {
             type: Number,
             min: 0,
-            max: 5
+            max: 5,
+            default: 3
         },
         sleepSchedule: {
             from: {
                 type: Number,
                 min: 0,
-                max: 23
+                max: 23,
+                default: 0
             },
             to: {
                 type: Number,
                 min: 0,
-                max: 23
+                max: 23,
+                default: 0
             }
         },
     },
