@@ -2,11 +2,18 @@ import React, { useEffect, useState } from 'react';
 import { Dialog, DialogContent, DialogActions, Tooltip, IconButton, Avatar, InputBase, Slider, Select, MenuItem, Grid, Card, Container, Box, Typography, CardContent, Radio, Button, RadioGroup, FormControl, FormControlLabel, CardMedia } from "@mui/material";
 import AdminUserView from '../components/AdminUserView'
 import AdminUserPlaceholder from '../components/AdminUserPlaceholder';
+import SearchBarAdmin from '../components/SearchBarAdmin';
 
 
 const AdminUserPage = () => {
     const [renters, setRenters] = useState([]);
     const [managers, setManagers] = useState([]);
+    const [input, setInput] = React.useState('')
+    const [filteredRenters, setFilteredRenters] = React.useState(renters);
+    const [filteredManagers, setFilteredManagers] = React.useState(managers);
+
+
+
 
     useEffect(() => {
         const fetchUsers = async () => {
@@ -73,25 +80,27 @@ const AdminUserPage = () => {
     }
     return (
         <Container sx={{ width: '100%' }}>
+            <SearchBarAdmin renterData={renters} managerData={managers} setInput={setInput} setFilteredRenters={setFilteredRenters} setFilteredManagers={setFilteredManagers} />
+
             <Typography sx={{ fontSize: "30px", textAlign: "center" }}>
                 Users
             </Typography>
             <Box sx={{ m: 1 }} style={styles.feed}>
-                {renters.length > 0 ? (
-                    renters.map((renter) => (
+                {filteredRenters.length > 0 ? (
+                    filteredRenters.map((renter) => (
                         <AdminUserView key={renter._id} username={renter.username} userType="Renter" />
                     ))
-                ) : (
+                ) : input.length === 0 ? (
                     <AdminUserPlaceholder />
-                )}
+                ) : ''}
 
-                {managers.length > 0 ? (
-                    managers.map((manager) => (
+                {filteredManagers.length > 0 ? (
+                    filteredManagers.map((manager) => (
                         <AdminUserView key={manager._id} username={manager.username} userType="Manager" />
                     ))
-                ) : (
+                ) : input.length === 0 ? (
                     <AdminUserPlaceholder />
-                )}
+                ) : ''}
             </Box>
         </Container>
     );

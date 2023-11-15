@@ -93,16 +93,9 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
                     setFavCoopsArr(obj.user.renterInfo.favCoops)
                 } else if (getData.user_type == "manager") {
                     setUserType("manager")
-                    console.log("manager")
-                    // const jsonData = JSON.stringify(getData, null, 2); // The third parameter (2) is for indentation
-
-                    // Log the raw JSON data to the console
-                    // console.log("datatatatat" + jsonData);
-                    console.log("please: " + getData.user.company.companyInfo._id)
                     const obj = JSON.parse(JSON.stringify(getData));
                     setUserData(obj)
                     setMyCoopsArr(obj.user.company.myCoops)
-                    // console.log("matcharoo" + data.companyInfo._id === userData.companyInfo._id)
                 }
             }
 
@@ -111,9 +104,6 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
         }
     }
 
-    //     getUserInfo()
-    //     console.log(favCoopsArr);
-    // }, [userData, favCoopsArr, myCoopsArr])
 
     const handleOpen = () => {
         setOpen(true)
