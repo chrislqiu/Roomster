@@ -130,7 +130,6 @@ class App extends React.Component {
 
   constructor(props) {
     super(props);
-    console.log(localStorage.getItem("darkMode"));
     this.state = {
       apiResponse: "",
       isAuthenticated: false,
@@ -230,26 +229,25 @@ class App extends React.Component {
     } else {
         darkMode = this.state.darkMode;
     }
+    
     const { isAuthenticated, isAuthenticatedAdmin, userType } = this.state;
     let theme = darkMode ? createTheme(darkTheme) : createTheme(lightTheme);
     //const theme = useTheme();
     const pathname = window.location.pathname
     const showAppBar = pathname !== "/Admin" || isAuthenticatedAdmin;
-
     const showAppBarAdmin = pathname === "/Admin" && isAuthenticatedAdmin;
     const showAppBarMain = pathname !== "/Admin" && isAuthenticated;
-
     const faviconPath = "favicon.ico";
+
     const handleDarkMode = () => {
       this.setState({darkMode: !this.state.darkMode})
-      console.log(this.state.darkMode)
       if (darkMode === false) {
         localStorage.setItem("darkMode", "dark");
       } else {
         localStorage.setItem("darkMode", "light")
       }
-      console.log(localStorage.getItem("darkMode"))
     }
+
     return (
       
       <HelmetProvider>
