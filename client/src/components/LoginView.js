@@ -14,6 +14,7 @@ import RenterCreateAccountPage from '../pages/RenterCreateAccountPage';
 import ManagerCreateAccountView from './PropertyManagerCreateAccountView';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { createTheme, ThemeProvider, useTheme } from '@mui/material/styles';
 
 import ForgotPwView from './ForgotPwView';
 
@@ -31,6 +32,7 @@ import ForgotPwView from './ForgotPwView';
 
 
 const LoginView = ({ text }) => {
+    const theme = useTheme();
     const [open, setOpen] = React.useState(false)
     const [rCreateOpen, setRCreateOpen] = React.useState(false)
     const [mCreateOpen, setMCreateOpen] = React.useState(false)
@@ -162,19 +164,22 @@ const LoginView = ({ text }) => {
                 variant='contained'
                 onClick={handleOpen}
                 sx={{
+                    zIndex: "5",
                     my: 2,
                     ":hover": {
-                        bgcolor: "#AB191F",
-                        color: "#f5ebe0",
-                        cursor: "pointer"
+                        cursor: "pointer",
+                        backgroundColor: "secondaryColor",
+                        color: "primaryColor",
+                        border: "none",
+                        boxShadow: theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 3px rgba(245, 235, 224, .1)",
                     },
-                    color: "#AB191F",
-                    backgroundColor: "#F6EBE1",
+                    border: "none",
+                    backgroundColor: "primaryColor", 
+                    color: theme.palette.type === "light" ? "secondaryColor" : "textColor",
                     display: "block",
                     mx: .5,
                     fontWeight: 600,
                     padding: 1,
-                    boxShadow: "0px 0px 3px 3px rgba(0, 0, 0, .1)"
                 }}
             >
                 {text}
@@ -190,7 +195,7 @@ const LoginView = ({ text }) => {
                             width: "100%",
                             maxWidth: "400px",
                             maxHeight: "1000px",
-                            bgcolor: '#F6EBE1'
+                            bgcolor: 'primaryColor'
                         }
                     }
                 }}
@@ -200,33 +205,33 @@ const LoginView = ({ text }) => {
                         style={{ position: "absolute", top: "0", right: "0" }}
                         onClick={() => handleClose()}
                     >
-                        <CloseIcon style={{ color: "black" }} />
+                        <CloseIcon sx={{ color: "textColor" }} />
                     </IconButton>
-                    <DialogTitle sx={{ fontWeight: 600, fontSize: 25, marginBottom: "-40px" }}> Welcome, </DialogTitle>
-                    <DialogTitle sx={{ fontWeight: 600, fontSize: 25, marginBottom: "-15px" }}>Create Account</DialogTitle>
-                    <Divider variant="middle" sx={{ borderBottomWidth: 3, color: "#AB191F", backgroundColor: "#AB191F", marginY: 1 }} />
+                    <DialogTitle sx={{ fontWeight: 600, fontSize: 25, marginBottom: "-40px", color: "textColor" }}> Welcome, </DialogTitle>
+                    <DialogTitle sx={{ fontWeight: 600, fontSize: 25, marginBottom: "-15px", color: "textColor" }}>Create Account</DialogTitle>
+                    <Divider variant="middle" sx={{ borderBottomWidth: 3, backgroundColor: "secondaryColor", marginY: 1 }} />
                 </div>
 
                 <DialogContent sx={{ maxWidth: "400px" }}>
                     <Box style={{ maxWidth: "400px", justifyContent: "center" }} >
-                        <Typography sx={{ textAlign: 'center', marginBottom: "5px", marginTop: "-15px" }}>
+                        <Typography sx={{ textAlign: 'center', marginBottom: "5px", marginTop: "-15px", color: "textColor" }}>
                             Are you a...
                         </Typography>
 
                         <div style={{ justifyContent: "center", display: "inline", marginLeft: "70px", marginRight: "70px" }}>
-
-
                             <Button
                                 type="RCreate"
                                 onClick={() => setRCreateOpen(true)}
                                 sx={{
                                     ":hover": {
-                                        borderColor: "#AB191F", bgcolor: "#AB191F", color: "#F6EBE1",
-                                        borderWidth: 1.5, width: "45%", fontWeight: 600
+                                        backgroundColor: "secondaryColor",
+                                        border: "none",
+                                        boxShadow: theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 3px rgba(245, 235, 224, .1)",
                                     },
-                                    borderColor: "#F6EBE1", bgcolor: "#F6EBE1", color: "#AB191F",
-                                    borderWidth: 1.5, width: "45%", fontWeight: 600,
-                                    boxShadow: 5, justifyContent: "center", maxWidth: "95px", maxHeight: "50px"
+                                    border: "none",
+                                    backgroundColor: "secondaryColor", 
+                                    color: theme.palette.type === "light" ? "primaryColor" : "textColor",
+                                    width: "45%", fontWeight: 600, justifyContent: "center", maxWidth: "95px", maxHeight: "50px"
                                 }}
                                 variant="outlined">RENTER
                             </Button>
@@ -235,13 +240,15 @@ const LoginView = ({ text }) => {
                                 onClick={() => setMCreateOpen(true)}
                                 sx={{
                                     ":hover": {
-                                        borderColor: "#AB191F", bgcolor: "#AB191F", color: "#F6EBE1",
-                                        borderWidth: 1.5, width: "45%", fontWeight: 600
+                                        backgroundColor: "secondaryColor",
+                                        border: "none",
+                                        boxShadow: theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 3px rgba(245, 235, 224, .1)",
                                     },
-                                    borderColor: "#F6EBE1", bgcolor: "#F6EBE1", color: "#AB191F",
-                                    borderWidth: 1.5, width: "45%", fontWeight: 600, lineHeight: "15px",
-                                    boxShadow: 5, marginLeft: "15px", maxWidth: "95px", maxHeight: "50px"
-
+                                    border: "none",
+                                    backgroundColor: "secondaryColor", 
+                                    color: theme.palette.type === "light" ? "primaryColor" : "textColor",
+                                    width: "45%", fontWeight: 600, lineHeight: "15px",
+                                    marginLeft: "15px", maxWidth: "95px", maxHeight: "50px"
                                 }}
                                 variant="outlined">PROPERTY MANAGER
                             </Button>
@@ -249,26 +256,44 @@ const LoginView = ({ text }) => {
                             {mCreateOpen && <ManagerCreateAccountView />}
                         </div>
 
-                        <Typography sx={{ margin: 1.5, marginLeft: "auto", marginTop: "15px", marginBottom: "-5px" }}>
+                        <Typography sx={{ margin: 1.5, marginLeft: "auto", marginTop: "15px", marginBottom: "-5px", color: "textColor"}}>
                             Already have an account?
                         </Typography>
                     </Box>
 
                     <Box>
-                        <Divider variant="middle" sx={{ textAlign: "center", borderBottomWidth: 3, color: "#AB191F", backgroundColor: "#AB191F", marginY: 1, width: "100%", marginLeft: "auto", marginRight: "auto" }} />
+                        <Divider variant="middle" sx={{ textAlign: "center", borderBottomWidth: 3, backgroundColor: "secondaryColor", marginY: 1, width: "100%", marginLeft: "auto", marginRight: "auto" }} />
                         <div>
                             <TextField
-                                label="Email" id="email-textfield" variant="outlined" fullWidth
+                                placeholder="Email" id="email-textfield" variant="outlined" fullWidth
                                 sx={{
-                                    boxShadow: "0px 0px 3px 3px rgba(0, 0, 0, .1)", margin: "dense", marginBottom: "15px"
+                                    input: {
+                                        color: "textColor",
+                                        "&::placeholder": {
+                                            opacity: 0.7,
+                                            color: "textColor",
+                                         },
+                                    },
+                                    "& fieldset": { border: 'none', },
+                                    boxShadow: theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 3px rgba(245, 235, 224, .1)",
+                                    marginBottom: "15px"
                                 }}
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                             />
                             <TextField
-                                label="Password" id="psw-textfield" variant="outlined" fullWidth
+                                placeholder="Password" id="psw-textfield" variant="outlined" fullWidth
                                 sx={{
-                                    boxShadow: "0px 0px 3px 3px rgba(0, 0, 0, .1)", margin: "dense", 
+                                    input: {
+                                        color: "textColor",
+                                        "&::placeholder": {
+                                            opacity: 0.7,
+                                            color: "textColor",
+                                         },
+                                    },
+                                    "& fieldset": { border: 'none', },
+                                    boxShadow: theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 3px rgba(245, 235, 224, .1)",
+                                    marginBottom: "15px"
                                 }}
                                 type="password"
                                 value={password}
@@ -287,18 +312,23 @@ const LoginView = ({ text }) => {
                                 onClick={handleLogin}
                                 sx={{
                                     ":hover": {
-                                        borderColor: "black", bgcolor: "#F6EBE1", color: "black",
-                                        borderWidth: 1.5, width: "45%", fontWeight: 600
+                                        backgroundColor: "secondaryColor",
+                                        border: "none",
+                                        boxShadow: theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 3px rgba(245, 235, 224, .1)",
                                     },
-                                    borderColor: "black", bgcolor: "#AB191F", color: "#F6EBE1",
-                                    borderWidth: 1.5, width: "45%", fontWeight: 600, maxWidth: "15px",
-                                    boxShadow: 5, justifyContent: "center", float: "right"
+                                    border: "none",
+                                    backgroundColor: "secondaryColor", 
+                                    color: theme.palette.type === "light" ? "primaryColor" : "textColor",
+                                    width: "45%", fontWeight: 600, 
+                                    maxWidth: "15px", maxHeight: "50px",
+                                    justifyContent: "center", float: "right"
+                                    
 
                                 }}
                                 variant="outlined">LOGIN
                             </Button>
                             <Typography
-                                sx={{ margin: 1.5, marginLeft: "auto", marginTop: "15px", color: "#AB191F", cursor: "pointer" }}
+                                sx={{ marginLeft: "auto", width: "115px", float: "left", color: "secondaryColor", cursor: "pointer", ":hover":{color:"textColor"} }}
                                 onClick={handleResetPasswordOpen}
                             >
                                 Reset Password
@@ -308,6 +338,7 @@ const LoginView = ({ text }) => {
                     
                 </DialogContent>
             </Dialog>
+            {/*
             <Dialog
                 open={resetPasswordOpen}
                 onClose={handleResetPasswordClose}
@@ -317,22 +348,28 @@ const LoginView = ({ text }) => {
                             width: "100%",
                             maxWidth: "400px",
                             maxHeight: "1000px",
-                            bgcolor: '#F6EBE1'
+                            backgroundColor: 'primaryColor'
                         }
                     }
                 }}
             >
-                <DialogTitle sx={{ fontWeight: 600, fontSize: 25 }}>Reset Password</DialogTitle>                <DialogContent sx={{ maxWidth: "400px" }}>
+                <DialogTitle sx={{ fontWeight: 600, fontSize: 25, color: "textColor" }}>Reset Password</DialogTitle>                <DialogContent sx={{ maxWidth: "400px" }}>
                     <TextField
-                        label="Username"
+                        placeholder="email"
                         id="username-textfield"
                         variant="outlined"
                         fullWidth
                         sx={{
-                            boxShadow: "3",
-                            margin: "dense",
-                            marginBottom: "15px",
-                            marginTop: "10px"
+                            input: {
+                                color: "textColor",
+                                "&::placeholder": {
+                                    opacity: 0.7,
+                                    color: "textColor",
+                                 },
+                            },
+                            "& fieldset": { border: 'none', },
+                            boxShadow: theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 3px rgba(245, 235, 224, .1)",
+                            marginBottom: "15px"
                         }}
                         value={resetPasswordUsername}
                         onChange={(e) => setResetPasswordUsername(e.target.value)}
@@ -355,6 +392,7 @@ const LoginView = ({ text }) => {
                     </Button>
                 </DialogContent>
             </Dialog>
+                    */}
             <Dialog
                 open={resetPasswordOpen}
                 onClose={handleResetPasswordClose}
@@ -364,22 +402,30 @@ const LoginView = ({ text }) => {
                             width: "100%",
                             maxWidth: "400px",
                             maxHeight: "1000px",
-                            bgcolor: '#F6EBE1'
+                            bgcolor: 'primaryColor'
                         }
                     }
                 }}
             >
-                <DialogTitle sx={{ fontWeight: 600, fontSize: 25 }}>Reset Password</DialogTitle>                <DialogContent sx={{ maxWidth: "400px" }}>
+                <DialogTitle sx={{ margin: 0, padding: "10px 0 0 25px", fontWeight: 600, fontSize: 25, color: "textColor" }}>Reset Password</DialogTitle>                <DialogContent sx={{ maxWidth: "400px" }}>
+                <Divider variant="middle" sx={{ textAlign: "center", borderBottomWidth: 3, backgroundColor: "secondaryColor", marginY: 1, width: "100%", marginLeft: "auto", marginRight: "auto" }} />
+
                     <TextField
-                        label="Username"
+                        placeholder="Email"
                         id="username-textfield"
                         variant="outlined"
                         fullWidth
                         sx={{
-                            boxShadow: "3",
-                            margin: "dense",
-                            marginBottom: "15px",
-                            marginTop: "10px"
+                            input: {
+                                color: "textColor",
+                                "&::placeholder": {
+                                    opacity: 0.7,
+                                    color: "textColor",
+                                 },
+                            },
+                            "& fieldset": { border: 'none', },
+                            boxShadow: theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 3px rgba(245, 235, 224, .1)",
+                            margin: "15px 0 15px 0"
                         }}
                         value={resetPasswordUsername}
                         onChange={(e) => setResetPasswordUsername(e.target.value)}
@@ -389,12 +435,15 @@ const LoginView = ({ text }) => {
                         onClick={handleResetPassword}
                         sx={{
                             ":hover": {
-                                borderColor: "black", bgcolor: "#F6EBE1", color: "black",
-                                borderWidth: 1.5, width: "100%", fontWeight: 600
+                                backgroundColor: "secondaryColor",
+                                border: "none",
+                                boxShadow: theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 3px rgba(245, 235, 224, .1)",
                             },
-                            borderColor: "black", bgcolor: "#AB191F", color: "#F6EBE1",
-                            borderWidth: 1.5, width: "100%", fontWeight: 600, maxWidth: "150px",
-                            boxShadow: 5, justifyContent: "center", float: "right"
+                            border: "none",
+                            backgroundColor: "secondaryColor", 
+                            color: theme.palette.type === "light" ? "primaryColor" : "textColor",
+                            fontWeight: 600, width: "175px", margin: "10px 0 0 0",
+                            justifyContent: "center", float: "right"
                         }}
                         variant="outlined"
                     >

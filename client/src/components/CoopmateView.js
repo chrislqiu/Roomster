@@ -1,5 +1,4 @@
 import { CardActionArea, TextField } from '@mui/material';
-
 import { AspectRatio } from '@mui/joy';
 import Divider from '@mui/material/Divider';
 import { Stack } from '@mui/material';
@@ -10,7 +9,6 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import defaultPic from '../images/amongusturkey.jpeg'
-
 import {Dialog, DialogContent, DialogActions, Tooltip, IconButton, Avatar, InputBase, Slider, Select, MenuItem, Grid, Card, Container, Box, Typography, CardContent, Radio, Button, RadioGroup, FormControl, FormControlLabel, CardMedia } from "@mui/material";
 import Switch from '@mui/joy/Switch'
 import React from "react"
@@ -25,10 +23,11 @@ import MaleIcon from '@mui/icons-material/Male';
 import FemaleIcon from '@mui/icons-material/Female';
 import TransgenderIcon from '@mui/icons-material/Transgender';
 import { faTruckPlane } from '@fortawesome/free-solid-svg-icons';
+import { createTheme, ThemeProvider, useTheme } from '@mui/material/styles';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-
-const CoopmatesView = ({ coopmate, coopmatesArr, username, userData  }) => {
+const CoopmatesView = ({ coopmate, coopmatesArr, username, userData }) => {
+    const theme = useTheme();
     const [open, setOpen] = React.useState(false)
     const [hovered, setHovered] = React.useState(false);
 
@@ -97,25 +96,25 @@ const CoopmatesView = ({ coopmate, coopmatesArr, username, userData  }) => {
     const styles = {
         divider: {
             height: "3px",
-            backgroundColor: hovered === true ? "#f5ebe0" : "#AB191F",
+            backgroundColor: hovered === true ? "primaryColor" : "secondaryColor",
             padding: "0",
             margin: "15px 0 15x 0",
         },
         column1: {
             float: "left", 
             width: "47%", 
-            borderRight: "3px solid #AB191F"
         },
         column2: {
             float: "left", 
             width: "50%", 
-            marginLeft:"-30px"
+            borderLeft: "3px solid",
+            borderColor: "secondaryColor"
         },
         header: {
             margin: "10px 0 5px 0",
             fontWeight: "600",
             fontSize: "15pt",
-            color: "#AB191F",
+            color: theme.palette.type === "light" ? "secondaryColor" : "textColor",
             padding: "0 25px",
         },
         body:{
@@ -123,7 +122,7 @@ const CoopmatesView = ({ coopmate, coopmatesArr, username, userData  }) => {
             justifyContent:"center",
             fontSize: "10pt",
             fontWeight:"450",
-            color:"black",
+            color:"textColor",
             marginTop:"32px",
             marginLeft:"5px",
         },
@@ -132,12 +131,14 @@ const CoopmatesView = ({ coopmate, coopmatesArr, username, userData  }) => {
             textAlign:"center",
             fontSize: "10pt",
             fontWeight:"550",
-            color:"#f5ebe0",
+            color:"textColor",
             marginTop:"32px",
             marginLeft:"-10px",
-            backgroundColor: "#AB191F",
+            backgroundColor: "secondaryColor",
             borderRadius: "5px",
-            border: "2px solid #AB191F",
+            borderWidth: "2px",
+            borderStyle: "solid",
+            borderColor: theme.palette.type === "light" ? "secondaryColor" : "textColor",
             "&:hover": {
                 border: "2px solid #AB191F",
                 boxShadow:"0px 0px 3px 3px rgba(0, 0, 0, .1)", 
@@ -148,12 +149,10 @@ const CoopmatesView = ({ coopmate, coopmatesArr, username, userData  }) => {
             width:"185px", 
             height: "20px",
             borderRadius: "5px",
-            border: "2px solid #AB191F",
+            border: "2px solid",
+            borderColor: "secondaryColor",
             padding: "5px",
-            "&:hover": {
-                border: "2px solid #AB191F",
-                boxShadow:"0px 0px 3px 3px rgba(0, 0, 0, .1)", 
-            }
+            color: "textColor"
         },
         box: {
             float: "left",
@@ -164,15 +163,9 @@ const CoopmatesView = ({ coopmate, coopmatesArr, username, userData  }) => {
         boxPadding: {
             padding: "0 10px 0 0"
         },
-        name: {
+        text: {
             fontWeight: "600",
-            fontSize: "14pt",
-            color: "black",
-        },
-        age: {
-            fontWeight: "600",
-            fontSize: "14pt",
-            color: "#AB191F",
+            fontSize: "13pt",
         },
         icon: {
             fontSize: "16pt",
@@ -181,34 +174,22 @@ const CoopmatesView = ({ coopmate, coopmatesArr, username, userData  }) => {
         subheader: {
             fontWeight: "600", 
             fontSize: "14pt", 
-            color: "#AB191F",
+            color: "secondaryColor",
             padding: "0 0 0 25px",
             margin: "0 0 10px 0",
         },
         livingHabit: {
             margin: "10px 0 5px 0",
             fontSize: "12pt",
-            color: "black"
+            color: "textColor"
         },
     }
 
-    const inputBaseSX = {
-        margin: "0 0 10px 25px", 
-        width:"200px", 
-        height: "35px",
-        borderRadius: "5px",
-        border: "2px solid #AB191F",
-        padding: "5px",
-        "&:hover": {
-            border: "2px solid #AB191F",
-            boxShadow:"0px 0px 3px 3px rgba(0, 0, 0, .1)", 
-        }
-    }
 
     const radioSX = {
-        color: "#AB191F",
+        color: "secondaryColor",
         '&.Mui-checked': {
-        color: "#AB191F",
+        color: "secondaryColor",
         },
     }
 
@@ -234,19 +215,17 @@ const CoopmatesView = ({ coopmate, coopmatesArr, username, userData  }) => {
                 onMouseLeave={handleLeave}
                 sx={{
                     ":hover": {
-                        bgcolor: "#AB191F",
-                        color: "#f5ebe0",
+                        bgcolor: "secondaryColor",
+                        color: theme.palette.type === 'light' ? "primaryColor" : "textColor",
                         cursor: "pointer",
                     },
-                    backgroundColor: "#f5ebe0",
-                    color: "#AB191F",
+                    backgroundColor: "primaryColor",
+                    boxShadow: theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 3px rgba(245, 235, 224, .1)", 
+                    color: theme.palette.type === 'light' ? "secondaryColor" : "textColor",
                     width:  "250px",
                     height: "225px",
-                    marginBottom: "20px",
-                    marginRight: "20px",
-                    marginLeft:"20px",
+                    margin: "0 20px 20px 20px",
                     borderRadius: "10px",
-                    boxShadow:  "0px 0px 3px 3px rgba(0, 0, 0, .1)"
                 }}>
                 <CardActionArea sx={{alignContent:"center"}}>
                     {/* Profile Picture */}
@@ -259,8 +238,9 @@ const CoopmatesView = ({ coopmate, coopmatesArr, username, userData  }) => {
                             margin: "20px 50px 10px 50px",
                             borderRadius: "50%",
                             justifyContent: 'center',
-                            border: hovered === true ? "5px solid #f5ebe0" : "5px solid #AB191F",
-                            
+                            borderWidth: "5px",
+                            borderStyle: "solid",
+                            borderColor: hovered === true ? "primaryColor" : (theme.palette.type === "light" ? "secondaryColor" : "textColor"),
                         }}
                     />
 
@@ -300,37 +280,38 @@ const CoopmatesView = ({ coopmate, coopmatesArr, username, userData  }) => {
                             width: "70%",
                             maxWidth: 750,
                             maxHeight: 500,
-                            backgroundColor: "#F6EBE1"
+                            backgroundColor: "primaryColor",
+                            boxShadow: theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 3px rgba(245, 235, 224, .1)",
                         },
                     },
                 }}
             >
                 <DialogContent>
-                    <Box width='100%' style={styles.column1}>
-                        <Typography style={styles.header}> 
+                    <Box width='100%' sx={styles.column1}>
+                        <Typography sx={styles.header}> 
                             {"COOPMATE PROFILE"}
                         </Typography>
                         {/* profile picture, name, age, gender contact info */}
-                        <Container style={styles.box}> 
-                            <Box sx={{ flexGrow: 0, margin: "15px 50px 20px 20px"}}>
+                        <Container sx={styles.box}> 
+                            <Box sx={{ flexGrow: 0, margin: "15px 20px 20px 20px",}}>
                                 <IconButton sx={{ p: 0, }} >
                                     <Avatar alt="chickenpfp" src={pfp} style={{transform: `scale(1.90, 1.90)` }} />
                                 </IconButton>
                             </Box>
 
-                            <Typography style={Object.assign(styles.name, styles.boxPadding, {marginTop: "20px"})}> 
+                            <Typography color="textColor" style={Object.assign(styles.text, styles.boxPadding, {marginTop: "20px"})}> 
                                 {name}
                             </Typography >
-                            <Typography style={Object.assign(styles.age, {padding: "0 10px 0 20px", marginTop: "20px"})}> 
+                            <Typography color="secondaryColor" style={Object.assign(styles.text, {padding: "0 10px 0 20px", marginTop: "20px"})}> 
                                 {age}
                             </Typography >
                             {/* Renter Gender */}
-                            {gender === 'Male' ? <MaleIcon style={{fontSize: "16pt", color: "#AB191F", marginTop:"20px"}}/> : ''}
-                            {gender === 'Female' ? <FemaleIcon style={{fontSize: "16pt", color: "#AB191F", marginTop:"20px"}}/> : ''}
-                            {gender === 'Transgender' ? <TransgenderIcon style={{fontSize: "16pt", color: "#AB191F", marginTop:"20px"}}/> : ''}
+                            {gender === 'Male' ? <MaleIcon sx={{fontSize: "16pt", color: "secondaryColor", marginTop:"20px"}}/> : ''}
+                            {gender === 'Female' ? <FemaleIcon sx={{fontSize: "16pt", color: "secondaryColor", marginTop:"20px"}}/> : ''}
+                            {gender === 'Transgender' ? <TransgenderIcon sx={{fontSize: "16pt", color: "seconaryColor", marginTop:"20px"}}/> : ''}
                         </Container>
 
-                        <Typography style={styles.subheader}> 
+                        <Typography sx={styles.subheader}> 
                             {"Contact info"}
                         </Typography >
                         <Typography sx={styles.contact}>
@@ -340,20 +321,20 @@ const CoopmatesView = ({ coopmate, coopmatesArr, username, userData  }) => {
                             {phoneNumber}
                         </Typography>
                     </Box>
-                    <Box width='100%' style={styles.column2}>
-                        <Container style={styles.box}>
-                            <Typography style={styles.header}> 
+                    <Box width='100%' sx={styles.column2}>
+                        <Container sx={styles.box}>
+                            <Typography sx={styles.header}> 
                                 {"LIVING PREFERENCES"}
                             </Typography >
                         </Container>
                         <Container style={styles.box} sx={{marginTop:"-10px"}}>
                             <Container style={{float: "left", width: "55%"}}>
-                                <Typography style={styles.livingHabit}>{"Pets"}</Typography>
-                                <Typography style={styles.livingHabit}>{"Smoke"}</Typography>
-                                <Typography style={styles.livingHabit}>{"Studious"}</Typography>
-                                <Typography style={styles.livingHabit}>{"Cleanliness"}</Typography>
-                                <Typography style={styles.livingHabit}>{"Guests frequency"}</Typography>
-                                <Typography style={styles.livingHabit}>{"Sleep schedule"}</Typography>
+                                <Typography sx={styles.livingHabit}>{"Pets"}</Typography>
+                                <Typography sx={styles.livingHabit}>{"Smoke"}</Typography>
+                                <Typography sx={styles.livingHabit}>{"Studious"}</Typography>
+                                <Typography sx={styles.livingHabit}>{"Cleanliness"}</Typography>
+                                <Typography sx={styles.livingHabit}>{"Guests frequency"}</Typography>
+                                <Typography sx={styles.livingHabit}>{"Sleep schedule"}</Typography>
                             </Container>
                             <Container style={{float: "right", width: "45%"}}>
                                 {/* Pet */}
