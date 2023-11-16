@@ -5,7 +5,6 @@ import MainPage from "./pages/MainPage";
 import RenterPage from "./pages/RenterPage";
 import PropertyManagerPage from "./pages/ProperyManagerPage";
 import RenterCreateAccountPage from "./pages/RenterCreateAccountPage";
-import MyCoopmatesPage from "./pages/MyCoopmatesPage";
 import MyCoopsPage from "./pages/MyCoopsPage";
 import LoginPage from "./pages/LoginPage"
 import GlobalStyles from "@mui/material/GlobalStyles";
@@ -71,9 +70,9 @@ const lightTheme = {
   },
   palette: {
       type: "light",
-      primaryColor: '#F6EBE1', // beige
-      secondaryColor: '#AB191F', // red
-      textColor: '#000000', // black
+      primaryColor: '#F6EBE1',
+      secondaryColor: '#AB191F',
+      textColor: '#000000',
       hoverColor: "#F6EBE1",
       textFieldBorder: "black",
   },
@@ -116,9 +115,9 @@ const darkTheme = {
   },
   palette: {
       type: "dark",
-      primaryColor: '#18100e', // brown
-      secondaryColor: '#962c1e', // orange
-      textColor: '#F6EBE1', // beige
+      primaryColor: '#18100e',
+      secondaryColor: '#962c1e',
+      textColor: '#F6EBE1',
       hoverColor: "#F6EBE1",
       textFieldBorder: "#962c1e",
   },
@@ -131,6 +130,7 @@ class App extends React.Component {
 
   constructor(props) {
     super(props);
+    console.log(localStorage.getItem("darkMode"));
     this.state = {
       apiResponse: "",
       isAuthenticated: false,
@@ -224,8 +224,13 @@ class App extends React.Component {
   };
 
   render() {
-    
-    const { isAuthenticated, isAuthenticatedAdmin, userType, darkMode } = this.state;
+    var darkMode
+    if (localStorage.getItem("darkMode") != null) {
+        localStorage.getItem("darkMode") === "light" ? darkMode = false : darkMode = true
+    } else {
+        darkMode = this.state.darkMode;
+    }
+    const { isAuthenticated, isAuthenticatedAdmin, userType } = this.state;
     let theme = darkMode ? createTheme(darkTheme) : createTheme(lightTheme);
     //const theme = useTheme();
     const pathname = window.location.pathname
@@ -235,7 +240,16 @@ class App extends React.Component {
     const showAppBarMain = pathname !== "/Admin" && isAuthenticated;
 
     const faviconPath = "favicon.ico";
-
+    const handleDarkMode = () => {
+      this.setState({darkMode: !this.state.darkMode})
+      console.log(this.state.darkMode)
+      if (darkMode === false) {
+        localStorage.setItem("darkMode", "dark");
+      } else {
+        localStorage.setItem("darkMode", "light")
+      }
+      console.log(localStorage.getItem("darkMode"))
+    }
     return (
       
       <HelmetProvider>
@@ -270,7 +284,7 @@ class App extends React.Component {
               // if login is false, appbar only has login/signup button
             }
             <IconButton 
-              onClick={() => this.setState({darkMode: !this.state.darkMode})}
+              onClick={handleDarkMode}
               sx={{position: "absolute", 
                 zIndex: 5,
                 textALign: "right",
@@ -362,7 +376,6 @@ class App extends React.Component {
                 <Route path="/AdminVerifyPage" element={<AdminVerifyPage />} />
                 <Route path="/AdminDenyPage" element={<AdminDenyPage />} />
                 <Route path="/Coopmates" element={<CoopmatesPage />} />
-                <Route path="/MyCoopmates" element={<MyCoopmatesPage />} />
                 <Route path="/CompanyPage" element={<PropertyManagerPublicPage />} />
                 <Route path="/Admin" element={<AdminPage />} />
                 <Route path="/ResetPW/:token" element={<ResetPWPage />} />
