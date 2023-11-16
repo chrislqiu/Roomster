@@ -5,6 +5,7 @@ import MainPage from "./pages/MainPage";
 import RenterPage from "./pages/RenterPage";
 import PropertyManagerPage from "./pages/ProperyManagerPage";
 import RenterCreateAccountPage from "./pages/RenterCreateAccountPage";
+import MyCoopmatesPage from "./pages/MyCoopmatesPage";
 import MyCoopsPage from "./pages/MyCoopsPage";
 import LoginPage from "./pages/LoginPage"
 import GlobalStyles from "@mui/material/GlobalStyles";
@@ -221,6 +222,7 @@ class App extends React.Component {
                 <Route path="/AdminVerifyPage" element={<AdminVerifyPage />} />
                 <Route path="/AdminDenyPage" element={<AdminDenyPage />} />
                 <Route path="/Coopmates" element={<CoopmatesPage />} />
+                <Route path="/MyCoopmates" element={<MyCoopmatesPage />} />
                 <Route path="/CompanyPage" element={<PropertyManagerPublicPage />} />
                 <Route path="/Admin" element={<AdminPage />} />
                 <Route path="/ResetPW/:token" element={<ResetPWPage />} />

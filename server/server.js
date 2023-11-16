@@ -83,17 +83,6 @@ app.post('/sendManagerProfile', async (req, res) => {
   updatedCompany.companyInfo = updatedCompanyInfo
   await updatedCompany.save()
 
-
-  // var updatedManager = new Manager({
-  //   username: manager.username,
-  //   password: manager.password,
-  //   isVerified: manager.isVerified,
-  //   name: req.body.name,
-  //   email: req.body.email,
-  //   phone: req.body.phone,
-  //   bio: req.body.bio,
-  //   company: updatedCompany
-  // })
   const update = await Manager.findOneAndUpdate({username: username}, {name: req.body.name, email:req.body.email, phone: req.body.phone, bio:req.body.bio, company: updatedCompany}, {new: true})
   
   await update.save()
@@ -108,7 +97,12 @@ app.post('/sendManagerProfile', async (req, res) => {
 
 app.post('/sendRenterProfile', async (req,res) => {
   const data = req.body.renterInfo
-  var renter = await Renter.findOne({username: req.body.username})
+  const token = req.cookies.access_token
+  const decoded = jwt.verify(token, secretKey)
+  const username = decoded.username
+  var renter = await Renter.findOne({username: username})
+  console.log(data)
+
 
   const updatedLivingPref = {
       pets: data.livingPreferences.pets,
@@ -120,16 +114,18 @@ app.post('/sendRenterProfile', async (req,res) => {
           from: data.livingPreferences.sleepSchedule.from,
           to: data.livingPreferences.sleepSchedule.to
       }
+
   }
 
-  const oldRenterInfo = renter.renterInfo
+  const oldRenterInfo = renter
   const updatedRenterInfo = new RenterInfo({
     name: data.name,
     age: data.age,
     email: data.email,
     phone: data.phone,
     pfp: data.pfp,
-    livingPreferences: updatedLivingPref
+    livingPreferences: updatedLivingPref,
+    favCoops: data.favCoops
   })
 
   var updatedRenter = new Renter({
@@ -140,7 +136,10 @@ app.post('/sendRenterProfile', async (req,res) => {
     renterInfo: updatedRenterInfo,
     coopmates: renter.coopmates
   })
-  renter = updatedRenter
+
+  const update = await Renter.findOneAndUpdate({username:username}, {findingCoopmates: req.body.findingCoopmates, renterInfo: updatedRenterInfo, coopmates: renter.coopmates}, {new: true})
+  console.log(update)
+  // renter = updatedRenter
 
   const coopmates = await Renter.find({'coopmates': {$elemMatch: {'renterInfo.name': update.renterInfo.name, 'renterInfo.email': update.renterInfo.email}}})
   coopmates.forEach(async function(mate) {
@@ -149,7 +148,7 @@ app.post('/sendRenterProfile', async (req,res) => {
     await mate.save()
   })
 
-  await renter.save()
+  await update.save()
   .then((result) => {
     res.send(result);
   })
@@ -180,17 +179,15 @@ app.post('/sendProperty', async (req,res) => {
       utilities: data.propertyInfo.utilities  
   }
   var newProperty;
+  
   const company = await Company.findOne({"companyInfo.name": manager.company.companyInfo.name})
   if (data.propertyInfo._id != '') {
     const updatePropertyInfo = await PropertyInfo.findByIdAndUpdate(data.propertyInfo._id, newInfo, {new: true})
     //updatePropertyInfo.save();
     //console.log(updatePropertyInfo)
     newProperty = await Property.findOneAndUpdate({'propertyInfo._id':data.propertyInfo._id}, {propertyInfo: updatePropertyInfo}, {new: true})
-    console.log(company.myCoops)
     company.myCoops.pull(data.propertyInfo._id);
     company.myCoops.push(updatePropertyInfo)
-    console.log("-------------")
-    console.log(company.myCoops)
   } else {
     //console.log(req.body)
     const newPropertyInfo = new PropertyInfo(newInfo)

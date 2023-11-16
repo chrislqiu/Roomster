@@ -181,6 +181,8 @@ const RoomsterAppBar = ({ login, userType }) => {
                                                 navigate("/Coopmates")
                                             } else if (page === "My Tours") {
                                                 navigate("/MyTours")
+                                            //} else if (page === "My Coopmates") {
+                                            //  navigate("/MyCoopmates")
                                             } else if (page === "Log Out") {
                                                 handleLogout();
                                             }
