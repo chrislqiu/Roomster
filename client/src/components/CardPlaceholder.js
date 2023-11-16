@@ -1,5 +1,5 @@
 import { Card, CardContent, CardMedia, CardActionArea, Divider, Box} from '@mui/material';
-import { Skeleton } from "@mui/joy";
+import { Skeleton } from "@mui/material";
 import React, { useState, useEffect } from "react";
 
 const CardPlaceholder = ({isCoopmateCard}) => {

@@ -7,13 +7,28 @@ import DialogContent from '@mui/material/DialogContent';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
+import { createTheme, ThemeProvider, useTheme } from '@mui/material/styles';
 
 const ChangePasswordView = ({ text }) => {
+    const theme = useTheme();
     const [open, setOpen] = React.useState(false);
     const [currentPassword, setCurrentPassword] = React.useState('');
     const [newPassword, setNewPassword] = React.useState('');
     const [confirmPassword, setConfirmPassword] = React.useState('');
     const [passwordChangeStatus, setPasswordChangeStatus] = React.useState(null);
+
+    const textfieldSX = {
+        input: {
+            color: "textColor",
+            "&::placeholder": {
+                opacity: 0.7,
+                color: "textColor",
+                },
+        },
+        "& fieldset": { border: 'none', },
+        boxShadow: theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 3px rgba(245, 235, 224, .1)",
+        marginBottom: "15px"
+    }
 
     const handleOpen = () => {
         setOpen(true);
@@ -28,7 +43,7 @@ const ChangePasswordView = ({ text }) => {
         if (newPassword.length < 8) {
             setPasswordChangeStatus({
                 message: 'Please make sure your password is at least 8 characters',
-                color: '#AB191F',
+                color: 'secondaryColor',
             });
             return;
         }
@@ -36,7 +51,7 @@ const ChangePasswordView = ({ text }) => {
         if (newPassword !== confirmPassword) {
             setPasswordChangeStatus({
                 message: 'New password and confirm password do not match',
-                color: '#AB191F',
+                color: 'secondaryColor',
             });
             return;
         }
@@ -63,13 +78,13 @@ const ChangePasswordView = ({ text }) => {
             } else {
                 setPasswordChangeStatus({
                     message: 'Current password is incorrect',
-                    color: '#AB191F', 
+                    color: 'secondaryColor', 
                 });
             }
         } catch (error) {
             setPasswordChangeStatus({
                 message: 'Error changing password',
-                color: '#AB191F', 
+                color: 'secondaryColor', 
             });
         }
     };
@@ -81,11 +96,14 @@ const ChangePasswordView = ({ text }) => {
                 onClick={handleOpen}
                 sx={{
                     ":hover": {
-                        bgcolor: "#F6EBE1",
-                        color: "#AB191F",
+                        backgroundColor: "secondaryColor",
+                        border: "none",
+                        boxShadow: theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 3px rgba(245, 235, 224, .1)",
                     },
-                    backgroundColor: "#AB191F",
-                    color: "#F6EBE1",
+                    border: "none",
+                    backgroundColor: "secondaryColor", 
+                    color: theme.palette.type === "light" ? "primaryColor" : "textColor",
+                    fontWeight: 500,
                 }}
             >
                 {text}
@@ -100,58 +118,47 @@ const ChangePasswordView = ({ text }) => {
                             width: "100%",
                             maxWidth: "400px",
                             maxHeight: "1000px",
-                            bgcolor: '#F6EBE1',
+                            bgcolor: 'primaryColor',
+                            boxShadow: theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 3px rgba(245, 235, 224, .1)",
                         },
                     },
                 }}
             >
                 <DialogTitle sx={{ fontWeight: 600, marginBottom: "-20px" }}>
-                    <Typography variant="inherit" color="inherit">
+                    <Typography variant="inherit" color="textColor">
                         Change Password
                     </Typography>
                 </DialogTitle>
-                <Divider variant="middle" sx={{ borderBottomWidth: 3, color: "#AB191F", backgroundColor: "#AB191F", marginY: 1 }} />
+                <Divider variant="middle" sx={{ borderBottomWidth: 3, backgroundColor: "secondaryColor", marginY: 1, marginBottom:"0px" }} />
 
                 <DialogContent sx={{ maxWidth: "400px" }}>
                     <Box style={{ maxWidth: "400px", justifyContent: "center" }} >
                         <TextField
-                            label="Current Password"
+                            placeholder="Current Password"
                             id="current-password-textfield"
                             variant="outlined"
                             fullWidth
-                            sx={{
-                                boxShadow: "3",
-                                margin: "dense",
-                                marginBottom: "15px",
-                            }}
+                            sx={textfieldSX}
                             type="password"
                             value={currentPassword}
                             onChange={(e) => setCurrentPassword(e.target.value)}
                         />
                         <TextField
-                            label="New Password"
+                            placeholder="New Password"
                             id="new-password-textfield"
                             variant="outlined"
                             fullWidth
-                            sx={{
-                                boxShadow: "3",
-                                margin: "dense",
-                                marginBottom: "15px",
-                            }}
+                            sx={textfieldSX}
                             type="password"
                             value={newPassword}
                             onChange={(e) => setNewPassword(e.target.value)}
                         />
                         <TextField
-                            label="Confirm Password"
+                            placeholder="Confirm Password"
                             id="confirm-password-textfield"
                             variant="outlined"
                             fullWidth
-                            sx={{
-                                boxShadow: "3",
-                                margin: "dense",
-                                marginBottom: "15px",
-                            }}
+                            sx={textfieldSX}
                             type="password"
                             value={confirmPassword}
                             onChange={(e) => setConfirmPassword(e.target.value)}
@@ -167,22 +174,14 @@ const ChangePasswordView = ({ text }) => {
                             onClick={handleChangePassword}
                             sx={{
                                 ":hover": {
-                                    borderColor: "black",
-                                    bgcolor: "#F6EBE1",
-                                    color: "black",
-                                    borderWidth: 1.5,
-                                    width: "45%",
-                                    fontWeight: 600,
+                                    backgroundColor: "secondaryColor",
+                                    border: "none",
+                                    boxShadow: theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 3px rgba(245, 235, 224, .1)",
                                 },
-                                borderColor: "black",
-                                bgcolor: "#AB191F",
-                                color: "#F6EBE1",
-                                borderWidth: 1.5,
-                                width: "45%",
-                                fontWeight: 600,
-                                boxShadow: 5,
-                                justifyContent: "center",
-                                float: "right",
+                                border: "none", float: "right",
+                                backgroundColor: "secondaryColor", 
+                                color: theme.palette.type === "light" ? "primaryColor" : "textColor",
+                                fontWeight: 500,
                             }}
                             variant="outlined"
                         >

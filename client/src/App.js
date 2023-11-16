@@ -10,10 +10,11 @@ import MyCoopsPage from "./pages/MyCoopsPage";
 import LoginPage from "./pages/LoginPage"
 import GlobalStyles from "@mui/material/GlobalStyles";
 import { BrowserRouter, Routes, Route } from "react-router-dom"
-import { ThemeProvider, createTheme } from "@mui/material/styles";
-import { Divider, Box, Link } from "@mui/material";
+import { Grid, Switch, Divider, Box, Link, Paper, IconButton } from "@mui/material";
 import theredthing from './images/theredthing.png'
 import logo from './images/logo2.png'
+import logoDarkMode from './images/logo-darkmode.png'
+import theredthingDarkMode from './images/theredthing-darkmode.png'
 import RoomsterAppBar from "./components/AppBar";
 import FavCoopsPage from "./pages/FavCoopsPage";
 import Settings from "./pages/Settings"
@@ -32,38 +33,103 @@ import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import MyToursPage from "./pages/MyToursPage";
+import { createTheme, ThemeProvider, useTheme } from '@mui/material/styles';
+import DarkMode from '@mui/icons-material/DarkMode';
+import LightMode from '@mui/icons-material/LightMode';
 
-const styles = {
-  background: {
-    position: "absolute",
-    width: "100%",
-    minHeight: "100vh",
-    margin: "0",
-    padding: "0",
-    backgroundColor: "#f5ebe0",
-    zIndex: "-1",
-  },
-  logo: {
-    marginTop: "-50px",
-    width: '35%',
-    zIndex: "0",
-  },
-  theredthing: {
-    position: "absolute",
-    width: "100%",
-  }
-};
-
-const theme = createTheme({
-  palette: {
-    background: {
-      default: "#F6EBE1"
+const font =  "'Lato', sans-serif";
+const lightTheme = {
+  components: {
+    MuiFormControlLabel: {
+      styleOverrides: {
+        label: {
+          color: "#000000"
+        }
+      },
+    },
+    MuiSwitch: {
+      styleOverrides: {
+        switchBase: {
+          // Controls default (unchecked) color for the thumb
+          color: "#AB191F",
+        },
+        colorPrimary: {
+          "&.Mui-checked": {
+            // Controls checked color for the thumb
+            color: "#AB191F"
+          }
+        },
+        track: {
+          opacity: 0.2,
+          backgroundColor: "#AB191F",
+          ".Mui-checked.Mui-checked + &": {
+            opacity: 0.7,
+            backgroundColor: "#AB191F"
+          }
+        }
+      }
     }
+  },
+  palette: {
+      type: "light",
+      primaryColor: '#F6EBE1', // beige
+      secondaryColor: '#AB191F', // red
+      textColor: '#000000', // black
+      hoverColor: "#F6EBE1",
+      textFieldBorder: "black",
+  },
+  typography: {
+    color: "#000000",
+    fontFamily: font,
   }
-});
-
+}
+const darkTheme = {
+  components: {
+    MuiFormControlLabel: {
+      styleOverrides: {
+        label: {
+          color: "#F6EBE1"
+        }
+      },
+    },
+    MuiSwitch: {
+      styleOverrides: {
+        switchBase: {
+          // Controls default (unchecked) color for the thumb
+          color: "#962c1e",
+        },
+        colorPrimary: {
+          "&.Mui-checked": {
+            // Controls checked color for the thumb
+            color: "#962c1e"
+          }
+        },
+        track: {
+          opacity: 0.2,
+          backgroundColor: "#962c1e",
+          ".Mui-checked.Mui-checked + &": {
+            opacity: 0.7,
+            backgroundColor: "#962c1e"
+          }
+        }
+      }
+    }
+  },
+  palette: {
+      type: "dark",
+      primaryColor: '#18100e', // brown
+      secondaryColor: '#962c1e', // orange
+      textColor: '#F6EBE1', // beige
+      hoverColor: "#F6EBE1",
+      textFieldBorder: "#962c1e",
+  },
+  typography: {
+      fontFamily: font,
+  }
+}
 
 class App extends React.Component {
+
   constructor(props) {
     super(props);
     this.state = {
@@ -72,7 +138,8 @@ class App extends React.Component {
       isAuthenticatedAdmin: false,
       isPopupOpen: false,
       popupMessage: "",
-      userType: ""
+      userType: "",
+      darkMode: false
     };
   }
 
@@ -157,10 +224,11 @@ class App extends React.Component {
     }
   };
 
-
-
   render() {
-    const { isAuthenticated, isAuthenticatedAdmin, userType } = this.state;
+    
+    const { isAuthenticated, isAuthenticatedAdmin, userType, darkMode } = this.state;
+    let theme = darkMode ? createTheme(darkTheme) : createTheme(lightTheme);
+    //const theme = useTheme();
     const pathname = window.location.pathname
     const showAppBar = pathname !== "/Admin" || isAuthenticatedAdmin;
 
@@ -170,15 +238,7 @@ class App extends React.Component {
     const faviconPath = "favicon.ico";
 
     return (
-
-      // <ThemeProvider theme={theme}>
-      //   <GlobalStyles
-      //     sx={{
-      //       body: { backgroundColor: "#F6EBE1" }
-      //     }}
-      //   />
-
-
+      
       <HelmetProvider>
         <Helmet>
           <title>Roomster</title>
@@ -187,24 +247,106 @@ class App extends React.Component {
 
         </Helmet>
 
+        <ThemeProvider theme={theme}>
+          <Paper sx={{
+            backgroundColor: "primaryColor",
+            width: "100%",
+            minHeight: "100vh",
+            margin: "0",
+            padding: "0",
+            zIndex: "-1",
+            justifyContent: "center"
+          }}>
+          <div style={{ zIndex: "0" }}>
+              <img src={darkMode ? theredthingDarkMode : theredthing}
+              style={{
+                  position: "absolute",  
+                  width: "100%",
+              }}/>  
+          </div>
+            
+          <BrowserRouter>
+            {
+              // if login is true (for now), app bar with login buttons will show
+              // if login is false, appbar only has login/signup button
+            }
+            <IconButton 
+              onClick={() => this.setState({darkMode: !this.state.darkMode})}
+              sx={{position: "absolute", 
+                zIndex: 5,
+                textALign: "right",
+                margin: "15px 0 0 1075px",
+                color:'primaryColor', 
+                ":hover": 
+                {backgroundColor:'primaryColor', 
+                color: 'secondaryColor'}
+              }}
+              >
+              {darkMode ? 
+              <LightMode/>
+              :
+              <DarkMode/>
+              }
+            </IconButton>
 
-        <html>
-          <body style={styles.background}>
+            {showAppBar ? <RoomsterAppBar login={showAppBarAdmin || showAppBarMain} userType={userType}/> : <div style={{ height: '64px' }}></div>}
+            
+            <div style={{ textAlign: "center", zIndex: "3", position: "relative", marginBottom: "50px" }}>
+              <Link href="/Home">
+                  <img className="logo" src={darkMode ? logoDarkMode : logo} style={{width: '35%', zIndex: "0",}}/>
+              </Link>
+            </div>
+
+            <ToastContainer />
+            <Routes>
+              <Route path="/" element={<MainPage login={isAuthenticated} />} />
+              <Route path="/Home" element={<MainPage login={isAuthenticated} />} />
+              <Route path="/RProfile" element={<RenterPage />} />
+              <Route path="/MProfile" element={<PropertyManagerPage />} />
+              <Route path="/FavCoops" element={<FavCoopsPage login={isAuthenticated} />} />
+              <Route path="/MyCoops" element={<MyCoopsPage login={isAuthenticated} />} />
+              <Route path="/Login" element={<LoginPage />} />
+              <Route path="/RCreate" element={<RenterCreateAccountView />} />
+              <Route path="/MCreate" element={<ManagerCreateAccountView />} />
+              <Route path="/Settings" element={<Settings />} />
+              <Route path="/VerifyPage" element={<VerifyPage />} />
+              <Route path="/AdminVerifyPage" element={<AdminVerifyPage />} />
+              <Route path="/AdminDenyPage" element={<AdminDenyPage />} />
+              <Route path="/Coopmates" element={<CoopmatesPage />} />
+              <Route path="/CompanyPage" element={<PropertyManagerPublicPage />} />
+              <Route path="/Admin" element={<AdminPage />} />
+              <Route path="/ResetPW/:token" element={<ResetPWPage />} />
+              <Route path="/SetAdminPW/:token" element={<SetAdminPWPage />} />
+            </Routes>
+            
+          </BrowserRouter>
+
+          </Paper>
+          
+        </ThemeProvider>
+        
+        
+          
+
+          
+          {/*<body style={styles.background}>
             <div style={{ zIndex: "0" }}>
               <img className="theredthing" src={theredthing} style={styles.theredthing}></img>
-            </div>
+    </div> 
             <BrowserRouter>
               {
                 // if login is true (for now), app bar with login buttons will show
                 // if login is false, appbar only has login/signup button
               }
-
+              <Layout>
               {showAppBar ? <RoomsterAppBar login={showAppBarAdmin || showAppBarMain} userType={userType}/> : <div style={{ height: '64px' }}></div>}
+              {/*
               <div style={{ textAlign: "center", zIndex: "3", position: "relative", marginBottom: "50px" }}>
                 <Link href="/Home">
                   <img className="logo" src={logo} style={styles.logo}></img>
                 </Link>
               </div>
+              
               <ToastContainer />
               <Routes>
                 <Route path="/" element={<MainPage login={isAuthenticated} />} />
@@ -228,9 +370,11 @@ class App extends React.Component {
                 <Route path="/ResetPW/:token" element={<ResetPWPage />} />
                 <Route path="/SetAdminPW/:token" element={<SetAdminPWPage />} />
               </Routes>
+              </Layout>
             </BrowserRouter>
-          </body>
-        </html>
+          
+            */}
+      
       </HelmetProvider >
     );
   }

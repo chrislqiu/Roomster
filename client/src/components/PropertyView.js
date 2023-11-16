@@ -24,6 +24,7 @@ import { faBuildingCircleCheck } from '@fortawesome/free-solid-svg-icons'
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ScheduleTourView from './ScheduleTourView';
+import { createTheme, ThemeProvider, useTheme } from '@mui/material/styles';
 
 
 /* 
@@ -182,6 +183,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
             margin: "15px 0 15x 0",
         }
     }
+
     const navigate = useNavigate()
     const openCompanyPage = (property) => {
         navigate({
@@ -341,7 +343,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
         }
       }, []);
     
-
+    const theme = useTheme();
 
     return (
         <React.Fragment>
@@ -356,19 +358,21 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
                 onMouseLeave={handleLeave}
                 sx={{
                     ":hover": {
-                        bgcolor: "#AB191F",
-                        color: "#f5ebe0",
+                        bgcolor: "secondaryColor",
+                        color: theme.palette.type === 'light' ? "primaryColor" : "textColor",
                         cursor: "pointer",
                     },
-                    backgroundColor: "#f5ebe0",
-                    color: "#AB191F",
+                    backgroundColor: "primaryColor",
+                    color: theme.palette.type === 'light' ? "secondaryColor" : "textColor",
                     width: featured === true ? "230px" : "250px",
                     height: featured === true ? "280px" : "300px",
                     marginBottom: "20px",
                     marginRight: "20px",
-                    border: featured === true ? "3px solid #AB191F" : "none",
+                    borderStyle: "solid",
+                    borderWidth: featured === true ? "3px" : "0",
+                    borderColor: featured === true ? (theme.palette.type === 'light' ? "secondaryColor" : "textColor") : "",
                     borderRadius: "10px",
-                    boxShadow: featured === true ? "none" : "0px 0px 3px 3px rgba(0, 0, 0, .1)"
+                    boxShadow: !featured ? (theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 2px rgba(245, 235, 224, .3)") : "none" 
                 }}>
                 <CardActionArea>
                     <CardMedia
@@ -385,7 +389,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
                     <CardContent>
                         <div style={{ display: 'flex', alignItems: 'center', marginLeft: 0 }}>
 
-                            <Typography variant="h6" style={{ margin: "-20px 0 0px 0" }}
+                            <Typography variant="h6" sx={{ margin: "-20px 0 0px 0"}}
                             > {propertyName.split(":")[0]} </Typography>
                             {/* {featured === true ? <StarIcon style={{margin: "-20px 0 0px 2.5"}} /> : ''} */}
                             {/* {favCoops === true ? <FavoriteIcon style={{margin: "-20px 0 0px 2.5"}} sx={{color: "#AB191F", ":hover": {color: "#F6EBE1",},}}/> : ''} */}
@@ -395,11 +399,16 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
                             {myCoops === true ? <BookmarkIcon style={{ margin: "-22px 0 0 5px", fontSize: "15pt" }} /> : ''}
 
                         </div>
-                        <Typography variant="body2" style={{ margin: "0 0 5px 0" }}>{address}</Typography>
+                        <Typography variant="body2" sx={{ margin: "0 0 5px 0"}}>{address}</Typography>
                         <Typography variant="body2">{beds} bedroom </Typography>
-                        <Typography variant="body2" style={{ marginBottom: "5px" }}>{baths} bathroom</Typography>
-                        <Divider style={styles.divider}></Divider>
-                        <Typography variant="body1" style={{ marginTop: "5px", textAlign: "right", fontWeight: "500" }}> ${cost} per month</Typography>
+                        <Typography variant="body2" sx={{ marginBottom: "5px"}}>{baths} bathroom</Typography>
+                        <Divider sx={{
+                            height: "3px",
+                            backgroundColor: hovered === true ? (theme.palette.type === 'light' ? "primaryColor" : "textColor") : "secondaryColor",
+                            padding: "0",
+                            margin: "15px 0 15x 0",
+                        }}></Divider>
+                        <Typography variant="body1" sx={{ marginTop: "5px", textAlign: "right", fontWeight: "500", }}> ${cost} per month</Typography>
 
                     </CardContent>
                 </CardActionArea>
@@ -418,7 +427,8 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
                             width: "70%",
                             maxWidth: 750,
                             maxHeight: 500,
-                            backgroundColor: "#F6EBE1",
+                            backgroundColor: "primaryColor",
+                            boxShadow: theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 3px rgba(245, 235, 224, .1)",
                         },
                     },
                 }}
@@ -430,13 +440,11 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
                          * AspectRatio controls the size of the image
                          */
                     }
-                    <AspectRatio minHeight={100} maxHeight={200} minWidth={300} maxWidth={400}>
-                        <img
+                        <img style={{minHeight: "100px", maxHeight: "200px", minWidth: "300px", width: "700px", objectFit:"cover", borderRadius: "5px"}}
                             src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&w=350&dpr=2"
                             srcSet="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&w=350&dpr=2 2x"
                             alt=""
                         />
-                    </AspectRatio>
                     {
                         /*
                          * Stack direction row has each text 'chunk'
@@ -449,18 +457,19 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
                                 componentsProps={{
                                     tooltip: {
                                         sx: {
-                                            bgcolor: 'rgba(171, 25, 31, 0.9)',
-                                            color: "#F6EBE1"
+                                            bgcolor: theme.palette.type === "light" ? 'rgba(171, 25, 31, 0.9)' : "rgba(245, 235, 224, .8)",
+                                            color: "primaryColor"
                                         },
                                     },
                                 }}
                             >
-                                <Link onClick={openCompanyPage} underline="hover" color="black" sx={{ fontWeight: 600, "&:hover": { cursor: "pointer", color: "#AB191F" } }}>
+                                <Link onClick={openCompanyPage} underline="hover" color="textColor" sx={{ fontWeight: 600, "&:hover": { cursor: "pointer", color: "secondaryColor" } }}>
                                     {propertyName}
                                 </Link>
                             </Tooltip>
                             <Typography
                                 sx={{
+                                    color: "textColor",
                                     fontWeight: 300,
                                     variant: "body2",
                                     fontStyle: 'italic',
@@ -471,15 +480,17 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
                             </Typography>
                             <Typography
                                 sx={{
+                                    color: "textColor",
                                     fontWeight: 300,
                                     variant: "body2",
                                 }}
                             >
                                 {beds} {beds > 1 ? 'beds' : 'bed'}, {baths} {baths > 1 ? 'baths' : 'bath'}
                             </Typography>
-                            <Divider orientation='horizontal' width={150} sx={{ borderBottomWidth: 3, color: "#AB191F", backgroundColor: "#AB191F", marginY: 1 }} />
+                            <Divider orientation='horizontal' width={150} sx={{ borderBottomWidth: 3, backgroundColor: "secondaryColor", marginY: 1 }} />
                             <Typography
                                 sx={{
+                                    color: "textColor",
                                     fontWeight: 500,
                                     variant: "body2",
                                 }}
@@ -505,12 +516,13 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
                             {requestTourOpen && <ScheduleTourView data={data}/>}
 
                         </Box>
-                        <Divider orientation={{ xs: 'horizontal', md: 'vertical', lg: 'vertical', xl: 'vertical' }} width={3} sx={{ borderBottomWidth: 3, color: "#AB191F", backgroundColor: "#AB191F", marginY: 2 }} />
+                        <Divider orientation={{ xs: 'horizontal', md: 'vertical', lg: 'vertical', xl: 'vertical' }} width={3} sx={{ borderBottomWidth: 3, backgroundColor: "secondaryColor", marginY: 2 }} />
 
                         {/* Amenitites */}
                         <Box width='600px' style={{ marginTop: "-5px", marginRight: "-25px" }} >
                             <Typography
                                 sx={{
+                                    color: "textColor",
                                     fontWeight: 600,
                                     marginTop: 1,
                                     marginLeft: "-25px",
@@ -522,6 +534,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
                             {amenities.map((amenity) => {
                                 return <List
                                     sx={{
+                                        color: "textColor",
                                         listStyleType: 'disc',
                                         listStylePosition: 'inside',
                                         marginLeft: "-40px",
@@ -529,19 +542,20 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
                                         marginBottom: "-25px"
                                     }}
                                 >
-                                    <ListItem sx={{ display: 'list-item' }}>
+                                    <ListItem sx={{color: "textColor", display: 'list-item' }}>
                                         {amenity}
                                     </ListItem>
                                 </List>
                             })}
 
                         </Box>
-                        <Divider orientation='verticle' width={3} sx={{ borderBottomWidth: 3, color: "#AB191F", backgroundColor: "#AB191F", marginY: 2 }} />
+                        <Divider orientation='verticle' width={3} sx={{ borderBottomWidth: 3, backgroundColor: "secondaryColor", marginY: 2 }} />
 
                         {/* Utilities */}
                         <Box width='600px' style={{ marginTop: "-5px", marginRight: "-25px" }} >
                             <Typography
                                 sx={{
+                                    color: "textColor",
                                     fontWeight: 600,
                                     marginTop: 1,
                                     marginRight: "5px",
@@ -554,6 +568,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
                             {pullUtilities}
                             <List
                                 sx={{
+                                    color: "textColor",
                                     listStyleType: 'disc',
                                     listStylePosition: 'inside',
                                     marginLeft: "-40px",
@@ -561,17 +576,18 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
                                     marginBottom: "-25px"
                                 }}
                             >
-                                <ListItem sx={{ display: 'list-item' }}>
+                                <ListItem sx={{ color: "textColor", display: 'list-item' }}>
                                     {utilities}
                                 </ListItem>
                             </List>
                         </Box>
 
-                        <Divider orientation='verticle' width={3} sx={{ borderBottomWidth: 3, color: "#AB191F", backgroundColor: "#AB191F", marginY: 2 }} />
+                        <Divider orientation='verticle' width={3} sx={{ borderBottomWidth: 3, backgroundColor: "secondaryColor", marginY: 2 }} />
 
                         <Box width='600px' style={{ marginTop: "-5px" }} >
                             <Typography
                                 sx={{
+                                    color: "textColor",
                                     fontWeight: 600,
                                     marginTop: 1,
                                     marginLeft: "-25px",
@@ -582,6 +598,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
                             </Typography>
                             <Typography
                                 sx={{
+                                    color: "textColor",
                                     fontWeight: 300,
                                     marginLeft: "-25px",
                                     variant: "body2",
@@ -589,7 +606,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
                             >
                                 Company Name {<br />}
                             </Typography>
-                            <Link href="https://riseonchauncey.com/" underline="always" color="#AB191F" marginLeft="-25px">
+                            <Link href="https://riseonchauncey.com/" underline="always" color="secondaryColor" marginLeft="-25px">
                                 {'Website'}
                             </Link>
                         </Box>
@@ -603,13 +620,13 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
                             componentsProps={{
                                 tooltip: {
                                     sx: {
-                                        bgcolor: 'rgba(171, 25, 31, 0.9)',
-                                        color: "#F6EBE1"
+                                        bgcolor: theme.palette.type === "light" ? 'rgba(171, 25, 31, 0.9)' : "rgba(245, 235, 224, .8)",
+                                        color: "primaryColor"
                                     },
                                 },
                             }}
                         >
-                            <IconButton sx={{ color: "#AB191F" }}>
+                            <IconButton sx={{ color: "secondaryColor" }}>
                                 <FontAwesomeIcon icon={faBuildingCircleCheck} />
                             </IconButton>
                         </Tooltip>
@@ -620,15 +637,14 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
                         <Button
                             sx={{
                                 ":hover": {
-                                    borderColor: "#F6EBE1", bgcolor: "#F6EBE1", color: "#AB191F",
-                                    borderWidth: 1.5
+                                    backgroundColor: "secondaryColor",
+                                    border: "none",
+                                    boxShadow: theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 3px rgba(245, 235, 224, .1)",
                                 },
-                                borderColor: "#AB191F", bgcolor: "#AB191F", color: "#F6EBE1",
-                                borderWidth: 1.5, width: "112px", height: "35px", fontWeight: 600, lineHeight: "11px",
-                                boxShadow: 5, float: "right", bottom: 20, right: 30,
-                                marginBottom: "30px",
-                                marginLeft: "210px",
-                                position: "absolute"
+                                border: "none",
+                                backgroundColor: "secondaryColor", 
+                                color: theme.palette.type === "light" ? "primaryColor" : "textColor",
+                                width: "100px", height: "35px", fontWeight: 600, lineHeight: "11px", float: "right", 
                             }}
                             onClick={handleEdit}
                             variant="outlined">{'EDIT'}
@@ -640,9 +656,17 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
                         admin === true ? (
                             // Admin view
                             <div sx={{ display: "flex", width: "100%" }}>
-                                <Tooltip title="Delete Property">
+                                <Tooltip title="Delete Property"
+                                componentsProps={{
+                                    tooltip: {
+                                        sx: {
+                                            bgcolor: theme.palette.type === "light" ? 'rgba(171, 25, 31, 0.9)' : "rgba(245, 235, 224, .8)",
+                                            color: "primaryColor"
+                                        },
+                                    },
+                                }}>
                                     <IconButton onClick={handleDeletePropertyAdmin}>
-                                        <DeleteOutlineIcon sx={{ color: "#AB191F" }} />
+                                        <DeleteOutlineIcon sx={{ color: "secondaryColor" }} />
                                     </IconButton>
                                 </Tooltip>
                                 <Tooltip title="Verify Property">
@@ -658,30 +682,38 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
                                 componentsProps={{
                                     tooltip: {
                                         sx: {
-                                            bgcolor: 'rgba(171, 25, 31, 0.9)',
-                                            color: '#F6EBE1'
+                                            bgcolor: theme.palette.type === "light" ? 'rgba(171, 25, 31, 0.9)' : "rgba(245, 235, 224, .8)",
+                                            color: "primaryColor"
                                         },
                                     },
                                 }}
                             >
                                 <IconButton size="large" onClick={handleFavorite}>
                                     {coopFavorited ? (
-                                        <FavoriteIcon sx={{ color: "#AB191F" }} />
+                                        <FavoriteIcon sx={{ color: "secondaryColor" }} />
                                     ) : (
-                                        <FavoriteBorderIcon sx={{ color: "#AB191F" }} />
+                                        <FavoriteBorderIcon sx={{ color: "secondaryColor" }} />
                                     )}
                                 </IconButton>
                             </Tooltip>
                         ) : isOwner === true && userType === "manager" ? (
                             // Owner view
                             <div>
-                            <Tooltip title="Delete Property">
+                            <Tooltip title="Delete Property"
+                            componentsProps={{
+                                tooltip: {
+                                    sx: {
+                                        bgcolor: theme.palette.type === "light" ? 'rgba(171, 25, 31, 0.9)' : "rgba(245, 235, 224, .8)",
+                                        color: "primaryColor"
+                                    },
+                                },
+                            }}>
                                 <IconButton onClick={handleDeleteProperty}>
-                                    <DeleteOutlineIcon sx={{ color: "#AB191F" }} />
+                                    <DeleteOutlineIcon sx={{ color: "secondaryColor" }} />
                                 </IconButton>
                             </Tooltip>
                             <IconButton size="large" disabled={true}>
-                                <FavoriteIcon  />
+                                <FavoriteIcon  sx={{color: theme.palette.type === "dark" ? "rgba(245, 235, 224, .8)" : ""}}/>
                             </IconButton>
                             </div>
                         ) : 
@@ -690,37 +722,29 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
                             componentsProps={{
                                 tooltip: {
                                     sx: {
-                                        bgcolor: 'rgba(171, 25, 31, 0.9)',
-                                        color: "#F6EBE1"
+                                        bgcolor: theme.palette.type === "light" ? 'rgba(171, 25, 31, 0.9)' : "rgba(245, 235, 224, .8)",
+                                        color: "primaryColor"
                                     },
                                 },
                             }}
                         >
                             <IconButton size="large" disabled={true}>
-                                <FavoriteIcon />
+                                <FavoriteIcon sx={{color: theme.palette.type === "dark" ? "rgba(245, 235, 224, .8)" : ""}}/>
                             </IconButton>
                         </Tooltip>
                         )
                     ) : (
                         // Not logged in view
-                        <Tooltip title="Saves"
-                            componentsProps={{
-                                tooltip: {
-                                    sx: {
-                                        bgcolor: 'rgba(171, 25, 31, 0.9)',
-                                        color: "#F6EBE1"
-                                    },
-                                },
-                            }}
-                        >
-                            <IconButton size="large" disabled={true}>
-                                <FavoriteIcon />
+                        <Tooltip title="Saves">
+                        <IconButton size="large" disabled={true} >
+                                <FavoriteIcon sx={{color: theme.palette.type === "dark" ? "rgba(245, 235, 224, .8)" : ""}}/>
                             </IconButton>
                         </Tooltip>
                     )}
                     
                     <Typography
                         style={{ 
+                            color: "textColor",
                             display: "flex",     
                             alignItems: "center",
                             margin: "0 5px 0 -10px",
