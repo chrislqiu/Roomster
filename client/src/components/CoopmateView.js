@@ -1,5 +1,4 @@
 import { CardActionArea, TextField } from '@mui/material';
-
 import { AspectRatio } from '@mui/joy';
 import Divider from '@mui/material/Divider';
 import { Stack } from '@mui/material';
@@ -10,7 +9,6 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import defaultPic from '../images/amongusturkey.jpeg'
-
 import {Dialog, DialogContent, DialogActions, Tooltip, IconButton, Avatar, InputBase, Slider, Select, MenuItem, Grid, Card, Container, Box, Typography, CardContent, Radio, Button, RadioGroup, FormControl, FormControlLabel, CardMedia } from "@mui/material";
 import Switch from '@mui/joy/Switch'
 import React from "react"
@@ -187,18 +185,6 @@ const CoopmatesView = ({ coopmate, coopmatesArr, username, userData }) => {
         },
     }
 
-    const inputBaseSX = {
-        margin: "0 0 10px 25px", 
-        width:"200px", 
-        height: "35px",
-        borderRadius: "5px",
-        border: "2px solid #AB191F",
-        padding: "5px",
-        "&:hover": {
-            border: "2px solid #AB191F",
-            boxShadow:"0px 0px 3px 3px rgba(0, 0, 0, .1)", 
-        }
-    }
 
     const radioSX = {
         color: "secondaryColor",

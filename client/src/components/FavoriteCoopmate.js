@@ -1,22 +1,23 @@
 import * as React from 'react';
-import { Box, Paper, List, ListItem, Container } from '@mui/material';
-import Typography from '@mui/material/Typography';
-import { Stack, Divider } from '@mui/material';
+import { Box, List, ListItem, Container, Typography, Stack } from '@mui/material';
 import CoopmateView from './CoopmateView';
 import CardPlaceholder from './CardPlaceholder';
+import { createTheme, ThemeProvider, useTheme } from '@mui/material/styles';
 
 const FavoriteCoopmates = ({ coopmateArr, style, login, username, userData, loading }) => {
     console.log(coopmateArr)
+    const theme = useTheme();
     const styles = {
         divider: {
-            borderTop: "3px solid #AB191F",
+            borderTop: "3px solid",
+            borderColor: "secondaryColor",
             padding: "0",
             marginBottom: "10px",
             width: '1100px',
         },
         box: {
-            backgroundColor: "#f5ebe0",
-            boxShadow: "0px 0px 3px 2px rgba(0, 0, 0, .1)",
+            backgroundColor: "primaryColor",
+            boxShadow: theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 3px rgba(245, 235, 224, .1)",
             margin: "-30px 0 0 0",
             padding: "0",
             width: "1250px",
@@ -26,10 +27,10 @@ const FavoriteCoopmates = ({ coopmateArr, style, login, username, userData, load
         }
     }
     return (
-        <Container sx={{}} style={styles.box}>
-            <Container style={{}}>
+        <Container sx={styles.box}>
+            <Container>
                 <Typography
-                    d color="#AB191F"
+                    color="secondaryColor"
                     sx={{ marginTop: 1, textAlign: "center", fontWeight: "600", fontSize: "20pt" }}
                 >
                     LIKED COOPMATES
@@ -51,10 +52,9 @@ const FavoriteCoopmates = ({ coopmateArr, style, login, username, userData, load
                         <Box sx={{ m: 5, textAlign: 'center' }} >
                             <Typography
                                 variant="h5"
-                                color="#AB191F"
+                                color="secondaryColor"
                                 fontWeight={500}
-                                sx={{ marginY: 1, textAlign: "center"}}
-                                style={{ textAlign: 'center', marginLeft: 50 }}
+                                sx={{ marginY: 1, textAlign: "center",  textAlign: 'center', marginLeft: 50}}
                             >
                                 No Liked Coopmates!
                             </Typography>

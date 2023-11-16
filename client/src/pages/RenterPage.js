@@ -1,6 +1,4 @@
 import { Switch, Dialog, DialogContent, DialogActions, Tooltip, IconButton, Avatar, InputBase, TextField, Slider, Select, MenuItem, Grid, Card, Container, Box, Typography, CardContent, Radio, Button, RadioGroup, FormControl, FormControlLabel } from "@mui/material";
-import React from "react"
-import profilePic from "../images/profile-pic-no-shadow.png"
 import React, { useState, useEffect } from "react"
 import defImg from "../images/profile-pic-no-shadow.png"
 import horse from "../images/chickens/horse.png"
@@ -160,6 +158,8 @@ const RenterPage = () => {
         "&:hover" : {boxShadow: theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 3px rgba(245, 235, 224, .1)",}       
     }
     const [toggleOn, setToggleOn] = React.useState(false);
+    const [name, setName] = React.useState('')
+    const [age, setAge] = React.useState('')
     const [hasPet, setHasPet] = React.useState(false);
     const [doesSmoke, setDoesSmoke] = React.useState(false);
     const [open, setOpen] = React.useState(false);
@@ -252,6 +252,7 @@ const RenterPage = () => {
         // Set newImg after pfp is updated
         setNewGuest(defGuest);
     }, [defGuest]);
+
     const handleSleepFrom = (event) => {
         setSleepFrom(event.target.value);
     };
@@ -303,7 +304,7 @@ const RenterPage = () => {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(dataToSend),
+            body: JSON.stringify(dataToSend, username),
             credentials: 'include'
         })
             .then(response => response.json())
@@ -355,7 +356,7 @@ const RenterPage = () => {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(dataToSend),
+            body: JSON.stringify(dataToSend, username),
             credentials: 'include'
         })
             .then(response => response.json())
@@ -386,8 +387,8 @@ const RenterPage = () => {
         setOpen(false);
     }
 
-    const name = "John Doe"
-    const age = "22"
+    //const name = "John Doe"
+    //const age = "22"
 
     return (
         
@@ -412,7 +413,7 @@ const RenterPage = () => {
                                 },
                             }}>
                                 <IconButton sx={{ p: 0, }} >
-                                    <Avatar alt="chickenpfp" src={profilePic} style={{transform: `scale(1.90, 1.90)` }} />
+                                    <Avatar alt="chickenpfp" src={(pfp === '') && (newImg === pfp) ? defImg : newImg} style={{transform: `scale(1.90, 1.90)` }} />
                                 </IconButton>
                             </Tooltip>
                         </Box>

@@ -71,9 +71,9 @@ const lightTheme = {
   },
   palette: {
       type: "light",
-      primaryColor: '#F6EBE1',
-      secondaryColor: '#AB191F',
-      textColor: '#000000',
+      primaryColor: '#F6EBE1', // beige
+      secondaryColor: '#AB191F', // red
+      textColor: '#000000', // black
       hoverColor: "#F6EBE1",
       textFieldBorder: "black",
   },
@@ -116,9 +116,9 @@ const darkTheme = {
   },
   palette: {
       type: "dark",
-      primaryColor: '#18100e',
-      secondaryColor: '#962c1e',
-      textColor: '#F6EBE1',
+      primaryColor: '#18100e', // brown
+      secondaryColor: '#962c1e', // orange
+      textColor: '#F6EBE1', // beige
       hoverColor: "#F6EBE1",
       textFieldBorder: "#962c1e",
   },
