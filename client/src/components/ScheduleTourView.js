@@ -1,8 +1,11 @@
 import * as React from 'react';
-import { Dialog, DialogTitle, Divider, IconButton, TextField, Container, Typography } from '@mui/material';
+import { Dialog, DialogTitle, Divider, IconButton, TextField, Container, Button } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { createTheme, ThemeProvider, useTheme } from '@mui/material/styles';
-
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 
 
 const ScheduleTourView = ({data}) => {
@@ -68,7 +71,7 @@ const ScheduleTourView = ({data}) => {
         marginTop:"15px",
         marginBottom: "5px",
         marginLeft:"15px",
-        width:"350px"
+        width:"368px"
     }
 
     /* Pre-populating */
@@ -95,7 +98,7 @@ const ScheduleTourView = ({data}) => {
                         "& .MuiPaper-root": {
                             //width: "100%",
                             width: "400px",
-                            height: "400px",
+                            height: "440px",
                             bgcolor: '#F6EBE1'
                         }
                     }
@@ -128,28 +131,44 @@ const ScheduleTourView = ({data}) => {
                         sx={textfieldSX}
                     /> 
 
-                    <Container style={{display: "flex", gap: "1rem", width: "200px", margin:"0 0 0 15px", padding:"0"}}>
-                        <Typography
-                            //variant='button'
-                            style={styles.body}>
-                            From
-                        </Typography>
-                        {/* From time */}
-                        <Typography
-                            //variant='button'
-                            style={styles.times}>
-                            
-                        </Typography>
-                        <Typography
-                            //variant='button'
-                            style={styles.body}>
-                            To
-                        </Typography>
-                        {/* To time */}
-                        <Typography
-                            style={styles.times}>
-                            
-                        </Typography>
+                    <Container style={{display: "flex", gap: "1rem", margin:"0 0 0 0", padding:"0"}}>
+                        <LocalizationProvider dateAdapter={AdapterDayjs} >
+                            <DemoContainer 
+                                components={['DateTimePicker']} 
+                                sx={{
+                                    input: {
+                                    color: "textColor",
+                                    "&::placeholder": {
+                                        opacity: 0.7,
+                                        color: "textColor",
+                                        },
+                                    },
+                                    "& fieldset": { border: 'none', },
+                                    boxShadow: theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 3px rgba(245, 235, 224, .1)",
+                                    marginTop:"15px",
+                                    marginBottom: "5px",
+                                    marginLeft:"15px",
+                                    width:"368px"}}>
+                                <DateTimePicker label="Select a tour date and time"/>
+                            </DemoContainer>
+                        </LocalizationProvider>
+                        <Button sx={{
+                                    ":hover": {
+                                        backgroundColor: "secondaryColor",
+                                        border: "none",
+                                        boxShadow: theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 3px rgba(245, 235, 224, .1)",
+                                    },
+                                    border: "none",
+                                    backgroundColor: "secondaryColor", 
+                                    color: theme.palette.type === "light" ? "primaryColor" : "textColor",
+                                    width: "45%", fontWeight: 600, justifyContent: "center", position:"absolute", bottom:7, marginBottom:"5px", right:15, maxWidth: "95px", maxHeight: "50px"
+                                }}
+                                variant="outlined">
+                            SUBMIT
+                        </Button>
+
+
+                        
 
                     </Container>
                 </div>
