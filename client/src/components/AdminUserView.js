@@ -21,6 +21,33 @@ const AdminUserView = ({ username, userType }) => {
   }
 
 
+  const handleDeleteUser = async () => {
+    try {
+        const response = await fetch('http://localhost:8000/auth/admin/deleteUser', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            credentials: 'include',
+            body: JSON.stringify({ username: username }),
+        });
+
+        console.log(response)
+
+        if (response.ok) {
+            // console.log("good")
+            localStorage.setItem('userDeleted', 'true');
+            window.location.reload(true);
+
+        } else {
+            console.log("nope")
+        }
+    } catch (error) {
+        console.log(error)
+    }
+};
+
+
   return (
     <React.Fragment>
       <Card
@@ -78,7 +105,7 @@ const AdminUserView = ({ username, userType }) => {
           </Typography>
           <Box sx={{ display: 'flex', justifyContent: 'space-around', marginTop: '10px' }}>
           <Tooltip title="Delete User Account">
-            <IconButton onClick={null}>
+            <IconButton onClick={handleDeleteUser}>
               <DeleteOutlineIcon sx={{ color: "#AB191F" }} />
             </IconButton>
           </Tooltip>

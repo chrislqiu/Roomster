@@ -46,7 +46,7 @@ const authorization = async (req, res, next) => {
         if (req.body.username && req.body.username !== user.username) {
             return res.status(401).send("Unauthorized");
         }
-        
+
 
         req.user = user;
         req.userType = userType;
@@ -71,9 +71,9 @@ const authorizationAdmin = async (req, res, next) => {
             return res.sendStatus(403); // Forbidden
         }
 
-        if (req.body.username && req.body.username !== user.username) {
-            return res.status(401).send("Unauthorized");
-        }
+        // if (req.body.username && req.body.username !== user.username) {
+        //     return res.status(401).send("Unauthorized");
+        // }
 
         if (userType && userType === "admin") {
             const adminUser = await Admin.findOne({ username: user.username });
@@ -584,9 +584,9 @@ router.post("/pw-reset/:token", async (req, res) => {
         const salt = await bcrypt.genSalt();
         const hashedNewPassword = await bcrypt.hash(req.body.newPassword, salt);
 
-        if(userType === "renter"){
+        if (userType === "renter") {
             await Renter.updateOne({ username: decoded.username }, { password: hashedNewPassword });
-        } else if (userType === "manager"){
+        } else if (userType === "manager") {
             await Manager.updateOne({ username: decoded.username }, { password: hashedNewPassword });
         }
 
@@ -845,9 +845,21 @@ router.post("/property-verification", async (req, res) => {
 })
 
 
+router.post("/admin/deleteUser", authorizationAdmin, async (req, res) => {
+    try {
+        const username = req.body.username;
+        // console.log(username);
+        await Manager.deleteOne(
+            { username: username },)
+        await Renter.deleteOne(
+            { username: username },)
+        return res.status(200).send("User deleted");
 
-
-router.post("/admin/")
+    } catch (err) {
+        console.log(err)
+        res.status(500).send("Error deleting user");
+    }
+});
 
 
 

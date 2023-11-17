@@ -3,6 +3,8 @@ import { Dialog, DialogContent, DialogActions, Tooltip, IconButton, Avatar, Inpu
 import AdminUserView from '../components/AdminUserView'
 import AdminUserPlaceholder from '../components/AdminUserPlaceholder';
 import SearchBarAdmin from '../components/SearchBarAdmin';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 const AdminUserPage = () => {
@@ -12,7 +14,14 @@ const AdminUserPage = () => {
     const [filteredRenters, setFilteredRenters] = React.useState(renters);
     const [filteredManagers, setFilteredManagers] = React.useState(managers);
 
+    useEffect(() => {
+        const isPropertyDeleted = localStorage.getItem('userDeleted') === 'true';
 
+        if (isPropertyDeleted) {
+            toast.success('User deleted!');
+            localStorage.removeItem('userDeleted');
+        }
+    }, []);
 
 
     useEffect(() => {
@@ -79,7 +88,9 @@ const AdminUserPage = () => {
 
     }
     return (
+        
         <Container sx={{ width: '100%' }}>
+                        <ToastContainer />
             <SearchBarAdmin renterData={renters} managerData={managers} setInput={setInput} setFilteredRenters={setFilteredRenters} setFilteredManagers={setFilteredManagers} />
 
             <Typography sx={{ fontSize: "30px", textAlign: "center" }}>
