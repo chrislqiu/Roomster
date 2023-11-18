@@ -12,6 +12,8 @@ import LockResetIcon from '@mui/icons-material/LockReset';
 
 const AdminUserView = ({ username, userType }) => {
   const [open, setOpen] = React.useState(false);
+  const [resetPasswordResponse, setResetPasswordResponse] = React.useState('');
+
 
   const handleOpen = () => {
     setOpen(true)
@@ -45,6 +47,32 @@ const AdminUserView = ({ username, userType }) => {
     } catch (error) {
         console.log(error)
     }
+};
+
+const handleResetPassword = async () => {
+  try {
+      const response = await fetch('http://localhost:8000/auth/admin/resetPassword', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          credentials: 'include',
+          body: JSON.stringify({ username: username }),
+      });
+
+      const data = await response.json();
+      const message = data.message;
+
+      console.log(message)
+
+      if (response.ok) {
+          setResetPasswordResponse(message)
+      } else {
+          console.log("nope")
+      }
+  } catch (error) {
+      console.log(error)
+  }
 };
 
 
@@ -110,11 +138,16 @@ const AdminUserView = ({ username, userType }) => {
             </IconButton>
           </Tooltip>
           <Tooltip title="Reset User Password">
-            <IconButton onClick={null}>
+            <IconButton onClick={handleResetPassword}>
               <LockResetIcon sx={{ color: "#AB191F" }} />
             </IconButton>
           </Tooltip>
           </Box>
+          {resetPasswordResponse && (
+            <Typography variant="body2"  sx={{ marginTop: '10px' }}>
+              {resetPasswordResponse}
+            </Typography>
+          )}
         </DialogContent>
       </Dialog>
 

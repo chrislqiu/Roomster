@@ -14,6 +14,7 @@ const changePasswordEmail = require("./changePasswordEmail.js")
 const adminRequestEmail = require("./adminRequestEmail.js")
 const setAdminPWEmail = require("./setAdminPWEmail.js")
 const adminDenyEmail = require("./adminDenyEmail.js")
+const crypto = require('crypto');
 const cors = require('cors');
 
 const router = express.Router();
@@ -854,6 +855,35 @@ router.post("/admin/deleteUser", authorizationAdmin, async (req, res) => {
         await Renter.deleteOne(
             { username: username },)
         return res.status(200).send("User deleted");
+
+    } catch (err) {
+        console.log(err)
+        res.status(500).send("Error deleting user");
+    }
+});
+
+router.post("/admin/resetPassword", async (req, res) => {
+    try {
+        const username = req.body.username;
+
+        const randomPassword = crypto.randomBytes(4).toString('hex');
+        console.log(username)
+
+        const salt = await bcrypt.genSalt();
+        const hashedNewPassword = await bcrypt.hash(randomPassword, salt);
+        // Update Manager's password
+        await Manager.findOneAndUpdate(
+            { username: username },
+            { password: hashedNewPassword }
+        );
+
+        // Update Renter's password
+        await Renter.findOneAndUpdate(
+            { username: username },
+            { password: hashedNewPassword }
+        );
+        
+        return res.status(200).json({message: `Password reset for ${username}. New password: ${randomPassword}`});
 
     } catch (err) {
         console.log(err)

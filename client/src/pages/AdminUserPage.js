@@ -14,6 +14,7 @@ const AdminUserPage = () => {
     const [filteredRenters, setFilteredRenters] = React.useState(renters);
     const [filteredManagers, setFilteredManagers] = React.useState(managers);
 
+
     useEffect(() => {
         const isPropertyDeleted = localStorage.getItem('userDeleted') === 'true';
 
