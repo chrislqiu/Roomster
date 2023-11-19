@@ -49,7 +49,7 @@ const FavCoopPage = ({ login }) => {
             flexWrap: "wrap",
         },
         loadingSpinner: {
-            color: "#AB191F", // Change the color here
+            color: "secondaryColor", // Change the color here
         },
     };
 
@@ -77,7 +77,7 @@ const FavCoopPage = ({ login }) => {
                             sx={{
                                 fontWeight: 600,
                                 fontSize: 25,
-                                color: "#AB191F",
+                                color: "secondaryColor",
                             }}
                         >
                             No properties favorited!

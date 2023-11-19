@@ -15,8 +15,10 @@ import chicken from "../images/profile-pic.png"
 import LoginView from "./LoginView";
 import { useNavigate, useLocation } from "react-router-dom";
 import DoubleArrowIcon from '@mui/icons-material/DoubleArrow';
+import { useTheme } from '@mui/material/styles';
 import { Grow } from "@mui/material";
 import Settings from "../pages/Settings"
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 const pages = ["Home", "My Coops", "Fav Coops", "Coopmates", "Log Out"];
 const pagesManager = ["Home", "My Coops", "Log Out"];
@@ -29,6 +31,8 @@ const pagesRenter = ["Home", "Fav Coops", "Coopmates", "Log Out"];
  * login: boolean variable for now, keeps track if user is logged in or not
  */
 const RoomsterAppBar = ({ login, userType }) => {
+    const theme = useTheme();
+    
     console.log(login)
     let location = useLocation();
     console.log(location.pathname)
@@ -136,20 +140,20 @@ const RoomsterAppBar = ({ login, userType }) => {
       return (
         <AppBar
             position="static"
-            style={{ background: "transparent", boxShadow: "none" }}
+            style={{ boxShadow: "none", height: "30px", zIndex: "5"}}
         >
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
-                    <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
+                    <Box sx={{ zIndex: "5", flexGrow: 1, display: { xs: "flex", md: "none" } }}>
                         <IconButton
                             size="large"
                             aria-label="account of current user"
                             aria-controls="menu-appbar"
                             aria-haspopup="true"
                             onClick={handleOpenNavMenu}
-                            backgroundColor="#AB191F"
+                            backgroundColor="secondaryColor"
                         >
-                            <MenuIcon sx={{ color: "#F6EBE1" }} />
+                            <MenuIcon sx={{ color: "primaryColor" }} />
                         </IconButton>
                         <Menu
                             id="menu-appbar"
@@ -181,15 +185,15 @@ const RoomsterAppBar = ({ login, userType }) => {
                         </Menu>
                     </Box>
                     { login === true ? 
-                    <IconButton
+                    <IconButton sx={{zIndex:"5"}}
                             size="large"
                             aria-label="account of current user"
                             aria-controls="menu-appbar"
                             aria-haspopup="true"
                             onClick={toggleToolbarVisibility}
-                            backgroundColor="#AB191F"
+                            backgroundColor="secondaryColor"
                         >
-                            <DoubleArrowIcon sx={{ color: "#F6EBE1" }} />
+                            <DoubleArrowIcon sx={{ color: "primaryColor" }} />
                      </IconButton>
                      :
                      ''
@@ -218,12 +222,12 @@ const RoomsterAppBar = ({ login, userType }) => {
                                         sx={{
                                             my: 2,
                                             ":hover": {
-                                                bgcolor: "#AB191F",
-                                                color: "#f5ebe0",
+                                                bgcolor: "secondaryColor",
+                                                color: "primaryColor",
                                                 cursor: "pointer"
                                             },
-                                            color: "#AB191F",
-                                            backgroundColor: "#F6EBE1",
+                                            color: "secondaryColor",
+                                            backgroundColor: "primaryColor",
                                             display: "block",
                                             mx: .5,
                                             fontWeight: 600,
@@ -251,12 +255,12 @@ const RoomsterAppBar = ({ login, userType }) => {
                                       sx={{
                                           my: 2,
                                           ":hover": {
-                                              bgcolor: "#AB191F",
-                                              color: "#f5ebe0",
+                                              bgcolor: "secondaryColor",
+                                              color: "primaryColor",
                                               cursor: "pointer"
                                           },
-                                          color: "#AB191F",
-                                          backgroundColor: "#F6EBE1",
+                                          color: "secondaryColor",
+                                          backgroundColor: "primaryColor",
                                           display: "block",
                                           mx: .5,
                                           fontWeight: 600,
@@ -275,11 +279,14 @@ const RoomsterAppBar = ({ login, userType }) => {
                         <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}></Box>
                     }
                     <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}></Box>
+                    
                     {login ?
             <Box sx={{ flexGrow: 0 }}>
-              <Tooltip title="Open Profile" sx={{ color: "#AB191F" }}  onClick={() => {userType === "renter" ? navigate("/RProfile") : navigate("/MProfile")}}> 
-                <IconButton sx={{ p: 0, mr: 1 }}>
-                  <Avatar alt="chickenpfp" src={pfp === undefined || pfp === '' ? chicken : pfp} style={{ transform: `scale(1.70, 1.70)` }} />
+
+              <Tooltip title="Open Profile" sx={{ color: 'secondaryColor' }}  onClick={() => {userType === "renter" ? navigate("/RProfile") : navigate("/MProfile")}}> 
+                <IconButton sx={{ p: 0, mr: 1, ml: 1, zIndex: "5"}}>
+                   <Avatar alt="chickenpfp" src={pfp === undefined || pfp === '' ? chicken : pfp} style={{ transform: `scale(1.70, 1.70)` }} />
+
                 </IconButton>
               </Tooltip>
             </Box>

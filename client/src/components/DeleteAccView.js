@@ -7,12 +7,27 @@ import DialogContent from '@mui/material/DialogContent';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
+import { createTheme, ThemeProvider, useTheme } from '@mui/material/styles';
 
 const DeleteAccountView = ({ text }) => {
+    const theme = useTheme();
     const [open, setOpen] = React.useState(false);
     const [username, setUsername] = React.useState('');
     const [password, setPassword] = React.useState('');
     const [accountDeletionStatus, setAccountDeletionStatus] = React.useState(null);
+
+    const textfieldSX = {
+        input: {
+            color: "textColor",
+            "&::placeholder": {
+                opacity: 0.7,
+                color: "textColor",
+                },
+        },
+        "& fieldset": { border: 'none', },
+        boxShadow: theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 3px rgba(245, 235, 224, .1)",
+        marginBottom: "15px"
+    }
 
     const handleOpen = () => {
         setOpen(true);
@@ -46,13 +61,13 @@ const DeleteAccountView = ({ text }) => {
             } else {
                 setAccountDeletionStatus({
                     message: 'Incorrect username/password',
-                    color: '#AB191F',
+                    color: 'secondaryColor',
                 });
             }
         } catch (error) {
             setAccountDeletionStatus({
                 message: 'Error deleting account',
-                color: '#AB191F',
+                color: 'secondaryColor',
             });
         }
     };
@@ -64,11 +79,14 @@ const DeleteAccountView = ({ text }) => {
                 onClick={handleOpen}
                 sx={{
                     ":hover": {
-                        bgcolor: "#F6EBE1",
-                        color: "#AB191F",
+                        backgroundColor: "secondaryColor",
+                        border: "none",
+                        boxShadow: theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 3px rgba(245, 235, 224, .1)",
                     },
-                    backgroundColor: "#AB191F",
-                    color: "#F6EBE1",
+                    border: "none",
+                    backgroundColor: "secondaryColor", 
+                    color: theme.palette.type === "light" ? "primaryColor" : "textColor",
+                    fontWeight: 500,
                 }}
             >
                 {text}
@@ -83,44 +101,37 @@ const DeleteAccountView = ({ text }) => {
                             width: "100%",
                             maxWidth: "400px",
                             maxHeight: "1000px",
-                            bgcolor: '#F6EBE1',
+                            bgcolor: 'primaryColor',
+                            boxShadow: theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 3px rgba(245, 235, 224, .1)",
                         },
                     },
                 }}
             >
                 <DialogTitle sx={{ fontWeight: 600, marginBottom: "-20px" }}>
-                    <Typography variant="inherit" color="inherit">
+                    <Typography variant="inherit" color="textColor">
                         Delete Account
                     </Typography>
                 </DialogTitle>
-                <Divider variant="middle" sx={{ borderBottomWidth: 3, color: "#AB191F", backgroundColor: "#AB191F", marginY: 1 }} />
+                <Divider variant="middle" sx={{ borderBottomWidth: 3, backgroundColor: "secondaryColor", marginY: 1, marginBottom: "0px" }} />
 
                 <DialogContent sx={{ maxWidth: "400px" }}>
                     <Box style={{ maxWidth: "400px", justifyContent: "center" }} >
                         <TextField
-                            label="Username"
+                            placeholder="Username"
                             id="username-textfield"
                             variant="outlined"
                             fullWidth
-                            sx={{
-                                boxShadow: "3",
-                                margin: "dense",
-                                marginBottom: "15px",
-                            }}
+                            sx={textfieldSX}
                             type="text"
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
                         />
                         <TextField
-                            label="Password"
+                            placeholder="Password"
                             id="password-textfield"
                             variant="outlined"
                             fullWidth
-                            sx={{
-                                boxShadow: "3",
-                                margin: "dense",
-                                marginBottom: "15px",
-                            }}
+                            sx={textfieldSX}
                             type="password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
@@ -135,22 +146,14 @@ const DeleteAccountView = ({ text }) => {
                             onClick={handleDeleteAccount}
                             sx={{
                                 ":hover": {
-                                    borderColor: "black",
-                                    bgcolor: "#F6EBE1",
-                                    color: "black",
-                                    borderWidth: 1.5,
-                                    width: "45%",
-                                    fontWeight: 600,
+                                    backgroundColor: "secondaryColor",
+                                    border: "none",
+                                    boxShadow: theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 3px rgba(245, 235, 224, .1)",
                                 },
-                                borderColor: "black",
-                                bgcolor: "#AB191F",
-                                color: "#F6EBE1",
-                                borderWidth: 1.5,
-                                width: "45%",
-                                fontWeight: 600,
-                                boxShadow: 5,
-                                justifyContent: "center",
-                                float: "right",
+                                border: "none", float: "right",
+                                backgroundColor: "secondaryColor", 
+                                color: theme.palette.type === "light" ? "primaryColor" : "textColor",
+                                fontWeight: 500,
                             }}
                             variant="outlined"
                         >
