@@ -241,7 +241,7 @@ const AddCoopView = ({setOpen, editMode, data}) => {
                                     />
                                 </label>}
 
-                            {propertyImage === "" || propertyImage === null ? "" : <img src={propertyImage} />}
+                            {propertyImage === "" || propertyImage === null ? "" : <img src={propertyImage} style={{ objectFit: 'fill', width: '700px', height: '200px'}}/>}
                         </AspectRatio>
 
                         <Stack direction={{ '400px': "column", md: "row", lg: "row", xl: "row" }} spacing={5} sx={{ marginTop: 2, p: 1 }}>
