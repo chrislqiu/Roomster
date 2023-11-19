@@ -420,10 +420,11 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
                          * AspectRatio controls the size of the image
                          */
                     }
-                        <img style={{minHeight: "100px", maxHeight: "200px", minWidth: "300px", width: "700px", objectFit:"cover", borderRadius: "5px"}}
-                            src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&w=350&dpr=2"
-                            srcSet="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&w=350&dpr=2 2x"
+                        <img 
+                            src={image}
+                            srcSet={image}
                             alt=""
+                            style={{ objectFit: 'fill', width: '700px', height: '200px', borderRadius: '5px'}}
                         />
                     {
                         /*
