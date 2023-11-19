@@ -38,6 +38,7 @@ const RoomsterAppBar = ({ login, userType }) => {
      * hide the login stuff with a "Log In/ Sign Up Button"
      */
     const [anchorElNav, setAnchorElNav] = React.useState(null);
+    const [pfp, setPfp] = React.useState('')
 
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
@@ -103,6 +104,34 @@ const RoomsterAppBar = ({ login, userType }) => {
             logoutAdmin();
           }
       };
+
+      React.useEffect(() => {
+        const getPFP = async () => {
+            try {
+                const res = await fetch('http://localhost:8000/auth/current-user', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    credentials: 'include'
+                });
+                
+                const getData = await res.json();
+                
+                const obj = JSON.parse(JSON.stringify(getData));
+                console.log(obj.user)
+                if (obj.user.renterInfo) {
+                  setPfp(obj.user.renterInfo.pfp)
+                }
+             
+            } catch (e) {
+                console.log("error: " + e)
+                
+            }
+        };
+
+        getPFP();
+    }, []);
 
       return (
         <AppBar
@@ -250,7 +279,7 @@ const RoomsterAppBar = ({ login, userType }) => {
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Open Profile" sx={{ color: "#AB191F" }}  onClick={() => {userType === "renter" ? navigate("/RProfile") : navigate("/MProfile")}}> 
                 <IconButton sx={{ p: 0, mr: 1 }}>
-                  <Avatar alt="chickenpfp" src={chicken} style={{ transform: `scale(1.70, 1.70)` }} />
+                  <Avatar alt="chickenpfp" src={pfp === undefined || pfp === '' ? chicken : pfp} style={{ transform: `scale(1.70, 1.70)` }} />
                 </IconButton>
               </Tooltip>
             </Box>
