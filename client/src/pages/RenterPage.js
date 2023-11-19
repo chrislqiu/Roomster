@@ -221,6 +221,15 @@ const RenterPage = () => {
                 setDefGuest(data.user.renterInfo.livingPreferences.guestFreq)
                 setDefFrom(data.user.renterInfo.livingPreferences.sleepSchedule.from)
                 setDefTo(data.user.renterInfo.livingPreferences.sleepSchedule.to)
+
+                // Set default values for the sliders
+                setNewStudious(data.user.renterInfo.livingPreferences.studious);
+                setNewClean(data.user.renterInfo.livingPreferences.cleanliness);
+                setNewGuest(data.user.renterInfo.livingPreferences.guestFreq);
+
+                // Set default values for the Select components
+                setSleepFrom(data.user.renterInfo.livingPreferences.sleepSchedule.from);
+                setSleepTo(data.user.renterInfo.livingPreferences.sleepSchedule.to);
                 // Access user data, e.g., data.user
             })
             .catch(error => {
@@ -236,22 +245,38 @@ const RenterPage = () => {
     }, [pfp]);
 
     var [newStudious, setNewStudious] = useState(defStudious)
-    useEffect(() => {
-        // Set newImg after pfp is updated
-        setNewStudious(defStudious);
-    }, [defStudious]);
+    // useEffect(() => {
+    //     // Set newImg after pfp is updated
+    //     setNewStudious(defStudious);
+    // }, [defStudious]);
 
     var [newClean, setNewClean] = useState(defClean)
-    useEffect(() => {
-        // Set newImg after pfp is updated
-        setNewClean(defClean);
-    }, [defClean]);
+    // useEffect(() => {
+    //     // Set newImg after pfp is updated
+    //     setNewClean(defClean);
+    // }, [defClean]);
 
     var [newGuest, setNewGuest] = useState(defGuest)
+    // useEffect(() => {
+    //     // Set newImg after pfp is updated
+    //     setNewGuest(defGuest);
+    // }, [defGuest]);
+
     useEffect(() => {
-        // Set newImg after pfp is updated
-        setNewGuest(defGuest);
-    }, [defGuest]);
+        // Check if data is available
+        if (data) {
+            setNewStudious(data.livingPreferences.studious);
+            setStudious(data.livingPreferences.studious)
+            setNewClean(data.livingPreferences.cleanliness);
+            setCleanliness(data.livingPreferences.cleanliness);
+            setNewGuest(data.livingPreferences.guestFreq);
+            setGuestFreq(data.livingPreferences.guestFreq)
+            setSleepFrom(data.livingPreferences.sleepSchedule.from);
+            setSleepTo(data.livingPreferences.sleepSchedule.to);
+            setDoesSmoke(data.livingPreferences.smoke);
+            setHasPet(data.livingPreferences.pets);
+        }
+    }, [data]);
 
     const handleSleepFrom = (event) => {
         setSleepFrom(event.target.value);
@@ -593,10 +618,134 @@ const RenterPage = () => {
                                     // Save changes and disable edit mode
                                     handleSaveRight();
                                     setDisableButton(true);
+//<<<<<<< renterpfp
+ /*                               }
+                            }}>
+                            {disableButton ? 'Edit' : 'Save'}
+                        </Button>
+                    </Box>
+                    <Box width='100%' style={styles.column2}>
+                        <Container style={styles.box}>
+                            <Typography style={styles.header}>
+                                {"FINDING COOPMATES?"}
+                            </Typography >
+                            <Switch style={{ verticalAlign: "center", marginTop: "2px" }}
+                                color={toggleOn ? 'danger' : 'neutral'}
+                                checked={toggleOn}
+                                onChange={() => { setToggleOn(!toggleOn);  }}
+                            />
+                        </Container>
+                        {toggleOn &&
+                            <Container style={styles.box} sx={{ marginTop: "-10px" }}>
+                                <Container style={{ float: "left", width: "55%" }}>
+                                    <Typography style={styles.livingHabit}>{"Pets"}</Typography>
+                                    <Typography style={styles.livingHabit}>{"Smoke"}</Typography>
+                                    <Typography style={styles.livingHabit}>{"Studious"}</Typography>
+                                    <Typography style={styles.livingHabit}>{"Cleanliness"}</Typography>
+                                    <Typography style={styles.livingHabit}>{"Guests frequency"}</Typography>
+                                    <Typography style={styles.livingHabit}>{"Sleep schedule"}</Typography>
+                                </Container>
+                                <Container style={{ float: "right", width: "45%" }}>
+                                    <FormControl style={{ marginLeft: "-55px", marginBottom: "-7px" }} disabled={disableButton}>
+                                        <RadioGroup row name="pets" defaultValue={defPet == true ? "yes" : "no"} style={{ width: "150px", display: "flex", justifyContent: "center" }} >
+                                            <FormControlLabel value="yes" control={<Radio sx={radioSX} />} label="Yes" onChange={() => setHasPet(true)} />
+                                            <FormControlLabel value="no" control={<Radio sx={radioSX} />} label="No" onChange={() => setHasPet(false)}
+                                            />
+                                        </RadioGroup>
+                                    </FormControl>
+                                    <FormControl style={{ marginLeft: "-55px", marginBottom: "-7px" }} disabled={disableButton}>
+                                        <RadioGroup row name="smoke" defaultValue={defSmoke == true ? "yes" : "no"} style={{ width: "150px", display: "flex", justifyContent: "center" }} >
+                                            <FormControlLabel value="yes" control={<Radio sx={radioSX} />} label="Yes" onChange={() => setDoesSmoke(true)} />
+                                            <FormControlLabel value="no" control={<Radio sx={radioSX} />} label="No" onChange={() => setDoesSmoke(false)}
+                                            />
+                                        </RadioGroup>
+                                    </FormControl>
+                                    <Container>
+                                        <Slider
+                                            onChange={(e, val) => setStudious(e.target.value)}
+                                            size="small"
+                                            defaultValue={newStudious}
+                                            valueLabelDisplay="auto"
+                                            step={1}
+                                            marks
+                                            min={0}
+                                            max={5}
+                                            sx={{ color: "#AB191F", width: "120px", height: "5px", marginLeft: "-70px" }}
+                                            disabled={disableButton}
+                                        />
+                                    </Container>
+                                    <Container>
+                                        <Slider
+                                            onChange={(e, val) => setCleanliness(val)}
+                                            size="small"
+                                            defaultValue={newClean}
+                                            valueLabelDisplay="auto"
+                                            step={1}
+                                            marks
+                                            min={0}
+                                            max={5}
+                                            sx={{ color: "#AB191F", width: "120px", height: "5px", marginLeft: "-70px" }}
+                                            disabled={disableButton}
+                                        />
+                                    </Container>
+                                    <Container>
+                                        <Slider
+                                            onChange={(e, val) => setGuestFreq(val)}
+                                            size="small"
+                                            defaultValue={newGuest}
+                                            valueLabelDisplay="auto"
+                                            step={1}
+                                            marks
+                                            min={0}
+                                            max={5}
+                                            sx={{ color: "#AB191F", width: "120px", height: "5px", marginLeft: "-70px" }}
+                                            disabled={disableButton}
+                                        />
+                                    </Container>
+                                    <Container style={{ display: "flex", gap: "1rem", width: "200px", margin: "0 0 10px -50px", padding: "0" }}>
+                                        <Select displayEmpty defaultValue={defFrom} onChange={handleSleepFrom} sx={selectSX} disabled={disableButton} >
+                                            <MenuItem value=""> <em>From</em> </MenuItem> <MenuItem value={0}>0</MenuItem>
+                                            <MenuItem value={1}>1</MenuItem> <MenuItem value={2}>2</MenuItem> <MenuItem value={3}>3</MenuItem>
+                                            <MenuItem value={4}>4</MenuItem> <MenuItem value={5}>5</MenuItem> <MenuItem value={6}>6</MenuItem>
+                                            <MenuItem value={7}>7</MenuItem> <MenuItem value={8}>8</MenuItem> <MenuItem value={9}>9</MenuItem>
+                                            <MenuItem value={10}>10</MenuItem> <MenuItem value={11}>11</MenuItem> <MenuItem value={12}>12</MenuItem>
+                                            <MenuItem value={13}>13</MenuItem> <MenuItem value={14}>14</MenuItem> <MenuItem value={15}>15</MenuItem>
+                                            <MenuItem value={16}>16</MenuItem> <MenuItem value={17}>17</MenuItem> <MenuItem value={18}>18</MenuItem>
+                                            <MenuItem value={19}>19</MenuItem> <MenuItem value={20}>20</MenuItem> <MenuItem value={21}>21</MenuItem>
+                                            <MenuItem value={22}>22</MenuItem> <MenuItem value={23}>23</MenuItem>
+                                        </Select>
+
+                                        <Select displayEmpty defaultValue={defTo} onChange={handleSleepTo} sx={selectSX} disabled={disableButton} >
+                                            <MenuItem value=""> <em>To</em> </MenuItem> <MenuItem value={0}>0</MenuItem>
+                                            <MenuItem value={1}>1</MenuItem> <MenuItem value={2}>2</MenuItem> <MenuItem value={3}>3</MenuItem>
+                                            <MenuItem value={4}>4</MenuItem> <MenuItem value={5}>5</MenuItem> <MenuItem value={6}>6</MenuItem>
+                                            <MenuItem value={7}>7</MenuItem> <MenuItem value={8}>8</MenuItem> <MenuItem value={9}>9</MenuItem>
+                                            <MenuItem value={10}>10</MenuItem> <MenuItem value={11}>11</MenuItem> <MenuItem value={12}>12</MenuItem>
+                                            <MenuItem value={13}>13</MenuItem> <MenuItem value={14}>14</MenuItem> <MenuItem value={15}>15</MenuItem>
+                                            <MenuItem value={16}>16</MenuItem> <MenuItem value={17}>17</MenuItem> <MenuItem value={18}>18</MenuItem>
+                                            <MenuItem value={19}>19</MenuItem> <MenuItem value={20}>20</MenuItem> <MenuItem value={21}>21</MenuItem>
+                                            <MenuItem value={22}>22</MenuItem> <MenuItem value={23}>23</MenuItem>
+                                        </Select>
+                                    </Container>
+                                    <Button variant="contained" style={{ backgroundColor: "#AB191F", float: "right", margin: "0 -40px 0 0" }}
+                                        onClick={() => {
+                                            if (disableButton) {
+                                                // Enable edit mode
+                                                setDisableButton(false);
+                                            } else {
+                                                // Save changes and disable edit mode
+                                                handleSaveRight();
+                                                setDisableButton(true);
+                                            }
+                                        }}>
+                                        {disableButton ? 'Edit' : 'Save'}
+                                    </Button> */
+//=======
                                     }  
                                 }}>
                                 {disableButton ? 'Edit' : 'Save'}  
                             </Button>
+//>>>>>>> main
 
                                 </Container>
 
