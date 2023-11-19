@@ -2,9 +2,10 @@ import { InputBase, Card, Box, Typography, CardContent, Input, Divider, TextFiel
 import toast, { Toaster } from 'react-hot-toast';
 import React from "react"
 import { useState } from 'react';
+import { createTheme, ThemeProvider, useTheme } from '@mui/material/styles';
 
 const PropertyManagerPage = () => {
-
+    const theme = useTheme();
 
     const [phoneNumber, setPhoneNumber] = useState('');
     const [email, setEmail] = useState('');
@@ -57,8 +58,23 @@ const PropertyManagerPage = () => {
             console.error('Fetch error:', error);
         });
 
-
-    const inputBaseSX = {
+        const textfieldSX = {
+            margin: "0 0 10px 25px", 
+            width:"280px", 
+            borderRadius: "5px",
+            border: "2px solid",
+            borderColor: "secondaryColor",
+            input: {
+                color: "textColor",
+                "&::placeholder": {
+                    opacity: 0.7,
+                    color: "textColor",
+                    },
+            },
+            "& fieldset": { border: 'none', },
+            "&:hover" : {boxShadow: theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 3px rgba(245, 235, 224, .1)",}       
+        }
+    /*const inputBaseSX = {
         margin: "5 0 10px 0px", 
         width:"300px", 
         height: "35px",
@@ -69,7 +85,7 @@ const PropertyManagerPage = () => {
             border: "2px solid #AB191F",
             boxShadow:"0px 0px 3px 3px rgba(0, 0, 0, .1)", 
         }
-    }
+    }*/
 
     const customToastStyles = {
         color: 'white', // Set the desired text color
@@ -121,11 +137,11 @@ const PropertyManagerPage = () => {
             <Card
                 variant='contained'
                 sx={{
-                    backgroundColor: "#f5ebe0",
-                    color: "#AB191F",
+                    backgroundColor: "primaryColor",
+                    color: "secondaryColor",
                     width: "800px",
                     height: "385px",
-                    boxShadow: "0px 0px 3px 3px rgba(0, 0, 0, .1)",
+                    boxShadow: theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 3px rgba(245, 235, 224, .1)", 
                     marginBottom: "225px",
                     marginTop: "50px",
                     marginLeft: "300px"
@@ -138,7 +154,7 @@ const PropertyManagerPage = () => {
                             fontSize: 24,
                             marginTop: 2,
                             variant: "h1",
-                            color: "black",
+                            color: "textColor",
                             width: "310px",
                         }}>
                             {nameHolder}
@@ -158,15 +174,13 @@ const PropertyManagerPage = () => {
                             width: "300px",
                             fontFamily: 'Raleway',
                         }}>
-                            <InputBase
-                            sx={inputBaseSX} 
-                            type="text"
-                            name="phoneNum"
-                            placeholder={phoneHolder} style={{width:200}}
-                            value={phoneNumber}
+                        <TextField
+                            placeholder={phoneHolder} value={phoneNumber} variant="outlined" 
+                            sx={textfieldSX} size="small" name="phoneNum" type="text"
                             onChange={(e) => setPhoneNumber(e.target.value)}
                             disabled={disableButton}
-                            />
+                        />
+                            
                         </Box>
                         <Box sx={{
                             fontWeight: 600,
@@ -175,15 +189,14 @@ const PropertyManagerPage = () => {
                             fontFamily: 'Raleway',
                             width: "300px",
                         }}>
-                            <InputBase
-                            sx={inputBaseSX}
-                            type="text"
-                            name="email"
-                            placeholder={emailHolder} style={{width:200}} 
-                            value={email}
+
+                        <TextField
+                            placeholder={emailHolder} value={email} variant="outlined" 
+                            sx={textfieldSX} size="small" name="email" type="text"
                             onChange={(e) => setEmail(e.target.value)}
                             disabled={disableButton}
-                            />
+                        />
+                            
                         </Box>
                         <Typography
                         sx={{
@@ -246,15 +259,14 @@ const PropertyManagerPage = () => {
                             marginBottom: 1,
                             fontFamily: 'Raleway'
                         }}>
-                            <InputBase
-                            sx={inputBaseSX} 
-                            type="text"
-                            name="addr"
-                            placeholder={addressHolder} style={{width:200}} 
-                            value={addr}
+
+                        <TextField
+                            placeholder={addressHolder} value={addr} id="email-textfield" variant="outlined" 
+                            sx={textfieldSX} size="small" type="text" name="addr"
                             onChange={(e) => setAddr(e.target.value)}
                             disabled={disableButton}
-                            />
+                        />
+                            
                         </Box>
                         <Typography
                         sx={{
@@ -270,15 +282,13 @@ const PropertyManagerPage = () => {
                             marginBottom: 2,
                             fontFamily: 'Raleway'
                         }}>
-                            <InputBase
-                            sx={inputBaseSX} 
-                            type="text"
-                            name="officeNum"
-                            placeholder={OPhoneHolder} style={{width:200}} 
-                            value={officeNum}
+                        <TextField
+                            placeholder={OPhoneHolder} value={officeNum} variant="outlined" 
+                            sx={textfieldSX} size="small" type="text" name="officeNum"
                             onChange={(e) => setOfficeNum(e.target.value)}
                             disabled={disableButton}
-                            />
+                        />
+                            
                         </Box>
                         <Link href={`http://${site}`} underline="always" color="#AB191F" fontWeight={600} >
                                 {'Leasing Site'}

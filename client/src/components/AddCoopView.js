@@ -6,9 +6,11 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { AspectRatio } from "@mui/joy";
 import toast, { Toaster } from 'react-hot-toast'
 import PropertyView from "../components/PropertyView";
+import { createTheme, ThemeProvider, useTheme } from '@mui/material/styles';
 
 
 const AddCoopView = ({setOpen, editMode, data}) => {
+    const theme = useTheme();
     /* propertyInfo, setPropertyInfo to hold the card information from the server */
     const [propertyInfo, setPropertyInfo] = React.useState([])
     const [hovered, setHovered] = React.useState(false);
@@ -165,12 +167,32 @@ const AddCoopView = ({setOpen, editMode, data}) => {
         width: "205px",
         height: "35px",
         borderRadius: "5px",
-        border: "2px solid #AB191F",
+        border: "2px solid",
+        borderColor: "secondaryColor",
         padding: "5px",
         "&:hover": {
-            border: "2px solid #AB191F",
-            boxShadow: "0px 0px 3px 3px rgba(0, 0, 0, .1)",
-        }
+            border: "2px solid",
+            borderColor: "secondaryColor",
+            boxShadow: theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 3px rgba(245, 235, 224, .1)",
+        },
+        
+        
+    }
+
+    const textfieldSX = {
+        width:"200px", 
+        borderRadius: "5px",
+        border: "2px solid",
+        borderColor: "secondaryColor",
+        input: {
+            color: "textColor",
+            "&::placeholder": {
+                opacity: 0.7,
+                color: "textColor",
+                },
+        },
+        "& fieldset": { border: 'none', },
+        "&:hover" : {boxShadow: theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 3px rgba(245, 235, 224, .1)",}       
     }
 
     const selectSX = {
@@ -208,7 +230,8 @@ const AddCoopView = ({setOpen, editMode, data}) => {
                             width: "70%",
                             maxWidth: 750,
                             maxHeight: 500,
-                            backgroundColor: "#F6EBE1"
+                            backgroundColor: "primaryColor",
+                            boxShadow: theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 3px rgba(245, 235, 224, .1)",
                         },
                     },
                 }}
@@ -216,12 +239,36 @@ const AddCoopView = ({setOpen, editMode, data}) => {
                 <DialogContent>
                     <Container
                         sx={{
-                            marginTop: "15px",
+                            backgroundColor: "primaryColor",
+                            overflow: "hidden"
                         }}
                         style={{
-                            backgroundColor: "#F6EBE1",
-                            overflow: "hidden"
+                            
                         }}>
+                        {!image &&
+                            <Box sx={{
+                                margin: "0",
+                                padding: "0",
+                                border: "3px dashed",
+                                borderColor: "secondaryColor", 
+                                minHeight: "150px", 
+                                maxHeight: "300px", 
+                                minWidth: "300px", 
+                                width: "650px"
+                            }}>
+                                <label id="imageLabel" for="imageFile" sx={{ color: "textColor" }}>
+                                    Click to Add A Photo
+                                    <input
+                                        accept="image/*"
+                                        type="file"
+                                        onChange={handleAddPhotos}
+                                        id="imageFile"
+                                        style={{ display: "none" }}
+                                    />
+                                </label>
+                            </Box>}
+                            {propertyImage === "" || propertyImage === null ? "" : <img src={propertyImage} />}
+                        {/*
                         <AspectRatio minHeight={100} maxHeight={200} minWidth={300} maxWidth={400}
                             style={{
                                 borderStyle: "dotted",
@@ -243,7 +290,7 @@ const AddCoopView = ({setOpen, editMode, data}) => {
 
                             {propertyImage === "" || propertyImage === null ? "" : <img src={propertyImage} />}
                         </AspectRatio>
-
+                            */}
                         <Stack direction={{ '400px': "column", md: "row", lg: "row", xl: "row" }} spacing={5} sx={{ marginTop: 2, p: 1 }}>
 
 
