@@ -20,7 +20,7 @@ const TourRequestsPage = ({ login }) => {
             fontSize: "13pt",
             color: "textColor",
             backgroundColor:"primaryColor",
-            padding: "5px 15px 5px 15px",
+            padding: "15px 15px 15px 15px",
             borderBottomColor:"secondaryColor",
             borderBottomWidth:"3px"
         },
@@ -75,7 +75,7 @@ const TourRequestsPage = ({ login }) => {
         pullData('10/22/23', '12:00PM', 'Studio B', 'Pig B', 'PENDING'),
         pullData('10/23/23', '1:00PM', 'Studio C', 'Sheep C', 'DECLINED'),
         pullData('10/23/23', '10:00AM', 'Studio A', 'Duck A', 'PENDING'),
-        pullData('10/25/23', '11:00AM', 'Penthouse', 'Duck B', 'APPROVED')
+        pullData('10/25/23', '11:00AM', 'Penthouse', 'Duck B', 'APPROVED'),
     ];
 
 
@@ -92,8 +92,15 @@ const TourRequestsPage = ({ login }) => {
                 backgroundColor:"primaryColor",
                 boxShadow: theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 3px rgba(245, 235, 224, .1)",
             }}>
-                <TableContainer sx={{ maxHeight: "440px"}}>
-                    <Table stickyHeader aria-label="sticky table">
+                <TableContainer sx={{ maxHeight: "440px", height:"100%"}}>
+                    <Table stickyHeader aria-label="sticky table"
+                        sx={{
+                            "& .MuiTableRow-root:hover": {
+                                bgcolor: "secondaryColor",
+                                color: theme.palette.type === 'light' ? "primaryColor" : "textColor",
+                                cursor: "pointer",
+                            }
+                        }}>
                         <TableHead >
                             <TableRow >
                             {columns.map((column) => (
@@ -113,7 +120,6 @@ const TourRequestsPage = ({ login }) => {
                         </TableHead>
                         <TableBody>
                             {rows
-                            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                             .map((row) => {
                                 return (
                                 <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
