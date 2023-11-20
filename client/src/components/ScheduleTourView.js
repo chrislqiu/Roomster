@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Dialog, DialogTitle, Divider, IconButton, TextField, Container, Button } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useTheme } from '@mui/material/styles';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -162,6 +163,14 @@ const ScheduleTourView = ({requestTourOpen, handleClose}) => {
                                 variant="outlined">
                             SUBMIT
                         </Button>
+                         <IconButton
+                            style={{ position: "absolute",  bottom: 7, left: 15 }}
+                            onClick={() => handleClose()}
+                            >
+                            <ArrowBackIcon
+                                sx={{ color: "textColor" }}
+                            />
+                        </IconButton>
                     </Container>
                 </div>
             </Dialog>
