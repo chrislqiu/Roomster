@@ -24,7 +24,7 @@ import { createTheme, ThemeProvider, useTheme } from '@mui/material/styles';
  * yellow: #F6EBE1
  */
 
-const RenterCreateAccountView = ({ }) => {
+const RenterCreateAccountView = ({ rCreateOpen, handleClose }) => {
     const theme = useTheme();
     const [open, setOpen] = React.useState(true)
     const [name, setName] = React.useState("")
@@ -48,15 +48,16 @@ const RenterCreateAccountView = ({ }) => {
     const handleOpen = () => {
         setOpen(true)
     }
-    const handleClose = () => {
-        setOpen(false)
-        setName(null)
-        setEmail(null)
-        setPassword(null)
-        setSignupStatus(null)
-        window.location.replace("/Home")
+
+    // const handleClose = () => {
+    //     setOpen(false)
+    //     setName(null)
+    //     setEmail(null)
+    //     setPassword(null)
+    //     setSignupStatus(null)
+    //     window.location.replace("/Home")
         
-    }
+    // }
 
     const handleBackButton = () => {
         window.location.replace("/Home")
@@ -127,7 +128,7 @@ const RenterCreateAccountView = ({ }) => {
             </Button>*/}
 
             <Dialog
-                open={open}
+                open={rCreateOpen}
                 onClose={handleClose}
                 sx={{
                     "& .MuiDialog-container": {

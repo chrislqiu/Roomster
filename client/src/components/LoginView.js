@@ -69,6 +69,21 @@ const LoginView = ({ text }) => {
         setforgotPwOpen(true);
     }
 
+    const handleRCreateOpen = () => {
+        setRCreateOpen(true)
+    }
+
+    const handleRCreateClose = () => {
+        setRCreateOpen(false)
+    }
+
+    const handleMCreateOpen = () => {
+        setMCreateOpen(true)
+    }
+
+    const handleMCreateClose = () => {
+        setMCreateOpen(false)
+    }
 
     const handleLogin = async () => {
         try {
@@ -221,7 +236,7 @@ const LoginView = ({ text }) => {
                         <div style={{ justifyContent: "center", display: "inline", marginLeft: "70px", marginRight: "70px" }}>
                             <Button
                                 type="RCreate"
-                                onClick={() => setRCreateOpen(true)}
+                                onClick={handleRCreateOpen}
                                 sx={{
                                     ":hover": {
                                         backgroundColor: "secondaryColor",
@@ -237,7 +252,7 @@ const LoginView = ({ text }) => {
                             </Button>
 
                             <Button
-                                onClick={() => setMCreateOpen(true)}
+                                onClick={handleMCreateOpen}
                                 sx={{
                                     ":hover": {
                                         backgroundColor: "secondaryColor",
@@ -252,8 +267,8 @@ const LoginView = ({ text }) => {
                                 }}
                                 variant="outlined">PROPERTY MANAGER
                             </Button>
-                            {rCreateOpen && <RenterCreateAccountView />}
-                            {mCreateOpen && <ManagerCreateAccountView />}
+                            {rCreateOpen && <RenterCreateAccountView rCreateOpen={rCreateOpen} handleClose={handleRCreateClose}/>}
+                            {mCreateOpen && <ManagerCreateAccountView mCreateOpen={mCreateOpen} handleClose={handleMCreateClose}/>}
                         </div>
 
                         <Typography sx={{ margin: 1.5, marginLeft: "auto", marginTop: "15px", marginBottom: "-5px", color: "textColor"}}>
