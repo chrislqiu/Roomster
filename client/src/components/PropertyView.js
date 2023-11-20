@@ -700,7 +700,6 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
                                     }}
                                     variant="outlined">REQUEST A TOUR
                                 </Button>
-                                <ScheduleTourView open={requestTourOpen} handleClose={handleCloseRequestTour}/>
                                 {requestTourOpen && <ScheduleTourView requestTourOpen={requestTourOpen} handleClose={handleCloseRequestTour}/>}
                             </div>
 
