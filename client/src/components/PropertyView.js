@@ -23,6 +23,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBuildingCircleCheck } from '@fortawesome/free-solid-svg-icons'
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import ScheduleTourView from './ScheduleTourView';
 import { createTheme, ThemeProvider, useTheme } from '@mui/material/styles';
 
 
@@ -54,6 +55,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
         cost = data.propertyInfo.cost;
         amenities = data.propertyInfo.amenities;
     }
+    
     /*
      * open, setOpen : controls the state of the dialogue popup
      */
@@ -67,6 +69,18 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
     const [myCoopsArr, setMyCoopsArr] = React.useState([])
     const [isVerified, setIsVerified] = React.useState(false)
     const coopFavorited = favCoopsArr.some(coops => coops._id.toString() === data._id.toString())
+
+    /* Scheduling Tour */
+    const [requestTourOpen, setRequestTourOpen] = React.useState(false)
+
+    const handleOpenRequestTour = () => {
+        console.log("request = " + requestTourOpen)
+        setRequestTourOpen(true)
+    }
+
+    const handleCloseRequestTour = () => {
+        setRequestTourOpen(false)
+    }
 
     React.useEffect(() => {
 
@@ -112,6 +126,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
         setOpen(false)
     }
 
+    
     const [editMode, setEditMode] = React.useState(false);
 
     const handleEdit = () => {
@@ -129,6 +144,8 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
     const handleLeave = () => {
         setHovered(false)
     }
+
+    
     /*
     * Handle favorite button
     */
@@ -162,6 +179,14 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
 
         setSaves(data.propertyInfo.saves);
         window.location.reload(true)
+    }
+    const styles = {
+        divider: {
+            height: "3px",
+            backgroundColor: hovered === true ? "#f5ebe0" : "#AB191F",
+            padding: "0",
+            margin: "15px 0 15x 0",
+        }
     }
 
     const navigate = useNavigate()
@@ -640,25 +665,45 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
                             </div>
                         ) : isOwner === false && userType !== "manager" ? (
                             // User view (not owner)
-                            <Tooltip
-                                title= {coopFavorited ? "Remove from FAV COOPS" : "Add to FAV COOPS"}
-                                componentsProps={{
-                                    tooltip: {
-                                        sx: {
-                                            bgcolor: theme.palette.type === "light" ? 'rgba(171, 25, 31, 0.9)' : "rgba(245, 235, 224, .8)",
-                                            color: "primaryColor"
+                            <div>
+                                <Tooltip
+                                    title= {coopFavorited ? "Remove from FAV COOPS" : "Add to FAV COOPS"}
+                                    componentsProps={{
+                                        tooltip: {
+                                            sx: {
+                                                bgcolor: theme.palette.type === "light" ? 'rgba(171, 25, 31, 0.9)' : "rgba(245, 235, 224, .8)",
+                                                color: "primaryColor"
+                                            },
                                         },
-                                    },
-                                }}
-                            >
-                                <IconButton size="large" onClick={handleFavorite}>
-                                    {coopFavorited ? (
-                                        <FavoriteIcon sx={{ color: "secondaryColor" }} />
-                                    ) : (
-                                        <FavoriteBorderIcon sx={{ color: "secondaryColor" }} />
-                                    )}
-                                </IconButton>
-                            </Tooltip>
+                                    }}
+                                >
+                                    <IconButton size="large" onClick={handleFavorite}>
+                                        {coopFavorited ? (
+                                            <FavoriteIcon sx={{ color: "secondaryColor" }} />
+                                        ) : (
+                                            <FavoriteBorderIcon sx={{ color: "secondaryColor" }} />
+                                        )}
+                                    </IconButton>
+                                </Tooltip>
+
+                                {/* Schedule Tour */}
+                                <Button
+                                    onClick={handleOpenRequestTour}
+                                    sx={{
+                                        ":hover": {
+                                            borderColor: "#F6EBE1", bgcolor: "#F6EBE1", color: "#AB191F",
+                                            borderWidth: 1.5, width: "175px", fontWeight: 600, fontSize:"11pt", padding:"0"
+                                        },
+                                        borderColor: "#AB191F", bgcolor: "#AB191F", color: "#F6EBE1",
+                                        borderWidth: 1.5, width: "175px", fontWeight: 600, fontSize:"11pt", padding:"0",
+                                        boxShadow: 5, justifyContent: "center", maxHeight: "50px", position:"absolute", bottom:15, left:25
+                                    }}
+                                    variant="outlined">REQUEST A TOUR
+                                </Button>
+                                <ScheduleTourView open={requestTourOpen} handleClose={handleCloseRequestTour}/>
+                                {requestTourOpen && <ScheduleTourView requestTourOpen={requestTourOpen} handleClose={handleCloseRequestTour}/>}
+                            </div>
+
                         ) : isOwner === true && userType === "manager" ? (
                             // Owner view
                             <div>
