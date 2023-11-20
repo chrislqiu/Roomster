@@ -163,14 +163,6 @@ const ScheduleTourView = ({requestTourOpen, handleClose}) => {
                                 variant="outlined">
                             SUBMIT
                         </Button>
-                         <IconButton
-                            style={{ position: "absolute",  bottom: 7, left: 15 }}
-                            onClick={() => handleClose()}
-                            >
-                            <ArrowBackIcon
-                                sx={{ color: "textColor" }}
-                            />
-                        </IconButton>
                     </Container>
                 </div>
             </Dialog>
