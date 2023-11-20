@@ -235,14 +235,14 @@ const ManagerCreateAccountView = ({ mCreateOpen, handleClose}) => {
                         >SIGN UP
                         </Button>
 
-                        {/* <IconButton
+                         <IconButton
                             style={{ position: "BottomLeft", position: "sticky", top: 70, left: 0 }}
-                            onClick={() => handleBackButton()}
+                            onClick={() => handleClose()}
                         >
                             <ArrowBackIcon
-                                style={{ color: "black" }}
+                                sx={{ color: "textColor" }}
                             />
-                        </IconButton> */}
+                        </IconButton>
                     </div>
                 </DialogContent>
             </Dialog>
