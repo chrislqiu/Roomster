@@ -1,4 +1,4 @@
-import { InputBase, Card, Box, Typography, CardContent, Input, Divider, TextField, Link, Button } from "@mui/material";
+import { InputBase, Card, Box, Typography, Grid, CardContent, Input, Divider, TextField, Link, Button } from "@mui/material";
 import toast, { Toaster } from 'react-hot-toast';
 import React from "react"
 import { useState } from 'react';
@@ -59,7 +59,7 @@ const PropertyManagerPage = () => {
         });
 
         const textfieldSX = {
-            margin: "0 0 10px 25px", 
+            margin: "0 0 10px 0px", 
             width:"280px", 
             borderRadius: "5px",
             border: "2px solid",
@@ -134,114 +134,95 @@ const PropertyManagerPage = () => {
     };
 
     return (
+        <Grid container spacing={0} direction="column" alignItems="center" justify="center">
             <Card
-                variant='contained'
-                sx={{
-                    backgroundColor: "primaryColor",
-                    color: "secondaryColor",
-                    width: "800px",
-                    height: "385px",
-                    boxShadow: theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 3px rgba(245, 235, 224, .1)", 
-                    marginBottom: "225px",
-                    marginTop: "50px",
-                    marginLeft: "300px"
-                    }}>
+            variant='contained'
+            sx={{
+                backgroundColor: "primaryColor",
+                boxShadow: theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 3px rgba(245, 235, 224, .1)", 
+                width: "750px",
+                height: "375px",
+                margin: "-10px 0 20px 0"
+                }}>
                 <CardContent>
-                <Box width='45%' marginLeft={5}>
-                        <Typography 
-                        sx={{
-                            fontWeight: 600,
-                            fontSize: 24,
-                            marginTop: 2,
-                            variant: "h1",
-                            color: "textColor",
-                            width: "310px",
-                        }}>
-                            {nameHolder}
-                        </Typography >
-                        <Typography
-                        sx={{
-                            fontWeight: 600,
-                            fontSize: 15,
-                            marginTop: 1,
-                            width: "300px",
-                        }}>
-                            {"Contact Info:"}
-                        </Typography>
-                        <Box sx={{
-                            fontWeight: 600,
-                            fontSize: 12,
-                            width: "300px",
-                            fontFamily: 'Raleway',
-                        }}>
-                        <TextField
-                            placeholder={phoneHolder} value={phoneNumber} variant="outlined" 
-                            sx={textfieldSX} size="small" name="phoneNum" type="text"
-                            onChange={(e) => setPhoneNumber(e.target.value)}
-                            disabled={disableButton}
-                        />
-                            
-                        </Box>
-                        <Box sx={{
-                            fontWeight: 600,
-                            fontSize: 12,
-                            marginTop: 2,
-                            fontFamily: 'Raleway',
-                            width: "300px",
-                        }}>
-
-                        <TextField
-                            placeholder={emailHolder} value={email} variant="outlined" 
-                            sx={textfieldSX} size="small" name="email" type="text"
-                            onChange={(e) => setEmail(e.target.value)}
-                            disabled={disableButton}
-                        />
-                            
-                        </Box>
-                        <Typography
-                        sx={{
-                            fontWeight: 600,
-                            fontSize: 15,
-                            marginTop: 1,
-                            width:"300px",
-                        }}>
-                            {"Bio:"}
-                        </Typography>
-                        <Box sx={{
-                            fontWeight: 600,
-                            fontSize: 12,
-                            marginTop: 1,
-                            fontFamily: 'Raleway',
-                            width:"300px",
-                        }}>
-                            <TextField
-                            type="text"
-                            name="bio"
-                            placeholder={bioHolder}
-                            value={bio}
-                            onChange={(e) => setBio(e.target.value)}
-                            multiline rows={4} maxRows={4} 
-                            disabled={disableButton}
-                            width="500px"
-                            style={{
-                                width:"300px",
-                                borderRadius: "7px",
-                                border: "2px solid #AB191F",
-                                "&:hover": {
-                                    boxShadow:"0px 0px 3px 3px rgba(0, 0, 0, .1)", 
-                                }
-                            }}
-                            />
-                        </Box>
+                <Box sx={{
+                float: "left", 
+                width: "47%", 
+                borderRight: "3px solid",
+                borderColor: "secondaryColor",
+                paddingLeft: "15px",
+                }}>
+                    <Typography 
+                    sx={{
+                        fontWeight: 600,
+                        fontSize: 24,
+                        variant: "h1",
+                        color: "textColor",
+                        width: "310px",
+                    }}>
+                        {nameHolder}
+                    </Typography >
+                    <Typography
+                    sx={{
+                        fontWeight: 600,
+                        fontSize: 15,
+                        margin: "10px 0 10px 0",
+                        width: "300px",
+                        color: "textColor"
+                    }}>
+                        {"Manager Info:"}
+                    </Typography>    
+                    <TextField
+                        placeholder={phoneHolder} value={phoneNumber} variant="outlined" 
+                        sx={textfieldSX} size="small" name="phoneNum" type="text"
+                        onChange={(e) => setPhoneNumber(e.target.value)}
+                        disabled={disableButton}
+                    />
+                    <TextField
+                        placeholder={emailHolder} value={email} variant="outlined" 
+                        sx={textfieldSX} size="small" name="email" type="text"
+                        onChange={(e) => setEmail(e.target.value)}
+                        disabled={disableButton}
+                    />
+                    <Typography
+                    sx={{
+                        fontWeight: 600,
+                        fontSize: 15,
+                        width:"300px",
+                        color: "textColor",
+                        margin: "0 0 10px 0"
+                    }}>
+                    {"Bio:"}
+                    </Typography>
+                        
+                    <TextField
+                    type="text"
+                    name="bio"
+                    placeholder={bioHolder}
+                    value={bio}
+                    onChange={(e) => setBio(e.target.value)}
+                    multiline rows={3} maxRows={3} 
+                    disabled={disableButton}
+                    width="500px"
+                    sx={{
+                        width:"300px",
+                        borderRadius: "7px",
+                        border: "2px solid",
+                        borderColor: "secondaryColor",
+                        "&:hover": {
+                            boxShadow: theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 3px rgba(245, 235, 224, .1)", 
+                        }
+                    }}
+                    />         
                 </Box>
             
-                <Box width='40%' marginLeft={57} marginY={-39}>
+                <Box sx={{float: "left", width: "47%", paddingLeft: "25px"}}>
                     <Typography 
                         sx={{
                             fontWeight: 600,
                             fontSize: 24,
                             variant: "h1",
-                            color: "black"
+                            color: "textColor"
                         }}>
                             {CompanyNameHolder}
                     </Typography >
@@ -249,75 +230,58 @@ const PropertyManagerPage = () => {
                         sx={{
                             fontWeight: 600,
                             fontSize: 15,
-                            marginTop: 1
+                            margin: "10px 0 10px 0",
+                            color: "textColor"
                         }}>
-                            {"Address:"}
+                            {"Company Info:"}
                         </Typography>
-                        <Box sx={{
-                            fontWeight: 600,
-                            fontSize: 12,
-                            marginBottom: 1,
-                            fontFamily: 'Raleway'
-                        }}>
-
+                
                         <TextField
                             placeholder={addressHolder} value={addr} id="email-textfield" variant="outlined" 
                             sx={textfieldSX} size="small" type="text" name="addr"
                             onChange={(e) => setAddr(e.target.value)}
                             disabled={disableButton}
                         />
-                            
-                        </Box>
-                        <Typography
-                        sx={{
-                            fontWeight: 600,
-                            fontSize: 15,
-                            marginTop: 0
-                        }}>
-                            {"Office Phone Number:"}
-                        </Typography>
-                        <Box sx={{
-                            fontWeight: 600,
-                            fontSize: 12,
-                            marginBottom: 2,
-                            fontFamily: 'Raleway'
-                        }}>
+                        
                         <TextField
                             placeholder={OPhoneHolder} value={officeNum} variant="outlined" 
-                            sx={textfieldSX} size="small" type="text" name="officeNum"
+                            sx={textfieldSX}size="small" type="text" name="officeNum"
                             onChange={(e) => setOfficeNum(e.target.value)}
                             disabled={disableButton}
                         />
-                            
-                        </Box>
-                        <Link href={`http://${site}`} underline="always" color="#AB191F" fontWeight={600} >
-                                {'Leasing Site'}
+                        <Box>
+                        <Link href={`http://${site}`} underline="always" color="secondaryColor" fontWeight={600}
+                        sx={{":hover": {color: "textColor"}}}>
+                                {'Leasing Site'} 
                         </Link>
-                        <Box marginLeft={28} marginY={10} width={"200px"}>
+                        </Box>
                         <Button 
                             variant='contained'
                             sx={{
                                 ":hover":{
-                                bgcolor: "#F6EBE1",
-                                color: "#AB191F"
+                                bgcolor: "secondaryColor",
+                                color: "primaryColor",
+                                boxShadow: theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 3px rgba(245, 235, 224, .1)", 
+
                                 },
-                                backgroundColor: "#AB191F",
-                                color: "#F6EBE1",
-                                m: 1
+                                float: "right",
+                                margin: "85px 0 0 0",
+                                backgroundColor: "secondaryColor",
+                                color: "primaryColor",
+                                fontWeight: "600",
                             }}
-                        onClick={() => {
-                            if (disableButton) {
-                            // Enable edit mode
-                            setDisableButton(false);
-                            } else {
-                            // Save changes and disable edit mode
-                            handleSave();
-                            setDisableButton(true);
-                            }  
-                        }}>
+                            onClick={() => {
+                                if (disableButton) {
+                                // Enable edit mode
+                                setDisableButton(false);
+                                } else {
+                                // Save changes and disable edit mode
+                                handleSave();
+                                setDisableButton(true);
+                                }  
+                            }}>
                             {disableButton ? 'Edit' : 'Save'}
                         </Button>
-                        </Box>
                 </Box>
                 <Divider orientation="vertical" width={3} sx={{ borderBottomWidth: 3, color: "#AB191F", backgroundColor: "#AB191F", marginX: 48, marginY:-50, height: 270}} />
                 </CardContent>
@@ -335,6 +299,7 @@ const PropertyManagerPage = () => {
                         },
                     }}/>
             </Card>
+            </Grid>
     )
 }
 
