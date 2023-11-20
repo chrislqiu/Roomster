@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Grid, Typography, Divider, Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Button, IconButton} from "@mui/material"; 
+import {Grid, Typography, Divider, Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip, IconButton} from "@mui/material"; 
 import CloseIcon from '@mui/icons-material/Close';
 import CancelIcon from '@mui/icons-material/Cancel';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
@@ -124,18 +124,7 @@ const TourRequestsPage = ({ login }) => {
                                 color: theme.palette.type === 'light' ? "primaryColor" : "textColor",
                                 cursor: "pointer",
                             }
-                        }}
-                        enableRowActions="true"
-                        renderRowActions={({ row, table }) => (
-                            <Box sx={{ display: 'flex', flexWrap: 'nowrap', gap: '8px' }}>
-                                <IconButton>
-                                    <CloseIcon/>
-                                </IconButton>
-                                <IconButton>
-                                    <CloseIcon/>
-                                </IconButton>
-                            </Box>
-                        )}>
+                        }}>
                         <TableHead >
                             <TableRow >
                             {columns.map((column) => (
@@ -165,12 +154,32 @@ const TourRequestsPage = ({ login }) => {
                                                 
                                                 <div>
                                                     {/* TODO for DB ppl: when check/cancel clicked, update status on UI and DB */}
-                                                    <IconButton>
-                                                        <CheckCircleOutlineOutlinedIcon sx={{ color: "textColor" }}/>
-                                                    </IconButton>
-                                                    <IconButton>
-                                                        <CancelOutlinedIcon sx={{ color: "textColor" }}/>
-                                                    </IconButton>
+                                                    <Tooltip title="Approve Tour Request"
+                                                        componentsProps={{
+                                                            tooltip: {
+                                                                sx: {
+                                                                    bgcolor: theme.palette.type === "light" ? 'rgba(171, 25, 31, 0.9)' : "rgba(245, 235, 224, .8)",
+                                                                    color: "primaryColor"
+                                                                },
+                                                            },
+                                                        }}>
+                                                        <IconButton>
+                                                            <CheckCircleOutlineOutlinedIcon sx={{ color: "textColor" }}/>
+                                                        </IconButton>
+                                                    </Tooltip>
+                                                    <Tooltip title="Decline Tour Request"
+                                                        componentsProps={{
+                                                            tooltip: {
+                                                                sx: {
+                                                                    bgcolor: theme.palette.type === "light" ? 'rgba(171, 25, 31, 0.9)' : "rgba(245, 235, 224, .8)",
+                                                                    color: "primaryColor"
+                                                                },
+                                                            },
+                                                        }}>
+                                                        <IconButton>
+                                                            <CancelOutlinedIcon sx={{ color: "textColor" }}/>
+                                                        </IconButton>
+                                                    </Tooltip>
                                                 </div>
                                             : tourRequest}
                                         </TableCell>
