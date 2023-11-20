@@ -1,14 +1,14 @@
 import * as React from 'react';
 import { Dialog, DialogTitle, Divider, IconButton, TextField, Container, Button } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import { createTheme, ThemeProvider, useTheme } from '@mui/material/styles';
+import { useTheme } from '@mui/material/styles';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 
 
-const ScheduleTourView = ({data}) => {
+const ScheduleTourView = ({requestTourOpen, handleClose}) => {
     const theme = useTheme();
     const [open, setOpen] = React.useState(false)
     const [email, setEmail] = React.useState("")
@@ -74,24 +74,12 @@ const ScheduleTourView = ({data}) => {
         width:"368px"
     }
 
-    /* Pre-populating */
-    var propertyName = data.propertyInfo.propertyName
-    var companyName = data.companyInfo.companyName
-    // setPropertyName(data.propertyInfo.propertyName)
-    // setCompanyName(data.companyInfo.companyName)
-
-
-    const handleOpen = () => {
-        setOpen(true)
-    }
-    const handleClose = () => {
-        setOpen(false)
-    }
+    
 
     return (
         <React.Fragment>
              <Dialog
-                open={setOpen}
+                open={requestTourOpen}
                 onClose={handleClose}
                 sx={{
                     "& .MuiDialog-container": {
@@ -99,7 +87,7 @@ const ScheduleTourView = ({data}) => {
                             //width: "100%",
                             width: "400px",
                             height: "440px",
-                            bgcolor: '#F6EBE1'
+                            bgcolor: 'primaryColor'
                         }
                     }
                 }}
@@ -109,10 +97,10 @@ const ScheduleTourView = ({data}) => {
                         style={{ position: "absolute", top: "0", right: "0" }}
                         onClick={() => handleClose()}
                     >
-                        <CloseIcon style={{ color: "black" }} />
+                        <CloseIcon sx={{ color: "textColor" }} />
                     </IconButton>
-                    <DialogTitle sx={{ fontWeight: 600, fontSize: 25, marginBottom: "-20px" }}> Schedule A Tour! </DialogTitle>
-                    <Divider variant="middle" sx={{ borderBottomWidth: 3, color: "#AB191F", backgroundColor: "#AB191F", marginY: 1 }} />
+                    <DialogTitle sx={{ fontWeight: 600, fontSize: 25, marginBottom: "-20px", color:"textColor" }}> Schedule A Tour! </DialogTitle>
+                    <Divider variant="middle" sx={{ borderBottomWidth: 3, color: "secondaryColor", backgroundColor: "secondaryColor", marginY: 1 }} />
                 </div>
 
                 <div>
@@ -143,12 +131,17 @@ const ScheduleTourView = ({data}) => {
                                         color: "textColor",
                                         },
                                     },
-                                    "& fieldset": { border: 'none', },
+                                    "& fieldset": { border: 'none', color:"textColor"},
+                                    "& label": {color:"textColor"},
+                                    "& label.Mui-focused": {color:"textColor"},
+                                    "&.Mui-focused fieldset": {color:"textColor"},
+                                    
                                     boxShadow: theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 3px rgba(245, 235, 224, .1)",
                                     marginTop:"15px",
                                     marginBottom: "5px",
                                     marginLeft:"15px",
-                                    width:"368px"}}>
+                                    width:"368px",
+                                    height:"50px"}}>
                                 <DateTimePicker label="Select a tour date and time"/>
                             </DemoContainer>
                         </LocalizationProvider>
@@ -166,14 +159,8 @@ const ScheduleTourView = ({data}) => {
                                 variant="outlined">
                             SUBMIT
                         </Button>
-
-
-                        
-
                     </Container>
                 </div>
-
-
             </Dialog>
 
 
