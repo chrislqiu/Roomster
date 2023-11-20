@@ -35,6 +35,7 @@ import MyToursPage from "./pages/MyToursPage";
 import { createTheme, ThemeProvider, useTheme } from '@mui/material/styles';
 import DarkMode from '@mui/icons-material/DarkMode';
 import LightMode from '@mui/icons-material/LightMode';
+import TourRequestsPage from "./pages/TourRequestsPage";
 
 const font =  "'Lato', sans-serif";
 const lightTheme = {
@@ -326,6 +327,8 @@ class App extends React.Component {
               <Route path="/MProfile" element={<PropertyManagerPage />} />
               <Route path="/FavCoops" element={<FavCoopsPage login={isAuthenticated} />} />
               <Route path="/MyCoops" element={<MyCoopsPage login={isAuthenticated} />} />
+              <Route path="MyTours" element={<MyToursPage login={isAuthenticated}/>}/>
+              <Route path="TourRequests" element={<TourRequestsPage login={isAuthenticated}/>}/>
               <Route path="/Login" element={<LoginPage />} />
               <Route path="/RCreate" element={<RenterCreateAccountView />} />
               <Route path="/MCreate" element={<ManagerCreateAccountView />} />
