@@ -106,16 +106,19 @@ const ScheduleTourView = ({requestTourOpen, handleClose}) => {
                 <div>
                     <TextField
                         placeholder="Prepopulate to username" id="username-textfield" variant="outlined" fullWidth
+                        inputProps={{readOnly: true,}}
                         sx={textfieldSX}
                     />
 
                     <TextField
                         placeholder="Prepopulate to property name" id="property-name-textfield" variant="outlined" fullWidth
+                        inputProps={{readOnly: true,}}
                         sx={textfieldSX}
                     />
 
                     <TextField
                         placeholder="Prepopulate to company name" id="company-name-textfield" variant="outlined" fullWidth
+                        inputProps={{readOnly: true,}}
                         sx={textfieldSX}
                     /> 
 
