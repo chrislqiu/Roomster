@@ -32,6 +32,8 @@ const MainPage = ({ login }) => {
 
     const [input, setInput] = React.useState('')
 
+    console.log(propertyInfo)
+
     // const sortData = (data, sortingOption) => {    
     //     if (sortingOption === 'Price') {
     //       return data.sort((a, b) => a.propertyInfo.cost - b.propertyInfo.cost);
