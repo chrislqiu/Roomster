@@ -21,7 +21,7 @@ import Settings from "../pages/Settings"
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 const pages = ["Home", "My Coops", "Fav Coops", "Coopmates", "Log Out"];
-const pagesManager = ["Home", "My Coops", "Log Out"];
+const pagesManager = ["Home", "My Coops", "Tour Requests", "Log Out"];
 const pagesRenter = ["Home", "Fav Coops", "Coopmates", "My Tours", "Log Out" ];
 
 //const routePage = ["/Home", "/FavCoops", "/Coopmates", "/Logout"]
@@ -249,6 +249,8 @@ const RoomsterAppBar = ({ login, userType }) => {
                                               navigate("/Home")
                                           } else if (page == "My Coops") {
                                               navigate("/MyCoops")
+                                          } else if (page == "Tour Requests") {
+                                              navigate("/TourRequests")
                                           } else if (page === "Log Out") {
                                               handleLogout();
                                           }
