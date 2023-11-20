@@ -125,7 +125,7 @@ app.post('/sendRenterProfile', async (req,res) => {
     phone: data.phone,
     pfp: data.pfp,
     livingPreferences: updatedLivingPref,
-    favCoops: data.favCoops
+    favCoops: renter.renterInfo.favCoops
   })
 
   var updatedRenter = new Renter({

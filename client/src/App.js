@@ -83,7 +83,18 @@ const lightTheme = {
   }
 }
 const darkTheme = {
+  overrides: {
+    MuiInput: {
+      input: {
+        '&::placeholder': {
+          color: "#F6EBE1",
+          opacity: "1",
+        }
+      }
+    }
+  },
   components: {
+    
     MuiFormControlLabel: {
       styleOverrides: {
         label: {
@@ -169,6 +180,7 @@ class App extends React.Component {
       if (response.ok) {
         this.setState({ isAuthenticated: true });
         const data = await response.json();
+        console.log(data)
         const userType = data.userType;
         this.setState({ userType: userType });
         console.log("user type: " + userType)
@@ -260,15 +272,12 @@ class App extends React.Component {
         </Helmet>
 
         <ThemeProvider theme={theme}>
-          <Paper sx={{
-            backgroundColor: "primaryColor",
-            width: "100%",
-            minHeight: "100vh",
-            margin: "0",
-            padding: "0",
-            zIndex: "-1",
-            justifyContent: "center"
-          }}>
+          <GlobalStyles
+            styles={{
+              body: { backgroundColor: theme.palette.type === "light" ? "#F6EBE1" : "#18100e", zIndex: "-1", },
+            }}
+          />
+          
           <div style={{ zIndex: "0" }}>
               <img src={darkMode ? theredthingDarkMode : theredthing}
               style={{
@@ -333,7 +342,6 @@ class App extends React.Component {
             
           </BrowserRouter>
 
-          </Paper>
           
         </ThemeProvider>
         
