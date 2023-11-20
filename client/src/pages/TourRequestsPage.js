@@ -1,18 +1,12 @@
 import * as React from 'react';
 import {Grid, Typography, Divider, Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip, IconButton} from "@mui/material"; 
-import CloseIcon from '@mui/icons-material/Close';
-import CancelIcon from '@mui/icons-material/Cancel';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CheckCircleOutlineOutlinedIcon from '@mui/icons-material/CheckCircleOutlineOutlined';
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
-import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
 import { createTheme, ThemeProvider, useTheme } from '@mui/material/styles';
 
 
 const TourRequestsPage = ({ login }) => {
     const theme = useTheme();
-    const [rowClicked, setRowClicked] = React.useState(false)
-    const [rowIdxClicked, setRowIdxClicked] = React.useState('')
 
     const styles = {
         header: {
@@ -80,11 +74,6 @@ const TourRequestsPage = ({ login }) => {
     function pullData(date, time, property, user, status) {
         return { date, time, property, user, status };
     }
-
-    const handleRowClicked = (e) => {
-        setRowClicked(true)
-        setRowIdxClicked(e)
-    }
     
     /* Pull data from DB, dummy data for now. Note that properties should be specific to company */
     const rows = [
@@ -145,7 +134,7 @@ const TourRequestsPage = ({ login }) => {
                             {rows
                             .map((row) => {
                                 return (
-                                <TableRow hover role="checkbox" tabIndex={-1} key={row.code} onClick={handleRowClicked}>
+                                <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
                                     {columns.map((column) => {
                                     const tourRequest = row[column.id];
                                     return (
