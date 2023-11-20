@@ -43,15 +43,16 @@ const MyCoopsPage = ({ login }) => {
     const [includeTrash, setIncludeTrash] = React.useState(false)
     const [includeSewage, setIncludeSewage] = React.useState(false)
     const [includeInternet, setInternet] = React.useState(false)
-    const presetData = [
-        ['water', false],
-        ['electricity', false],
-        ['gas', false],
-        ['trash', false],
-        ['sewage', false],
-        ['internet', false]
-    ];
-    const [utilities, setUtilities] = useState(new Map(presetData));
+//    const presetData = [
+//        ['water', false],
+//        ['electricity', false],
+//        ['gas', false],
+//        ['trash', false],
+//        ['sewage', false],
+//        ['internet', false]
+//    ];
+//    const [utilities, setUtilities] = useState(new Map(presetData));
+    const [utilitiesArr, setUtilitiesArr] = React.useState([])
 
     /* Disabled button for Edit and Save */
     const [disableButton, setDisableButton] = React.useState(true)
@@ -141,9 +142,9 @@ const MyCoopsPage = ({ login }) => {
         }
     };
 
-    const handleUtilChange = (key, value) => {
-        setUtilities((prevUtilities) => new Map(prevUtilities.set(key, value)));
-    };
+//    const handleUtilChange = (key, value) => {
+//        setUtilities((prevUtilities) => new Map(prevUtilities.set(key, value)));
+//    };
 
     const handleAppCoop = async () => {
         if (propertyName === '' || propertyAddress === '' || price === '' || bed === -1 || bath === -1) {
@@ -164,7 +165,7 @@ const MyCoopsPage = ({ login }) => {
                 sqft: '',
                 distance: '',
                 amenities: amenitiesArr,
-                utilities: Object.fromEntries(utilities)
+                //utilities: Object.fromEntries(utilities)
             }
         }
 

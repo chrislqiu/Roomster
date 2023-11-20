@@ -36,7 +36,7 @@ import { createTheme, ThemeProvider, useTheme } from '@mui/material/styles';
  * favCoops : Boolean to determine if card is on favCoops page
  */
 const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) => {
-    var image, propertyName, address, beds, baths, cost, amenities
+    var image, propertyName, address, beds, baths, cost, amenities, utilities
     if (myCoops) {
         image = data.image;
         propertyName = data.propertyName;
@@ -45,6 +45,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
         baths = data.baths;
         cost = data.cost;
         amenities = data.amenities;
+        utilities = data.utilities;
     } else {
         image = data.propertyInfo.image;
         propertyName = data.propertyInfo.propertyName;
@@ -53,12 +54,13 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
         baths = data.propertyInfo.baths;
         cost = data.propertyInfo.cost;
         amenities = data.propertyInfo.amenities;
+        utilities = data.propertyInfo.utilities;
     }
     /*
      * open, setOpen : controls the state of the dialogue popup
      */
     const [open, setOpen] = React.useState(false)
-    const [utilities, setUtilities] = React.useState('')
+    //const [utilities, setUtilities] = React.useState('')
     const [saves, setSaves] = React.useState(myCoops === true ? data.saves : data.propertyInfo.saves)
     const [updateOrRemove, setUpdateOrRemove] = React.useState('')
     const [userData, setUserData] = React.useState('')
@@ -174,9 +176,9 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
         })
     }
 
-    const pullUtilities = () => {
-        setUtilities(Object.keys(utilities).filter(key => utilities[key] === true))
-    }
+//    const pullUtilities = () => {
+//        setUtilities(Object.keys(utilities).filter(key => utilities[key] === true))
+//    }
 
     const handleDeleteProperty = async () => {
         const id = data._id;
@@ -528,21 +530,22 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
                             >
                                 Utilities
                             </Typography>
-                            {pullUtilities}
-                            <List
-                                sx={{
-                                    color: "textColor",
-                                    listStyleType: 'disc',
-                                    listStylePosition: 'inside',
-                                    marginLeft: "-40px",
-                                    marginTop: "-15px",
-                                    marginBottom: "-25px"
-                                }}
-                            >
-                                <ListItem sx={{ color: "textColor", display: 'list-item' }}>
-                                    {utilities}
-                                </ListItem>
-                            </List>
+                            {utilities.map((utility) => {
+                                return <List
+                                    sx={{
+                                        color: "textColor",
+                                        listStyleType: 'disc',
+                                        listStylePosition: 'inside',
+                                        marginLeft: "-40px",
+                                        marginTop: "-15px",
+                                        marginBottom: "-25px"
+                                    }}
+                                >
+                                    <ListItem sx={{ color: "textColor", display: 'list-item' }}>
+                                        {utility}
+                                    </ListItem>
+                                </List>
+                            })}
                         </Box>
 
                         <Divider orientation='verticle' width={3} sx={{ borderBottomWidth: 3, backgroundColor: "secondaryColor", marginY: 2 }} />
