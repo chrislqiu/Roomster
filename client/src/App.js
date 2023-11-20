@@ -179,6 +179,7 @@ class App extends React.Component {
       if (response.ok) {
         this.setState({ isAuthenticated: true });
         const data = await response.json();
+        console.log(data)
         const userType = data.userType;
         this.setState({ userType: userType });
         console.log("user type: " + userType)
