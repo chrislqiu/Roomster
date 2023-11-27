@@ -208,8 +208,9 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
         const id = data._id;
 
         console.log("data: " + id);
-        const link = "http://localhost:3001/"
-        //window.location.href
+        const link = window.location.href + "Property/" + id
+        console.log(link)
+        window.location.assign(link)
     };
 
     const handleDeleteProperty = async () => {
@@ -613,7 +614,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
 
                     <IconButton
                         style={{ position: "BottomLeft", position: "sticky", top: 70, left: 0 }}
-                        //onClick={() => handleShare()}
+                        onClick={() => handleShare()}
                     >
                         <SendIcon
                             sx={{ color: "textColor" }}
