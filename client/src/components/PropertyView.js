@@ -24,8 +24,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBuildingCircleCheck } from '@fortawesome/free-solid-svg-icons'
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import ImageGallery from './ImageGallery';
 import ScheduleTourView from './ScheduleTourView';
 import { createTheme, ThemeProvider, useTheme } from '@mui/material/styles';
+import amongus from '../images/amongusturkey.jpeg'
 
 
 /* 
@@ -56,6 +58,8 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
         cost = data.propertyInfo.cost;
         amenities = data.propertyInfo.amenities;
     }
+
+    const testimages = [image, amongus]
     
     /*
      * open, setOpen : controls the state of the dialogue popup
@@ -457,12 +461,13 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
                          * AspectRatio controls the size of the image
                          */
                     }
-                        <img 
+                        {/* <img 
                             src={image}
                             srcSet={image}
                             alt=""
                             style={{ objectFit: 'fill', width: '700px', height: '200px', borderRadius: '5px'}}
-                        />
+                        /> */}
+                        <ImageGallery images={testimages}/>
                     {
                         /*
                          * Stack direction row has each text 'chunk'
@@ -721,7 +726,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
                                     }}
                                     variant="outlined">REQUEST A TOUR
                                 </Button>
-                                {requestTourOpen && <ScheduleTourView requestTourOpen={requestTourOpen} handleClose={handleCloseRequestTour}/>}
+                                {requestTourOpen && <ScheduleTourView data={data} userData={userData} requestTourOpen={requestTourOpen} handleClose={handleCloseRequestTour}/>}
                             </div>
 
                         ) : isOwner === true && userType === "manager" ? (
