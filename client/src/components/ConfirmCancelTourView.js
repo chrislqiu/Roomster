@@ -4,14 +4,8 @@ import CloseIcon from '@mui/icons-material/Close';
 import { useTheme } from '@mui/material/styles';
 
 
-const ConfirmCancelTourView = ({open, handleClose, rowIndex, handleCancelConfirmed}) => {
+const ConfirmCancelTourView = ({open, handleClose, rowIndex, text, handleCancelConfirmed}) => {
     const theme = useTheme();
-    //const [open, setOpen] = React.useState(true)
-
-    // const handleClose = () => {
-    //     handleCancelClicked()
-    //     //setOpen(false)
-    // }
 
     return (
             <Dialog
@@ -20,9 +14,8 @@ const ConfirmCancelTourView = ({open, handleClose, rowIndex, handleCancelConfirm
                 sx={{
                     "& .MuiDialog-container": {
                         "& .MuiPaper-root": {
-                            //width: "100%",
-                            width: "350px",
-                            height: "120px",
+                            width: "450px",
+                            height: "130px",
                             bgcolor: 'primaryColor'
                         }
                     }
@@ -36,12 +29,12 @@ const ConfirmCancelTourView = ({open, handleClose, rowIndex, handleCancelConfirm
                         <CloseIcon sx={{ color: "textColor" }} />
                     </IconButton>
                     <DialogTitle sx={{ fontWeight: 600, fontSize: 20, marginBottom: "-20px", color: "textColor" }}> 
-                        Are you sure you want to cancel?
+                        Are you sure you want to {text} this tour?
                     </DialogTitle>
                     <Divider variant="middle" sx={{ borderBottomWidth: 3, backgroundColor: "secondaryColor", marginY: 1 }}/>
                 </div>
 
-                    <div style={{ justifyContent: "center", display: "inline", marginTop:"10px", marginLeft: "80px", marginRight: "70px" }}>
+                    <div style={{ justifyContent: "center", display: "inline", marginTop:"10px", marginLeft: "120px", marginRight: "70px" }}>
                             <Button
                                 type="confirm"
                                 onClick={() => handleCancelConfirmed(rowIndex)}

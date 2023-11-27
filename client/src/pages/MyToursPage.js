@@ -8,8 +8,6 @@ import ConfirmCancelTourView from '../components/ConfirmCancelTourView';
 const MyToursPage = ({ login }) => {
     const theme = useTheme();
     const [open, setOpen] = React.useState(false)
-    const [tourCancelledClicked, setTourCancelledClicked] = React.useState(false)
-    const [tourCancelledConfirmed, setTourCancelledConfirmed] = React.useState(false)
     const [tourRowIdx, setTourRowIdx] = React.useState(-1)
 
     const styles = {
@@ -75,17 +73,13 @@ const MyToursPage = ({ login }) => {
     ];
 
     const handleCancelClicked = (rowIndex) => {
-        //setTourCancelledClicked(!tourCancelledClicked)
         setOpen(true)
         setTourRowIdx(rowIndex)
     }
 
     const handleCancelConfirmed = (rowIndex) => {
-        console.log("cancel confirmed")
-        //setTourCancelledConfirmed(true)
         setRows(() => {return [...rows.slice(0, rowIndex),...rows.slice(rowIndex + 1)]})
-        setOpen(false)
-
+        handleClose()
     }
 
     const handleClose = () => {
@@ -165,7 +159,6 @@ const MyToursPage = ({ login }) => {
                                         <TableCell key={column.id} align={column.align} sx={styles.cells}>
                                             {column.id === "action" ? 
                                                 <div>
-                                                    {/* TODO for DB ppl: when check/cancel clicked, update status on UI and DB  */}
                                                     <Tooltip title="Cancel Tour Request"
                                                         componentsProps={{
                                                             tooltip: {
@@ -182,7 +175,7 @@ const MyToursPage = ({ login }) => {
                                                             }}>
                                                             <CancelOutlinedIcon sx={{ color: "textColor" }}/> 
                                                         </IconButton>
-                                                        <ConfirmCancelTourView open={open} handleClose={handleClose} rowIndex={tourRowIdx} handleCancelConfirmed={handleCancelConfirmed}/>
+                                                        <ConfirmCancelTourView open={open} handleClose={handleClose} rowIndex={tourRowIdx} text={'cancel'} handleCancelConfirmed={handleCancelConfirmed}/>
                                                     </Tooltip>            
                                                 </div>
                                             : tourRequest}
