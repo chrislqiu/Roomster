@@ -210,7 +210,9 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
         console.log("data: " + id);
         const link = window.location.href + "Property/" + id
         console.log(link)
-        window.location.assign(link)
+        //window.location.assign(link) //redirects to link
+        navigator.clipboard.writeText(link)
+        toast.success('Link copied to clipboard!', { position: toast.POSITION.TOP_CENTER });
     };
 
     const handleDeleteProperty = async () => {
