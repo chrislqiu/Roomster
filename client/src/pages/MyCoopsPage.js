@@ -260,7 +260,7 @@ const MyCoopsPage = ({ login }) => {
                         backgroundColor: hovered === true ? "primaryColor" : "secondaryColor",
                         display: "flex",
                         justifyContent: "center",
-                        boxShadow: theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 3px rgba(245, 235, 224, .1)", 
+                        boxShadow: theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 3px rgba(245, 235, 224, .1)",
                     }}>
                     <AddHomeIcon
                         sx={{
@@ -274,7 +274,23 @@ const MyCoopsPage = ({ login }) => {
             {open === true ? <AddCoopView setOpen={setOpen}></AddCoopView> : ''}
             <Box sx={{ marginTop: 3 }} style={styles.feed}>
                 {loading ? ( // Display loading spinner while loading
-                    <CardPlaceholder isCoopmateCard={false}/>
+                    <div style={styles.feed}>
+                        {
+                            /*
+                             * TODO:
+                             * add a full screen of placeholders
+                             */
+                        }
+                        <CardPlaceholder isCoopmateCard={false} />
+                        <CardPlaceholder isCoopmateCard={false} />
+                        <CardPlaceholder isCoopmateCard={false} />
+                        <CardPlaceholder isCoopmateCard={false} />
+                        <CardPlaceholder isCoopmateCard={false} />
+                        <CardPlaceholder isCoopmateCard={false} />
+                        <CardPlaceholder isCoopmateCard={false} />
+                        <CardPlaceholder isCoopmateCard={false} />
+
+                    </div>
                 ) : (
                     myCoopsArr.length > 0 ? (
                         myCoopsArr.map(cards => {

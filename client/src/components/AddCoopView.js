@@ -53,6 +53,36 @@ const AddCoopView = ({setOpen, editMode, data}) => {
     ];
     const [utilities, setUtilities] = useState(new Map(presetData));
 
+    /* AUTOFILL DATA */
+    useEffect(() => {
+        // autofill data
+        if (data) {
+            setPropertyName(data.propertyName);
+            setPropertyAddress(data.propertyAddress)
+            setPrice(data.price);
+            setBed(data.beds);
+            setBath(data.baths)
+            setAmenitiesArr(data.amenities)
+            if (data.amenities.includes("Gym")) {
+                setHasGym(true)
+            }
+            if (data.amenities.includes("Pet Friendly")) {
+                setIsPetFriendly(true)
+            }
+            if (data.amenities.includes("Furnished")) {
+                setIsFurnished(true)
+            }
+            if (data.amenities.includes("Kitchen Appliance")) {
+                setHasKitchenApp(true)
+            }
+            if (data.amenities.includes("In Unit W/D")) {
+                setHasInUnitWD(true)
+            }
+            if (data.amenities.includes("Parking")) {
+                setHasParking(true)
+            }
+        }
+    }, [data]);
     /* Disabled button for Edit and Save */
     const [disableButton, setDisableButton] = React.useState(true)
 
@@ -98,8 +128,9 @@ const AddCoopView = ({setOpen, editMode, data}) => {
     };
 
     const handleAppCoop = async () => {
+        
         if (propertyName === '' || propertyAddress === '' || price === '' || bed === -1 || bath === -1) {
-            toast.error("Please fill in all the textfileds and dropdown!", { style: customToastStyle })
+            toast.error(`Please fill in all the textfileds and dropdown! ${propertyName} ${propertyAddress} ${price} ${bed} ${bath}`, { style: customToastStyle })
             return;
         } else {
             toast.success("Save Success", { style: customToastStyle })
@@ -519,7 +550,7 @@ const AddCoopView = ({setOpen, editMode, data}) => {
                                     <Container style={{ float: "left", width: "100%" }}>
                                         <FormControlLabel style={{ margin: "-100px 0 0 -30px" }} label={<Typography style={{ fontSize: "11pt" }}>Gym</Typography>} control={
                                             <Checkbox style={{}}
-                                                defaultChecked={editMode === true ? (data.amenities.includes("Gym") ? () => setHasGym(true) : hasGym) : hasGym}
+                                            defaultChecked={editMode === true ? data.amenities.includes("Gym") : hasGym}
                                                 onChange={() => {
                                                     if (!hasGym) {
                                                         setHasGym(true)
