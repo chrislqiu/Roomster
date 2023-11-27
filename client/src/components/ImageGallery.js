@@ -16,7 +16,7 @@ const ImageGallery = ({ images }) => {
     const prev = () => {
         setCurrectImage((prevIndex) => {
             prevIndex = prevIndex - 1;
-            return prevIndex > 0 ? prevIndex : images.length - 1;
+            return prevIndex >= 0 ? prevIndex : images.length - 1;
         });
     };
 
