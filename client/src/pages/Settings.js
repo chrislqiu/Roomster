@@ -8,6 +8,7 @@ import Divider from '@mui/material/Divider';
 import ChangePWView from "../components/ChangePWView"
 import DeleteAccView from "../components/DeleteAccView"
 import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { createTheme, ThemeProvider, useTheme } from '@mui/material/styles';
 
@@ -48,7 +49,7 @@ const Settings = () => {
                     "& .MuiDialog-container": {
                         "& .MuiPaper-root": {
                             width: "100%",
-                            maxWidth: "400px",
+                            maxWidth: "300px",
                             maxHeight: "1000px",
                             bgcolor: 'primaryColor',
                             boxShadow: theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 3px rgba(245, 235, 224, .1)",
@@ -56,17 +57,22 @@ const Settings = () => {
                     },
                 }}
             >
+                <IconButton
+                        style={{ position: "absolute", top: "0", right: "0"}}
+                        onClick={() => handleClose()}>
+                        <CloseIcon sx={{ color: "textColor" }} />
+                    </IconButton>
                 <DialogTitle sx={{ fontWeight: 600, padding: "10px 0 0 25px", color: "textColor" }}>
                     Settings
                 </DialogTitle>
                 <Divider variant="middle" sx={{ borderBottomWidth: 3, backgroundColor: "secondaryColor", marginY: 1 }} />
 
-                <DialogContent sx={{ maxWidth: "400px" }}>
+                <DialogContent sx={{ maxWidth: "400px"}}>
                     <Box style={{ maxWidth: "400px", justifyContent: "center" }} >
-                        <Box sx={{ margin: "-10px 10px 10px 10px" }}>
-                            <ChangePWView text={"Change password"} />
+                        <Box sx={{ margin: "-15px 0px 15px 0px" }}>
+                            <ChangePWView text={"Change password"} open={open} handleClose={handleClose} />
                         </Box>
-                        <Box sx={{ margin: "0px 10px 10px 10px" }}>
+                        <Box sx={{ margin: "0px 0px 10px 0px" }}>
                             <DeleteAccView text={"Delete account"} />
                         </Box>
                     </Box>
