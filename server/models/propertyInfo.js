@@ -27,8 +27,8 @@ const propertyInfo = new Schema({
         required: false
     },
     utilities: {
-        type: Map,
-        of: Boolean
+        type: [String],
+        required: false
     },
     featured: {
         type: Boolean,

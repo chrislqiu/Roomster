@@ -69,18 +69,8 @@ router.get('/add-card', async (req, res) => {
         cost: 1899,
         sqft: 0,
         distance: 0.4,
-        amenities: ["gym","pool"],
-        utilities: {
-            electricity: false,
-            water: false,
-            gas: false,
-            trash: true,
-            sewage: true,
-            internet: true,
-            laundry: true,
-            parking: false,
-            furnished: true
-        },
+        amenities: ["Gym","Pool"],
+        utilities: ["Trash", "Sewage", "Internet"],
         featured: false,
         saves: 0
     });
