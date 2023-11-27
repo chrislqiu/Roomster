@@ -2,11 +2,15 @@ import * as React from 'react';
 import {Grid, Typography, Divider, Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip, IconButton} from "@mui/material"; 
 import CheckCircleOutlineOutlinedIcon from '@mui/icons-material/CheckCircleOutlineOutlined';
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
-import { createTheme, ThemeProvider, useTheme } from '@mui/material/styles';
+import {useTheme } from '@mui/material/styles';
+import ConfirmCancelTourView from '../components/ConfirmCancelTourView';
 
 
 const TourRequestsPage = ({ login }) => {
     const theme = useTheme();
+    const [open, setOpen] = React.useState(false)
+    const [tourRowIdx, setTourRowIdx] = React.useState(-1)
+    const [action, setAction] = React.useState('')
 
     const styles = {
         header: {
@@ -70,13 +74,32 @@ const TourRequestsPage = ({ login }) => {
             align: 'center',
           },
       ];
+    
+    const handleActionClicked = (rowIndex, action) => {
+        setOpen(true)
+        setTourRowIdx(rowIndex)
+        setAction(action)
+    }
+
+    const handleActionConfirmed = (rowIndex) => {
+        if (action === 'decline') {
+            rows[rowIndex].status = 'DECLINED'
+        } else {
+            rows[rowIndex].status = 'APPROVED'
+        }
+        handleClose()
+    }
+
+    const handleClose = () => {
+        setOpen(false)
+    }
       
     function pullData(date, time, property, user, status) {
         return { date, time, property, user, status };
     }
     
     /* Pull data from DB, dummy data for now. Note that properties should be specific to company */
-    const rows = [
+    const [rows, setRows] = React.useState(() => [
         pullData('10/21/23', '3:00PM', 'Studio A', 'Chicken A', 'APPROVED'),
         pullData('01/02/24', '11:00AM', 'Penthouse', 'Duck B', 'APPROVED'),
         pullData('10/22/23', '12:00PM', 'Studio B', 'Chicken B', 'PENDING'),
@@ -88,7 +111,7 @@ const TourRequestsPage = ({ login }) => {
         pullData('10/23/23', '1:00PM', 'Studio C', 'Sheep C', 'DECLINED'),
         pullData('10/23/23', '10:00AM', 'Studio A', 'Duck A', 'PENDING'),
         pullData('10/25/23', '11:00AM', 'Penthouse', 'Duck B', 'APPROVED'),
-    ];
+    ]);
 
 
     return (
@@ -132,7 +155,7 @@ const TourRequestsPage = ({ login }) => {
                         </TableHead>
                         <TableBody>
                             {rows
-                            .map((row) => {
+                            .map((row, rowIndex) => {
                                 return (
                                 <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
                                     {columns.map((column) => {
@@ -142,7 +165,7 @@ const TourRequestsPage = ({ login }) => {
                                             {column.id === "action" ? 
                                                 
                                                 <div>
-                                                    {/* TODO for DB ppl: when check/cancel clicked, update status on UI and DB */}
+                                                    {/* TODO for DB ppl: when check/cancel clicked, update status on DB */}
                                                     <Tooltip title="Approve Tour Request"
                                                         componentsProps={{
                                                             tooltip: {
@@ -152,7 +175,7 @@ const TourRequestsPage = ({ login }) => {
                                                                 },
                                                             },
                                                         }}>
-                                                        <IconButton>
+                                                        <IconButton onClick={() => {handleActionClicked(rowIndex, 'approve')}}>
                                                             <CheckCircleOutlineOutlinedIcon sx={{ color: "textColor" }}/>
                                                         </IconButton>
                                                     </Tooltip>
@@ -165,9 +188,10 @@ const TourRequestsPage = ({ login }) => {
                                                                 },
                                                             },
                                                         }}>
-                                                        <IconButton>
+                                                        <IconButton onClick={() => {handleActionClicked(rowIndex, 'decline')}}>
                                                             <CancelOutlinedIcon sx={{ color: "textColor" }}/>
                                                         </IconButton>
+                                                        <ConfirmCancelTourView open={open} handleClose={handleClose} rowIndex={tourRowIdx} text={action} handleCancelConfirmed={handleActionConfirmed}/>
                                                     </Tooltip>
                                                 </div>
                                             : tourRequest}
