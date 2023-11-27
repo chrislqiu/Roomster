@@ -265,6 +265,8 @@ const RenterPage = () => {
     useEffect(() => {
         // Check if data is available
         if (data) {
+            setEmail(data.email)
+            setPhone(data.phone)
             setNewStudious(data.livingPreferences.studious);
             setStudious(data.livingPreferences.studious)
             setNewClean(data.livingPreferences.cleanliness);

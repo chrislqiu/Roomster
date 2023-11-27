@@ -384,8 +384,10 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
                     boxShadow: !featured ? (theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 2px rgba(245, 235, 224, .3)") : "none" 
                 }}>
                 <CardActionArea>
+                    {console.log(data.image)}
                     <CardMedia
                         component="img"
+                        //image={data.propertyInfo.image === undefined ? data.image : data.propertyInfo.image}
                         image={imgExample}
                         //height="140px"
                         style={{
