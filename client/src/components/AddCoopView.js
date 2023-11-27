@@ -267,7 +267,7 @@ const AddCoopView = ({setOpen, editMode, data}) => {
                                     />
                                 </label>
                             </Box>}
-                            {propertyImage === "" || propertyImage === null ? "" : <img src={propertyImage} />}
+                            {propertyImage === "" || propertyImage === null ? "" : <img src={propertyImage} style={{ objectFit: 'fill', width: '700px', height: '200px'}}/>}
                         {/*
                         <AspectRatio minHeight={100} maxHeight={200} minWidth={300} maxWidth={400}
                             style={{
