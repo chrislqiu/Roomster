@@ -31,9 +31,11 @@ import AdminDenyPage from "./pages/AdminDenyPage";
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import MyToursPage from "./pages/MyToursPage";
 import { createTheme, ThemeProvider, useTheme } from '@mui/material/styles';
 import DarkMode from '@mui/icons-material/DarkMode';
 import LightMode from '@mui/icons-material/LightMode';
+import TourRequestsPage from "./pages/TourRequestsPage";
 
 const font =  "'Lato', sans-serif";
 const lightTheme = {
@@ -82,7 +84,18 @@ const lightTheme = {
   }
 }
 const darkTheme = {
+  overrides: {
+    MuiInput: {
+      input: {
+        '&::placeholder': {
+          color: "#F6EBE1",
+          opacity: "1",
+        }
+      }
+    }
+  },
   components: {
+    
     MuiFormControlLabel: {
       styleOverrides: {
         label: {
@@ -260,15 +273,12 @@ class App extends React.Component {
         </Helmet>
 
         <ThemeProvider theme={theme}>
-          <Paper sx={{
-            backgroundColor: "primaryColor",
-            width: "100%",
-            minHeight: "100vh",
-            margin: "0",
-            padding: "0",
-            zIndex: "-1",
-            justifyContent: "center"
-          }}>
+          <GlobalStyles
+            styles={{
+              body: { backgroundColor: theme.palette.type === "light" ? "#F6EBE1" : "#18100e", zIndex: "-1", },
+            }}
+          />
+          
           <div style={{ zIndex: "0" }}>
               <img src={darkMode ? theredthingDarkMode : theredthing}
               style={{
@@ -317,6 +327,8 @@ class App extends React.Component {
               <Route path="/MProfile" element={<PropertyManagerPage />} />
               <Route path="/FavCoops" element={<FavCoopsPage login={isAuthenticated} />} />
               <Route path="/MyCoops" element={<MyCoopsPage login={isAuthenticated} />} />
+              <Route path="MyTours" element={<MyToursPage login={isAuthenticated}/>}/>
+              <Route path="TourRequests" element={<TourRequestsPage login={isAuthenticated}/>}/>
               <Route path="/Login" element={<LoginPage />} />
               <Route path="/RCreate" element={<RenterCreateAccountView />} />
               <Route path="/MCreate" element={<ManagerCreateAccountView />} />
@@ -333,7 +345,6 @@ class App extends React.Component {
             
           </BrowserRouter>
 
-          </Paper>
           
         </ThemeProvider>
         
@@ -367,6 +378,7 @@ class App extends React.Component {
                 <Route path="/MProfile" element={<PropertyManagerPage />} />
                 <Route path="/FavCoops" element={<FavCoopsPage login={isAuthenticated} />} />
                 <Route path="/MyCoops" element={<MyCoopsPage login={isAuthenticated} />} />
+                <Route path="/MyTours" element={<MyToursPage login={isAuthenticated} />} />
                 <Route path="/Login" element={<LoginPage />} />
                 <Route path="/RCreate" element={<RenterCreateAccountView />} />
                 <Route path="/MCreate" element={<ManagerCreateAccountView />} />

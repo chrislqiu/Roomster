@@ -4,10 +4,13 @@ import { Container, Box, Dialog, DialogContent, Typography, IconButton, Link } f
 import { useSearchParams } from "react-router-dom";
 import { faAddressCard } from '@fortawesome/free-solid-svg-icons'
 import PropertyViewMore from "../components/PropertyView"
+import { createTheme, ThemeProvider, useTheme } from '@mui/material/styles';
+import Contacts from '@mui/icons-material/Contacts';
 
 
 
 const PropertyManagerPublicPage = () => {
+    const theme = useTheme();
     const [searchparams] = useSearchParams();
     const [companyInfo, setCompanyInfo] = React.useState([]);
     const [property, setProperty] = React.useState([])
@@ -42,7 +45,7 @@ const PropertyManagerPublicPage = () => {
         header: {  
             fontWeight: "600",
             fontSize: "18pt",
-            color: "#AB191F",
+            color: "secondaryColor",
         },
         feed: {
             display: "flex",
@@ -51,12 +54,20 @@ const PropertyManagerPublicPage = () => {
             flexWrap: "wrap",
         },
         companyInfo: {
-            color: "black",
+            color: "textColor",
             fontWeight: "500",
             fontSize: "12pt",
-            marginBottom: "5px"
+            marginBottom: "5px",
+            "&:hover": {color: "secondaryColor"}
+        },
+        companyInfoNoHover: {
+            color: "textColor",
+            fontWeight: "500",
+            fontSize: "12pt",
+            marginBottom: "5px",
         },
         companyInfoLabel: {
+            color: "textColor",
             fontWeight: "600",
             fontSize: "12pt",
             marginBottom: "5px"
@@ -83,7 +94,7 @@ const PropertyManagerPublicPage = () => {
     
     return (
         <Container sx={{ width: '100%' }}>
-            <Typography style={styles.header} sx={{
+            <Typography sx={styles.header} style={{
             margin: "-20px 0px 20px 15px",
             padding: "0 25px",
             }}> 
@@ -94,28 +105,28 @@ const PropertyManagerPublicPage = () => {
                     onMouseEnter={handleHovered}
                     onMouseLeave={handleLeave}
                     onClick={handleOpen}
-                    sx={{m:3 }} 
-                    style={{ 
+                    sx={{ 
+                        m: 3,
                         borderRadius:'50%', 
                         width:"75px", 
                         height:"75px", 
-                        backgroundColor: hovered === true ? "#f5ebe0" : "#AB191F", 
+                        backgroundColor: hovered === true ? "primaryColor" : "secondaryColor", 
                         display:"flex", 
                         justifyContent: "center", 
-                        boxShadow:"0px 0px 3px 3px rgba(0, 0, 0, .2)",
+                        boxShadow: theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 3px rgba(245, 235, 224, .1)", 
                     }}>        
-                    <FontAwesomeIcon icon={faAddressCard}
-                        style={{ 
-                            color: hovered === true ? "#AB191F" : "#f5ebe0", 
+                    <Contacts 
+                        sx={{ 
+                            color: hovered === true ? "secondaryColor" : "primaryColor", 
                             fontSize:"23pt", 
                             justifyContent:"center"
                         }}
                     />   
                 </IconButton>
             </Box>
-            <Box sx={{ m: 1 }} style={styles.feed}>
+            <Box style={{ margin: "10px" }} sx={styles.feed}>
                 {
-                   <Box sx={{ m: 1 }} style={styles.feed}>
+                   <Box style={{ margin: "10px" }} sx={styles.feed}>
                         {
                             property.map((cards) => {
                                 return <PropertyViewMore data={cards}/>
@@ -132,38 +143,36 @@ const PropertyManagerPublicPage = () => {
                         width: "70%",
                         maxWidth: 500,
                         maxHeight: 500,
-                        backgroundColor: "#F6EBE1"
+                        backgroundColor: "primaryColor",
+                        boxShadow: theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 3px rgba(245, 235, 224, .1)", 
                     },
                 },
                 }}>
                 <DialogContent>
                     <Container 
                         style={{
-                            backgroundColor:"#F6EBE1",
+                            backgroundColor:"primaryColor",
                             overflow:"hidden"
                         }}>
-                    <Typography marginBottom="10px" style={styles.header}>Company Information</Typography>
+                    <Typography marginBottom="10px" sx={styles.header}>Company Information</Typography>
                     <Box style={{width: "20%", float: "left"}}> 
-                        <Typography style={styles.companyInfoLabel}>Name:</Typography>
-                        <Typography style={styles.companyInfoLabel}>Address:</Typography>
-                        <Typography style={styles.companyInfoLabel}>Website:</Typography>
-                        <Typography style={styles.companyInfoLabel}>Email:</Typography>
-                        <Typography style={styles.companyInfoLabel}>Phone:</Typography>
+                        <Typography sx={styles.companyInfoLabel}>Name:</Typography>
+                        <Typography sx={styles.companyInfoLabel}>Address:</Typography>
+                        <Typography sx={styles.companyInfoLabel}>Website:</Typography>
+                        <Typography sx={styles.companyInfoLabel}>Email:</Typography>
+                        <Typography sx={styles.companyInfoLabel}>Phone:</Typography>
                     </Box>
                     <Box style={{width: "80%", float: "right"}}>
-                        <Typography style={styles.companyInfo}>{companyInfo.name}</Typography>
-                        <Typography style={styles.companyInfo}>{companyInfo.address}</Typography>
+                        <Typography sx={styles.companyInfoNoHover}>{companyInfo.name}</Typography>
+                        <Typography sx={styles.companyInfoNoHover}>{companyInfo.address}</Typography>
                         <Link href={`https://${companyInfo.site}`}
-                        style={styles.companyInfo} sx={{"&:hover": {color: "#AB191F"}
-                        }}>Go to {companyInfo.name} website</Link>
+                        sx={styles.companyInfo}>Go to {companyInfo.name} website</Link>
                         <Typography style={{marginBottom: "8px"}}></Typography>
                         <Link href="#" onClick={(e) => {window.location=`mailto:${companyInfo.email}`}} 
-                        style={styles.companyInfo} sx={{"&:hover": {color: "#AB191F"}
-                        }}>{companyInfo.email}</Link>
+                        sx={styles.companyInfo}>{companyInfo.email}</Link>
                         <Typography style={{marginBottom: "8px"}}></Typography>
                         <Link href="#" onClick={(e) => {window.location=`tel:${companyInfo.phone}`}} 
-                        style={styles.companyInfo} sx={{"&:hover": {color: "#AB191F"}
-                        }}>{companyInfo.phone}</Link>
+                        sx={styles.companyInfo}>{companyInfo.phone}</Link>
 
                     </Box>
                     </Container>
