@@ -39,7 +39,7 @@ import amongus from '../images/amongusturkey.jpeg'
  * featured : Boolean to determine whether the card is featured or not
  * favCoops : Boolean to determine if card is on favCoops page
  */
-const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) => {
+const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProperty, featureRequest, featureRequestManage, autoOpen }) => {
     var image, propertyName, address, beds, baths, cost, amenities
     if (myCoops) {
         image = data.image;
@@ -131,7 +131,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
         setOpen(false)
     }
 
-    
+
     const [editMode, setEditMode] = React.useState(false);
 
     const handleEdit = () => {
@@ -354,6 +354,10 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
     React.useEffect(() => {
         checkOwner();
         getPropertyVerification();
+        getPropertyFeatured();
+        if(autoOpen === true){
+            handleOpen();
+        }
     }, []);
 
     React.useEffect(() => {
