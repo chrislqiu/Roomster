@@ -109,9 +109,7 @@ const ScheduleTourView = ({data, userData, requestTourOpen, handleClose}) => {
                         placeholder={userData.username} id="username-textfield" variant="outlined" fullWidth
                         inputProps={{readOnly: true,}}
                         sx={textfieldSX}
-                    >
-                        {console.log("PROPERTY NAME:    " + data.propertyInfo.propertyName)}
-                    </TextField>
+                    />
 
                     <TextField
                         placeholder={data.propertyInfo.propertyName} id="property-name-textfield" variant="outlined" fullWidth
