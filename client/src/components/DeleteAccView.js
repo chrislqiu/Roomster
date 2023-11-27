@@ -7,6 +7,9 @@ import DialogContent from '@mui/material/DialogContent';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { createTheme, ThemeProvider, useTheme } from '@mui/material/styles';
 
 const DeleteAccountView = ({ text }) => {
@@ -107,6 +110,11 @@ const DeleteAccountView = ({ text }) => {
                     },
                 }}
             >
+                <IconButton
+                        style={{ position: "absolute", top: "0", right: "0"}}
+                        onClick={() => handleClose()}>
+                        <CloseIcon sx={{ color: "textColor" }} />
+                </IconButton>
                 <DialogTitle sx={{ fontWeight: 600, marginBottom: "-20px" }}>
                     <Typography variant="inherit" color="textColor">
                         Delete Account
@@ -159,6 +167,14 @@ const DeleteAccountView = ({ text }) => {
                         >
                             Delete Account
                         </Button>
+                        <IconButton
+                            style={{ position: "BottomLeft", position: "sticky", float:"left" }}
+                            onClick={() => handleClose()}
+                        >
+                            <ArrowBackIcon
+                                sx={{ color: "textColor" }}
+                            />
+                        </IconButton>
                     </Box>
                 </DialogContent>
             </Dialog>
