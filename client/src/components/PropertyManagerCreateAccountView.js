@@ -24,7 +24,7 @@ import { createTheme, ThemeProvider, useTheme } from '@mui/material/styles';
  * yellow: #F6EBE1
  */
 
-const ManagerCreateAccountView = ({ }) => {
+const ManagerCreateAccountView = ({ mCreateOpen, handleClose}) => {
     const theme = useTheme();
     const [open, setOpen] = React.useState(true)
     const [managerName, setManagerName] = React.useState("")
@@ -40,17 +40,17 @@ const ManagerCreateAccountView = ({ }) => {
         setOpen(true) 
     }
 
-    const handleClose = () => {
-        setOpen(false)
-        setName(null)
-        setManagerName(null)
-        setManagerEmail(null)
-        setAddress(null)
-        setEmail(null)
-        setPassword(null)
-        setSignupStatus(null)
-        window.location.replace("/Home")
-    }
+    // const handleClose = () => {
+    //     setOpen(false)
+    //     setName(null)
+    //     setManagerName(null)
+    //     setManagerEmail(null)
+    //     setAddress(null)
+    //     setEmail(null)
+    //     setPassword(null)
+    //     setSignupStatus(null)
+    //     window.location.replace("/Home")
+    // }
 
     const handleBackButton = () => {
         window.location.replace("/Login")
@@ -142,7 +142,7 @@ const ManagerCreateAccountView = ({ }) => {
         <React.Fragment>
             
             <Dialog
-                open={true}
+                open={mCreateOpen}
                 onClose={handleClose}
                 sx={{
                     "& .MuiDialog-container": {
@@ -235,14 +235,14 @@ const ManagerCreateAccountView = ({ }) => {
                         >SIGN UP
                         </Button>
 
-                        {/* <IconButton
+                         <IconButton
                             style={{ position: "BottomLeft", position: "sticky", top: 70, left: 0 }}
-                            onClick={() => handleBackButton()}
+                            onClick={() => handleClose()}
                         >
                             <ArrowBackIcon
-                                style={{ color: "black" }}
+                                sx={{ color: "textColor" }}
                             />
-                        </IconButton> */}
+                        </IconButton>
                     </div>
                 </DialogContent>
             </Dialog>

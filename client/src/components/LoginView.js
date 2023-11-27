@@ -9,6 +9,7 @@ import Divider from '@mui/material/Divider';
 import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import RenterCreateAccountView from './RenterCreateAccountView';
 import RenterCreateAccountPage from '../pages/RenterCreateAccountPage';
 import ManagerCreateAccountView from './PropertyManagerCreateAccountView';
@@ -46,7 +47,6 @@ const LoginView = ({ text }) => {
     const handleResetPasswordOpen = () => {
         setResetPasswordOpen(true);
         handleClose();
-
     };
 
     const handleResetPasswordClose = () => {
@@ -69,6 +69,21 @@ const LoginView = ({ text }) => {
         setforgotPwOpen(true);
     }
 
+    const handleRCreateOpen = () => {
+        setRCreateOpen(true)
+    }
+
+    const handleRCreateClose = () => {
+        setRCreateOpen(false)
+    }
+
+    const handleMCreateOpen = () => {
+        setMCreateOpen(true)
+    }
+
+    const handleMCreateClose = () => {
+        setMCreateOpen(false)
+    }
 
     const handleLogin = async () => {
         try {
@@ -84,7 +99,7 @@ const LoginView = ({ text }) => {
             if (response.ok) {
                 setLoginStatus({
                     message: 'Logging in...',
-                    color: 'green',
+                    color: '#4F7942',
                 });
                 // handleClose();
                 setTimeout(() => {
@@ -93,14 +108,14 @@ const LoginView = ({ text }) => {
             } else {
                 setLoginStatus({
                     message: 'Incorrect username/password',
-                    color: '#AB191F',
+                    color: '#AB191F'
                 });
 
             }
         } catch (error) {
             setLoginStatus({
                 message: 'Error logging in',
-                color: '#AB191F',
+                color: '#AB191F'
             });
         }
     }
@@ -221,7 +236,7 @@ const LoginView = ({ text }) => {
                         <div style={{ justifyContent: "center", display: "inline", marginLeft: "70px", marginRight: "70px" }}>
                             <Button
                                 type="RCreate"
-                                onClick={() => setRCreateOpen(true)}
+                                onClick={handleRCreateOpen}
                                 sx={{
                                     ":hover": {
                                         backgroundColor: "secondaryColor",
@@ -237,7 +252,7 @@ const LoginView = ({ text }) => {
                             </Button>
 
                             <Button
-                                onClick={() => setMCreateOpen(true)}
+                                onClick={handleMCreateOpen}
                                 sx={{
                                     ":hover": {
                                         backgroundColor: "secondaryColor",
@@ -252,8 +267,8 @@ const LoginView = ({ text }) => {
                                 }}
                                 variant="outlined">PROPERTY MANAGER
                             </Button>
-                            {rCreateOpen && <RenterCreateAccountView />}
-                            {mCreateOpen && <ManagerCreateAccountView />}
+                            {rCreateOpen && <RenterCreateAccountView rCreateOpen={rCreateOpen} handleClose={handleRCreateClose}/>}
+                            {mCreateOpen && <ManagerCreateAccountView mCreateOpen={mCreateOpen} handleClose={handleMCreateClose}/>}
                         </div>
 
                         <Typography sx={{ margin: 1.5, marginLeft: "auto", marginTop: "15px", marginBottom: "-5px", color: "textColor"}}>
@@ -403,53 +418,75 @@ const LoginView = ({ text }) => {
                             maxWidth: "400px",
                             maxHeight: "1000px",
                             bgcolor: 'primaryColor'
-                        }
-                    }
-                }}
-            >
-                <DialogTitle sx={{ margin: 0, padding: "10px 0 0 25px", fontWeight: 600, fontSize: 25, color: "textColor" }}>Reset Password</DialogTitle>                <DialogContent sx={{ maxWidth: "400px" }}>
-                <Divider variant="middle" sx={{ textAlign: "center", borderBottomWidth: 3, backgroundColor: "secondaryColor", marginY: 1, width: "100%", marginLeft: "auto", marginRight: "auto" }} />
+                        }}
+            }}>
+                <div sx={{justifyContent: "left"}}>
+                    <IconButton
+                        style={{ position: "absolute", top: "0", right: "0"}}
+                        onClick={() => handleResetPasswordClose()}>
+                        <CloseIcon sx={{ color: "textColor" }} />
+                    </IconButton>
+                    <DialogTitle sx={{fontWeight: 600, fontSize:25, marginBottom: "-15px", color: "textColor"}}>Forgot Your Password?</DialogTitle>
+                    <Divider variant="middle" sx = {{borderBottomWidth: 3, color:"secondaryColor", backgroundColor:"secondaryColor", marginY:1}}/>
+                    <Typography sx={{
+                        fontWeight: 400, 
+                        fontSize:"10pt", 
+                        color: "textColor",
+                        margin: "0 0 0px 20px",
+                        padding: "0 20px 0 0"
+                        }}>
+                        Enter your email and we'll send you a link to get back into your account.
+                    </Typography>
+                </div>               
+                <DialogContent sx={{ maxWidth: "400px" }}>
 
-                    <TextField
-                        placeholder="Email"
-                        id="username-textfield"
-                        variant="outlined"
-                        fullWidth
-                        sx={{
-                            input: {
-                                color: "textColor",
-                                "&::placeholder": {
-                                    opacity: 0.7,
+                        <TextField
+                            placeholder="Email"
+                            id="username-textfield"
+                            variant="outlined"
+                            fullWidth
+                            sx={{
+                                input: {
                                     color: "textColor",
-                                 },
-                            },
-                            "& fieldset": { border: 'none', },
-                            boxShadow: theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 3px rgba(245, 235, 224, .1)",
-                            margin: "15px 0 15px 0"
-                        }}
-                        value={resetPasswordUsername}
-                        onChange={(e) => setResetPasswordUsername(e.target.value)}
-                    />
-
-                    <Button
-                        onClick={handleResetPassword}
-                        sx={{
-                            ":hover": {
-                                backgroundColor: "secondaryColor",
-                                border: "none",
+                                    "&::placeholder": {
+                                        opacity: 0.7,
+                                        color: "textColor",
+                                    },
+                                },
+                                "& fieldset": { border: 'none', },
                                 boxShadow: theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 3px rgba(245, 235, 224, .1)",
-                            },
-                            border: "none",
-                            backgroundColor: "secondaryColor", 
-                            color: theme.palette.type === "light" ? "primaryColor" : "textColor",
-                            fontWeight: 600, width: "175px", margin: "10px 0 0 0",
-                            justifyContent: "center", float: "right"
-                        }}
-                        variant="outlined"
-                    >
-                        Reset Password
-                    </Button>
-                    
+                                margin: "0px 0 15px 0"
+                            }}
+                            value={resetPasswordUsername}
+                            onChange={(e) => setResetPasswordUsername(e.target.value)}
+                        />
+
+                        <Button
+                            onClick={handleResetPassword}
+                            sx={{
+                                ":hover": {
+                                    backgroundColor: "secondaryColor",
+                                    border: "none",
+                                    boxShadow: theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 3px rgba(245, 235, 224, .1)",
+                                },
+                                border: "none",
+                                backgroundColor: "secondaryColor", 
+                                color: theme.palette.type === "light" ? "primaryColor" : "textColor",
+                                fontWeight: 600, width: "175px", margin: "10px 0 0 0",
+                                justifyContent: "center", float: "right"
+                            }}
+                            variant="outlined"
+                        >
+                            Reset Password
+                        </Button>
+                        <IconButton
+                            style={{ position: "BottomLeft", position: "sticky", float:"left" }}
+                            onClick={() => handleResetPasswordClose()}
+                        >
+                            <ArrowBackIcon
+                                sx={{ color: "textColor" }}
+                            />
+                        </IconButton>
                 </DialogContent>
             </Dialog>
         </React.Fragment>
