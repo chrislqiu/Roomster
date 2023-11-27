@@ -1,12 +1,16 @@
 import * as React from 'react';
-import {Grid, Typography, Divider, Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip, IconButton} from "@mui/material"; 
-import CheckCircleOutlineOutlinedIcon from '@mui/icons-material/CheckCircleOutlineOutlined';
+import {Dialog, DialogTitle, Button, Grid, Typography, Divider, Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip, IconButton} from "@mui/material"; 
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
+import CloseIcon from '@mui/icons-material/Close';
 import { createTheme, ThemeProvider, useTheme } from '@mui/material/styles';
-
+import ConfirmCancelTourView from '../components/ConfirmCancelTourView';
 
 const MyToursPage = ({ login }) => {
     const theme = useTheme();
+    const [open, setOpen] = React.useState(false)
+    const [tourCancelledClicked, setTourCancelledClicked] = React.useState(false)
+    const [tourCancelledConfirmed, setTourCancelledConfirmed] = React.useState(false)
+    const [tourRowIdx, setTourRowIdx] = React.useState(-1)
 
     const styles = {
         header: {
@@ -63,19 +67,39 @@ const MyToursPage = ({ login }) => {
           align: 'center',
         },
         {
-            id: 'action',
-            label: 'ACTIONS',
-            width: "100px",
-            align: 'center',
-          },
-      ];
+          id: 'action',
+          label: 'ACTIONS',
+          width: "100px",
+          align: 'center',
+        },
+    ];
+
+    const handleCancelClicked = (rowIndex) => {
+        //setTourCancelledClicked(!tourCancelledClicked)
+        setOpen(true)
+        setTourRowIdx(rowIndex)
+    }
+
+    const handleCancelConfirmed = (rowIndex) => {
+        console.log("cancel confirmed")
+        //setTourCancelledConfirmed(true)
+        setRows(() => {return [...rows.slice(0, rowIndex),...rows.slice(rowIndex + 1)]})
+        setOpen(false)
+
+    }
+
+    const handleClose = () => {
+        setOpen(false)
+    }
+
       
     function pullData(date, time, property, company, status) {
         return { date, time, property, company, status };
     }
     
-    /* Pull data from DB, dummy data for now. Note that properties should be specific to company */
-    const rows = [
+    /* TODO: Pull data from DB, dummy data for now. */
+    
+    const [rows, setRows] = React.useState(() => [
         pullData('10/21/23', '3:00PM', 'Studio A', 'Campus Edge', 'APPROVED'),
         pullData('01/02/24', '11:00AM', 'Penthouse A', 'RISE', 'APPROVED'),
         pullData('10/22/23', '12:00PM', 'Studio B', 'Campus Edge', 'PENDING'),
@@ -87,7 +111,7 @@ const MyToursPage = ({ login }) => {
         pullData('10/23/23', '1:00PM', 'Studio F', 'Campus Edge', 'DECLINED'),
         pullData('10/23/23', '10:00AM', '2 bed 2 bath ', 'RISE', 'PENDING'),
         pullData('10/25/23', '11:00AM', 'Penthouse C', 'RISE', 'APPROVED'),
-    ];
+    ]);
 
 
     return (
@@ -131,17 +155,17 @@ const MyToursPage = ({ login }) => {
                         </TableHead>
                         <TableBody>
                             {rows
-                            .map((row) => {
+                            .map((row, rowIndex) => {
                                 return (
-                                <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
+                                  <TableRow hover tabIndex={-1} key={row.code}>
                                     {columns.map((column) => {
                                     const tourRequest = row[column.id];
+                                    
                                     return (
                                         <TableCell key={column.id} align={column.align} sx={styles.cells}>
                                             {column.id === "action" ? 
-                                                
                                                 <div>
-                                                    {/* TODO for DB ppl: when check/cancel clicked, update status on UI and DB */}
+                                                    {/* TODO for DB ppl: when check/cancel clicked, update status on UI and DB  */}
                                                     <Tooltip title="Cancel Tour Request"
                                                         componentsProps={{
                                                             tooltip: {
@@ -151,16 +175,21 @@ const MyToursPage = ({ login }) => {
                                                                 },
                                                             },
                                                         }}>
-                                                        <IconButton>
-                                                            <CancelOutlinedIcon sx={{ color: "textColor" }}/>
+                                                        <IconButton onClick={() => {
+                                                            console.log("hello")
+                                                            console.log(rowIndex)
+                                                            handleCancelClicked(rowIndex)
+                                                            }}>
+                                                            <CancelOutlinedIcon sx={{ color: "textColor" }}/> 
                                                         </IconButton>
-                                                    </Tooltip>
+                                                        <ConfirmCancelTourView open={open} handleClose={handleClose} rowIndex={tourRowIdx} handleCancelConfirmed={handleCancelConfirmed}/>
+                                                    </Tooltip>            
                                                 </div>
                                             : tourRequest}
                                         </TableCell>
                                     );
-                                    })}
-                                </TableRow>
+                                    })} 
+                                    </TableRow>
                                 );
                             })}
                         </TableBody>
