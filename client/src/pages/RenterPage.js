@@ -296,6 +296,8 @@ const RenterPage = () => {
     useEffect(() => {
         // Check if data is available
         if (data) {
+            setEmail(data.email)
+            setPhone(data.phone)
             setNewStudious(data.livingPreferences.studious);
             setStudious(data.livingPreferences.studious)
             setNewClean(data.livingPreferences.cleanliness);
@@ -468,7 +470,7 @@ const RenterPage = () => {
                                     },
                                 },
                             }}>
-                                <IconButton sx={{ p: 0, }} >
+                                <IconButton sx={{ p: 0, }} disabled={disableButton}>
                                     <Avatar alt="chickenpfp" src={(pfp === '') && (newImg === pfp) ? defImg : newImg} style={{transform: `scale(1.90, 1.90)` }} />
                                 </IconButton>
                             </Tooltip>

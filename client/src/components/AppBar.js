@@ -21,8 +21,9 @@ import Settings from "../pages/Settings"
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 const pages = ["Home", "My Coops", "Fav Coops", "Coopmates", "Log Out"];
-const pagesManager = ["Home", "My Coops", "Tour Requests", "Log Out"];
-const pagesRenter = ["Home", "Fav Coops", "Coopmates", "My Tours", "Log Out" ];
+const pagesManager = ["Home", "My Coops", "Log Out"];
+const pagesRenter = ["Home", "Fav Coops", "Coopmates", "Log Out"];
+const pagesAdmin = ["Unverified Properties", "Property Feature Requests", "Featured Properties", "Users", "Log Out"]
 
 //const routePage = ["/Home", "/FavCoops", "/Coopmates", "/Logout"]
 
@@ -33,81 +34,81 @@ const pagesRenter = ["Home", "Fav Coops", "Coopmates", "My Tours", "Log Out" ];
 const RoomsterAppBar = ({ login, userType }) => {
     const theme = useTheme();
     
-    console.log(login)
-    let location = useLocation();
-    console.log(location.pathname)
-    let navigate = useNavigate();
-    /*
-     * TODO: 
-     * hide the login stuff with a "Log In/ Sign Up Button"
-     */
-    const [anchorElNav, setAnchorElNav] = React.useState(null);
+  console.log(login)
+  let location = useLocation();
+  console.log(location.pathname)
+  let navigate = useNavigate();
+  /*
+   * TODO: 
+   * hide the login stuff with a "Log In/ Sign Up Button"
+   */
+  const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [pfp, setPfp] = React.useState('')
 
-    const handleOpenNavMenu = (event) => {
-        setAnchorElNav(event.currentTarget);
+  const handleOpenNavMenu = (event) => {
+    setAnchorElNav(event.currentTarget);
+  };
+
+  const handleCloseNavMenu = () => {
+    setAnchorElNav(null);
+  };
+  const [isToolbarVisible, setIsToolbarVisible] = React.useState(true);
+
+  const toggleToolbarVisibility = () => {
+    setIsToolbarVisible(!isToolbarVisible);
+  };
+
+  const [settingsOpen, setSettingsOpen] = React.useState(false);
+
+  const handleCloseSettings = () => {
+    setSettingsOpen(false);
+  };
+
+  const handleLogout = async () => {
+    const logout = async () => {
+      try {
+        const response = await fetch('http://localhost:8000/auth/logout', {
+          method: 'GET',
+          credentials: 'include',
+        });
+
+        if (response.ok) {
+          console.log('Logout successful');
+          window.location.href = 'http://localhost:3001/Home';
+        } else {
+          console.log('Logout failed');
+        }
+      } catch (error) {
+        console.error('Error during logout:', error);
+      }
     };
 
-    const handleCloseNavMenu = () => {
-        setAnchorElNav(null);
+
+    const logoutAdmin = async () => {
+      try {
+        const response = await fetch('http://localhost:8000/auth/logout-admin', {
+          method: 'GET',
+          credentials: 'include',
+        });
+
+        if (response.ok) {
+          console.log('Logout successful');
+          window.location.href = 'http://localhost:3001/Admin';
+        } else {
+          console.log('Logout failed');
+        }
+      } catch (error) {
+        console.error('Error during logout:', error);
+      }
     };
-    const [isToolbarVisible, setIsToolbarVisible] = React.useState(true);
-
-    const toggleToolbarVisibility = () => {
-        setIsToolbarVisible(!isToolbarVisible);
-    };
-
-    const [settingsOpen, setSettingsOpen] = React.useState(false);
-
-    const handleCloseSettings = () => {
-        setSettingsOpen(false);
-    };
-
-    const handleLogout = async () => {
-        const logout = async () => {
-            try {
-              const response = await fetch('http://localhost:8000/auth/logout', {
-                method: 'GET',
-                credentials: 'include',
-              });
-      
-              if (response.ok) {
-                console.log('Logout successful');
-                window.location.href = 'http://localhost:3001/Home';
-              } else {
-                console.log('Logout failed');
-              }
-            } catch (error) {
-              console.error('Error during logout:', error);
-            }
-          };
 
 
-          const logoutAdmin = async () => {
-            try {
-              const response = await fetch('http://localhost:8000/auth/logout-admin', {
-                method: 'GET',
-                credentials: 'include',
-              });
-      
-              if (response.ok) {
-                console.log('Logout successful');
-                window.location.href = 'http://localhost:3001/Admin';
-              } else {
-                console.log('Logout failed');
-              }
-            } catch (error) {
-              console.error('Error during logout:', error);
-            }
-          };
-
-
-          if(window.location.pathname !== "/Admin"){
-            logout();
-          } else {
-            logoutAdmin();
-          }
-      };
+    if (!window.location.pathname.startsWith("/Admin")) {
+      logout();
+    } else {
+      logoutAdmin();
+    }
+  };
 
       React.useEffect(() => {
         const getPFP = async () => {
@@ -137,154 +138,202 @@ const RoomsterAppBar = ({ login, userType }) => {
         getPFP();
     }, []);
 
-      return (
-        <AppBar
-            position="static"
-            style={{ boxShadow: "none", height: "30px", zIndex: "5"}}
-        >
-            <Container maxWidth="xl">
-                <Toolbar disableGutters>
-                    <Box sx={{ zIndex: "5", flexGrow: 1, display: { xs: "flex", md: "none" } }}>
-                        <IconButton
-                            size="large"
-                            aria-label="account of current user"
-                            aria-controls="menu-appbar"
-                            aria-haspopup="true"
-                            onClick={handleOpenNavMenu}
-                            backgroundColor="secondaryColor"
-                        >
-                            <MenuIcon sx={{ color: "primaryColor" }} />
-                        </IconButton>
-                        <Menu
-                            id="menu-appbar"
-                            anchorEl={anchorElNav}
-                            anchorOrigin={{
-                                vertical: "bottom",
-                                horizontal: "left"
-                            }}
-                            keepMounted
-                            transformOrigin={{
-                                vertical: "top",
-                                horizontal: "left"
-                            }}
-                            open={Boolean(anchorElNav)}
-                            onClose={handleCloseNavMenu}
-                            sx={{
-                                display: { xs: "block", md: "none" }
-                            }}
-                        >
-                             {userType === "renter" ? pagesRenter.map((page) => (
-                                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                                    <Typography textAlign="center">{page}</Typography>
-                                </MenuItem>
-                            )): pagesManager.map((page) => (
-                              <MenuItem key={page} onClick={handleCloseNavMenu}>
-                                  <Typography textAlign="center">{page}</Typography>
-                              </MenuItem>
-                          ))}
-                        </Menu>
-                    </Box>
-                    { login === true ? 
-                    <IconButton sx={{zIndex:"5"}}
-                            size="large"
-                            aria-label="account of current user"
-                            aria-controls="menu-appbar"
-                            aria-haspopup="true"
-                            onClick={toggleToolbarVisibility}
-                            backgroundColor="secondaryColor"
-                        >
-                            <DoubleArrowIcon sx={{ color: "primaryColor" }} />
-                     </IconButton>
-                     :
-                     ''
-                    }
-                    {login === true ?
-                        <Grow orientation="horizontal" in={!isToolbarVisible}>
-                        <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex", zIndex: 5} }}>
-                            {userType === "renter" ? pagesRenter.map((page, i) => {
-                                return (
-                                    <Button
-                                        key={page}
-                                        onClick={() => {
-                                            if (page === "Home") {
-                                                navigate("/Home")
-                                            } else if (page === "Fav Coops") {
-                                                navigate("/FavCoops")
-                                            } else if (page === "Coopmates") {
-                                                navigate("/Coopmates")
+  return (
+    <AppBar
+      position="static"
+      style={{ boxShadow: "none", height: "30px", zIndex: "5"}}
+    >
+      <Container maxWidth="xl">
+        <Toolbar disableGutters>
+          <Box sx={{ zIndex: "5", flexGrow: 1, display: { xs: "flex", md: "none" } }}>
+            <IconButton
+              size="large"
+              aria-label="account of current user"
+              aria-controls="menu-appbar"
+              aria-haspopup="true"
+              onClick={handleOpenNavMenu}
+              backgroundColor="secondaryColor"
+            >
+              <MenuIcon sx={{ color: "primaryColor" }} />
+            </IconButton>
+            <Menu
+              id="menu-appbar"
+              anchorEl={anchorElNav}
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "left"
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "left"
+              }}
+              open={Boolean(anchorElNav)}
+              onClose={handleCloseNavMenu}
+              sx={{
+                display: { xs: "block", md: "none" }
+              }}
+            >
+              {userType === "renter" ? (
+                pagesRenter.map((renterPage) => (
+                  <MenuItem key={renterPage} onClick={handleCloseNavMenu}>
+                    <Typography textAlign="center">{renterPage}</Typography>
+                  </MenuItem>
+                ))
+              ) : userType === "manager" ? (
+                pagesManager.map((managerPage) => (
+                  <MenuItem key={managerPage} onClick={handleCloseNavMenu}>
+                    <Typography textAlign="center">{managerPage}</Typography>
+                  </MenuItem>
+                ))
+              ) : (
+                pagesAdmin.map((adminPage) => (
+                  <MenuItem key={adminPage} onClick={handleCloseNavMenu}>
+                    <Typography textAlign="center">{adminPage}</Typography>
+                  </MenuItem>
+                ))
+              )}
+            </Menu>
+          </Box>
+          {login === true ?
+            <IconButton sx={{zIndex:"5"}}
+              size="large"
+              aria-label="account of current user"
+              aria-controls="menu-appbar"
+              aria-haspopup="true"
+              onClick={toggleToolbarVisibility}
+              backgroundColor="secondaryColor"
+            >
+              <DoubleArrowIcon sx={{ color: "primaryColor" }} />
+            </IconButton>
+            :
+            ''
+          }
+          {login === true ?
+            <Grow orientation="horizontal" in={!isToolbarVisible}>
+              <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex", zIndex: 5 } }}>
+                {userType === "renter" ? (
+                  pagesRenter.map((page, i) => (
+                    <Button
+                      key={page}
+                      onClick={() => {
+                        if (page === "Home") {
+                          navigate("/Home");
+                        } else if (page === "Fav Coops") {
+                          navigate("/FavCoops");
+                        } else if (page === "Coopmates") {
+                          navigate("/Coopmates");
                                             } else if (page === "My Tours") {
                                                 navigate("/MyTours")
                                             //} else if (page === "My Coopmates") {
                                             //  navigate("/MyCoopmates")
-                                            } else if (page === "Log Out") {
-                                                handleLogout();
-                                            }
-                                            handleCloseNavMenu();
-                                          }}
-                                        sx={{
-                                            my: 2,
-                                            ":hover": {
-                                                bgcolor: "secondaryColor",
-                                                color: "primaryColor",
-                                                cursor: "pointer"
-                                            },
-                                            color: "secondaryColor",
-                                            backgroundColor: "primaryColor",
-                                            display: "block",
-                                            mx: .5,
-                                            fontWeight: 600,
-                                            padding: 1,
-                                            boxShadow: "0px 0px 3px 3px rgba(0, 0, 0, .1)"
-                                        }}
-                                    >
-                                        {page}
-                                    </Button>
-                                );
-                            }) : pagesManager.map((page, i) => {
-                              return (
-                                  <Button
-                                      key={page}
-                                      onClick={() => {
-                                          if (page === "Home") {
-                                              navigate("/Home")
-                                          } else if (page == "My Coops") {
-                                              navigate("/MyCoops")
+                        } else if (page === "Log Out") {
+                          handleLogout();
+                        }
+                        handleCloseNavMenu();
+                      }}
+                      sx={{
+                        my: 2,
+                        ":hover": {
+                          bgcolor: "secondaryColor",
+                          color: "primaryColor",
+                          cursor: "pointer"
+                        },
+                        color: "secondaryColor",
+                        backgroundColor: "primaryColor",
+                        display: "block",
+                        mx: 0.5,
+                        fontWeight: 600,
+                        padding: 1,
+                        boxShadow: "0px 0px 3px 3px rgba(0, 0, 0, .1)"
+                      }}
+                    >
+                      {page}
+                    </Button>
+                  ))
+                ) : userType === "manager" ? (
+                  pagesManager.map((page, i) => (
+                    <Button
+                      key={page}
+                      onClick={() => {
+                        if (page === "Home") {
+                          navigate("/Home");
+                        } else if (page === "My Coops") {
+                          navigate("/MyCoops");
                                           } else if (page == "Tour Requests") {
                                               navigate("/TourRequests")
-                                          } else if (page === "Log Out") {
-                                              handleLogout();
-                                          }
-                                          handleCloseNavMenu();
-                                        }}
-                                      sx={{
-                                          my: 2,
-                                          ":hover": {
-                                              bgcolor: "secondaryColor",
-                                              color: "primaryColor",
-                                              cursor: "pointer"
-                                          },
-                                          color: "secondaryColor",
-                                          backgroundColor: "primaryColor",
-                                          display: "block",
-                                          mx: .5,
-                                          fontWeight: 600,
-                                          padding: 1,
-                                          boxShadow: "0px 0px 3px 3px rgba(0, 0, 0, .1)"
-                                      }}
-                                  >
-                                      {page}
-                                  </Button>
-                              );
-                          })}
-                            
-                        </Box>
-                        </Grow>
-                        :
-                        <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}></Box>
-                    }
-                    <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}></Box>
+                        } else if (page === "Log Out") {
+                          handleLogout();
+                        }
+                        handleCloseNavMenu();
+                      }}
+                      sx={{
+                        my: 2,
+                        ":hover": {
+                          bgcolor: "secondaryColor",
+                          color: "primaryColor",
+                          cursor: "pointer"
+                        },
+                        color: "secondaryColor",
+                        backgroundColor: "primaryColor",
+                        display: "block",
+                        mx: 0.5,
+                        fontWeight: 600,
+                        padding: 1,
+                        boxShadow: "0px 0px 3px 3px rgba(0, 0, 0, .1)"
+                      }}
+                    >
+                      {page}
+                    </Button>
+                  ))
+                ) : (
+                  pagesAdmin.map((adminPage, i) => (
+                    < Button
+                      key={adminPage}
+                      onClick={() => {
+                        if (adminPage === "Unverified Properties") {
+                          navigate("/Admin");
+                        } else if (adminPage === "Property Feature Requests") {
+                          navigate("/Admin/Featured");
+                        } else if (adminPage === "Log Out") {
+                          handleLogout();
+                        } else if (adminPage === "Featured Properties") {
+                          navigate("/Admin/FeaturedManage");
+                        } else if (adminPage === "Users") {
+                          navigate("/Admin/Users");
+                        }
+                        handleCloseNavMenu();
+                      }}
+                      sx={{
+                        my: 2,
+                        ":hover": {
+                          bgcolor: "#AB191F",
+                          color: "#f5ebe0",
+                          cursor: "pointer"
+                        },
+                        color: "#AB191F",
+                        backgroundColor: "#F6EBE1",
+                        display: "block",
+                        mx: 0.5,
+                        fontWeight: 600,
+                        padding: 1,
+                        boxShadow: "0px 0px 3px 3px rgba(0, 0, 0, .1)"
+                      }}
+                    >
+                      {adminPage}
+                    </Button>
+                  ))
+                )}
+
+
+              </Box>
+            </Grow>
+            :
+            <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}></Box>
+          }
+          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}></Box>
                     
-                    {login ?
+          {login ?
             <Box sx={{ flexGrow: 0 }}>
 
               <Tooltip title="Open Profile" sx={{ color: 'secondaryColor' }}  onClick={() => {userType === "renter" ? navigate("/RProfile") : navigate("/MProfile")}}> 
@@ -297,14 +346,14 @@ const RoomsterAppBar = ({ login, userType }) => {
             :
             <LoginView text={"Login/Signup"} />
           }
-    
+
           {login && (
             <Settings open={settingsOpen} handleClose={handleCloseSettings} />
           )}
-                </Toolbar>
-            </Container>
-        </AppBar>
-    );
-    
+        </Toolbar>
+      </Container>
+    </AppBar >
+  );
+
 }
 export default RoomsterAppBar;

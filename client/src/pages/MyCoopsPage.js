@@ -45,15 +45,16 @@ const MyCoopsPage = ({ login }) => {
     const [includeTrash, setIncludeTrash] = React.useState(false)
     const [includeSewage, setIncludeSewage] = React.useState(false)
     const [includeInternet, setInternet] = React.useState(false)
-    const presetData = [
-        ['water', false],
-        ['electricity', false],
-        ['gas', false],
-        ['trash', false],
-        ['sewage', false],
-        ['internet', false]
-    ];
-    const [utilities, setUtilities] = useState(new Map(presetData));
+//    const presetData = [
+//        ['water', false],
+//        ['electricity', false],
+//        ['gas', false],
+//        ['trash', false],
+//        ['sewage', false],
+//        ['internet', false]
+//    ];
+//    const [utilities, setUtilities] = useState(new Map(presetData));
+    const [utilitiesArr, setUtilitiesArr] = React.useState([])
 
     /* Disabled button for Edit and Save */
     const [disableButton, setDisableButton] = React.useState(true)
@@ -143,9 +144,9 @@ const MyCoopsPage = ({ login }) => {
         }
     };
 
-    const handleUtilChange = (key, value) => {
-        setUtilities((prevUtilities) => new Map(prevUtilities.set(key, value)));
-    };
+//    const handleUtilChange = (key, value) => {
+//        setUtilities((prevUtilities) => new Map(prevUtilities.set(key, value)));
+//    };
 
     const handleAppCoop = async () => {
         if (propertyName === '' || propertyAddress === '' || price === '' || bed === -1 || bath === -1) {
@@ -166,7 +167,7 @@ const MyCoopsPage = ({ login }) => {
                 sqft: '',
                 distance: '',
                 amenities: amenitiesArr,
-                utilities: Object.fromEntries(utilities)
+                //utilities: Object.fromEntries(utilities)
             }
         }
 
@@ -259,7 +260,7 @@ const MyCoopsPage = ({ login }) => {
                         backgroundColor: hovered === true ? "primaryColor" : "secondaryColor",
                         display: "flex",
                         justifyContent: "center",
-                        boxShadow: theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 3px rgba(245, 235, 224, .1)", 
+                        boxShadow: theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 3px rgba(245, 235, 224, .1)",
                     }}>
                     <AddHomeIcon
                         sx={{
@@ -273,7 +274,23 @@ const MyCoopsPage = ({ login }) => {
             {open === true ? <AddCoopView setOpen={setOpen}></AddCoopView> : ''}
             <Box sx={{ marginTop: 3 }} style={styles.feed}>
                 {loading ? ( // Display loading spinner while loading
-                    <CardPlaceholder isCoopmateCard={false}/>
+                    <div style={styles.feed}>
+                        {
+                            /*
+                             * TODO:
+                             * add a full screen of placeholders
+                             */
+                        }
+                        <CardPlaceholder isCoopmateCard={false} />
+                        <CardPlaceholder isCoopmateCard={false} />
+                        <CardPlaceholder isCoopmateCard={false} />
+                        <CardPlaceholder isCoopmateCard={false} />
+                        <CardPlaceholder isCoopmateCard={false} />
+                        <CardPlaceholder isCoopmateCard={false} />
+                        <CardPlaceholder isCoopmateCard={false} />
+                        <CardPlaceholder isCoopmateCard={false} />
+
+                    </div>
                 ) : (
                     myCoopsArr.length > 0 ? (
                         myCoopsArr.map(cards => {
