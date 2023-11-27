@@ -9,7 +9,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 
 
-const ScheduleTourView = ({requestTourOpen, handleClose}) => {
+const ScheduleTourView = ({data, userData, requestTourOpen, handleClose}) => {
     const theme = useTheme();
     const [open, setOpen] = React.useState(false)
     const [email, setEmail] = React.useState("")
@@ -106,19 +106,21 @@ const ScheduleTourView = ({requestTourOpen, handleClose}) => {
 
                 <div>
                     <TextField
-                        placeholder="Prepopulate to username" id="username-textfield" variant="outlined" fullWidth
+                        placeholder={userData.username} id="username-textfield" variant="outlined" fullWidth
+                        inputProps={{readOnly: true,}}
+                        sx={textfieldSX}
+                    >
+                        {console.log("PROPERTY NAME:    " + data.propertyInfo.propertyName)}
+                    </TextField>
+
+                    <TextField
+                        placeholder={data.propertyInfo.propertyName} id="property-name-textfield" variant="outlined" fullWidth
                         inputProps={{readOnly: true,}}
                         sx={textfieldSX}
                     />
 
                     <TextField
-                        placeholder="Prepopulate to property name" id="property-name-textfield" variant="outlined" fullWidth
-                        inputProps={{readOnly: true,}}
-                        sx={textfieldSX}
-                    />
-
-                    <TextField
-                        placeholder="Prepopulate to company name" id="company-name-textfield" variant="outlined" fullWidth
+                        placeholder={data.companyInfo.name} id="company-name-textfield" variant="outlined" fullWidth
                         inputProps={{readOnly: true,}}
                         sx={textfieldSX}
                     /> 

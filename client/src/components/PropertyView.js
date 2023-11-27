@@ -705,7 +705,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
                                     }}
                                     variant="outlined">REQUEST A TOUR
                                 </Button>
-                                {requestTourOpen && <ScheduleTourView requestTourOpen={requestTourOpen} handleClose={handleCloseRequestTour}/>}
+                                {requestTourOpen && <ScheduleTourView data={data} userData={userData} requestTourOpen={requestTourOpen} handleClose={handleCloseRequestTour}/>}
                             </div>
 
                         ) : isOwner === true && userType === "manager" ? (
