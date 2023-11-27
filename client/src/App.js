@@ -256,7 +256,7 @@ class App extends React.Component {
     const showAppBarMain = !pathname.startsWith("/Admin") && isAuthenticated;
 
     const updatedUser = showAppBarAdmin ? "admin" : userType;
-    
+
 
     const faviconPath = "favicon.ico";
 
@@ -321,8 +321,7 @@ class App extends React.Component {
               }
             </IconButton>
 
-            {showAppBar ? <RoomsterAppBar login={showAppBarAdmin || showAppBarMain} userType={userType} /> : <div style={{ height: '64px' }}></div>}
-
+            {showAppBar ? <RoomsterAppBar login={showAppBarAdmin || showAppBarMain} userType={updatedUser} /> : <div style={{ height: '64px' }}></div>}
             <div style={{ textAlign: "center", zIndex: "3", position: "relative", marginBottom: "50px" }}>
               <Link href="/Home">
                 <img className="logo" src={darkMode ? logoDarkMode : logo} style={{ width: '35%', zIndex: "0", }} />
@@ -349,6 +348,9 @@ class App extends React.Component {
               <Route path="/Coopmates" element={<CoopmatesPage />} />
               <Route path="/CompanyPage" element={<PropertyManagerPublicPage />} />
               <Route path="/Admin" element={<AdminPage />} />
+              <Route path="/Admin/Featured" element={<AdminFeaturePage />} />
+              <Route path="/Admin/FeaturedManage" element={<AdminFeatureManagePage />} />
+              <Route path="/Admin/Users" element={<AdminUserPage />} />
               <Route path="/ResetPW/:token" element={<ResetPWPage />} />
               <Route path="/Property/:token" element={<MainPage login={isAuthenticated} />} />
               <Route path="/SetAdminPW/:token" element={<SetAdminPWPage />} />

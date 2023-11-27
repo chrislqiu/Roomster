@@ -103,7 +103,8 @@ const AdminUserPage = () => {
                         <AdminUserView key={renter._id} username={renter.username} userType="Renter" />
                     ))
                 ) : input.length === 0 ? (
-                    <AdminUserPlaceholder />
+                    ''
+                    // <AdminUserPlaceholder />
                 ) : ''}
 
                 {filteredManagers.length > 0 ? (
@@ -111,7 +112,8 @@ const AdminUserPage = () => {
                         <AdminUserView key={manager._id} username={manager.username} userType="Manager" />
                     ))
                 ) : input.length === 0 ? (
-                    <AdminUserPlaceholder />
+                    ''
+                    // <AdminUserPlaceholder />
                 ) : ''}
             </Box>
         </Container>

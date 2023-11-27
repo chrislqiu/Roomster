@@ -42,7 +42,7 @@ import amongus from '../images/amongusturkey.jpeg'
  * featured : Boolean to determine whether the card is featured or not
  * favCoops : Boolean to determine if card is on favCoops page
  */
-const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProperty, featureRequest, featureRequestManage, autoOpen, verifyProperty, featureRequest, featureRequestManage, autoOpen }) => {
+const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProperty, featureRequest, featureRequestManage, autoOpen }) => {
     var image, propertyName, address, beds, baths, cost, amenities, utilities
     if (myCoops) {
         image = data.image;

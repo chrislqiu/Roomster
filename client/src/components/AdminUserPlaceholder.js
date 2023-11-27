@@ -2,6 +2,7 @@ import { Card, CardContent, CardMedia, CardActionArea, Divider } from '@mui/mate
 import { Skeleton } from "@mui/joy";
 import React, { useState, useEffect } from "react";
 
+
 const AdminUserPlaceholder = () => {
     const [hovered, setHovered] = useState(false);
     const handleHovered = () => {
