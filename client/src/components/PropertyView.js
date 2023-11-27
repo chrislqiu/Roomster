@@ -37,7 +37,7 @@ import 'react-toastify/dist/ReactToastify.css';
  * featured : Boolean to determine whether the card is featured or not
  * favCoops : Boolean to determine if card is on favCoops page
  */
-const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProperty, featureRequest, featureRequestManage }) => {
+const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProperty, featureRequest, featureRequestManage, autoOpen }) => {
     var image, propertyName, address, beds, baths, cost, amenities
     if (myCoops) {
         image = data.image;
@@ -73,6 +73,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
     const coopFavorited = favCoopsArr.some(coops => coops._id.toString() === data._id.toString())
 
     // React.useEffect(() => {
+    
 
     const getUserInfo = async () => {
         try {
@@ -111,6 +112,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
     const handleClose = () => {
         setOpen(false)
     }
+
 
     const [editMode, setEditMode] = React.useState(false);
 
@@ -430,6 +432,9 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
         // getUserInfo();
         getPropertyVerification();
         getPropertyFeatured();
+        if(autoOpen === true){
+            handleOpen();
+        }
     }, []);
 
     React.useEffect(() => {

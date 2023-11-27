@@ -4,6 +4,8 @@ import React from "react"
 import SearchBar from "../components/SearchBar";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useParams } from 'react-router-dom';
+
 
 import { Container, Box, Typography } from "@mui/material";
 
@@ -16,6 +18,9 @@ const MainPage = ({ login }) => {
      */
     const [propertyInfo, setPropertyInfo] = React.useState([])
     const [numberSelected, setNumberSelected] = React.useState();
+    const [sharedProperty, setSharedProperty] = React.useState();
+    const { token } = useParams();
+
 
     React.useEffect(() => {
         const getPropertyInfo = async () => {
@@ -25,6 +30,7 @@ const MainPage = ({ login }) => {
             setPropertyInfo(obj);
         }
         getPropertyInfo()
+
     }, [])
     const [filteredProperties, setFilteredProperties] = React.useState(propertyInfo);
     //const [sortedProperties, setSortedProperties] = React.useState(propertyInfo);
@@ -44,7 +50,7 @@ const MainPage = ({ login }) => {
 
     React.useEffect(() => {
         const filteredPropertyInfo = propertyInfo.filter((property) => {
-          return property.propertyInfo.propertyName.toLowerCase().includes(input.toLowerCase());
+            return property.propertyInfo.propertyName.toLowerCase().includes(input.toLowerCase());
         });
         /* SET DEFAULT PAGE TO ALL */
         setFilteredProperties(filteredPropertyInfo)
@@ -63,8 +69,8 @@ const MainPage = ({ login }) => {
                 pauseOnHover: true,
                 draggable: false,
                 style: {
-                    background: "#F6EBE1", 
-                  },
+                    background: "#F6EBE1",
+                },
             });
         }
     }, []);
@@ -79,25 +85,33 @@ const MainPage = ({ login }) => {
     }
     return (
         <Container sx={{ width: '100%' }}>
-            <SearchBar data={propertyInfo} setInput={setInput} setFilteredOptions={setFilteredProperties} setNumberSelected={setNumberSelected} setSortOptions={setSortOption}/>
+            <SearchBar data={propertyInfo} setInput={setInput} setFilteredOptions={setFilteredProperties} setNumberSelected={setNumberSelected} setSortOptions={setSortOption} />
             {console.log(filteredProperties)}
             {/* {(input === '' && numberSelected === 0) && */}
             <Box sx={{ m: 4 }} style={styles.feed}>
                 <FeaturedProperties data={filteredProperties} style={styles.feed} login={login} />
             </Box>
-            
+
             <Box sx={{ m: 1 }} style={styles.feed}>
                 {
-                   /*
-                    * Maps each Property Information object to its own "card"
-                    */
+                    /*
+                     * Maps each Property Information object to its own "card"
+                     */
                     filteredProperties.length > 0 ?
-                    filteredProperties.map((cards) => {
-                          return <PropertyViewMore data={cards} login={login}/>
+                        filteredProperties.map((cards) => {
+                            return (
+                                <React.Fragment key={cards._id}>
+                                    {token && token === cards._id ? (
+                                        <PropertyViewMore data={cards} login={login} autoOpen={true} />
+                                    ) : (
+                                        <PropertyViewMore data={cards} login={login} autoOpen={false} />
+                                    )}
+                                </React.Fragment>
+                            );
                         }
-                    )
-                    :
-                    <Typography
+                        )
+                        :
+                        <Typography
                             sx={{
                                 fontWeight: 600,
                                 fontSize: 25,

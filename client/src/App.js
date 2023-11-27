@@ -230,6 +230,7 @@ class App extends React.Component {
                 <Route path="/Admin/FeaturedManage" element={<AdminFeatureManagePage />} />
                 <Route path="/ResetPW/:token" element={<ResetPWPage />} />
                 <Route path="/SetAdminPW/:token" element={<SetAdminPWPage />} />
+                <Route path="/Property/:token" element={<MainPage login={isAuthenticated}  />} />
                 <Route path="/Admin/Users" element={<AdminUserPage />} />
               </Routes>
             </BrowserRouter>
