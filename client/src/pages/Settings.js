@@ -61,7 +61,7 @@ const Settings = () => {
                         style={{ position: "absolute", top: "0", right: "0"}}
                         onClick={() => handleClose()}>
                         <CloseIcon sx={{ color: "textColor" }} />
-                    </IconButton>
+                </IconButton>
                 <DialogTitle sx={{ fontWeight: 600, padding: "10px 0 0 25px", color: "textColor" }}>
                     Settings
                 </DialogTitle>
