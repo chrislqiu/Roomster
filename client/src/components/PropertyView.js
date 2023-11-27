@@ -17,6 +17,7 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import CheckIcon from "@mui/icons-material/Check";
+import SendIcon from '@mui/icons-material/Send';
 import { useNavigate, createSearchParams } from 'react-router-dom';
 import AddCoopView from './AddCoopView';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -38,7 +39,7 @@ import amongus from '../images/amongusturkey.jpeg'
  * featured : Boolean to determine whether the card is featured or not
  * favCoops : Boolean to determine if card is on favCoops page
  */
-const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) => {
+const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin, verifyProperty, featureRequest, featureRequestManage, autoOpen }) => {
     var image, propertyName, address, beds, baths, cost, amenities, utilities
     if (myCoops) {
         image = data.image;
@@ -209,6 +210,17 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
 //        setUtilities(Object.keys(utilities).filter(key => utilities[key] === true))
 //    }
 
+    const handleShare = async () => {
+        const id = data._id;
+
+        console.log("data: " + id);
+        const link = window.location.href + "Property/" + id
+        console.log(link)
+        //window.location.assign(link) //redirects to link
+        navigator.clipboard.writeText(link)
+        toast.success('Link copied to clipboard!', { position: toast.POSITION.TOP_CENTER });
+    };
+
     const handleDeleteProperty = async () => {
         const id = data._id;
         console.log("data: " + id);
@@ -344,6 +356,10 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
     React.useEffect(() => {
         checkOwner();
         getPropertyVerification();
+        // getPropertyFeatured();
+        if(autoOpen === true){
+            handleOpen();
+        }
     }, []);
 
     React.useEffect(() => {
@@ -609,6 +625,15 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin }) =
                     </Stack>
                 </DialogContent>
                 <DialogActions>
+
+                    <IconButton
+                        style={{ position: "BottomLeft", position: "sticky", top: 70, left: 0 }}
+                        onClick={() => handleShare()}
+                    >
+                        <SendIcon
+                            sx={{ color: "textColor" }}
+                        />
+                    </IconButton>
 
                     {console.log(isVerified)}
                     {isVerified === true ?

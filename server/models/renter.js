@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const RenterInfo = require('./renterInfo');
+const Tour = require('./tour')
 
 const renter = new Schema({
     username: {
@@ -26,8 +27,11 @@ const renter = new Schema({
     coopmates: {
         type: [RenterInfo.schema],
         required: false
+    },
+    tours: {
+        type: [Tour.schema],
+        required: false
     }
-
 });
 
 const Renter = mongoose.model('renters', renter);
