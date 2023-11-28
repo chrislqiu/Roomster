@@ -235,7 +235,6 @@ app.post('/reqTour', async (req, res) => {
     manager.company = updatedCompany
     manager.save()
   })
-
 })
 
 app.post('/delTour', async (req, res) => {
