@@ -24,6 +24,11 @@ const AddCoopView = ({setOpen, editMode, data}) => {
     const [bath, setBath] = React.useState(-1)
 
     /* Upload Image */
+    const [propertyImages, setPropertyImages] = useState([]);
+    const [imageURLs, setImageURLs] = useState([]);
+    const [hasImages, setHasImages] = useState(false);
+    const [showMore, setShowMore] = useState(false);
+
     const [propertyImage, setPropertyImage] = React.useState("")
     const [image, setHasImage] = React.useState(false)
 
@@ -139,7 +144,7 @@ const AddCoopView = ({setOpen, editMode, data}) => {
         const dataToSend = {
             propertyInfo: {
                 _id: editMode === true ? data._id : '',
-                image: propertyImage,
+                image: imageURLs,
                 propertyName: propertyName,
                 address: propertyAddress,
                 beds: bed,
@@ -174,14 +179,36 @@ const AddCoopView = ({setOpen, editMode, data}) => {
     }
 
     function handleAddPhotos(event) {
-        var file = event.target.files[0] // image uploaded
-        const reader = new FileReader()
-        reader.readAsDataURL(file)
-        reader.onload = () => {
-            setPropertyImage(reader.result)
-            setHasImage(true)
+        // var file = event.target.files[0] // image uploaded
+        // const reader = new FileReader()
+        // reader.readAsDataURL(file)
+        // reader.onload = () => {
+        //     setPropertyImage(reader.result)
+        //     setHasImage(true)
+        // }
+        const files = event.target.files;
+        if (files.length === 0) {
+            return;
         }
+        const newImagesToDisplay = Array.from(files).map((file) => ({
+            file,
+            url: URL.createObjectURL(file),
+        }));
+        /* for display */
+        setPropertyImages((prevImages) => [...prevImages, ...newImagesToDisplay]);
+        const newImageUrls = Array.from(files).map((file) => URL.createObjectURL(file));
+        /* for sending */
+        setImageURLs((prevImageUrl) => [...prevImageUrl, ...newImageUrls]);
+        setHasImages(true);
     }
+    const handleRemovePhotos = (index) => {
+        const updatedImages = [...propertyImages];
+        updatedImages.splice(index, 1);
+        setPropertyImages(updatedImages);
+    };
+    const handleShowMoreBoxes = () => {
+        setShowMore(true);
+      };
 
     const styles = {
         feed: {
@@ -276,7 +303,7 @@ const AddCoopView = ({setOpen, editMode, data}) => {
                         style={{
                             
                         }}>
-                        {!image &&
+                        {/* {!image &&
                             <Box sx={{
                                 margin: "0",
                                 padding: "0",
@@ -297,8 +324,68 @@ const AddCoopView = ({setOpen, editMode, data}) => {
                                         style={{ display: "none" }}
                                     />
                                 </label>
-                            </Box>}
-                            {propertyImage === "" || propertyImage === null ? "" : <img src={propertyImage} style={{ objectFit: 'fill', width: '700px', height: '200px'}}/>}
+                            </Box>} */
+                             (
+                                [0, 1, 2].map((boxIndex) => (
+                                    <label key={boxIndex} htmlFor={`imageFile${boxIndex}`} style={{ position: 'relative', display: 'inline-block', marginRight: '10px' }}>
+                                      <Box
+                                        sx={{
+                                          //margin: '0',
+                                          padding: 1,
+                                          marginBottom: 2,
+                                          border: '3px dashed',
+                                          borderColor: 'secondaryColor',
+                                          minHeight: '150px',
+                                          maxHeight: '300px',
+                                          minWidth: '300px',
+                                          width: '650px',
+                                          cursor: 'pointer',
+                                        }}
+                                      >
+                                        Click to Add Photo {boxIndex + 1}
+                                        <input
+                                          accept="image/*"
+                                          type="file"
+                                          onChange={(e) => handleAddPhotos(e, boxIndex)}
+                                          id={`imageFile${boxIndex}`}
+                                          style={{ display: 'none' }}
+                                          multiple
+                                        />
+                                      </Box>
+
+                                      {propertyImages[boxIndex] && (
+                                        <div style={{ position: 'absolute', top: 0, left: 0 }}>
+                                          <img
+                                            src={propertyImages[boxIndex].url}
+                                            alt={`Property Image ${boxIndex + 1}`}
+                                            style={{ objectFit: 'fill', height: '175px', width: '673px' }}
+                                          />
+                                          <Button
+                                            onClick={() => handleRemovePhotos(boxIndex)}
+                                            sx={{
+                                                ":hover": {
+                                                    borderColor: "#F6EBE1", bgcolor: "#F6EBE1", color: "#AB191F",
+                                                    borderWidth: 1.5
+                                                },
+                                                borderColor: "#AB191F", bgcolor: "#AB191F", color: "#F6EBE1",
+                                                borderWidth: 1.5, width: "112px", height: "35px", fontWeight: 600, lineHeight: "11px",
+                                                boxShadow: 5, float: "right", bottom: 15, right: 10,
+                                                //marginBottom: "30px",
+                                                //marginLeft: "210px",
+                                                position: "absolute"
+                                            }}
+                                            variant="outlined"
+                                          >
+                                            Remove
+                                          </Button>
+                                        </div>
+                                      )}
+                                    </label>
+                                  ))
+                              )
+                            }
+                            {console.log(propertyImages)}
+                            {/* {propertyImage === "" || propertyImage === null ? "" : <img src={propertyImage} style={{ objectFit: 'fill', width: '700px', height: '200px'}}/>} */}
                         {/*
                         <AspectRatio minHeight={100} maxHeight={200} minWidth={300} maxWidth={400}
                             style={{
