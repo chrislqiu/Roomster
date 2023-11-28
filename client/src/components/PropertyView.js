@@ -868,7 +868,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
                                         </IconButton>
                                     </Tooltip>
                                     <IconButton size="large" disabled={true}>
-                                        <FavoriteIcon />
+                                        <FavoriteIcon sx={{"& .Mui-disabled": {color: "textColor"}}}/>
                                     </IconButton>
                                 </div>
                             ) :
@@ -901,7 +901,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
                                 }}
                             >
                                 <IconButton size="large" disabled={true}>
-                                    <FavoriteIcon />
+                                    <FavoriteIcon  />
                                 </IconButton>
                             </Tooltip>
                         ))}
