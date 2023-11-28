@@ -102,6 +102,7 @@ app.post('/sendRenterProfile', async (req, res) => {
   const decoded = jwt.verify(token, secretKey)
   const username = decoded.username
   var renter = await Renter.findOne({ username: username })
+  console.log(data)
 
   const updatedLivingPref = {
     pets: data.livingPreferences.pets,
