@@ -100,17 +100,17 @@ const TourRequestsPage = ({ login }) => {
     
     /* Pull data from DB, dummy data for now. Note that properties should be specific to company */
     const [rows, setRows] = React.useState(() => [
-        pullData('10/21/23', '3:00PM', 'Studio A', 'Chicken A', 'APPROVED'),
-        pullData('01/02/24', '11:00AM', 'Penthouse', 'Duck B', 'APPROVED'),
-        pullData('10/22/23', '12:00PM', 'Studio B', 'Chicken B', 'PENDING'),
-        pullData('10/23/23', '1:00PM', 'Studio C', 'Chicken C', 'DECLINED'),
-        pullData('10/23/23', '10:00AM', 'Studio A', 'Cow A', 'PENDING'),
-        pullData('10/25/23', '11:00AM', 'Penthouse', 'Cow B', 'APPROVED'),
-        pullData('10/21/23', '3:00PM', 'Studio A', 'Pig A', 'APPROVED'),
-        pullData('10/22/23', '12:00PM', 'Studio B', 'Pig B', 'PENDING'),
-        pullData('10/23/23', '1:00PM', 'Studio C', 'Sheep C', 'DECLINED'),
-        pullData('10/23/23', '10:00AM', 'Studio A', 'Duck A', 'PENDING'),
-        pullData('10/25/23', '11:00AM', 'Penthouse', 'Duck B', 'APPROVED'),
+        // pullData('10/21/23', '3:00PM', 'Studio A', 'Chicken A', 'APPROVED'),
+        // pullData('01/02/24', '11:00AM', 'Penthouse', 'Duck B', 'APPROVED'),
+        // pullData('10/22/23', '12:00PM', 'Studio B', 'Chicken B', 'PENDING'),
+        // pullData('10/23/23', '1:00PM', 'Studio C', 'Chicken C', 'DECLINED'),
+        // pullData('10/23/23', '10:00AM', 'Studio A', 'Cow A', 'PENDING'),
+        // pullData('10/25/23', '11:00AM', 'Penthouse', 'Cow B', 'APPROVED'),
+        // pullData('10/21/23', '3:00PM', 'Studio A', 'Pig A', 'APPROVED'),
+        // pullData('10/22/23', '12:00PM', 'Studio B', 'Pig B', 'PENDING'),
+        // pullData('10/23/23', '1:00PM', 'Studio C', 'Sheep C', 'DECLINED'),
+        // pullData('10/23/23', '10:00AM', 'Studio A', 'Duck A', 'PENDING'),
+        // pullData('10/25/23', '11:00AM', 'Penthouse', 'Duck B', 'APPROVED'),
     ]);
 
 
