@@ -150,6 +150,8 @@ const AddCoopView = ({ setOpen, editMode, data }) => {
 
         const result = await response.json();
 
+        console.log(result.data[0].latitude)
+
 
         const dataToSend = {
             propertyInfo: {

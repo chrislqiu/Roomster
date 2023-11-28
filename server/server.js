@@ -177,7 +177,9 @@ app.post('/sendProperty', async (req, res) => {
     sqft: data.propertyInfo.sqft,
     distance: data.propertyInfo.distance,
     amenities: data.propertyInfo.amenities,
-    utilities: data.propertyInfo.utilities
+    utilities: data.propertyInfo.utilities,
+    latitude: data.propertyInfo.latitude,
+    longitude: data.propertyInfo.longitude
   }
   var newProperty;
 
