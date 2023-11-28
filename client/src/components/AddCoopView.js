@@ -211,9 +211,7 @@ const AddCoopView = ({setOpen, editMode, data}) => {
         setImageURLs(updatedUrls)
         setPropertyImages(updatedImages);
     };
-    const handleShowMoreBoxes = () => {
-        setShowMore(true);
-      };
+
 
     const styles = {
         feed: {
