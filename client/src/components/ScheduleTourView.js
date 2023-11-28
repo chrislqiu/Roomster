@@ -7,6 +7,7 @@ import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import toast, { Toaster } from 'react-hot-toast'
 
 
 const ScheduleTourView = ({ data, userData, requestTourOpen, handleClose }) => {
@@ -60,6 +61,10 @@ const ScheduleTourView = ({ data, userData, requestTourOpen, handleClose }) => {
         }
     }
 
+    const customToastStyle = {
+        color: 'white'
+    }
+
     const textfieldSX = {
         input: {
             color: "textColor",
@@ -77,6 +82,12 @@ const ScheduleTourView = ({ data, userData, requestTourOpen, handleClose }) => {
     }
 
     const handleScheduleTour = async () => {
+        if (DT === "") {
+            toast.error("Please fill in a time!", { style: customToastStyle })
+            return;
+        } else {
+            toast.success("Request Sent", { style: customToastStyle })
+        }
         const utc = new Date(DT)
         const options = {
             year: 'numeric',
@@ -204,6 +215,19 @@ const ScheduleTourView = ({ data, userData, requestTourOpen, handleClose }) => {
                             }}>
                             SUBMIT
                         </Button>
+                        <Toaster
+                            toastOptions={{
+                                success: {
+                                    style: {
+                                        background: 'green',
+                                    },
+                                },
+                                error: {
+                                    style: {
+                                        background: 'red',
+                                    },
+                                },
+                            }} />
                     </Container>
                 </div>
             </Dialog>
