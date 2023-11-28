@@ -88,21 +88,14 @@ const lightTheme = {
   }
 }
 const darkTheme = {
-  overrides: {
-    MuiInput: {
-      input: {
-        '&::placeholder': {
-          color: "#F6EBE1",
-          opacity: "1",
-        }
-      }
-    }
-  },
   components: {
-
     MuiFormControlLabel: {
       styleOverrides: {
         label: {
+          "&.Mui-disabled": {
+            color: "#F6EBE1"
+          },
+          
           color: "#F6EBE1"
         }
       },

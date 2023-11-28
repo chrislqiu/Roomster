@@ -125,28 +125,53 @@ const RenterPage = () => {
         '&.Mui-checked': {
         color: "secondaryColor",
         },
+        '&.Mui-disabled': {
+            color: "secondaryColor",
+        },
+        
+    }
+    const sliderSX = {
+        color:"secondaryColor", width: "120px", height: "5px", marginLeft: "-70px",
+        "&.Mui-disabled .MuiSlider-track ": {
+            color: "secondaryColor",
+        },
+        "&.Mui-disabled .MuiSlider-thumb ": {
+            color: "secondaryColor",
+        } 
     }
     const selectSX = {
-        width: 90, height: 30, fontSize:"11pt", color: "textColor",
+        width: "70px",
+        borderColor: "blue",
+        color: "textColor",
+        "&.Mui-disabled": {
+            "& .MuiOutlinedInput-notchedOutline": {
+                borderColor: "textColor",
+                opacity: 0.5,
+            },
+            "& .MuiSelect-icon": {
+                color: "textColor",
+                opacity: 0.5,
+            }
+        },
+        "& .MuiSelect-icon": {
+            color: "secondaryColor",
+        },
+        "& .MuiInputBase-input.Mui-disabled": {
+            WebkitTextFillColor: theme.palette.type === "dark" ? "#F6EBE1" : "",
+            opacity: 0.7,
+        },
+        
         '.MuiOutlinedInput-notchedOutline': {
-            border: "2px solid",
-            borderColor: "secondaryColor",
-        },
-        '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-            border: "2px solid",
-            borderColor: "secondaryColor",
-        },
-        '&.Mui-hovered .MuiOutlinedInput-notchedOutline': {
-            border: "2px solid",
-            borderColor: "secondaryColor",
-        }
+            borderColor: 'secondaryColor',
+          },
+          '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+            borderColor: 'secondaryColor',
+          },
     }
     const textfieldSX = {
-        margin: "0 0 10px 25px", 
-        width:"280px", 
-        borderRadius: "5px",
-        border: "2px solid",
-        borderColor: "secondaryColor",
+        "& .MuiInputBase-input.Mui-disabled": {
+            WebkitTextFillColor: theme.palette.type === "dark" ? "#F6EBE1" : "",
+        },
         input: {
             color: "textColor",
             "&::placeholder": {
@@ -154,7 +179,13 @@ const RenterPage = () => {
                 color: "textColor",
                 },
         },
-        "& fieldset": { border: 'none', },
+        margin: "0 0 10px 25px", 
+        width:"280px", 
+        borderRadius: "5px",
+        border: "2px solid",
+        borderColor: "secondaryColor",
+        "& fieldset": { border: 'none', color: "textColor"},
+        "& label": {color: "textColor"},
         "&:hover" : {boxShadow: theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 3px rgba(245, 235, 224, .1)",}       
     }
     const [toggleOn, setToggleOn] = React.useState(false);
@@ -543,7 +574,7 @@ const RenterPage = () => {
                                 marks
                                 min={0}
                                 max={5}
-                                sx={{color:"secondaryColor", width: "120px", height: "5px", marginLeft: "-70px"}}
+                                sx={sliderSX}
                                 disabled={disableButton}
                             />
                             </Container>
@@ -557,7 +588,7 @@ const RenterPage = () => {
                                 marks
                                 min={0}
                                 max={5}
-                                sx={{color:"secondaryColor", width: "120px", height: "5px", marginLeft: "-70px"}}
+                                sx={sliderSX}
                                 disabled={disableButton}
                             />
                             </Container>
@@ -571,12 +602,12 @@ const RenterPage = () => {
                                 marks
                                 min={0}
                                 max={5}
-                                sx={{color:"secondaryColor", width: "120px", height: "5px", marginLeft: "-70px"}}
+                                sx={sliderSX}
                                 disabled={disableButton}
                             />
                             </Container>
                             <Container style={{display: "flex", gap: "1rem", width: "200px", margin:"0 0 10px -50px", padding:"0"}}>
-                                <Select displayEmpty defaultValue={defFrom} onChange={handleSleepFrom} sx={selectSX} disabled={disableButton} >
+                                <Select displayEmpty defaultValue={defFrom} onChange={handleSleepFrom} sx={selectSX} size="small" disabled={disableButton} >
                                     <MenuItem value=""> <em>From</em> </MenuItem> <MenuItem value={0}>0</MenuItem>
                                     <MenuItem value={1}>1</MenuItem> <MenuItem value={2}>2</MenuItem> <MenuItem value={3}>3</MenuItem>
                                     <MenuItem value={4}>4</MenuItem> <MenuItem value={5}>5</MenuItem> <MenuItem value={6}>6</MenuItem>
@@ -588,7 +619,7 @@ const RenterPage = () => {
                                     <MenuItem value={22}>22</MenuItem> <MenuItem value={23}>23</MenuItem>
                                 </Select>
                             
-                                <Select displayEmpty defaultValue={defTo} onChange={handleSleepTo} sx={selectSX} disabled={disableButton} >
+                                <Select displayEmpty defaultValue={defTo} onChange={handleSleepTo} sx={selectSX} size="small" disabled={disableButton} >
                                     <MenuItem value=""> <em>To</em> </MenuItem> <MenuItem value={0}>0</MenuItem>
                                     <MenuItem value={1}>1</MenuItem> <MenuItem value={2}>2</MenuItem> <MenuItem value={3}>3</MenuItem>
                                     <MenuItem value={4}>4</MenuItem> <MenuItem value={5}>5</MenuItem> <MenuItem value={6}>6</MenuItem>
