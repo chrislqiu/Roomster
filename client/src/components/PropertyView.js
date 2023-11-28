@@ -65,7 +65,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
     }
 
     const testimages = [image, amongus]
-    
+
     /*
      * open, setOpen : controls the state of the dialogue popup
      */
@@ -95,7 +95,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
     }
 
 
-    
+
 
     const getUserInfo = async () => {
         try {
@@ -135,7 +135,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
         setOpen(false)
     }
 
-    
+
     const [editMode, setEditMode] = React.useState(false);
 
     const handleEdit = () => {
@@ -154,7 +154,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
         setHovered(false)
     }
 
-    
+
     /*
     * Handle favorite button
     */
@@ -208,9 +208,9 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
         })
     }
 
-//    const pullUtilities = () => {
-//        setUtilities(Object.keys(utilities).filter(key => utilities[key] === true))
-//    }
+    //    const pullUtilities = () => {
+    //        setUtilities(Object.keys(utilities).filter(key => utilities[key] === true))
+    //    }
 
     const handleShare = async () => {
         const id = data._id;
@@ -468,7 +468,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
         // getUserInfo();
         getPropertyVerification();
         getPropertyFeatured();
-        if(autoOpen === true){
+        if (autoOpen === true) {
             handleOpen();
         }
     }, []);
@@ -479,8 +479,8 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
             toast.success('Property deleted successfully!', { position: toast.POSITION.TOP_CENTER });
             localStorage.removeItem('propertyDeleted');
         }
-      }, []);
-    
+    }, []);
+
     const theme = useTheme();
 
     return (
@@ -515,7 +515,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
                     borderWidth: featured === true ? "3px" : "0",
                     borderColor: featured === true ? (theme.palette.type === 'light' ? "secondaryColor" : "textColor") : "",
                     borderRadius: "10px",
-                    boxShadow: !featured ? (theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 2px rgba(245, 235, 224, .3)") : "none" 
+                    boxShadow: !featured ? (theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 2px rgba(245, 235, 224, .3)") : "none"
                 }}>
                 <CardActionArea>
                     {console.log(data.image)}
@@ -534,7 +534,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
                     <CardContent>
                         <div style={{ display: 'flex', alignItems: 'center', marginLeft: 0 }}>
 
-                            <Typography variant="h6" sx={{ margin: "-20px 0 0px 0"}}
+                            <Typography variant="h6" sx={{ margin: "-20px 0 0px 0" }}
                             > {propertyName.split(":")[0]} </Typography>
                             {/* {featured === true ? <StarIcon style={{margin: "-20px 0 0px 2.5"}} /> : ''} */}
                             {/* {favCoops === true ? <FavoriteIcon style={{margin: "-20px 0 0px 2.5"}} sx={{color: "#AB191F", ":hover": {color: "#F6EBE1",},}}/> : ''} */}
@@ -544,9 +544,9 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
                             {myCoops === true ? <BookmarkIcon style={{ margin: "-22px 0 0 5px", fontSize: "15pt" }} /> : ''}
 
                         </div>
-                        <Typography variant="body2" sx={{ margin: "0 0 5px 0"}}>{address}</Typography>
+                        <Typography variant="body2" sx={{ margin: "0 0 5px 0" }}>{address}</Typography>
                         <Typography variant="body2">{beds} bedroom </Typography>
-                        <Typography variant="body2" sx={{ marginBottom: "5px"}}>{baths} bathroom</Typography>
+                        <Typography variant="body2" sx={{ marginBottom: "5px" }}>{baths} bathroom</Typography>
                         <Divider sx={{
                             height: "3px",
                             backgroundColor: hovered === true ? (theme.palette.type === 'light' ? "primaryColor" : "textColor") : "secondaryColor",
@@ -585,13 +585,13 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
                          * AspectRatio controls the size of the image
                          */
                     }
-                        {/* <img 
+                    {/* <img 
                             src={image}
                             srcSet={image}
                             alt=""
                             style={{ objectFit: 'fill', width: '700px', height: '200px', borderRadius: '5px'}}
                         /> */}
-                        <ImageGallery images={testimages}/>
+                    <ImageGallery images={testimages} />
                     {
                         /*
                          * Stack direction row has each text 'chunk'
@@ -671,7 +671,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
                                         marginBottom: "-25px"
                                     }}
                                 >
-                                    <ListItem sx={{color: "textColor", display: 'list-item' }}>
+                                    <ListItem sx={{ color: "textColor", display: 'list-item' }}>
                                         {amenity}
                                     </ListItem>
                                 </List>
@@ -781,9 +781,9 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
                                     boxShadow: theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 3px rgba(245, 235, 224, .1)",
                                 },
                                 border: "none",
-                                backgroundColor: "secondaryColor", 
+                                backgroundColor: "secondaryColor",
                                 color: theme.palette.type === "light" ? "primaryColor" : "textColor",
-                                width: "100px", height: "35px", fontWeight: 600, lineHeight: "11px", float: "right", 
+                                width: "100px", height: "35px", fontWeight: 600, lineHeight: "11px", float: "right",
                             }}
                             onClick={handleEdit}
                             variant="outlined">{'EDIT'}
@@ -801,7 +801,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
                                 <div sx={{ display: "flex", width: "100%" }}>
                                     <Tooltip title="Delete Property">
                                         <IconButton onClick={handleDeletePropertyAdmin}>
-                                        <DeleteOutlineIcon sx={{ color: "secondaryColor" }} />                                        </IconButton>
+                                            <DeleteOutlineIcon sx={{ color: "secondaryColor" }} />                                        </IconButton>
                                     </Tooltip>
                                     <Tooltip title="Verify Property">
                                         <IconButton onClick={handleVerifyProperty}>
@@ -833,39 +833,39 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
                             ) : isOwner === false && userType !== "manager" ? (
                                 // User view (not owner)
                                 <div>
-                                <Tooltip
-                                    title="Add to FAV COOPS"
-                                    componentsProps={{
-                                        tooltip: {
-                                            sx: {
-                                                bgcolor: theme.palette.type === "light" ? 'rgba(171, 25, 31, 0.9)' : "rgba(245, 235, 224, .8)",
-                                                color: "primaryColor"
+                                    <Tooltip
+                                        title="Add to FAV COOPS"
+                                        componentsProps={{
+                                            tooltip: {
+                                                sx: {
+                                                    bgcolor: theme.palette.type === "light" ? 'rgba(171, 25, 31, 0.9)' : "rgba(245, 235, 224, .8)",
+                                                    color: "primaryColor"
+                                                },
                                             },
-                                        },
-                                    }}
-                                >
-                                    <IconButton size="large" onClick={handleFavorite}>
-                                        {coopFavorited ? (
-                                            <FavoriteIcon sx={{ color: "secondaryColor" }} />
-                                                                                    ) : (
-                                                                                        <FavoriteBorderIcon sx={{ color: "secondaryColor" }} />                                        )}
-                                    </IconButton>
-                                </Tooltip>
-                                <Button
-                                    onClick={handleOpenRequestTour}
-                                    sx={{
-                                        ":hover": {
-                                            borderColor: "#F6EBE1", bgcolor: "#F6EBE1", color: "#AB191F",
-                                            borderWidth: 1.5, width: "175px", fontWeight: 600, fontSize:"11pt", padding:"0"
-                                        },
-                                        borderColor: "#AB191F", bgcolor: "#AB191F", color: "#F6EBE1",
-                                        borderWidth: 1.5, width: "175px", fontWeight: 600, fontSize:"11pt", padding:"0",
-                                        boxShadow: 5, justifyContent: "center", maxHeight: "50px", position:"absolute", bottom:15, left:25
-                                    }}
-                                    variant="outlined">REQUEST A TOUR
-                                </Button>
-                                {requestTourOpen && <ScheduleTourView data={data} userData={userData} requestTourOpen={requestTourOpen} handleClose={handleCloseRequestTour}/>}
-                        </div>
+                                        }}
+                                    >
+                                        <IconButton size="large" onClick={handleFavorite}>
+                                            {coopFavorited ? (
+                                                <FavoriteIcon sx={{ color: "secondaryColor" }} />
+                                            ) : (
+                                                <FavoriteBorderIcon sx={{ color: "secondaryColor" }} />)}
+                                        </IconButton>
+                                    </Tooltip>
+                                    <Button
+                                        onClick={handleOpenRequestTour}
+                                        sx={{
+                                            ":hover": {
+                                                borderColor: "#F6EBE1", bgcolor: "#F6EBE1", color: "#AB191F",
+                                                borderWidth: 1.5, width: "175px", fontWeight: 600, fontSize: "11pt", padding: "0"
+                                            },
+                                            borderColor: "#AB191F", bgcolor: "#AB191F", color: "#F6EBE1",
+                                            borderWidth: 1.5, width: "175px", fontWeight: 600, fontSize: "11pt", padding: "0",
+                                            boxShadow: 5, justifyContent: "center", maxHeight: "50px", position: "absolute", bottom: 15, left: 25
+                                        }}
+                                        variant="outlined">REQUEST A TOUR
+                                    </Button>
+                                    {requestTourOpen && <ScheduleTourView data={data} userData={userData} requestTourOpen={requestTourOpen} handleClose={handleCloseRequestTour} />}
+                                </div>
                             ) : isOwner === true && userType === "manager" ? (
                                 // Owner view
                                 <div>
@@ -921,9 +921,9 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
                         ))}
 
                     <Typography
-                        style={{ 
+                        style={{
                             color: "textColor",
-                            display: "flex",     
+                            display: "flex",
                             alignItems: "center",
                             margin: "0 5px 0 -10px",
                             padding: "0 5px 0 5px",
