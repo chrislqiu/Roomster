@@ -24,13 +24,10 @@ const AddCoopView = ({setOpen, editMode, data}) => {
     const [bath, setBath] = React.useState(-1)
 
     /* Upload Image */
-    const [propertyImages, setPropertyImages] = useState([]);
     const [imageURLs, setImageURLs] = useState([]);
     const [hasImages, setHasImages] = useState(false);
-    const [showMore, setShowMore] = useState(false);
-
-    const [propertyImage, setPropertyImage] = React.useState("")
-    const [image, setHasImage] = React.useState(false)
+    //const [propertyImage, setPropertyImage] = React.useState("")
+    //const [image, setHasImage] = React.useState(false)
 
     /* Amenities: pet friendly, in-unit WD, parking, kitchen appliances, furnished, gym */
     const [isPetFriendly, setIsPetFriendly] = React.useState(false)
@@ -191,25 +188,17 @@ const AddCoopView = ({setOpen, editMode, data}) => {
         if (files.length === 0) {
             return;
         }
-        const newImagesToDisplay = Array.from(files).map((file) => ({
-            file,
-            url: URL.createObjectURL(file),
-        }));
-        /* for display */
-        setPropertyImages((prevImages) => [...prevImages, ...newImagesToDisplay]);
         const newImageUrls = Array.from(files).map((file) => URL.createObjectURL(file));
-        /* for sending */
+        /* url array */
         setImageURLs((prevImageUrl) => [...prevImageUrl, ...newImageUrls]);
         setHasImages(true);
     }
     /* remove photo if change mind */
     const handleRemovePhotos = (index) => {
-        const updatedImages = [...propertyImages];
         const updatedUrls = [...imageURLs]
-        updatedImages.splice(index, 1);
         updatedUrls.splice(index, 1);
         setImageURLs(updatedUrls)
-        setPropertyImages(updatedImages);
+
     };
 
 
@@ -356,10 +345,10 @@ const AddCoopView = ({setOpen, editMode, data}) => {
                                         />
                                       </Box>
 
-                                      {propertyImages[boxIndex] && (
+                                      {imageURLs[boxIndex] && (
                                         <div style={{ position: 'absolute', top: 0, left: 0 }}>
                                           <img
-                                            src={propertyImages[boxIndex].url}
+                                            src={imageURLs[boxIndex]}
                                             alt={`Property Image ${boxIndex + 1}`}
                                             style={{ objectFit: 'fill', height: '175px', width: '673px' }}
                                           />
@@ -373,8 +362,6 @@ const AddCoopView = ({setOpen, editMode, data}) => {
                                                 borderColor: "#AB191F", bgcolor: "#AB191F", color: "#F6EBE1",
                                                 borderWidth: 1.5, width: "112px", height: "35px", fontWeight: 600, lineHeight: "11px",
                                                 boxShadow: 5, float: "right", bottom: 15, right: 10,
-                                                //marginBottom: "30px",
-                                                //marginLeft: "210px",
                                                 position: "absolute"
                                             }}
                                             variant="outlined"
@@ -387,7 +374,7 @@ const AddCoopView = ({setOpen, editMode, data}) => {
                                   ))
                               )
                             }
-                            {console.log(propertyImages)}
+                            {console.log(imageURLs)}
                             {/* {propertyImage === "" || propertyImage === null ? "" : <img src={propertyImage} style={{ objectFit: 'fill', width: '700px', height: '200px'}}/>} */}
                         {/*
                         <AspectRatio minHeight={100} maxHeight={200} minWidth={300} maxWidth={400}
