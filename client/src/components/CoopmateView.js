@@ -23,7 +23,7 @@ import MaleIcon from '@mui/icons-material/Male';
 import FemaleIcon from '@mui/icons-material/Female';
 import TransgenderIcon from '@mui/icons-material/Transgender';
 import { faTruckPlane } from '@fortawesome/free-solid-svg-icons';
-import { createTheme, ThemeProvider, useTheme } from '@mui/material/styles';
+import { useTheme } from '@mui/material/styles';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const CoopmatesView = ({ coopmate, coopmatesArr, username, userData }) => {

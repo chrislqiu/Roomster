@@ -19,6 +19,7 @@ import BookmarkIcon from '@mui/icons-material/Bookmark';
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import CheckIcon from "@mui/icons-material/Check";
 import SendIcon from '@mui/icons-material/Send';
+import LinkIcon from '@mui/icons-material/Link';
 import { useNavigate, createSearchParams } from 'react-router-dom';
 import AddCoopView from './AddCoopView';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -29,7 +30,7 @@ import StarBorderOutlinedIcon from '@mui/icons-material/StarBorderOutlined';
 import 'react-toastify/dist/ReactToastify.css';
 import ImageGallery from './ImageGallery';
 import ScheduleTourView from './ScheduleTourView';
-import { createTheme, ThemeProvider, useTheme } from '@mui/material/styles';
+import { useTheme } from '@mui/material/styles';
 import amongus from '../images/amongusturkey.jpeg'
 
 
@@ -744,12 +745,9 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
                 </DialogContent>
                 <DialogActions>
 
-                    <IconButton
-                        style={{ position: "BottomLeft", position: "sticky", top: 70, left: 0 }}
-                        onClick={() => handleShare()}
-                    >
-                        <SendIcon
-                            sx={{ color: "textColor" }}
+                    <IconButton onClick={() => handleShare()}>
+                        <LinkIcon
+                            sx={{ color: "secondaryColor" }}
                         />
                     </IconButton>
 
@@ -766,7 +764,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
                             }}
                         >
                             <IconButton sx={{ color: "secondaryColor" }}>
-                                <FontAwesomeIcon icon={faBuildingCircleCheck} />
+                                <FontAwesomeIcon icon={faBuildingCircleCheck} style={{color: theme.palette.type === "light" ? "#AB191F" : "#962c1e"}}/>
                             </IconButton>
                         </Tooltip>
                         :
@@ -793,7 +791,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
                     {editMode === true ? <AddCoopView setOpen={setOpen} editMode={true} data={data}></AddCoopView> : ''}
                     {/* {loading && <CircularProgress />} */}
                     {loading ? (
-                        <CircularProgress size={20} sx={{ color: "#AB191F", marginRight: 2 }} />
+                        <CircularProgress size={20} sx={{ color: "secondaryColor", marginRight: 2 }} />
                     ) : (
                         login === true ? (
                             verifyProperty === true ? (
@@ -801,7 +799,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
                                 <div sx={{ display: "flex", width: "100%" }}>
                                     <Tooltip title="Delete Property">
                                         <IconButton onClick={handleDeletePropertyAdmin}>
-                                            <DeleteOutlineIcon sx={{ color: "#AB191F" }} />
+                                            <DeleteOutlineIcon sx={{ color: "secondaryColor" }} />
                                         </IconButton>
                                     </Tooltip>
                                     <Tooltip title="Verify Property">
@@ -814,7 +812,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
                                 <div sx={{ display: "flex", width: "100%" }}>
                                     <Tooltip title="Deny Feature Request">
                                         <IconButton onClick={handleDenyFeature}>
-                                            <DoDisturbIcon sx={{ color: "#AB191F" }} />
+                                            <DoDisturbIcon sx={{ color: "secondaryColor" }} />
                                         </IconButton>
                                     </Tooltip>
                                     <Tooltip title="Accept Feature Request">
@@ -827,7 +825,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
                                 <div sx={{ display: "flex", width: "100%" }}>
                                     <Tooltip title="Remove Feature">
                                         <IconButton onClick={handleDenyFeature}>
-                                            <DoDisturbIcon sx={{ color: "#AB191F" }} />
+                                            <DoDisturbIcon sx={{ color: "secondaryColor" }} />
                                         </IconButton>
                                     </Tooltip>
                                 </div>
@@ -839,16 +837,16 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
                                         tooltip: {
                                             sx: {
                                                 bgcolor: 'rgba(171, 25, 31, 0.9)',
-                                                color: '#F6EBE1'
+                                                color: 'primaryColor'
                                             },
                                         },
                                     }}
                                 >
                                     <IconButton size="large" onClick={handleFavorite}>
                                         {coopFavorited ? (
-                                            <FavoriteIcon sx={{ color: "#AB191F" }} />
+                                            <FavoriteIcon sx={{ color: "secondaryColor" }} />
                                         ) : (
-                                            <FavoriteBorderIcon sx={{ color: "#AB191F" }} />
+                                            <FavoriteBorderIcon sx={{ color: "secondaryColor" }} />
                                         )}
                                     </IconButton>
                                 </Tooltip>
@@ -858,17 +856,17 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
                                     {!isFeatured ?
                                         <Tooltip title="Request Property Feature">
                                             <IconButton onClick={handleFeatureProperty} >
-                                                <StarIconOutlined sx={{ color: "#AB191F" }} />
+                                                <StarIconOutlined sx={{ color: "secondaryColor" }} />
                                             </IconButton>
                                         </Tooltip>
                                         : ''}
                                     <Tooltip title="Delete Property">
                                         <IconButton onClick={handleDeleteProperty}>
-                                            <DeleteOutlineIcon sx={{ color: "#AB191F" }} />
+                                            <DeleteOutlineIcon sx={{ color: "secondaryColor" }} />
                                         </IconButton>
                                     </Tooltip>
                                     <IconButton size="large" disabled={true}>
-                                        <FavoriteIcon sx={{"& .Mui-disabled": {color: "textColor"}}}/>
+                                        <FavoriteIcon/>
                                     </IconButton>
                                 </div>
                             ) :
@@ -878,13 +876,13 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
                                             tooltip: {
                                                 sx: {
                                                     bgcolor: 'rgba(171, 25, 31, 0.9)',
-                                                    color: "#F6EBE1"
+                                                    color: "primaryColor"
                                                 },
                                             },
                                         }}
                                     >
                                         <IconButton size="large" disabled={true}>
-                                            <FavoriteIcon />
+                                            <FavoriteIcon/>
                                         </IconButton>
                                     </Tooltip>
                                 )
@@ -895,25 +893,24 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
                                     tooltip: {
                                         sx: {
                                             bgcolor: 'rgba(171, 25, 31, 0.9)',
-                                            color: "#F6EBE1"
+                                            color: "primaryColor"
                                         },
                                     },
                                 }}
                             >
                                 <IconButton size="large" disabled={true}>
-                                    <FavoriteIcon  />
+                                    <FavoriteIcon/>
                                 </IconButton>
                             </Tooltip>
                         ))}
 
                     <Typography
-                        style={{ 
+                        sx={{ 
                             color: "textColor",
                             display: "flex",     
                             alignItems: "center",
                             margin: "0 5px 0 -10px",
                             padding: "0 5px 0 5px",
-                            fontWeight: 600
                         }}
                     >
                         {saves}
