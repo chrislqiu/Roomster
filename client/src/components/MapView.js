@@ -11,12 +11,14 @@ const MapComponent = ({address}) => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  const refineSearch = `${address}, Indiana`
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await fetch(
           `http://api.positionstack.com/v1/forward?access_key=${apiKey}&query=${encodeURIComponent(
-            address
+            refineSearch
           )}`
         );
         const result = await response.json();

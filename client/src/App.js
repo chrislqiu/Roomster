@@ -39,6 +39,7 @@ import { createTheme, ThemeProvider, useTheme } from '@mui/material/styles';
 import DarkMode from '@mui/icons-material/DarkMode';
 import LightMode from '@mui/icons-material/LightMode';
 import TourRequestsPage from "./pages/TourRequestsPage";
+import 'leaflet/dist/leaflet.css';
 
 const font = "'Lato', sans-serif";
 const lightTheme = {
