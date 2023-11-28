@@ -178,6 +178,7 @@ const AddCoopView = ({setOpen, editMode, data}) => {
         
     }
 
+    /* Add photos */
     function handleAddPhotos(event) {
         // var file = event.target.files[0] // image uploaded
         // const reader = new FileReader()
@@ -201,9 +202,13 @@ const AddCoopView = ({setOpen, editMode, data}) => {
         setImageURLs((prevImageUrl) => [...prevImageUrl, ...newImageUrls]);
         setHasImages(true);
     }
+    /* remove photo if change mind */
     const handleRemovePhotos = (index) => {
         const updatedImages = [...propertyImages];
+        const updatedUrls = [...imageURLs]
         updatedImages.splice(index, 1);
+        updatedUrls.splice(index, 1);
+        setImageURLs(updatedUrls)
         setPropertyImages(updatedImages);
     };
     const handleShowMoreBoxes = () => {
