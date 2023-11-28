@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const propertyInfo = new Schema({
     image: {
-        type: String,
+        type: [String],
         required: false
     },
     propertyName: {
