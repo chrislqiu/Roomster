@@ -354,6 +354,7 @@ class App extends React.Component {
               <Route path="/ResetPW/:token" element={<ResetPWPage />} />
               <Route path="/Property/:token" element={<MainPage login={isAuthenticated} />} />
               <Route path="/SetAdminPW/:token" element={<SetAdminPWPage />} />
+
             </Routes>
 
           </BrowserRouter>
