@@ -232,7 +232,7 @@ const ManagerCreateAccountView = ({ mCreateOpen, handleClose}) => {
                                 maxWidth: "100px",
                                 justifyContent: "center", float: "right"
                             }}
-                            onClick={(handleSignUp())}
+                            onClick={() => handleSignUp()}
                         >SIGN UP
                         </Button>
 
