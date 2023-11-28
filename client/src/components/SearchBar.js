@@ -3,8 +3,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass, faCaretDown, faCaretUp, faArrowUp19 } from '@fortawesome/free-solid-svg-icons'
 import React from "react"
 import { useTheme } from '@mui/material/styles';
+import MapIcon from '@mui/icons-material/Map';
+import { Route } from 'react-router-dom';
 
-const SearchBar = ({ data, setInput, setFilteredOptions, setNumberSelected, setSortOptions }) => {
+const SearchBar = ({ data, setInput, setFilteredOptions, setNumberSelected, setSortOptions, setMapView }) => {
     const theme = useTheme();
     const [selectBed, setSelectBed] = React.useState([]);
     const [selectBath, setSelectedBath] = React.useState([]);
@@ -58,14 +60,18 @@ const SearchBar = ({ data, setInput, setFilteredOptions, setNumberSelected, setS
         setAnchorEl(null);
     };
 
+    const handleMapView = () => {
+        setMapView((prevMapView) => !prevMapView);
+    };
+
     const handleSortOptionClick = (sortOption) => {
         // set the sort option -- price or dist
         setSortOptions(sortOption);
 
-       const sortedData = sortData(data, sortOption);
+        const sortedData = sortData(data, sortOption);
         // update the list of properties 
-       setFilteredOptions(sortedData);
-    
+        setFilteredOptions(sortedData);
+
         handleSortButtonClose();
         if (open === true) {
             setOpen(!open)
@@ -73,18 +79,18 @@ const SearchBar = ({ data, setInput, setFilteredOptions, setNumberSelected, setS
         setSelectBed([])
         setSelectedBath([])
         setSelectedAmenities([])
-      };
+    };
 
-    const sortData = (data, sortingOption) => {    
+    const sortData = (data, sortingOption) => {
         if (sortingOption === 'Low to High') {
-          return data.sort((a, b) => a.propertyInfo.cost - b.propertyInfo.cost);
+            return data.sort((a, b) => a.propertyInfo.cost - b.propertyInfo.cost);
         } else if (sortingOption === 'High to Low') {
-          return data.sort((a, b) => b.propertyInfo.cost - a.propertyInfo.cost);
+            return data.sort((a, b) => b.propertyInfo.cost - a.propertyInfo.cost);
         } else {
-          return data;
+            return data;
         }
-      };
-    
+    };
+
 
     React.useEffect(() => {
         const filteredPropertyInfo = data.filter((property) => {
@@ -169,12 +175,12 @@ const SearchBar = ({ data, setInput, setFilteredOptions, setNumberSelected, setS
                             "&::placeholder": {
                                 opacity: 0.7,
                                 color: "textColor",
-                             },
+                            },
                         },
                         "& fieldset": { border: 'none', },
                         width: "350px",
                         height: "50px",
-                        
+
                     }}
                     inputProps={{
                         style: {
@@ -194,11 +200,12 @@ const SearchBar = ({ data, setInput, setFilteredOptions, setNumberSelected, setS
             </Box>
             {open && (
                 <Collapse direction="down" in={open} >
-                    <Paper elevation={3} 
-                    sx={{ 
-                        backgroundColor: "primaryColor", color: "textColor", 
-                        boxShadow: theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 2px rgba(245, 235, 224, .3)",
-                        marginTop: "10px"}}>
+                    <Paper elevation={3}
+                        sx={{
+                            backgroundColor: "primaryColor", color: "textColor",
+                            boxShadow: theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 2px rgba(245, 235, 224, .3)",
+                            marginTop: "10px"
+                        }}>
                         <Box style={{ padding: '20px' }}>
                             <Stack direction="row" spacing={1}>
                                 <Typography
@@ -210,7 +217,7 @@ const SearchBar = ({ data, setInput, setFilteredOptions, setNumberSelected, setS
                                     Filter by:
                                 </Typography>
                                 <Box sx={{ paddingY: 5 }}>
-                                    <FormGroup sx={{color: "textColor"}}>
+                                    <FormGroup sx={{ color: "textColor" }}>
                                         Distance
                                         <FormControlLabel
                                             control={
@@ -244,7 +251,7 @@ const SearchBar = ({ data, setInput, setFilteredOptions, setNumberSelected, setS
                                         />
                                     </FormGroup>
                                 </Box>
-                                <FormGroup sx={{color: "textColor"}}>
+                                <FormGroup sx={{ color: "textColor" }}>
                                     Bedroom
                                     <FormControlLabel
                                         control={<Checkbox
@@ -257,7 +264,7 @@ const SearchBar = ({ data, setInput, setFilteredOptions, setNumberSelected, setS
                                         control={<Checkbox
                                             value="2"
                                             onChange={handleBedroom}
-                                            sx={checkboxSX}/>
+                                            sx={checkboxSX} />
                                         }
                                         label="2 beds"
                                     />
@@ -273,7 +280,7 @@ const SearchBar = ({ data, setInput, setFilteredOptions, setNumberSelected, setS
                                         control={<Checkbox
                                             value="4"
                                             onChange={handleBedroom}
-                                            sx={checkboxSX}/>
+                                            sx={checkboxSX} />
                                         }
                                         label="4 beds"
                                     />
@@ -358,7 +365,7 @@ const SearchBar = ({ data, setInput, setFilteredOptions, setNumberSelected, setS
                                             <Checkbox
                                                 value="Parking"
                                                 onChange={handleAmenity}
-                                                sx={checkboxSX}/>
+                                                sx={checkboxSX} />
                                         }
                                         label="Parking"
                                     />
@@ -367,7 +374,7 @@ const SearchBar = ({ data, setInput, setFilteredOptions, setNumberSelected, setS
                                             <Checkbox
                                                 value="Pet Friendly"
                                                 onChange={handleAmenity}
-                                                sx={checkboxSX}/>
+                                                sx={checkboxSX} />
                                         }
                                         label="Pet Friendly"
                                     />
@@ -376,7 +383,7 @@ const SearchBar = ({ data, setInput, setFilteredOptions, setNumberSelected, setS
                                             <Checkbox
                                                 value="Kitchen Appliance"
                                                 onChange={handleAmenity}
-                                                sx={checkboxSX}/>
+                                                sx={checkboxSX} />
                                         }
                                         label="Kitchen Appliances"
                                     />
@@ -411,6 +418,29 @@ const SearchBar = ({ data, setInput, setFilteredOptions, setNumberSelected, setS
                 >
                     <FontAwesomeIcon icon={faArrowUp19} />
                 </IconButton>
+
+            </Tooltip>
+            <Tooltip
+                title={"Map View"}
+                componentsProps={{
+                    tooltip: {
+                        sx: {
+                            bgcolor: theme.palette.type === "light" ? 'rgba(171, 25, 31, 0.9)' : "rgba(245, 235, 224, .8)",
+                            color: "primaryColor"
+                        },
+                    },
+                }}
+            >
+                <IconButton
+                    onClick={handleMapView}
+                    sx={styles.buttons}
+                    style={{
+                        marginTop: "10px"
+                    }}
+
+                >
+                    <MapIcon />
+                </IconButton>
             </Tooltip>
             <Menu
                 id="sorting-menu"
@@ -434,7 +464,7 @@ const SearchBar = ({ data, setInput, setFilteredOptions, setNumberSelected, setS
                 <MenuItem
                     sx={styles.menuItems}
                     onClick={() => handleSortOptionClick('High to Low')}
-                    >  
+                >
                     Price: High to Low
                 </MenuItem>
             </Menu>
