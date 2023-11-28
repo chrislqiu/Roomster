@@ -64,12 +64,12 @@ app.use("/auth", authRouter);
 app.use('/cards', cardRoutes);
 app.post('/sendManagerProfile', async (req, res) => {
   var manager = await Manager.findOne({username: req.body.username})
-
+  console.log(req.body)
   const updatedCompanyInfo = new CompanyInfo({
     name: req.body.company.name,
     address: req.body.company.address,
-    site: manager.company.companyInfo.site,
-    email: manager.company.companyInfo.email,
+    site: req.body.company.site,
+    email: req.body.company.email,
     phone: req.body.company.phone
   })
 
