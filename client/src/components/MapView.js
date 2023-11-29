@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import markerIcon from "../images/room.svg";
 import { Icon } from 'leaflet';
+import MarkerClusterGroup from '@changey/react-leaflet-markercluster';
 
 const MapComponent = ({ propertyList }) => {
   const apiKey = '9a33030d18d9c0db7023221f2cc438c3';
@@ -52,7 +53,7 @@ const MapComponent = ({ propertyList }) => {
         <p>Loading map...</p>
       ) : locations.length === 0 ? (
         <MapContainer
-          center={[40.425869,-86.908066]}
+          center={[40.425869, -86.908066]}
           zoom={15}
           style={{ width: '700px', height: '400px' }}
         >
@@ -62,36 +63,37 @@ const MapComponent = ({ propertyList }) => {
             subdomains="abcd"
             maxZoom={20}
           />
+          <MarkerClusterGroup>
 
-          {propertyList.map((location, index) => {
-            if (location.propertyInfo.lat !== undefined && location.propertyInfo.long !== undefined) {
-              console.log("Valid lat and long:", location.propertyInfo.lat, location.propertyInfo.long);
+            {propertyList.map((location, index) => {
+              if (location.propertyInfo.latitude !== undefined && location.propertyInfo.longitude !== undefined) {
+                console.log("Valid lat and long:", location.propertyInfo.latitude, location.propertyInfo.longitude);
 
-              return (
-                <Marker
-                  key={index}
-                  position={[location.propertyInfo.lat, location.propertyInfo.long]}
-                  icon={new Icon({
-                    iconUrl: markerIcon,
-                    iconSize: [50, 50],
-                    iconAnchor: [25, 50],
-                  })}
-                >
-                  <Popup>
-                    <div>
-                      <p>{propertyList[index].companyInfo.name}</p>
-                      <p>{propertyList[index].propertyInfo.address}</p>
-                    </div>
-                  </Popup>
-                </Marker>
-              );
-            } else {
-              console.warn(`Skipping Marker at index ${index} due to missing lat or long.`);
-              return null; // or any other handling you want
-            }
-          })}
+                return (
+                  <Marker
+                    key={index}
+                    position={[location.propertyInfo.latitude, location.propertyInfo.longitude]}
+                    icon={new Icon({
+                      iconUrl: markerIcon,
+                      iconSize: [50, 50],
+                      iconAnchor: [25, 50],
+                    })}
+                  >
+                    <Popup>
+                      <div>
+                        <p>{propertyList[index].companyInfo.name}</p>
+                        <p>{propertyList[index].propertyInfo.address}</p>
+                      </div>
+                    </Popup>
+                  </Marker>
 
-
+                );
+              } else {
+                console.warn(`Skipping Marker at index ${index} due to missing lat or long.`);
+                return null; // or any other handling you want
+              }
+            })}
+          </MarkerClusterGroup>
         </MapContainer>
       ) : (
         <p>No data available</p>
