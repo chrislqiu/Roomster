@@ -6,6 +6,7 @@ import MarkerClusterGroup from '@changey/react-leaflet-markercluster';
 
 const MapComponent = ({ propertyList }) => {
   const defaultPosition = [40.425869, -86.908066];
+  propertyList = Array.isArray(propertyList) ? propertyList : [propertyList];
 
   return (
     <div>
