@@ -469,6 +469,7 @@ const RenterPage = () => {
             renterInfo: {
                 name: name,
                 age: age,
+                gender: gender,
                 email: email,
                 phone: phone,
                 pfp: newImg === '' ? pfp : newImg,

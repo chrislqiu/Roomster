@@ -102,7 +102,6 @@ app.post('/sendRenterProfile', async (req, res) => {
   const decoded = jwt.verify(token, secretKey)
   const username = decoded.username
   var renter = await Renter.findOne({ username: username })
-  console.log(data)
 
 
   const updatedLivingPref = {
@@ -122,6 +121,7 @@ app.post('/sendRenterProfile', async (req, res) => {
   const updatedRenterInfo = new RenterInfo({
     name: data.name,
     age: data.age,
+    gender: data.gender,
     email: data.email,
     phone: data.phone,
     pfp: data.pfp,
@@ -129,17 +129,8 @@ app.post('/sendRenterProfile', async (req, res) => {
     favCoops: renter.renterInfo.favCoops
   })
 
-  var updatedRenter = new Renter({
-    username: renter.username,
-    password: renter.password,
-    isVerified: renter.isVerified,
-    findingCoopmates: req.body.findingCoopmates,
-    renterInfo: updatedRenterInfo,
-    coopmates: renter.coopmates
-  })
-
   const update = await Renter.findOneAndUpdate({ username: username }, { findingCoopmates: req.body.findingCoopmates, renterInfo: updatedRenterInfo, coopmates: renter.coopmates }, { new: true })
-  console.log(update)
+
   // renter = updatedRenter
 
   const coopmates = await Renter.find({ 'coopmates': { $elemMatch: { 'renterInfo.name': update.renterInfo.name, 'renterInfo.email': update.renterInfo.email } } })
