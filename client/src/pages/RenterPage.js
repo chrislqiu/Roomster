@@ -62,8 +62,25 @@ const RenterPage = () => {
         },
         age: {
             fontWeight: "600",
-            fontSize: "14pt",
+            fontSize: "11pt",
             color: "secondaryColor",
+            //margin: "0 0 10px 25px", 
+            width:"50px", 
+            height:"35px",
+            padding:"0px 0px 10px 0px",
+            //borderRadius: "5px",
+            //border: "2px solid",
+            //padding:"0 0 0 0",
+            //borderColor: "secondaryColor",
+            input: {
+                color: "textColor",
+                "&::placeholder": {
+                    opacity: 0.7,
+                    color: "textColor",
+                    },
+            },
+            "& fieldset": { border: 'none', },
+            "&:hover" : {boxShadow: theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 3px rgba(245, 235, 224, .1)",}
         },
         icon: {
             fontSize: "18pt",
@@ -446,9 +463,11 @@ const RenterPage = () => {
                         <Typography sx={styles.name} style={Object.assign(styles.boxPadding, {marginTop: "20px"})}> 
                             {name}
                         </Typography >
-                        <Typography sx={styles.age} style={{padding: "0 10px 0 20px", marginTop: "20px"}}> 
-                            {age}
-                        </Typography >
+                        <TextField placeholder="30" sx={styles.age} style={{padding: "0px 0px 0px 0px", marginTop: "20px"}}
+                            onChange={(e) => setAge(e.target.value)}
+                            > 
+                            
+                        </TextField >
                         <MaleIcon icon={faMars} sx={styles.icon} style={{marginTop: "22px"}}/>
                     </Container>
                     <Typography sx={styles.subheader}> 
