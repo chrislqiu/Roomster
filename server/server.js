@@ -221,7 +221,8 @@ app.post('/reqTour', async (req, res) => {
     username: data.username,
     propertyName: data.propertyName,
     companyName: data.companyName,
-    dateTime: data.dateTime
+    dateTime: data.dateTime,
+    status: 'Pending'
   })
 
   const oldRenter = await Renter.findOne({username: data.username})
@@ -234,6 +235,12 @@ app.post('/reqTour', async (req, res) => {
 
   updatedRenter.save()
   updatedCompany.save()
+
+  const managers = await Manager.find({'company.companyInfo.name': data.companyName})
+  managers.forEach(async function(manager) {
+    manager.company = updatedCompany
+    manager.save()
+  })
 
 })
 
@@ -257,6 +264,32 @@ app.post('/delTour', async (req, res) => {
     manager.company = updatedCompany
     manager.save()
   })
+})
+
+app.post('/updateTour', async (req, res) => {
+  const data = req.body.tour
+
+  const renterTour = await Renter.findOne({username: data.username})
+  const companyTour = await Company.findOne({"companyInfo.name": data.companyName})
+
+  const renterRM = renterTour.tours.filter(tour => !(tour.propertyName === data.propertyName && tour.username === data.username && tour.dateTime === data.dateTime))
+  const companyRM = companyTour.tours.filter(tour => !(tour.propertyName === data.propertyName && tour.username === data.username && tour.dateTime === data.dateTime))
+
+  renterRM.push(data)
+  companyRM.push(data)
+
+  const updatedRenter = await Renter.findOneAndUpdate({username: data.username}, {tours: renterRM}, {new: true})
+  const updatedCompany = await Company.findOneAndUpdate({"companyInfo.name": data.companyName}, {tours: companyRM}, {new: true})
+
+  updatedRenter.save()
+  updatedCompany.save()
+
+  const managers = await Manager.find({'company.companyInfo.name': data.companyName})
+  managers.forEach(async function(manager) {
+    manager.company = updatedCompany
+    manager.save()
+  })
+
 })
 
 app.listen(8000, () => {
