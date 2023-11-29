@@ -200,7 +200,6 @@ const AddCoopView = ({setOpen, editMode, data}) => {
     /* Add photos */
     function handleAddPhotos(event) {
         const files = event.target.files;
-
         if (files.length === 0) {
             return;
         }
@@ -215,7 +214,6 @@ const AddCoopView = ({setOpen, editMode, data}) => {
                     resolve();
                 };
             });
-
             promises.push(promise);
         }
 
