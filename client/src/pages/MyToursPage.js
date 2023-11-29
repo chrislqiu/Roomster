@@ -144,7 +144,7 @@ const MyToursPage = ({ login }) => {
 
     const handleCancelConfirmed = async(rowIndex) => {
         const delTour = rows[rowIndex]
-
+        handleClose()
         const dataToSend = {
             tour: {
                 username: username,
@@ -168,7 +168,7 @@ const MyToursPage = ({ login }) => {
             .catch(error => {
                 console.error('TOUR NOT DEL', error)
             })
-        handleClose()
+        
     }
 
     return (
