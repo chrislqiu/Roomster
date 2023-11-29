@@ -14,6 +14,7 @@ const changePasswordEmail = require("./changePasswordEmail.js")
 const adminRequestEmail = require("./adminRequestEmail.js")
 const setAdminPWEmail = require("./setAdminPWEmail.js")
 const adminDenyEmail = require("./adminDenyEmail.js")
+const crypto = require('crypto');
 const cors = require('cors');
 
 const router = express.Router();
@@ -47,13 +48,6 @@ const authorization = async (req, res, next) => {
             return res.status(401).send("Unauthorized");
         }
 
-        if (userType && userType === "admin") {
-            const adminUser = await Admin.findOne({ username: user.username });
-
-            if (!adminUser) {
-                return res.status(401).send("Unauthorized");
-            }
-        }
 
         req.user = user;
         req.userType = userType;
@@ -78,9 +72,9 @@ const authorizationAdmin = async (req, res, next) => {
             return res.sendStatus(403); // Forbidden
         }
 
-        if (req.body.username && req.body.username !== user.username) {
-            return res.status(401).send("Unauthorized");
-        }
+        // if (req.body.username && req.body.username !== user.username) {
+        //     return res.status(401).send("Unauthorized");
+        // }
 
         if (userType && userType === "admin") {
             const adminUser = await Admin.findOne({ username: user.username });
@@ -90,8 +84,6 @@ const authorizationAdmin = async (req, res, next) => {
                 return res.status(401).send("Unauthorized");
             }
         }
-
-
 
         req.user = user;
         req.userType = userType;
@@ -125,9 +117,11 @@ router.post("/check-owner", authorization, async (req, res) => {
             })
                 .then((resultProperty) => {
                     if (!resultProperty) {
+                        console.log("no match")
                         return res.send({ match: false });
                     }
                     const match = result.company.companyInfo.name === resultProperty.companyInfo.name;
+                    console.log(match)
                     res.send({ match: match });
                 })
                 .catch((err) => {
@@ -601,9 +595,9 @@ router.post("/pw-reset/:token", async (req, res) => {
         const salt = await bcrypt.genSalt();
         const hashedNewPassword = await bcrypt.hash(req.body.newPassword, salt);
 
-        if(userType === "renter"){
+        if (userType === "renter") {
             await Renter.updateOne({ username: decoded.username }, { password: hashedNewPassword });
-        } else if (userType === "manager"){
+        } else if (userType === "manager") {
             await Manager.updateOne({ username: decoded.username }, { password: hashedNewPassword });
         }
 
@@ -807,6 +801,40 @@ router.post("/verify-property", authorizationAdmin, async (req, res) => {
     }
 })
 
+router.post("/accept-feature", authorizationAdmin, async (req, res) => {
+    try {
+        const propertyId = req.body.id
+        console.log(propertyId);
+        const updatedProperty = await Property.findOneAndUpdate(
+            { _id: propertyId },
+            { 'propertyInfo.featureRequest': false, 'propertyInfo.featured': true },
+            { new: true }
+        );
+        return res.status(200).send("Property feature accepted");
+
+    } catch (err) {
+        console.log(err)
+        res.status(500).send("Error accepting feature");
+    }
+})
+
+router.post("/deny-feature", authorizationAdmin, async (req, res) => {
+    try {
+        const propertyId = req.body.id
+        console.log(propertyId);
+        const updatedProperty = await Property.findOneAndUpdate(
+            { _id: propertyId },
+            { 'propertyInfo.featureRequest': false, 'propertyInfo.featured': false },
+            { new: true }
+        );
+        return res.status(200).send("Property feature accepted");
+
+    } catch (err) {
+        console.log(err)
+        res.status(500).send("Error accepting feature");
+    }
+})
+
 router.post("/property-verification", async (req, res) => {
     try {
         const propertyId = req.body.id
@@ -828,9 +856,50 @@ router.post("/property-verification", async (req, res) => {
 })
 
 
+router.post("/admin/deleteUser", authorizationAdmin, async (req, res) => {
+    try {
+        const username = req.body.username;
+        // console.log(username);
+        await Manager.deleteOne(
+            { username: username },)
+        await Renter.deleteOne(
+            { username: username },)
+        return res.status(200).send("User deleted");
 
+    } catch (err) {
+        console.log(err)
+        res.status(500).send("Error deleting user");
+    }
+});
 
-router.post("/admin/")
+router.post("/admin/resetPassword", async (req, res) => {
+    try {
+        const username = req.body.username;
+
+        const randomPassword = crypto.randomBytes(4).toString('hex');
+        console.log(username)
+
+        const salt = await bcrypt.genSalt();
+        const hashedNewPassword = await bcrypt.hash(randomPassword, salt);
+        // Update Manager's password
+        await Manager.findOneAndUpdate(
+            { username: username },
+            { password: hashedNewPassword }
+        );
+
+        // Update Renter's password
+        await Renter.findOneAndUpdate(
+            { username: username },
+            { password: hashedNewPassword }
+        );
+        
+        return res.status(200).json({message: `Password reset for ${username}. New password: ${randomPassword}`});
+
+    } catch (err) {
+        console.log(err)
+        res.status(500).send("Error deleting user");
+    }
+});
 
 
 

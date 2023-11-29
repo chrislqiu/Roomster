@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const propertyInfo = new Schema({
     image: {
-        type: String,
+        type: [String],
         required: false
     },
     propertyName: {
@@ -27,8 +27,8 @@ const propertyInfo = new Schema({
         required: false
     },
     utilities: {
-        type: Map,
-        of: Boolean
+        type: [String],
+        required: false
     },
     featured: {
         type: Boolean,
@@ -37,6 +37,10 @@ const propertyInfo = new Schema({
     saves: {
         type: Number,
         default: 0
+    },
+    featureRequest: {
+        type: Boolean,
+        default: false
     }
 });
 

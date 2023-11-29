@@ -28,6 +28,9 @@ import AdminPage from "./pages/AdminPage";
 import ResetPWPage from "./pages/ResetPWPage"
 import SetAdminPWPage from "./pages/SetAdminPWPage";
 import AdminDenyPage from "./pages/AdminDenyPage";
+import AdminFeaturePage from "./pages/AdminFeaturePage";
+import AdminFeatureManagePage from "./pages/AdminFeatureManagePage";
+import AdminUserPage from "./pages/AdminUserPage";
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -37,7 +40,7 @@ import DarkMode from '@mui/icons-material/DarkMode';
 import LightMode from '@mui/icons-material/LightMode';
 import TourRequestsPage from "./pages/TourRequestsPage";
 
-const font =  "'Lato', sans-serif";
+const font = "'Lato', sans-serif";
 const lightTheme = {
   components: {
     MuiFormControlLabel: {
@@ -71,12 +74,12 @@ const lightTheme = {
     }
   },
   palette: {
-      type: "light",
-      primaryColor: '#F6EBE1',
-      secondaryColor: '#AB191F',
-      textColor: '#000000',
-      hoverColor: "#F6EBE1",
-      textFieldBorder: "black",
+    type: "light",
+    primaryColor: '#F6EBE1',
+    secondaryColor: '#AB191F',
+    textColor: '#000000',
+    hoverColor: "#F6EBE1",
+    textFieldBorder: "black",
   },
   typography: {
     color: "#000000",
@@ -84,21 +87,14 @@ const lightTheme = {
   }
 }
 const darkTheme = {
-  overrides: {
-    MuiInput: {
-      input: {
-        '&::placeholder': {
-          color: "#F6EBE1",
-          opacity: "1",
-        }
-      }
-    }
-  },
   components: {
-    
     MuiFormControlLabel: {
       styleOverrides: {
         label: {
+          "&.Mui-disabled": {
+            color: "#F6EBE1"
+          },
+          
           color: "#F6EBE1"
         }
       },
@@ -127,15 +123,15 @@ const darkTheme = {
     }
   },
   palette: {
-      type: "dark",
-      primaryColor: '#18100e',
-      secondaryColor: '#962c1e',
-      textColor: '#F6EBE1',
-      hoverColor: "#F6EBE1",
-      textFieldBorder: "#962c1e",
+    type: "dark",
+    primaryColor: '#18100e',
+    secondaryColor: '#962c1e',
+    textColor: '#F6EBE1',
+    hoverColor: "#F6EBE1",
+    textFieldBorder: "#962c1e",
   },
   typography: {
-      fontFamily: font,
+    fontFamily: font,
   }
 }
 
@@ -205,9 +201,8 @@ class App extends React.Component {
       if (response.ok) {
         this.setState({ isAuthenticatedAdmin: true });
         const data = await response.json();
-        const userType = data.userType;
-        this.setState({ userType: userType });
-        console.log("user type: " + userType)
+        // this.setState({ userType: "admin" });
+        console.log("user type: admin")
       } else {
         console.log('Authentication check failed');
       }
@@ -239,22 +234,27 @@ class App extends React.Component {
   render() {
     var darkMode
     if (localStorage.getItem("darkMode") != null) {
-        localStorage.getItem("darkMode") === "light" ? darkMode = false : darkMode = true
+      localStorage.getItem("darkMode") === "light" ? darkMode = false : darkMode = true
     } else {
-        darkMode = this.state.darkMode;
+      darkMode = this.state.darkMode;
     }
-    
+
     const { isAuthenticated, isAuthenticatedAdmin, userType } = this.state;
     let theme = darkMode ? createTheme(darkTheme) : createTheme(lightTheme);
     //const theme = useTheme();
     const pathname = window.location.pathname
-    const showAppBar = pathname !== "/Admin" || isAuthenticatedAdmin;
-    const showAppBarAdmin = pathname === "/Admin" && isAuthenticatedAdmin;
-    const showAppBarMain = pathname !== "/Admin" && isAuthenticated;
+    const showAppBar = !pathname.startsWith("/Admin") || isAuthenticatedAdmin;
+
+    const showAppBarAdmin = pathname.startsWith("/Admin") && isAuthenticatedAdmin;
+    const showAppBarMain = !pathname.startsWith("/Admin") && isAuthenticated;
+
+    const updatedUser = showAppBarAdmin ? "admin" : userType;
+
+
     const faviconPath = "favicon.ico";
 
     const handleDarkMode = () => {
-      this.setState({darkMode: !this.state.darkMode})
+      this.setState({ darkMode: !this.state.darkMode })
       if (darkMode === false) {
         localStorage.setItem("darkMode", "dark");
       } else {
@@ -263,7 +263,7 @@ class App extends React.Component {
     }
 
     return (
-      
+
       <HelmetProvider>
         <Helmet>
           <title>Roomster</title>
@@ -278,44 +278,46 @@ class App extends React.Component {
               body: { backgroundColor: theme.palette.type === "light" ? "#F6EBE1" : "#18100e", zIndex: "-1", },
             }}
           />
-          
+
           <div style={{ zIndex: "0" }}>
-              <img src={darkMode ? theredthingDarkMode : theredthing}
+            <img src={darkMode ? theredthingDarkMode : theredthing}
               style={{
-                  position: "absolute",  
-                  width: "100%",
-              }}/>  
+                position: "absolute",
+                width: "100%",
+              }} />
           </div>
-            
+
           <BrowserRouter>
             {
               // if login is true (for now), app bar with login buttons will show
               // if login is false, appbar only has login/signup button
             }
-            <IconButton 
+            <IconButton
               onClick={handleDarkMode}
-              sx={{position: "absolute", 
+              sx={{
+                position: "absolute",
                 zIndex: 5,
                 textALign: "right",
                 margin: "15px 0 0 1075px",
-                color:'primaryColor', 
-                ":hover": 
-                {backgroundColor:'primaryColor', 
-                color: 'secondaryColor'}
+                color: 'primaryColor',
+                ":hover":
+                {
+                  backgroundColor: 'primaryColor',
+                  color: 'secondaryColor'
+                }
               }}
-              >
-              {darkMode ? 
-              <LightMode/>
-              :
-              <DarkMode/>
+            >
+              {darkMode ?
+                <LightMode />
+                :
+                <DarkMode />
               }
             </IconButton>
 
-            {showAppBar ? <RoomsterAppBar login={showAppBarAdmin || showAppBarMain} userType={userType}/> : <div style={{ height: '64px' }}></div>}
-            
+            {showAppBar ? <RoomsterAppBar login={showAppBarAdmin || showAppBarMain} userType={updatedUser} /> : <div style={{ height: '64px' }}></div>}
             <div style={{ textAlign: "center", zIndex: "3", position: "relative", marginBottom: "50px" }}>
               <Link href="/Home">
-                  <img className="logo" src={darkMode ? logoDarkMode : logo} style={{width: '35%', zIndex: "0",}}/>
+                <img className="logo" src={darkMode ? logoDarkMode : logo} style={{ width: '35%', zIndex: "0", }} />
               </Link>
             </div>
 
@@ -327,8 +329,8 @@ class App extends React.Component {
               <Route path="/MProfile" element={<PropertyManagerPage />} />
               <Route path="/FavCoops" element={<FavCoopsPage login={isAuthenticated} />} />
               <Route path="/MyCoops" element={<MyCoopsPage login={isAuthenticated} />} />
-              <Route path="MyTours" element={<MyToursPage login={isAuthenticated}/>}/>
-              <Route path="TourRequests" element={<TourRequestsPage login={isAuthenticated}/>}/>
+              <Route path="MyTours" element={<MyToursPage login={isAuthenticated} />} />
+              <Route path="TourRequests" element={<TourRequestsPage login={isAuthenticated} />} />
               <Route path="/Login" element={<LoginPage />} />
               <Route path="/RCreate" element={<RenterCreateAccountView />} />
               <Route path="/MCreate" element={<ManagerCreateAccountView />} />
@@ -339,20 +341,24 @@ class App extends React.Component {
               <Route path="/Coopmates" element={<CoopmatesPage />} />
               <Route path="/CompanyPage" element={<PropertyManagerPublicPage />} />
               <Route path="/Admin" element={<AdminPage />} />
+              <Route path="/Admin/Featured" element={<AdminFeaturePage />} />
+              <Route path="/Admin/FeaturedManage" element={<AdminFeatureManagePage />} />
+              <Route path="/Admin/Users" element={<AdminUserPage />} />
               <Route path="/ResetPW/:token" element={<ResetPWPage />} />
+              <Route path="/Property/:token" element={<MainPage login={isAuthenticated} />} />
               <Route path="/SetAdminPW/:token" element={<SetAdminPWPage />} />
             </Routes>
-            
+
           </BrowserRouter>
 
-          
-        </ThemeProvider>
-        
-        
-          
 
-          
-          {/*<body style={styles.background}>
+        </ThemeProvider>
+
+
+
+
+
+        {/*<body style={styles.background}>
             <div style={{ zIndex: "0" }}>
               <img className="theredthing" src={theredthing} style={styles.theredthing}></img>
     </div> 
@@ -361,9 +367,8 @@ class App extends React.Component {
                 // if login is true (for now), app bar with login buttons will show
                 // if login is false, appbar only has login/signup button
               }
-              <Layout>
-              {showAppBar ? <RoomsterAppBar login={showAppBarAdmin || showAppBarMain} userType={userType}/> : <div style={{ height: '64px' }}></div>}
-              {/*
+
+              {showAppBar ? <RoomsterAppBar login={showAppBarAdmin || showAppBarMain} userType={updatedUser}/> : <div style={{ height: '64px' }}></div>}
               <div style={{ textAlign: "center", zIndex: "3", position: "relative", marginBottom: "50px" }}>
                 <Link href="/Home">
                   <img className="logo" src={logo} style={styles.logo}></img>
@@ -389,14 +394,18 @@ class App extends React.Component {
                 <Route path="/Coopmates" element={<CoopmatesPage />} />
                 <Route path="/CompanyPage" element={<PropertyManagerPublicPage />} />
                 <Route path="/Admin" element={<AdminPage />} />
+                <Route path="/Admin/Featured" element={<AdminFeaturePage />} />
+                <Route path="/Admin/FeaturedManage" element={<AdminFeatureManagePage />} />
                 <Route path="/ResetPW/:token" element={<ResetPWPage />} />
                 <Route path="/SetAdminPW/:token" element={<SetAdminPWPage />} />
+                <Route path="/Property/:token" element={<MainPage login={isAuthenticated}  />} />
+                <Route path="/Admin/Users" element={<AdminUserPage />} />
               </Routes>
               </Layout>
             </BrowserRouter>
           
             */}
-      
+
       </HelmetProvider >
     );
   }

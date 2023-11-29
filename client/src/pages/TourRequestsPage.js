@@ -4,6 +4,7 @@ import CheckCircleOutlineOutlinedIcon from '@mui/icons-material/CheckCircleOutli
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 import {useTheme } from '@mui/material/styles';
 import ConfirmCancelTourView from '../components/ConfirmCancelTourView';
+import { useEffect } from 'react';
 
 
 const TourRequestsPage = ({ login }) => {
@@ -97,22 +98,52 @@ const TourRequestsPage = ({ login }) => {
     function pullData(date, time, property, user, status) {
         return { date, time, property, user, status };
     }
-    
-    /* Pull data from DB, dummy data for now. Note that properties should be specific to company */
-    const [rows, setRows] = React.useState(() => [
-        pullData('10/21/23', '3:00PM', 'Studio A', 'Chicken A', 'APPROVED'),
-        pullData('01/02/24', '11:00AM', 'Penthouse', 'Duck B', 'APPROVED'),
-        pullData('10/22/23', '12:00PM', 'Studio B', 'Chicken B', 'PENDING'),
-        pullData('10/23/23', '1:00PM', 'Studio C', 'Chicken C', 'DECLINED'),
-        pullData('10/23/23', '10:00AM', 'Studio A', 'Cow A', 'PENDING'),
-        pullData('10/25/23', '11:00AM', 'Penthouse', 'Cow B', 'APPROVED'),
-        pullData('10/21/23', '3:00PM', 'Studio A', 'Pig A', 'APPROVED'),
-        pullData('10/22/23', '12:00PM', 'Studio B', 'Pig B', 'PENDING'),
-        pullData('10/23/23', '1:00PM', 'Studio C', 'Sheep C', 'DECLINED'),
-        pullData('10/23/23', '10:00AM', 'Studio A', 'Duck A', 'PENDING'),
-        pullData('10/25/23', '11:00AM', 'Penthouse', 'Duck B', 'APPROVED'),
-    ]);
 
+    const [tours, setTours] = React.useState([])
+
+    fetch('http://localhost:8000/auth/current-user', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        credentials: 'include'
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Handle the JSON response
+            setTours(data.user.company.tours)
+        })
+        .catch(error => {
+            // Handle errors
+            console.error('Fetch error:', error);
+        });
+        console.log(tours)
+    /* Pull data from DB, dummy data for now. Note that properties should be specific to company */
+    const [rows, setRows] = React.useState(() => []);
+
+    useEffect(() => {
+        // Assuming tours is an array of structures
+
+        // Function to parse dateTime and separate date and time
+        const parseDateTime = (dateTime) => {
+            const [date, time] = dateTime.split(', '); // Split at the comma and space
+            return { date, time };
+        };
+
+        // Loop through tours and create rows using modified pullData function
+        const newRows = tours.map(tour => {
+            const { date, time } = parseDateTime(tour.dateTime);
+            return pullData(date, time, tour.propertyName, tour.username, tour.status);
+        });
+
+        // Update the state with the new rows
+        setRows(newRows);
+    }, [tours]);
 
     return (
         <Grid container spacing={0} direction="column" alignItems="center" justify="center">

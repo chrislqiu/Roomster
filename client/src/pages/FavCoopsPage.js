@@ -57,15 +57,22 @@ const FavCoopPage = ({ login }) => {
         <Container sx={{ width: '100%' }}>
             <Box sx={{ marginTop: 3 }} style={styles.feed}>
                 {loading ? ( // Display loading spinner while loading
-                    <div>
+                    <div style={styles.feed}>
                     {
                         /*
                          * TODO:
                          * add a full screen of placeholders
                          */
                     }
-                    
                         <CardPlaceholder isCoopmateCard={false}/>
+                        <CardPlaceholder isCoopmateCard={false}/>
+                        <CardPlaceholder isCoopmateCard={false}/>
+                        <CardPlaceholder isCoopmateCard={false}/>
+                        <CardPlaceholder isCoopmateCard={false}/>
+                        <CardPlaceholder isCoopmateCard={false}/>
+                        <CardPlaceholder isCoopmateCard={false}/>
+                        <CardPlaceholder isCoopmateCard={false}/>
+                        
                     </div> 
                 ) : (
                     favCoopsArr.length > 0 ? (

@@ -69,18 +69,8 @@ router.get('/add-card', async (req, res) => {
         cost: 1899,
         sqft: 0,
         distance: 0.4,
-        amenities: ["gym","pool"],
-        utilities: {
-            electricity: false,
-            water: false,
-            gas: false,
-            trash: true,
-            sewage: true,
-            internet: true,
-            laundry: true,
-            parking: false,
-            furnished: true
-        },
+        amenities: ["Gym","Pool"],
+        utilities: ["Trash", "Sewage", "Internet"],
         featured: false,
         saves: 0
     });
@@ -141,6 +131,8 @@ router.post('/getCompanyInfo', (req, res) => {
         console.log(err);
     })
 })
+
+
 
 router.post('/sendCompanyName', (req, res) => {
     companyName = req.body.companyName;
@@ -258,6 +250,58 @@ router.get('/featured-cards', (req, res) => {
         console.log(err);
     });
 });
+
+router.post("/get-featured", async (req, res) => {
+    try {
+        const propertyId = req.body.id
+        // console.log("id:" + propertyId);
+        const property = await Property.findOne(
+            { _id: propertyId },
+        );
+        if (property && property.propertyInfo.featured) {
+            return res.status(200).send("Property featured");
+        } else {
+            return res.status(401).send("Property not featured");
+
+        }
+
+    } catch (err) {
+        console.log(err)
+        res.status(500).send("Error finding property");
+    }
+})
+
+router.post("/request-featured", async (req, res) => {
+    try {
+        const propertyId = req.body.id
+        // console.log("id:" + propertyId);
+        const property = await Property.findOne(
+            { _id: propertyId },
+        );
+        if (property && !property.propertyInfo.featureRequest) {
+            property.propertyInfo.featureRequest = true;
+            await property.save();
+            return res.status(200).send("Property feature request sent");
+        } else {
+            return res.status(401).send("Property already featured");
+
+        }
+
+    } catch (err) {
+        console.log(err)
+        res.status(500).send("Error finding property");
+    }
+})
+
+router.get("/get-feature-request", async (req, res) => {
+    Property.find({'propertyInfo.featureRequest': true})
+    .then((result) => {
+        res.send(result);
+    })
+    .catch((err) => {
+        console.log(err);
+    });
+})
 
 // Route to get my coops cards
 router.post('/my-coops-cards', async (req, res) => {
