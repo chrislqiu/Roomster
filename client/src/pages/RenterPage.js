@@ -14,6 +14,7 @@ import TransgenderIcon from '@mui/icons-material/Transgender';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMars } from '@fortawesome/free-solid-svg-icons'
 import { createTheme, ThemeProvider, useTheme } from '@mui/material/styles';
+import Female from "@mui/icons-material/Female";
 
 const RenterPage = () => {
     const theme = useTheme();
@@ -85,6 +86,11 @@ const RenterPage = () => {
         icon: {
             fontSize: "18pt",
             color: "secondaryColor",
+        },
+        gender: {
+            fontSize: "18pt",
+            color: "primaryColor",
+            backgroundColor: "secondaryColor",
         },
         subheader: {
             fontWeight: "600", 
@@ -208,6 +214,7 @@ const RenterPage = () => {
     const [toggleOn, setToggleOn] = React.useState(false);
     const [name, setName] = React.useState('')
     const [age, setAge] = React.useState('')
+    const [gender, setGender] = React.useState('')
     const [hasPet, setHasPet] = React.useState(false);
     const [doesSmoke, setDoesSmoke] = React.useState(false);
     const [open, setOpen] = React.useState(false);
@@ -228,6 +235,7 @@ const RenterPage = () => {
     const [data, setData] = React.useState('')
     var [pfp, setPfp] = useState('')
     const [defAge, setDefAge] = useState('')
+    const [defGender, setDefGender] = useState('Female')
     const [defEmail, setDefEmail] = useState('')
     const [defPhone, setDefPhone] = useState('')
     const [defToggle, setDefToggle] = useState()
@@ -238,6 +246,12 @@ const RenterPage = () => {
     const [defGuest, setDefGuest] = useState('')
     const [defFrom, setDefFrom] = useState('')
     const [defTo, setDefTo] = useState('')
+
+    //Setting gender
+    const [openGender, setOpenGender] = React.useState(false)
+    const [isMale, setMale] = React.useState(false)
+    const [isFemale, setFemale] = React.useState(false)
+    const [isTransgender, setTransgender] = React.useState(false)
 
     useEffect(() => {
         fetch('http://localhost:8000/auth/current-user', {
@@ -262,6 +276,8 @@ const RenterPage = () => {
                 setName(data.user.renterInfo.name)
                 //setAge(data.user.renterInfo.age)
                 setDefAge(data.user.renterInfo.age)
+                setGender(data.user.renterInfo.gender)
+                handleSetDefGender(data.user.renterInfo.gender)
                 setDefEmail(data.user.renterInfo.email)
                 setDefPhone(data.user.renterInfo.phone)
                 setDefPet(data.user.renterInfo.livingPreferences.pets)
@@ -331,6 +347,43 @@ const RenterPage = () => {
         }
     }, [data]);
 
+    const handleSetDefGender = (gender) => {
+        console.log('in helper')
+        console.log("male: " + isMale)
+        console.log("female:" + isFemale)
+        console.log("transgender:" + isTransgender)
+
+        console.log("gender: " + gender)
+        console.log("defGender: " + defGender)
+        if (/*defGender === 'Male' || */gender === 'Male' || !gender) {
+            setMale(true)
+            setFemale(false)
+            setTransgender(false)
+            //setDefGender('Male')
+            setGender('Male')
+        } else if (/*defGender === 'Female' ||*/ gender === 'Female') {
+            setFemale(true)
+            setMale(false)
+            setTransgender(false)
+            //setDefGender('Female')
+            setGender('Female')
+        } else if (/*defGender === 'Transgender'|| */gender === 'Transgender') {
+            setTransgender(true)
+            setMale(false)
+            setFemale(false)
+            //setDefGender('Transgender')
+            setGender('Transgender')
+        }
+    }
+
+    const handleOpenGender = () => {
+        setOpenGender(true)
+    }
+
+    const handleCloseGender = () => {
+        setOpenGender(false)
+    }
+
     const handleSleepFrom = (event) => {
         setSleepFrom(event.target.value);
     };
@@ -359,6 +412,7 @@ const RenterPage = () => {
             renterInfo: {
                 name: name,
                 age: age,
+                gender: gender,
                 email: email,
                 phone: phone,
                 pfp: newImg === '' ? pfp : newImg,
@@ -499,7 +553,7 @@ const RenterPage = () => {
                         <Typography sx={styles.name} style={Object.assign(styles.boxPadding, {marginTop: "20px"})}> 
                             {name}
                         </Typography >
-                        <Tooltip title="Change Age"
+                        <Tooltip title="Change Age" disabled={disableButton}
                         componentsProps={{
                             tooltip: {
                                 sx: {
@@ -510,10 +564,23 @@ const RenterPage = () => {
                         }}>
                             <TextField placeholder={defAge} sx={styles.age} style={{padding: "0px 0px 0px 0px", marginTop: "20px"}}
                                 onChange={(e) => setAge(e.target.value)}
-                                disabled={disableButton}
                             /> 
                         </Tooltip>
-                        <MaleIcon icon={faMars} sx={styles.icon} style={{marginTop: "22px"}}/>
+                        <Box sx={{ flexGrow: 0, }}>
+                            <Tooltip title="Change Gender" onClick={handleOpenGender}
+                            componentsProps={{
+                                tooltip: {
+                                    sx: {
+                                        bgcolor: theme.palette.type === "light" ? 'rgba(171, 25, 31, 0.9)' : "rgba(245, 235, 224, .8)",
+                                        color: "primaryColor"
+                                    },
+                                },
+                            }}>
+                                {isMale && <IconButton sx={{ p: 0, }} disabled={disableButton}><MaleIcon icon={faMars} sx={styles.icon} style={{marginTop: "22px"}}/> </IconButton>}
+                                {isFemale && <IconButton sx={{ p: 0, }} disabled={disableButton}><FemaleIcon sx={styles.icon} style={{marginTop: "22px"}}/></IconButton>}
+                                {isTransgender && <IconButton sx={{ p: 0, }} disabled={disableButton}><TransgenderIcon  sx={styles.icon} style={{marginTop: "22px"}}/></IconButton>}
+                            </Tooltip>
+                        </Box>
                     </Container>
                     <Typography sx={styles.subheader}> 
                         {"Contact info"}
@@ -889,6 +956,75 @@ const RenterPage = () => {
                 <DialogActions>
 
                 </DialogActions>
+            </Dialog>
+            <Dialog
+                open={openGender}
+                onClose={handleCloseGender}
+                sx={{
+                    "& .MuiDialog-container": {
+                        "& .MuiPaper-root": {
+                            width: "600px",
+                            height: "200px",
+                            backgroundColor: "primaryColor",
+                            boxShadow: theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 3px rgba(245, 235, 224, .1)", 
+                        },
+                    },
+                }}
+
+            ><DialogContent>
+                <Typography sx={{fontWeight: "600", fontSize: "15pt", color: "secondaryColor", textAlign:"center", margin:"10px 0 -10px 0"}}> 
+                        {"SELECT YOUR GENDER"}
+                    </Typography >
+                    <Container sx={{ display: "inline-flex", marginTop: "50px", justifyContent:"center" }}>
+                        <Tooltip title="Male" onClick={() => {handleSetDefGender('Male'); setGender('Male'); setDefGender('Male'); handleCloseGender() }}
+                        componentsProps={{
+                            tooltip: {
+                                sx: {
+                                    bgcolor: theme.palette.type === "light" ? 'rgba(171, 25, 31, 0.9)' : "rgba(245, 235, 224, .8)",
+                                    color: "primaryColor"
+                                },
+                            },
+                        }}>
+                            <IconButton sx={{ p: 0, marginRight: "50px", }} >
+                                <Avatar alt="male" sx={styles.gender} style={{ transform: `scale(1.90, 1.90)` }}>
+                                    <MaleIcon/>
+                                </Avatar>
+                            </IconButton>
+                        </Tooltip>
+                        <Tooltip title="Female" onClick={() => { handleSetDefGender('Female'); setGender('Female'); setDefGender('Female'); handleCloseGender() }}
+                        componentsProps={{
+                            tooltip: {
+                                sx: {
+                                    bgcolor: theme.palette.type === "light" ? 'rgba(171, 25, 31, 0.9)' : "rgba(245, 235, 224, .8)",
+                                    color: "primaryColor"
+                                },
+                            },
+                        }}>
+                            <IconButton sx={{ p: 0, marginRight: "50px", }} >
+                                <Avatar alt="female" sx={styles.gender} style={{ transform: `scale(1.90, 1.90)` }}>
+                                    <FemaleIcon/>
+                                </Avatar>
+                            </IconButton>
+                        </Tooltip>
+                        <Tooltip title="Transgender" onClick={() => { handleSetDefGender('Transgender'); setGender('Transgender'); setDefGender('Transgender'); handleCloseGender()}}
+                        componentsProps={{
+                            tooltip: {
+                                sx: {
+                                    bgcolor: theme.palette.type === "light" ? 'rgba(171, 25, 31, 0.9)' : "rgba(245, 235, 224, .8)",
+                                    color: "primaryColor"
+                                },
+                            },
+                        }}>
+                            <IconButton sx={{ p: 0, marginRight: "50px", }} >
+                                <Avatar alt="female" sx={styles.gender} style={{ transform: `scale(1.90, 1.90)` }}>
+                                    <TransgenderIcon/>
+                                </Avatar>
+                            </IconButton>
+                        </Tooltip>
+                    </Container>
+
+                </DialogContent>
+
             </Dialog>
         </Grid>
 
