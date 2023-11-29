@@ -85,6 +85,11 @@ const MainPage = ({ login }) => {
             maxWidth: "1200px",
             flexWrap: "wrap",
         },
+        mapViewContainer: {
+            display: "flex",
+            justifyContent: "center",
+            marginTop: "20px",
+        }
 
     }
     return (
@@ -123,7 +128,9 @@ const MainPage = ({ login }) => {
                         </Box>
                     </React.Fragment>
                 ) : (
-                    <MapView propertyList={filteredProperties}/>
+                    <Box sx={styles.mapViewContainer}>
+                        <MapView propertyList={filteredProperties} />
+                    </Box>
                 )
             }
         </Container>

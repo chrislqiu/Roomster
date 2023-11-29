@@ -612,7 +612,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
                          */
                     }
                     <Box width='600px' style={{ marginTop: "25px", marginRight: "-25px" }} >
-                        {mapOpen && <MapView address={address}/>}
+                        {mapOpen && <MapView address={address} />}
                     </Box>
                     <Stack direction={{ '400px': "column", md: "row", lg: "row", xl: "row" }} spacing={5} sx={{ marginTop: 2, p: 1 }} >
                         {/* Basic Property Info */}
@@ -760,7 +760,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
                         </Box>
 
                     </Stack>
-                    
+
                 </DialogContent>
 
                 <DialogActions>
@@ -828,7 +828,8 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
                                 <div sx={{ display: "flex", width: "100%" }}>
                                     <Tooltip title="Delete Property">
                                         <IconButton onClick={handleDeletePropertyAdmin}>
-                                            <DeleteOutlineIcon sx={{ color: "secondaryColor" }} />                                        </IconButton>
+                                            <DeleteOutlineIcon sx={{ color: "secondaryColor" }} />
+                                        </IconButton>
                                     </Tooltip>
                                     <Tooltip title="Verify Property">
                                         <IconButton onClick={handleVerifyProperty}>

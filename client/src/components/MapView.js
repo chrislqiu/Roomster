@@ -1,59 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import markerIcon from "../images/room.svg";
 import { Icon } from 'leaflet';
 import MarkerClusterGroup from '@changey/react-leaflet-markercluster';
 
 const MapComponent = ({ propertyList }) => {
-  const apiKey = '9a33030d18d9c0db7023221f2cc438c3';
-
-  const [loading, setLoading] = useState(false);
-  const [locations, setLocations] = useState([]);
-
-  // useEffect(() => {
-  //   const fetchDataForProperties = async () => {
-  //     const locationsArray = [];
-
-  //     for (const property of propertyList) {
-  //       const result = await fetchData(property.propertyInfo.address);
-  //       if (result) {
-  //         console.log("fetch: " + result.latitude)
-  //         locationsArray.push(result);
-  //       }
-  //     }
-
-  //     setLocations(locationsArray);
-  //     setLoading(false);
-  //   };
-
-  //   fetchDataForProperties();
-  // }, [propertyList]);
-
-  // const fetchData = async (propertyAddress) => {
-  //   try {
-  //     const response = await fetch(
-  //       `http://api.positionstack.com/v1/forward?access_key=${apiKey}&query=${encodeURIComponent(
-  //         propertyAddress
-  //       )}`
-  //     );
-  //     const result = await response.json();
-  //     return {
-  //       latitude: result.data[0].latitude,
-  //       longitude: result.data[0].longitude,
-  //     };
-  //   } catch (error) {
-  //     console.error("Error fetching location", error);
-  //     return null;
-  //   }
-  // };
+  const defaultPosition = [40.425869, -86.908066];
 
   return (
     <div>
-      {loading ? (
-        <p>Loading map...</p>
-      ) : locations.length === 0 ? (
+      {propertyList.length > 0 ? (
         <MapContainer
-          center={[40.425869, -86.908066]}
+          center={defaultPosition}
           zoom={15}
           style={{ width: '700px', height: '400px' }}
         >
@@ -64,15 +22,13 @@ const MapComponent = ({ propertyList }) => {
             maxZoom={20}
           />
           <MarkerClusterGroup>
-
             {propertyList.map((location, index) => {
-              if (location.propertyInfo.latitude !== undefined && location.propertyInfo.longitude !== undefined) {
-                console.log("Valid lat and long:", location.propertyInfo.latitude, location.propertyInfo.longitude);
-
+              const { latitude, longitude } = location.propertyInfo;
+              if (latitude !== undefined && longitude !== undefined) {
                 return (
                   <Marker
                     key={index}
-                    position={[location.propertyInfo.latitude, location.propertyInfo.longitude]}
+                    position={[latitude, longitude]}
                     icon={new Icon({
                       iconUrl: markerIcon,
                       iconSize: [50, 50],
@@ -86,11 +42,9 @@ const MapComponent = ({ propertyList }) => {
                       </div>
                     </Popup>
                   </Marker>
-
                 );
               } else {
-                console.warn(`Skipping Marker at index ${index} due to missing lat or long.`);
-                return null; // or any other handling you want
+                return null;
               }
             })}
           </MarkerClusterGroup>
