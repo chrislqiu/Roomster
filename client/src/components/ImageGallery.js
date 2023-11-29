@@ -20,6 +20,8 @@ const ImageGallery = ({ images }) => {
         });
     };
 
+    console.log(images)
+
     return (
         <Grid container>
             <Grid item xs={12}>

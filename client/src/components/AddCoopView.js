@@ -45,15 +45,15 @@ const AddCoopView = ({setOpen, editMode, data}) => {
     const [includeTrash, setIncludeTrash] = React.useState(false)
     const [includeSewage, setIncludeSewage] = React.useState(false)
     const [includeInternet, setInternet] = React.useState(false)
-    const presetData = [
-        ['water', false],
-        ['electricity', false],
-        ['gas', false],
-        ['trash', false],
-        ['sewage', false],
-        ['internet', false]
-    ];
-    const [utilities, setUtilities] = useState(new Map(presetData));
+    // const presetData = [
+    //     ['water', false],
+    //     ['electricity', false],
+    //     ['gas', false],
+    //     ['trash', false],
+    //     ['sewage', false],
+    //     ['internet', false]
+    // ];
+    const [utilities, setUtilities] = React.useState([])
 
     /* AUTOFILL DATA */
     useEffect(() => {
@@ -82,6 +82,25 @@ const AddCoopView = ({setOpen, editMode, data}) => {
             }
             if (data.amenities.includes("Parking")) {
                 setHasParking(true)
+            }
+            setUtilities(data.utilities)
+            if (data.utilities.includes("Electricity")) {
+                setIncludeElec(true)
+            }
+            if (data.utilities.includes("Water")) {
+                setIncludeWater(true)
+            }
+            if (data.utilities.includes("Gas")) {
+                setIncludeGas(true)
+            }
+            if (data.utilities.includes("Trash")) {
+                setIncludeTrash(true)
+            }
+            if (data.amenities.includes("Sewage")) {
+                setIncludeSewage(true)
+            }
+            if (data.amenities.includes("Internet")) {
+                setInternet(true)
             }
         }
     }, [data]);
@@ -125,8 +144,14 @@ const AddCoopView = ({setOpen, editMode, data}) => {
         }
     };
 
-    const handleUtilChange = (key, value) => {
-        setUtilities((prevUtilities) => new Map(prevUtilities.set(key, value)));
+    const handleUtilChange = (utils) => {
+        if (utilities.includes(utils)) {
+            // If the amenity is already in the array, remove it
+            setUtilities(utilities.filter((item) => item !== utils));
+        } else {
+            // If the amenity is not in the array, add it
+            setUtilities([...utilities, utils]);
+        }
     };
 
     const handleAppCoop = async () => {
@@ -150,10 +175,9 @@ const AddCoopView = ({setOpen, editMode, data}) => {
                 sqft: '',
                 distance: '',
                 amenities: amenitiesArr,
-                utilities: Object.fromEntries(utilities)
+                utilities: utilities
             }
         }
-
         
             await fetch('http://localhost:8000/sendProperty', {
                 method: 'POST',
@@ -171,27 +195,35 @@ const AddCoopView = ({setOpen, editMode, data}) => {
                     console.error('ERRORRR: ', error);
                 });
         
-
-        
     }
 
     /* Add photos */
     function handleAddPhotos(event) {
-        // var file = event.target.files[0] // image uploaded
-        // const reader = new FileReader()
-        // reader.readAsDataURL(file)
-        // reader.onload = () => {
-        //     setPropertyImage(reader.result)
-        //     setHasImage(true)
-        // }
         const files = event.target.files;
+
         if (files.length === 0) {
             return;
         }
-        const newImageUrls = Array.from(files).map((file) => URL.createObjectURL(file));
-        /* url array */
-        setImageURLs((prevImageUrl) => [...prevImageUrl, ...newImageUrls]);
-        setHasImages(true);
+        const newImages = [];
+        const promises = [];
+        for (const file of files) {
+            const promise = new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = () => {
+                    newImages.push(reader.result);
+                    resolve();
+                };
+            });
+
+            promises.push(promise);
+        }
+
+        Promise.all(promises).then(() => {
+            setImageURLs((prevImageUrls) => [...prevImageUrls, ...newImages]);
+            setHasImages(true);
+        });
+
     }
     /* remove photo if change mind */
     const handleRemovePhotos = (index) => {
@@ -675,10 +707,10 @@ const AddCoopView = ({setOpen, editMode, data}) => {
                                                 onChange={() => {
                                                     if (!includeWater) {
                                                         setIncludeWater(true)
-                                                        handleUtilChange('water', true)
+                                                        handleUtilChange('Water')
                                                     } else {
                                                         setIncludeWater(false)
-                                                        handleUtilChange('water', false)
+                                                        handleUtilChange('Water')
                                                     }
                                                 }}
                                                 disabled={disableButton}
@@ -701,10 +733,10 @@ const AddCoopView = ({setOpen, editMode, data}) => {
                                                 onChange={() => {
                                                     if (!includeElec) {
                                                         setIncludeElec(true)
-                                                        handleUtilChange('electricity', true)
+                                                        handleUtilChange('Electricity')
                                                     } else {
                                                         setIncludeElec(false)
-                                                        handleUtilChange('electricity', false)
+                                                        handleUtilChange('Electricity')
                                                     }
                                                 }}
                                                 disabled={disableButton}
@@ -727,10 +759,10 @@ const AddCoopView = ({setOpen, editMode, data}) => {
                                                 onChange={() => {
                                                     if (!includeGas) {
                                                         setIncludeGas(true)
-                                                        handleUtilChange('gas', true)
+                                                        handleUtilChange('Gas')
                                                     } else {
                                                         setIncludeGas(false)
-                                                        handleUtilChange('gas', false)
+                                                        handleUtilChange('Gas')
                                                     }
                                                 }}
                                                 disabled={disableButton}
@@ -753,10 +785,10 @@ const AddCoopView = ({setOpen, editMode, data}) => {
                                                 onChange={() => {
                                                     if (!includeTrash) {
                                                         setIncludeTrash(true)
-                                                        handleUtilChange('trash', true)
+                                                        handleUtilChange('Trash')
                                                     } else {
                                                         setIncludeTrash(false)
-                                                        handleUtilChange('trash', false)
+                                                        handleUtilChange('Trash')
                                                     }
                                                 }}
                                                 disabled={disableButton}
@@ -779,10 +811,10 @@ const AddCoopView = ({setOpen, editMode, data}) => {
                                                 onChange={() => {
                                                     if (!includeSewage) {
                                                         setIncludeSewage(true)
-                                                        handleUtilChange('sewage', true)
+                                                        handleUtilChange('Sewage')
                                                     } else {
                                                         setIncludeSewage(false)
-                                                        handleUtilChange('sewage', false)
+                                                        handleUtilChange('Sewage')
                                                     }
                                                 }}
                                                 disabled={disableButton}
@@ -805,10 +837,10 @@ const AddCoopView = ({setOpen, editMode, data}) => {
                                                 onChange={() => {
                                                     if (!includeInternet) {
                                                         setInternet(true)
-                                                        handleUtilChange('internet', true)
+                                                        handleUtilChange('Internet')
                                                     } else {
                                                         setInternet(false)
-                                                        handleUtilChange('internet', false)
+                                                        handleUtilChange('Internet')
                                                     }
                                                 }}
                                                 disabled={disableButton}

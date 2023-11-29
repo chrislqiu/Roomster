@@ -61,7 +61,8 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin, ver
         utilities = data.propertyInfo.utilities;
     }
 
-    const testimages = [image, amongus]
+    //const testimages = [image, amongus]
+    const imageArr = image[0] === 'link1' ? [amongus, amongus] : image
     
     /*
      * open, setOpen : controls the state of the dialogue popup
@@ -406,7 +407,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin, ver
                     <CardMedia
                         component="img"
                         //image={data.propertyInfo.image === undefined ? data.image : data.propertyInfo.image}
-                        image={imgExample}
+                        image={imageArr[0] === 'link1' ? imgExample : imageArr[0]}
                         //height="140px"
                         style={{
                             height: featured === true ? "120px" : "130px",
@@ -475,7 +476,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin, ver
                             alt=""
                             style={{ objectFit: 'fill', width: '700px', height: '200px', borderRadius: '5px'}}
                         /> */}
-                        <ImageGallery images={testimages}/>
+                        <ImageGallery images={imageArr}/>
                     {
                         /*
                          * Stack direction row has each text 'chunk'

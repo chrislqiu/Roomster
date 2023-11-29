@@ -216,18 +216,21 @@ router.post('/update-coopmates', async (req, res) => {
             return res.status(404).json({ error: 'Coopmate not found' });
         }
 
+        /* only adds coopmates that arent null bc for some reason if the array is empty it adds a null */
         renter.coopmates = renter.coopmates.filter(coopmate => coopmate !== null);
-        //console.log(coopmate)
-        //console.log(renter.coopmates)
+
+        /* this is just a check to print the coopmate */
         renter.coopmates.map(mate => console.log(mate._id.toString()))
-        //console.log(coopmate._id.toString())
+
+        /* checks if coopmate exists in the renter array */
         const coopmateExists = renter.coopmates.some(mate => mate._id.toString() === coopmate._id.toString());
-        //console.log(`coopmateExists: ${coopmateExists}`)
         if (!coopmateExists) {
             console.log("ok doesnt exist")
+            /* add coopmate */
             renter.coopmates.push(req.body.coopmate);
         } else {
             console.log("ok no duplicates pls")
+            /* if coopmate exists, remove */
             renter.coopmates = renter.coopmates.filter(mate => mate._id.toString() !== coopmate._id.toString());
         }
         await renter.save();
