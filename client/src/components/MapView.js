@@ -5,8 +5,17 @@ import { Icon } from 'leaflet';
 import MarkerClusterGroup from '@changey/react-leaflet-markercluster';
 
 const MapComponent = ({ propertyList }) => {
-  const defaultPosition = [40.425869, -86.908066];
   propertyList = Array.isArray(propertyList) ? propertyList : [propertyList];
+
+  let defaultPosition = [40.425869, -86.908066];
+
+  if (propertyList.length === 1) {
+    const { latitude, longitude } = propertyList[0].propertyInfo;
+    if (latitude !== undefined && longitude !== undefined) {
+      defaultPosition = [latitude, longitude];
+    }
+  }
+  
 
   return (
     <div>
