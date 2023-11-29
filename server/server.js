@@ -179,7 +179,7 @@ app.post('/sendProperty', async (req,res) => {
       utilities: data.propertyInfo.utilities  
   }
   var newProperty;
-  
+  console.log(data)
   const company = await Company.findOne({"companyInfo.name": manager.company.companyInfo.name})
   if (data.propertyInfo._id != '') {
     const updatePropertyInfo = await PropertyInfo.findByIdAndUpdate(data.propertyInfo._id, newInfo, {new: true})
@@ -191,6 +191,7 @@ app.post('/sendProperty', async (req,res) => {
   } else {
     //console.log(req.body)
     const newPropertyInfo = new PropertyInfo(newInfo)
+    console.log(newPropertyInfo)
     const existingCompanyInfo = await CompanyInfo.findOne({name: manager.company.companyInfo.name})
     newPropertyInfo.save()
     // console.log(existingCompanyInfo)

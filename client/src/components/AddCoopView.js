@@ -144,13 +144,13 @@ const AddCoopView = ({setOpen, editMode, data}) => {
         }
     };
 
-    const handleUtilChange = (utils) => {
-        if (utilities.includes(utils)) {
-            // If the amenity is already in the array, remove it
-            setUtilities(utilities.filter((item) => item !== utils));
+    const handleUtilChange = (util) => {
+        if (utilities.includes(util)) {
+            // If the util is already in the array, remove it
+            setUtilities(utilities.filter((item) => item !== util));
         } else {
-            // If the amenity is not in the array, add it
-            setUtilities([...utilities, utils]);
+            // If the util is not in the array, add it
+            setUtilities([...utilities, util]);
         }
     };
 
@@ -299,7 +299,6 @@ const AddCoopView = ({setOpen, editMode, data}) => {
 
     }
 
-    
     return ( 
             <Dialog
                 open={setOpen}
