@@ -12,6 +12,9 @@ const TourRequestsPage = ({ login }) => {
     const [open, setOpen] = React.useState(false)
     const [tourRowIdx, setTourRowIdx] = React.useState(-1)
     const [action, setAction] = React.useState('')
+    const [username, setUsername] = React.useState('')
+    const [tours, setTours] = React.useState([])
+    const [companyName, setCompanyName] = React.useState('')
 
     const styles = {
         header: {
@@ -75,33 +78,8 @@ const TourRequestsPage = ({ login }) => {
             align: 'center',
           },
       ];
-    
-    const handleActionClicked = (rowIndex, action) => {
-        setOpen(true)
-        setTourRowIdx(rowIndex)
-        setAction(action)
-    }
 
-    const handleActionConfirmed = (rowIndex) => {
-        if (action === 'decline') {
-            rows[rowIndex].status = 'DECLINED'
-        } else {
-            rows[rowIndex].status = 'APPROVED'
-        }
-        handleClose()
-    }
-
-    const handleClose = () => {
-        setOpen(false)
-    }
-      
-    function pullData(date, time, property, user, status) {
-        return { date, time, property, user, status };
-    }
-
-    const [tours, setTours] = React.useState([])
-
-    fetch('http://localhost:8000/auth/current-user', {
+      fetch('http://localhost:8000/auth/current-user', {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -117,12 +95,32 @@ const TourRequestsPage = ({ login }) => {
         .then(data => {
             // Handle the JSON response
             setTours(data.user.company.tours)
+            setUsername(data.user.username)
+            setCompanyName(data.user.company.companyInfo.name)
         })
         .catch(error => {
             // Handle errors
             console.error('Fetch error:', error);
         });
-        console.log(tours)
+    
+        function unSplit(date, time) {
+            return date + ', ' + time
+        }
+
+    const handleActionClicked = (rowIndex, action) => {
+        setOpen(true)
+        setTourRowIdx(rowIndex)
+        setAction(action)
+    }
+
+    const handleClose = () => {
+        setOpen(false)
+    }
+      
+    function pullData(date, time, property, user, status) {
+        return { date, time, property, user, status };
+    }
+
     /* Pull data from DB, dummy data for now. Note that properties should be specific to company */
     const [rows, setRows] = React.useState(() => []);
 
@@ -144,6 +142,42 @@ const TourRequestsPage = ({ login }) => {
         // Update the state with the new rows
         setRows(newRows);
     }, [tours]);
+
+    const handleActionConfirmed = async(rowIndex) => {
+        if (action === 'decline') {
+            rows[rowIndex].status = 'DECLINED'
+        } else {
+            rows[rowIndex].status = 'APPROVED'
+        }
+        const updateTour = rows[rowIndex]
+        console.log(updateTour)
+        handleClose()
+        const dataToSend = {
+            tour: {
+                username: updateTour.user,
+                propertyName: updateTour.property,
+                companyName: companyName,
+                dateTime: unSplit(updateTour.date, updateTour.time),
+                status: updateTour.status
+            }
+        }
+        await fetch('http://localhost:8000/updateTour', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(dataToSend),
+            credentials: 'include'
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log('TOUR UPDATE', data.message)
+            })
+            .catch(error => {
+                console.error('TOUR NOT ', error)
+            })
+        
+    }
 
     return (
         <Grid container spacing={0} direction="column" alignItems="center" justify="center">
