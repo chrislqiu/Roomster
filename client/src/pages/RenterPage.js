@@ -61,26 +61,26 @@ const RenterPage = () => {
             color: "textColor",
         },
         age: {
-            fontWeight: "600",
-            fontSize: "11pt",
-            color: "secondaryColor",
-            //margin: "0 0 10px 25px", 
-            width:"50px", 
-            height:"35px",
-            padding:"0px 0px 10px 0px",
-            //borderRadius: "5px",
-            //border: "2px solid",
-            //padding:"0 0 0 0",
-            //borderColor: "secondaryColor",
+            "& .MuiInputBase-input.Mui-disabled": {
+                color:"secondaryColor",
+                WebkitTextFillColor: "#AB191F" /*theme.palette.type === "dark" ? "#F6EBE1" : "",*/
+            },
             input: {
                 color: "textColor",
+                fontWeight: "600",
+                fontSize: "14pt",
+                // padding:"0",
+                // margin:"0",
                 "&::placeholder": {
-                    opacity: 0.7,
-                    color: "textColor",
+                    opacity: 1,
+                    color: "secondaryColor",
                     },
             },
+            fontWeight: "600",
+            fontSize: "14pt",
+            //padding:"0",
             "& fieldset": { border: 'none', },
-            "&:hover" : {boxShadow: theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 3px rgba(245, 235, 224, .1)",}
+            "&:hover" : {"& fieldset": { border: 'none', },}
         },
         icon: {
             fontSize: "18pt",
@@ -227,6 +227,7 @@ const RenterPage = () => {
     const [allRenterData, setAllRenterData] = React.useState('')
     const [data, setData] = React.useState('')
     var [pfp, setPfp] = useState('')
+    const [defAge, setDefAge] = useState('')
     const [defEmail, setDefEmail] = useState('')
     const [defPhone, setDefPhone] = useState('')
     const [defToggle, setDefToggle] = useState()
@@ -259,7 +260,8 @@ const RenterPage = () => {
                 setToggleOn(data.user.findingCoopmates)
                 setPfp(data.user.renterInfo.pfp)
                 setName(data.user.renterInfo.name)
-                setAge(data.user.renterInfo.age)
+                //setAge(data.user.renterInfo.age)
+                setDefAge(data.user.renterInfo.age)
                 setDefEmail(data.user.renterInfo.email)
                 setDefPhone(data.user.renterInfo.phone)
                 setDefPet(data.user.renterInfo.livingPreferences.pets)
@@ -313,6 +315,7 @@ const RenterPage = () => {
     useEffect(() => {
         // Check if data is available
         if (data) {
+            setAge(data.age)
             setEmail(data.email)
             setPhone(data.phone)
             setNewStudious(data.livingPreferences.studious);
@@ -496,11 +499,20 @@ const RenterPage = () => {
                         <Typography sx={styles.name} style={Object.assign(styles.boxPadding, {marginTop: "20px"})}> 
                             {name}
                         </Typography >
-                        <TextField placeholder="30" sx={styles.age} style={{padding: "0px 0px 0px 0px", marginTop: "20px"}}
-                            onChange={(e) => setAge(e.target.value)}
-                            > 
-                            
-                        </TextField >
+                        <Tooltip title="Change Age"
+                        componentsProps={{
+                            tooltip: {
+                                sx: {
+                                    bgcolor: theme.palette.type === "light" ? 'rgba(171, 25, 31, 0.9)' : "rgba(245, 235, 224, .8)",
+                                    color: "primaryColor"
+                                },
+                            },
+                        }}>
+                            <TextField placeholder={defAge} sx={styles.age} style={{padding: "0px 0px 0px 0px", marginTop: "20px"}}
+                                onChange={(e) => setAge(e.target.value)}
+                                disabled={disableButton}
+                            /> 
+                        </Tooltip>
                         <MaleIcon icon={faMars} sx={styles.icon} style={{marginTop: "22px"}}/>
                     </Container>
                     <Typography sx={styles.subheader}> 
@@ -513,7 +525,7 @@ const RenterPage = () => {
                             disabled={disableButton}
                     />
                     <TextField
-                            placeholder={defPhone} defaultValue={phone} id="number-textfield" variant="outlined" 
+                            placeholder={defPhone} value={phone} id="number-textfield" variant="outlined" 
                             sx={textfieldSX} size="small"
                             onChange={(e) => setPhone(e.target.value)}
                             disabled={disableButton}
