@@ -70,7 +70,7 @@ const RenterPage = () => {
                 color: "textColor",
                 fontWeight: "600",
                 fontSize: "14pt",
-                // padding:"0",
+                padding:"0",
                 // margin:"0",
                 "&::placeholder": {
                     opacity: 1,
@@ -79,7 +79,8 @@ const RenterPage = () => {
             },
             fontWeight: "600",
             fontSize: "14pt",
-            //padding:"0",
+            padding:"0",
+            width:"50px",
             "& fieldset": { border: 'none', },
             "&:hover" : {"& fieldset": { border: 'none', },}
         },
@@ -377,7 +378,9 @@ const RenterPage = () => {
     }
 
     const handleOpenGender = () => {
-        setOpenGender(true)
+        if (!disableButton) {
+            setOpenGender(true)
+        }
     }
 
     const handleCloseGender = () => {
@@ -553,6 +556,7 @@ const RenterPage = () => {
                         <Typography sx={styles.name} style={Object.assign(styles.boxPadding, {marginTop: "20px"})}> 
                             {name}
                         </Typography >
+                        <Box sx={{display: "inline-flex", justifyContent:"center"}}>
                         <Tooltip title="Change Age" disabled={disableButton}
                         componentsProps={{
                             tooltip: {
@@ -567,7 +571,7 @@ const RenterPage = () => {
                             /> 
                         </Tooltip>
                         <Box sx={{ flexGrow: 0, }}>
-                            <Tooltip title="Change Gender" onClick={handleOpenGender}
+                            <Tooltip title="Change Gender" onClick={handleOpenGender} 
                             componentsProps={{
                                 tooltip: {
                                     sx: {
@@ -580,6 +584,7 @@ const RenterPage = () => {
                                 {isFemale && <IconButton sx={{ p: 0, }} disabled={disableButton}><FemaleIcon sx={styles.icon} style={{marginTop: "22px"}}/></IconButton>}
                                 {isTransgender && <IconButton sx={{ p: 0, }} disabled={disableButton}><TransgenderIcon  sx={styles.icon} style={{marginTop: "22px"}}/></IconButton>}
                             </Tooltip>
+                        </Box>
                         </Box>
                     </Container>
                     <Typography sx={styles.subheader}> 
