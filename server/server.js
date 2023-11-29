@@ -30,7 +30,7 @@ mongoose.connect(dbURI, {useNewUrlParser: true, useUnifiedTopology: true})
 };
 
 app.use(cors(corsOptions));
-app.use(express.json());
+app.use(express.json({limit: '10mb'}));
 app.use(cookieParser())
 const secretKey = "E.3AvP1]&r7;-vBSAL|3AyetV%H*fIEy";
 
