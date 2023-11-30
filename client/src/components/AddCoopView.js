@@ -155,7 +155,7 @@ const AddCoopView = ({ setOpen, editMode, data }) => {
             return;
         } 
         else {
-            loading = toast.loading('Updating Property...')
+            loading = toast.loading('Updating Property...Please Be Patient')
         }
 
         const dataToSend = {
@@ -195,7 +195,7 @@ const AddCoopView = ({ setOpen, editMode, data }) => {
             //toast.success("Save Success!", { style: customToastStyle })
             setTimeout(() => {
                 window.location.reload();
-            }, 3000);
+            }, 1500);
 
     }
 
