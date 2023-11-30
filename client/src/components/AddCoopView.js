@@ -384,7 +384,9 @@ const AddCoopView = ({setOpen, editMode, data}) => {
                                                     borderColor: "#F6EBE1", bgcolor: "#F6EBE1", color: "#AB191F",
                                                     borderWidth: 1.5
                                                 },
-                                                borderColor: "#AB191F", bgcolor: "#AB191F", color: "#F6EBE1",
+                                                borderColor: disableButton ? "light grey" : "#AB191F", 
+                                                bgcolor: disableButton ? "light grey" : "#AB191F", 
+                                                color: "#F6EBE1",
                                                 borderWidth: 1.5, width: "112px", height: "35px", fontWeight: 600, lineHeight: "11px",
                                                 boxShadow: 5, float: "right", bottom: 15, right: 10,
                                                 position: "absolute"
