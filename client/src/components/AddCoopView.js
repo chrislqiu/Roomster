@@ -45,20 +45,14 @@ const AddCoopView = ({setOpen, editMode, data}) => {
     const [includeTrash, setIncludeTrash] = React.useState(false)
     const [includeSewage, setIncludeSewage] = React.useState(false)
     const [includeInternet, setInternet] = React.useState(false)
-    // const presetData = [
-    //     ['water', false],
-    //     ['electricity', false],
-    //     ['gas', false],
-    //     ['trash', false],
-    //     ['sewage', false],
-    //     ['internet', false]
-    // ];
+
     const [utilities, setUtilities] = React.useState([])
 
     /* AUTOFILL DATA */
     useEffect(() => {
         // autofill data
         if (data) {
+            setImageURLs(data.image)
             setPropertyName(data.propertyName);
             setPropertyAddress(data.propertyAddress)
             setPrice(data.price);
@@ -371,6 +365,7 @@ const AddCoopView = ({setOpen, editMode, data}) => {
                                           id={`imageFile${boxIndex}`}
                                           style={{ display: 'none' }}
                                           multiple
+                                          disabled={disableButton} 
                                         />
                                       </Box>
 
@@ -383,6 +378,7 @@ const AddCoopView = ({setOpen, editMode, data}) => {
                                           />
                                           <Button
                                             onClick={() => handleRemovePhotos(boxIndex)}
+                                            disabled={disableButton} 
                                             sx={{
                                                 ":hover": {
                                                     borderColor: "#F6EBE1", bgcolor: "#F6EBE1", color: "#AB191F",
@@ -700,15 +696,12 @@ const AddCoopView = ({setOpen, editMode, data}) => {
                                     <Container style={{ float: "left", width: "100%", }}>
                                         <FormControlLabel style={{ margin: "-10px 0 0 -30px" }} label={<Typography style={{ fontSize: "11pt" }}>Water</Typography>} control={
                                             <Checkbox style={{}}
-                                                defaultChecked={editMode === true ? data.utilities.water : includeWater}
+                                                defaultChecked={editMode === true ? data.utilities.includes("Water") : includeWater}
                                                 onChange={() => {
-                                                    if (!includeWater) {
-                                                        setIncludeWater(true)
-                                                        handleUtilChange('Water')
-                                                    } else {
-                                                        setIncludeWater(false)
-                                                        handleUtilChange('Water')
-                                                    }
+                                                    setIncludeWater(prevState => {
+                                                        handleUtilChange("Water");
+                                                        return !prevState;
+                                                    });
                                                 }}
                                                 disabled={disableButton}
                                                 inputProps={{ 'aria-label': 'controlled' }}
@@ -726,14 +719,14 @@ const AddCoopView = ({setOpen, editMode, data}) => {
                                     <Container style={{ float: "left", width: "100%" }}>
                                         <FormControlLabel style={{ margin: "-20px 0 0 -30px" }} label={<Typography style={{ fontSize: "11pt" }}>Electricity</Typography>} control={
                                             <Checkbox style={{}}
-                                                defaultChecked={editMode === true ? data.utilities.electricity : includeElec}
+                                                defaultChecked={editMode === true ? data.utilities.includes("Electricity")  : includeElec}
                                                 onChange={() => {
                                                     if (!includeElec) {
-                                                        setIncludeElec(true)
-                                                        handleUtilChange('Electricity')
+                                                        setIncludeElec(!includeElec)
+                                                        handleUtilChange("Electricity")
                                                     } else {
-                                                        setIncludeElec(false)
-                                                        handleUtilChange('Electricity')
+                                                        setIncludeElec(!includeElec)
+                                                        handleUtilChange("Electricity")
                                                     }
                                                 }}
                                                 disabled={disableButton}
@@ -752,14 +745,14 @@ const AddCoopView = ({setOpen, editMode, data}) => {
                                     <Container style={{ float: "left", width: "100%", }}>
                                         <FormControlLabel style={{ margin: "-40px 0 0 -30px" }} label={<Typography style={{ fontSize: "11pt" }}>Gas</Typography>} control={
                                             <Checkbox style={{}}
-                                                defaultChecked={editMode === true ? data.utilities.gas : includeGas}
+                                                defaultChecked={editMode === true ? data.utilities.includes("Gas")  : includeGas}
                                                 onChange={() => {
                                                     if (!includeGas) {
-                                                        setIncludeGas(true)
-                                                        handleUtilChange('Gas')
+                                                        setIncludeGas(!includeGas)
+                                                        handleUtilChange("Gas")
                                                     } else {
-                                                        setIncludeGas(false)
-                                                        handleUtilChange('Gas')
+                                                        setIncludeGas(!includeGas)
+                                                        handleUtilChange("Gas")
                                                     }
                                                 }}
                                                 disabled={disableButton}
@@ -778,14 +771,14 @@ const AddCoopView = ({setOpen, editMode, data}) => {
                                     <Container style={{ float: "left", width: "100%", }}>
                                         <FormControlLabel style={{ margin: "-60px 0 0 -30px" }} label={<Typography style={{ fontSize: "11pt" }}>Trash</Typography>} control={
                                             <Checkbox style={{}}
-                                                defaultChecked={editMode === true ? data.utilities.trash : includeTrash}
+                                                defaultChecked={editMode === true ? data.utilities.includes("Trash")  : includeTrash}
                                                 onChange={() => {
                                                     if (!includeTrash) {
-                                                        setIncludeTrash(true)
-                                                        handleUtilChange('Trash')
+                                                        setIncludeTrash(!includeTrash)
+                                                        handleUtilChange("Trash")
                                                     } else {
-                                                        setIncludeTrash(false)
-                                                        handleUtilChange('Trash')
+                                                        setIncludeTrash(!includeTrash)
+                                                        handleUtilChange("Trash")
                                                     }
                                                 }}
                                                 disabled={disableButton}
@@ -804,14 +797,14 @@ const AddCoopView = ({setOpen, editMode, data}) => {
                                     <Container style={{ float: "left", width: "100%", }}>
                                         <FormControlLabel style={{ margin: "-80px 0 0 -30px" }} label={<Typography style={{ fontSize: "11pt" }}>Sewage</Typography>} control={
                                             <Checkbox style={{}}
-                                                defaultChecked={editMode === true ? data.utilities.sewage : includeSewage}
+                                                defaultChecked={editMode === true ? data.utilities.includes("Sewage")  : includeSewage}
                                                 onChange={() => {
                                                     if (!includeSewage) {
-                                                        setIncludeSewage(true)
-                                                        handleUtilChange('Sewage')
+                                                        setIncludeSewage(!includeSewage)
+                                                        handleUtilChange("Sewage")
                                                     } else {
-                                                        setIncludeSewage(false)
-                                                        handleUtilChange('Sewage')
+                                                        setIncludeSewage(!includeSewage)
+                                                        handleUtilChange("Sewage")
                                                     }
                                                 }}
                                                 disabled={disableButton}
@@ -830,14 +823,14 @@ const AddCoopView = ({setOpen, editMode, data}) => {
                                     <Container style={{ float: "left", width: "100%", }}>
                                         <FormControlLabel style={{ margin: "-100px 0 0 -30px" }} label={<Typography style={{ fontSize: "11pt" }}>Internet</Typography>} control={
                                             <Checkbox style={{}}
-                                                defaultChecked={editMode === true ? data.utilities.internet : includeInternet}
+                                                defaultChecked={editMode === true ? data.utilities.includes("Internet")  : includeInternet}
                                                 onChange={() => {
                                                     if (!includeInternet) {
-                                                        setInternet(true)
-                                                        handleUtilChange('Internet')
+                                                        setInternet(!includeInternet)
+                                                        handleUtilChange("Internet")
                                                     } else {
-                                                        setInternet(false)
-                                                        handleUtilChange('Internet')
+                                                        setInternet(!includeInternet)
+                                                        handleUtilChange("Internet")
                                                     }
                                                 }}
                                                 disabled={disableButton}
@@ -853,7 +846,8 @@ const AddCoopView = ({setOpen, editMode, data}) => {
                                     </Container> {<br />}{<br />}
                                 </Box>
                             </Box>
-
+                            {console.log(amenitiesArr)}
+                            {console.log(propertyName,utilities)}
                             {/* Add Coop button */}
                             <Toaster
                                 toastOptions={{
