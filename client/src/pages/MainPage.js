@@ -89,6 +89,7 @@ const MainPage = ({ login }) => {
             display: "flex",
             justifyContent: "center",
             marginTop: "20px",
+            marginBottom: "20px"
         }
 
     }

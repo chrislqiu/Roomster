@@ -3,6 +3,7 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import markerIcon from "../images/room.svg";
 import { Icon } from 'leaflet';
 import MarkerClusterGroup from '@changey/react-leaflet-markercluster';
+import { Link } from 'react-router-dom';
 
 const MapComponent = ({ propertyList }) => {
   propertyList = Array.isArray(propertyList) ? propertyList : [propertyList];
@@ -15,7 +16,7 @@ const MapComponent = ({ propertyList }) => {
       defaultPosition = [latitude, longitude];
     }
   }
-  
+
 
   return (
     <div>
@@ -34,6 +35,8 @@ const MapComponent = ({ propertyList }) => {
           <MarkerClusterGroup>
             {propertyList.map((location, index) => {
               const { latitude, longitude } = location.propertyInfo;
+              const { _id } = location;
+              const { beds, baths, cost, image } = location.propertyInfo;
               if (latitude !== undefined && longitude !== undefined) {
                 return (
                   <Marker
@@ -46,9 +49,21 @@ const MapComponent = ({ propertyList }) => {
                     })}
                   >
                     <Popup>
-                      <div>
-                        <p>{propertyList[index].companyInfo.name}</p>
-                        <p>{propertyList[index].propertyInfo.address}</p>
+                      <div style={{ textAlign: 'center' }}>
+                        <h2>{propertyList[index].propertyInfo.propertyName}</h2>
+                        <img src={image} alt={`Property ${index + 1}`} style={{ maxWidth: '100%', margin: '5px 0' }} />
+                        <h3 style={{ margin: '5px 0' }}>{`${beds} Bed, ${baths} Bath`}</h3>
+                        <h3 style={{ margin: '5px 0' }}>{`$${cost} per month`}</h3>
+                        <p style={{ margin: '5px 0' }}>{propertyList[index].companyInfo.name}</p>
+                        <p style={{ margin: '5px 0' }}>{propertyList[index].propertyInfo.address}</p>
+                        <Link
+                          to={`http://localhost:3001/Property/${_id}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          style={{ display: 'block', margin: '8px 0' }}
+                        >
+                          Go to Property Details
+                        </Link>
                       </div>
                     </Popup>
                   </Marker>
