@@ -109,7 +109,6 @@ const RenterPage = () => {
     }
     const selectSX = {
         width: "70px",
-        borderColor: "blue",
         color: "textColor",
         "&.Mui-disabled": {
             "& .MuiOutlinedInput-notchedOutline": {

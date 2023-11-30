@@ -193,28 +193,16 @@ const AddCoopView = ({setOpen, editMode, data}) => {
     }
 
     const inputBaseSX = {
-        marginLeft: "-10px",
-        marginTop: "-10px",
+        margin: "0 0 10px 0",
         width: "205px",
         height: "35px",
         borderRadius: "5px",
         border: "2px solid",
         borderColor: "secondaryColor",
         padding: "5px",
-        "&:hover": {
-            border: "2px solid",
-            borderColor: "secondaryColor",
-            boxShadow: theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 3px rgba(245, 235, 224, .1)",
+        "& .MuiInputBase-input.Mui-disabled": {
+            WebkitTextFillColor: theme.palette.type === "dark" ? "#F6EBE1" : "",
         },
-        
-        
-    }
-
-    const textfieldSX = {
-        width:"200px", 
-        borderRadius: "5px",
-        border: "2px solid",
-        borderColor: "secondaryColor",
         input: {
             color: "textColor",
             "&::placeholder": {
@@ -222,34 +210,82 @@ const AddCoopView = ({setOpen, editMode, data}) => {
                 color: "textColor",
                 },
         },
-        "& fieldset": { border: 'none', },
+        "&:hover": {
+            border: "2px solid",
+            borderColor: "secondaryColor",
+            boxShadow: theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 3px rgba(245, 235, 224, .1)",
+        },
+    }
+
+    const textfieldSX = {
+        "& .MuiInputBase-input.Mui-disabled": {
+            WebkitTextFillColor: theme.palette.type === "dark" ? "#F6EBE1" : "",
+        },
+        input: {
+            color: "textColor",
+            "&::placeholder": {
+                opacity: 0.7,
+                color: "textColor",
+                },
+        },
+        margin: "0 0 10px 25px", 
+        width:"280px", 
+        borderRadius: "5px",
+        border: "2px solid",
+        borderColor: "secondaryColor",
+        "& fieldset": { border: 'none', color: "textColor"},
+        "& label": {color: "textColor"},
         "&:hover" : {boxShadow: theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 3px rgba(245, 235, 224, .1)",}       
     }
 
     const selectSX = {
-        marginLeft: "-10px",
-        marginRight: "15px",
-        marginTop: "-10px",
-        width: "100px", height: "35px", fontSize: "11pt",
-        '.MuiOutlinedInput-notchedOutline': {
-            border: "2px solid #AB191F"
-
+        color: "textColor",
+        width: "95px", height: "35px", fontSize: "11pt",
+        "&.Mui-disabled": {
+            "& .MuiOutlinedInput-notchedOutline": {
+                borderColor: "secondaryColor",
+                borderWidth: "2px",
+            },
+            "& .MuiSelect-icon": {
+                color: "secondaryColor",
+            }
+        },
+        "& .MuiOutlinedInput-notchedOutline": {
+            borderColor: "secondaryColor",
+            borderWidth: "2px",
         },
         '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-            border: "2px solid #AB191F"
+            borderColor: 'secondaryColor',
+        },
+        "& .MuiSelect-icon": {
+            color: "secondaryColor",
+        },
+        "& .MuiInputBase-input.Mui-disabled": {
+            WebkitTextFillColor: theme.palette.type === "dark" ? "#F6EBE1" : "",
+            opacity: 0.7,
         },
     }
-
+    
     const menuItemSX = {
         borderRadius: "5px",
         padding: "5px",
         "&:hover": {
-
             boxShadow: "0px 0px 3px 3px rgba(0, 0, 0, .1)",
         }
 
     }
 
+    const checkboxSX = {
+        color: "secondaryColor",
+        '&.Mui-checked': {
+            color: "secondaryColor",
+        },
+    }
+    
+    const labelSX = {
+        fontSize: "11pt",
+        color: "#F6EBE1"
+    }
     
     return ( 
             <Dialog
@@ -268,14 +304,7 @@ const AddCoopView = ({setOpen, editMode, data}) => {
                 }}
             >
                 <DialogContent>
-                    <Container
-                        sx={{
-                            backgroundColor: "primaryColor",
-                            overflow: "hidden"
-                        }}
-                        style={{
-                            
-                        }}>
+                    <Container>
                         {!image &&
                             <Box sx={{
                                 margin: "0",
@@ -287,7 +316,7 @@ const AddCoopView = ({setOpen, editMode, data}) => {
                                 minWidth: "300px", 
                                 width: "650px"
                             }}>
-                                <label id="imageLabel" for="imageFile" sx={{ color: "textColor" }}>
+                                <label id="imageLabel" for="imageFile" style={{ color: theme.palette.type === "light" ? "#AB191F" : "#F6EBE1" }}>
                                     Click to Add A Photo
                                     <input
                                         accept="image/*"
@@ -322,11 +351,22 @@ const AddCoopView = ({setOpen, editMode, data}) => {
                             {propertyImage === "" || propertyImage === null ? "" : <img src={propertyImage} style={{ objectFit: 'fill', width: '700px', height: '200px'}}/>}
                         </AspectRatio>
                             */}
-                        <Stack direction={{ '400px': "column", md: "row", lg: "row", xl: "row" }} spacing={5} sx={{ marginTop: 2, p: 1 }}>
+                        <Stack direction={{ '300px': "column", md: "row", lg: "row", xl: "row" }} spacing={5} sx={{ marginTop: 2, p: 1 }}>
 
 
                             {/* Property Details */}
-                            <Box width='600'>
+                            <Box style={{marginRight: "-30px"}}>
+                                <Typography
+                                        sx={{
+                                            color: "textColor",
+                                            fontWeight: 600,
+                                            marginTop: "-15px",
+                                            marginBottom: "15px",
+                                        }}
+                                    >
+                                        Property Information
+                                </Typography>
+
                                 <InputBase
                                     placeholder="Enter property name"
                                     id="name-textfield"
@@ -334,7 +374,7 @@ const AddCoopView = ({setOpen, editMode, data}) => {
                                     disabled={disableButton}
                                     defaultValue={editMode === true ? data.propertyName : propertyName}
                                     onChange={(e) => setPropertyName(e.target.value)}
-                                /> {<br />}{<br />}
+                                /> 
                                 <InputBase
                                     placeholder="Enter property address"
                                     id="addr-textfield"
@@ -342,16 +382,16 @@ const AddCoopView = ({setOpen, editMode, data}) => {
                                     disabled={disableButton}
                                     defaultValue={editMode === true ? data.address : propertyAddress}
                                     onChange={(e) => setPropertyAddress(e.target.value)}
-                                /> {<br />}{<br />}
+                                />
                                 <InputBase
                                     placeholder="Enter property price"
                                     id="price-textfield"
                                     startAdornment={<InputAdornment position="start">$</InputAdornment>}
-                                    sx={inputBaseSX}
+                                    sx={inputBaseSX} InputLabelProps={{sx: {color: "textColor"}}}
                                     disabled={disableButton}
                                     defaultValue={editMode === true ? data.cost : price}
                                     onChange={(e) => setPrice(e.target.value)}
-                                /> {<br />}{<br />}
+                                />
 
                                 <Select
                                     id="beds-input"
@@ -371,20 +411,8 @@ const AddCoopView = ({setOpen, editMode, data}) => {
                                 <Select
                                     id="baths-input"
                                     defaultValue={editMode === true ? data.baths : bath}
-                                    disabled={disableButton}
-                                    sx={{
-                                        marginLeft: "-10px",
-                                        marginRight: "-50px",
-                                        marginTop: "-10px",
-                                        width: "100px", height: "35px", fontSize: "11pt",
-                                        '.MuiOutlinedInput-notchedOutline': {
-                                            border: "2px solid #AB191F"
-
-                                        },
-                                        '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                                            border: "2px solid #AB191F"
-                                        },
-                                    }}
+                                    disabled={disableButton}  style={{margin: "0 0 0 10px"}}
+                                    sx={selectSX}
                                     onChange={(e) => setBath(e.target.value)}
                                     >
                                     <MenuItem value={-1}># baths</MenuItem>
@@ -399,18 +427,19 @@ const AddCoopView = ({setOpen, editMode, data}) => {
                                     <MenuItem value={5} sx={menuItemSX}>5</MenuItem>
                                 </Select>
                             </Box>
-
+                            
+                            
                             {/* Amenities */}
-                            <Divider orientation={{ xs: 'horizontal', md: 'vertical', lg: 'vertical', xl: 'vertical' }} width={3} sx={{ borderBottomWidth: 3, color: "#AB191F", backgroundColor: "#AB191F", marginY: 2, marginX: 0, maxHeight: "175px" }} />
+                            <Divider orientation={{ xs: 'horizontal', md: 'vertical', lg: 'vertical', xl: 'vertical' }} width={3} sx={{ borderBottomWidth: 3, backgroundColor: "secondaryColor", maxHeight: "200px"}} />
                             <Box height="175px" style={{ marginRight: "-45px", }}>
-                                <Box width='200px' height='600px' style={{ margin: "-10px 0 0 -30px", textAlign: "left", padding: "0" }}>
+                                <Box width='200px' style={{ margin: "0 0 0 -30px", textAlign: "left", padding: "0", }}>
                                     <Typography
                                         sx={{
+                                            color: "textColor",
                                             fontWeight: 600,
-                                            marginTop: "-30px",
+                                            marginTop: "-15px",
                                             marginBottom: "5px",
                                             //marginLeft:"-25px",
-                                            variant: "body2"
                                         }}
                                     >
                                         Amenities
@@ -418,7 +447,7 @@ const AddCoopView = ({setOpen, editMode, data}) => {
 
                                     {/* Furnished */}
                                     <Container style={{ float: "left", width: "100%" }}>
-                                        <FormControlLabel style={{ margin: "-10px 0 0 -30px" }} label={<Typography style={{ fontSize: "11pt" }}>Furnished</Typography>} control={
+                                        <FormControlLabel style={{ margin: "-10px 0 0 -30px" }} label={<Typography sx={labelSX}>Furnished</Typography>} control={
                                             <Checkbox style={{}}
                                                 defaultChecked={editMode === true ? (data.amenities.includes("Furnished") ? () => setIsFurnished(true) : isFurnished) : isFurnished}
                                                 onChange={() => {
@@ -432,19 +461,14 @@ const AddCoopView = ({setOpen, editMode, data}) => {
                                                 }}
                                                 disabled={disableButton}
                                                 inputProps={{ 'aria-label': 'controlled' }}
-                                                sx={{
-                                                    color: "#AB191F",
-                                                    '&.Mui-checked': {
-                                                        color: "#AB191F",
-                                                    },
-                                                }}
+                                                sx={checkboxSX}
                                             />}
                                         />
                                     </Container> {<br />}{<br />}
 
                                     {/* Kitchen Appliances */}
                                     <Container style={{ float: "left", width: "100%" }}>
-                                        <FormControlLabel style={{ margin: "-20px 0 0 -30px" }} label={<Typography style={{ fontSize: "11pt" }}>Kitchen Appliances</Typography>} control={
+                                        <FormControlLabel style={{ margin: "-20px 0 0 -30px" }} label={<Typography sx={labelSX}>Kitchen Appliances</Typography>} control={
                                             <Checkbox style={{}}
                                                 defaultChecked={editMode === true ? (data.amenities.includes("Kitchen Appliance") ? () => setHasKitchenApp(true) : hasKitchenApp) : hasKitchenApp}
                                                 onChange={() => {
@@ -458,19 +482,14 @@ const AddCoopView = ({setOpen, editMode, data}) => {
                                                 }}
                                                 disabled={disableButton}
                                                 inputProps={{ 'aria-label': 'controlled' }}
-                                                sx={{
-                                                    color: "#AB191F",
-                                                    '&.Mui-checked': {
-                                                        color: "#AB191F",
-                                                    },
-                                                }}
+                                                sx={checkboxSX}
                                             />}
                                         />
                                     </Container> {<br />}{<br />}
 
                                     {/* In-Unit Washer Dryer */}
                                     <Container style={{ float: "left", width: "100%" }}>
-                                        <FormControlLabel style={{ margin: "-40px 0 0 -30px" }} label={<Typography style={{ fontSize: "11pt" }}>In-Unit Washer Dryer</Typography>} control={
+                                        <FormControlLabel style={{ margin: "-40px 0 0 -30px" }} label={<Typography sx={labelSX}>In-Unit Washer Dryer</Typography>} control={
                                             <Checkbox style={{}}
                                                 defaultChecked={editMode === true ? (data.amenities.includes("In Unit W/D") ? () => setHasInUnitWD(true) : hasInUnitWD) : hasInUnitWD}
                                                 onChange={() => {
@@ -484,19 +503,14 @@ const AddCoopView = ({setOpen, editMode, data}) => {
                                                 }}
                                                 disabled={disableButton}
                                                 inputProps={{ 'aria-label': 'controlled' }}
-                                                sx={{
-                                                    color: "#AB191F",
-                                                    '&.Mui-checked': {
-                                                        color: "#AB191F",
-                                                    },
-                                                }}
+                                                sx={checkboxSX}
                                             />}
                                         />
                                     </Container> {<br />}{<br />}
 
                                     {/* Parking */}
                                     <Container style={{ float: "left", width: "50%" }}>
-                                        <FormControlLabel style={{ margin: "-60px 0 0 -30px" }} label={<Typography style={{ fontSize: "11pt" }}>Parking</Typography>} control={
+                                        <FormControlLabel style={{ margin: "-60px 0 0 -30px" }} label={<Typography sx={labelSX}>Parking</Typography>} control={
                                             <Checkbox style={{}}
                                                 defaultChecked={editMode === true ? (data.amenities.includes("Parking") ? () => setHasParking(true) : hasParking) : hasParking}
                                                 onChange={() => {
@@ -510,19 +524,14 @@ const AddCoopView = ({setOpen, editMode, data}) => {
                                                 }}
                                                 disabled={disableButton}
                                                 inputProps={{ 'aria-label': 'controlled' }}
-                                                sx={{
-                                                    color: "#AB191F",
-                                                    '&.Mui-checked': {
-                                                        color: "#AB191F",
-                                                    },
-                                                }}
+                                                sx={checkboxSX}
                                             />}
                                         />
                                     </Container> {<br />}{<br />}
 
                                     {/* Pet Friendly */}
                                     <Container style={{ float: "left", width: "100%" }}>
-                                        <FormControlLabel style={{ margin: "-80px 0 0 -30px" }} label={<Typography style={{ fontSize: "11pt" }}>Pet Friendly</Typography>} control={
+                                        <FormControlLabel style={{ margin: "-80px 0 0 -30px" }} label={<Typography sx={labelSX}>Pet Friendly</Typography>} control={
                                             <Checkbox style={{}}
                                                 defaultChecked={editMode === true ? (data.amenities.includes("Pet Friendly") ? () => setIsPetFriendly(true) : isPetFriendly) : isPetFriendly}
                                                 onChange={() => {
@@ -536,20 +545,15 @@ const AddCoopView = ({setOpen, editMode, data}) => {
                                                 }}
                                                 disabled={disableButton}
                                                 inputProps={{ 'aria-label': 'controlled' }}
-                                                sx={{
-                                                    color: "#AB191F",
-                                                    '&.Mui-checked': {
-                                                        color: "#AB191F",
-                                                    },
-                                                }}
+                                                sx={checkboxSX}
                                             />}
                                         />
                                     </Container> {<br />}{<br />}
 
                                     {/* Gym */}
                                     <Container style={{ float: "left", width: "100%" }}>
-                                        <FormControlLabel style={{ margin: "-100px 0 0 -30px" }} label={<Typography style={{ fontSize: "11pt" }}>Gym</Typography>} control={
-                                            <Checkbox style={{}}
+                                        <FormControlLabel style={{ margin: "-100px 0 0 -30px" }} label={<Typography sx={labelSX}>Gym</Typography>} control={
+                                            <Checkbox 
                                             defaultChecked={editMode === true ? data.amenities.includes("Gym") : hasGym}
                                                 onChange={() => {
                                                     if (!hasGym) {
@@ -561,13 +565,8 @@ const AddCoopView = ({setOpen, editMode, data}) => {
                                                     }
                                                 }}
                                                 disabled={disableButton}
-                                                inputProps={{ 'aria-label': 'controlled' }}
-                                                sx={{
-                                                    color: "#AB191F",
-                                                    '&.Mui-checked': {
-                                                        color: "#AB191F",
-                                                    },
-                                                }}
+                                                inputProps={{ 'aria-label': 'controlled'}}
+                                                sx={checkboxSX}
                                             />}
                                         />
                                     </Container>
@@ -575,16 +574,15 @@ const AddCoopView = ({setOpen, editMode, data}) => {
                             </Box>
 
                             {/* Utilities */}
-                            <Divider orientation={{ xs: 'horizontal', md: 'vertical', lg: 'vertical', xl: 'vertical' }} width={3} sx={{ borderBottomWidth: 3, color: "#AB191F", backgroundColor: "#AB191F", marginY: 2, marginX: 0, maxHeight: "175px" }} />
+                            <Divider orientation={{ xs: 'horizontal', md: 'vertical', lg: 'vertical', xl: 'vertical' }} width={3} sx={{ borderBottomWidth: 3, backgroundColor: "secondaryColor", maxHeight: "200px" }} />
                             <Box height="175px" style={{ marginRight: "-25px", }}>
-                                <Box width='200px' height='600px' style={{ margin: "-10px 0 0 -30px", textAlign: "left", padding: "0" }}>
+                                <Box width='200px'  style={{ margin: "-10px 0 0 -30px", textAlign: "left", padding: "0" }}>
                                     <Typography
                                         sx={{
+                                            color: "textColor",
                                             fontWeight: 600,
-                                            marginTop: "-30px",
+                                            marginTop: "-15px",
                                             marginBottom: "5px",
-                                            //marginLeft:"-25px",
-                                            variant: "body2"
                                         }}
                                     >
                                         Utilities
@@ -592,7 +590,7 @@ const AddCoopView = ({setOpen, editMode, data}) => {
 
                                     {/* Water */}
                                     <Container style={{ float: "left", width: "100%", }}>
-                                        <FormControlLabel style={{ margin: "-10px 0 0 -30px" }} label={<Typography style={{ fontSize: "11pt" }}>Water</Typography>} control={
+                                        <FormControlLabel style={{ margin: "-10px 0 0 -30px" }} label={<Typography style={labelSX}>Water</Typography>} control={
                                             <Checkbox style={{}}
                                                 defaultChecked={editMode === true ? data.utilities.water : includeWater}
                                                 onChange={() => {
@@ -606,19 +604,14 @@ const AddCoopView = ({setOpen, editMode, data}) => {
                                                 }}
                                                 disabled={disableButton}
                                                 inputProps={{ 'aria-label': 'controlled' }}
-                                                sx={{
-                                                    color: "#AB191F",
-                                                    '&.Mui-checked': {
-                                                        color: "#AB191F",
-                                                    },
-                                                }}
+                                                sx={checkboxSX}
                                             />}
                                         />
                                     </Container> {<br />}{<br />}
 
                                     {/* Electricity */}
                                     <Container style={{ float: "left", width: "100%" }}>
-                                        <FormControlLabel style={{ margin: "-20px 0 0 -30px" }} label={<Typography style={{ fontSize: "11pt" }}>Electricity</Typography>} control={
+                                        <FormControlLabel style={{ margin: "-20px 0 0 -30px" }} label={<Typography style={labelSX}>Electricity</Typography>} control={
                                             <Checkbox style={{}}
                                                 defaultChecked={editMode === true ? data.utilities.electricity : includeElec}
                                                 onChange={() => {
@@ -632,19 +625,14 @@ const AddCoopView = ({setOpen, editMode, data}) => {
                                                 }}
                                                 disabled={disableButton}
                                                 inputProps={{ 'aria-label': 'controlled' }}
-                                                sx={{
-                                                    color: "#AB191F",
-                                                    '&.Mui-checked': {
-                                                        color: "#AB191F",
-                                                    },
-                                                }}
+                                                sx={checkboxSX}
                                             />}
                                         />
                                     </Container> {<br />}{<br />}
 
                                     {/* Gas */}
                                     <Container style={{ float: "left", width: "100%", }}>
-                                        <FormControlLabel style={{ margin: "-40px 0 0 -30px" }} label={<Typography style={{ fontSize: "11pt" }}>Gas</Typography>} control={
+                                        <FormControlLabel style={{ margin: "-40px 0 0 -30px" }} label={<Typography style={labelSX}>Gas</Typography>} control={
                                             <Checkbox style={{}}
                                                 defaultChecked={editMode === true ? data.utilities.gas : includeGas}
                                                 onChange={() => {
@@ -658,19 +646,14 @@ const AddCoopView = ({setOpen, editMode, data}) => {
                                                 }}
                                                 disabled={disableButton}
                                                 inputProps={{ 'aria-label': 'controlled' }}
-                                                sx={{
-                                                    color: "#AB191F",
-                                                    '&.Mui-checked': {
-                                                        color: "#AB191F",
-                                                    },
-                                                }}
+                                                sx={checkboxSX}
                                             />}
                                         />
                                     </Container> {<br />}{<br />}
 
                                     {/* Trash */}
                                     <Container style={{ float: "left", width: "100%", }}>
-                                        <FormControlLabel style={{ margin: "-60px 0 0 -30px" }} label={<Typography style={{ fontSize: "11pt" }}>Trash</Typography>} control={
+                                        <FormControlLabel style={{ margin: "-60px 0 0 -30px" }} label={<Typography style={labelSX}>Trash</Typography>} control={
                                             <Checkbox style={{}}
                                                 defaultChecked={editMode === true ? data.utilities.trash : includeTrash}
                                                 onChange={() => {
@@ -684,19 +667,14 @@ const AddCoopView = ({setOpen, editMode, data}) => {
                                                 }}
                                                 disabled={disableButton}
                                                 inputProps={{ 'aria-label': 'controlled' }}
-                                                sx={{
-                                                    color: "#AB191F",
-                                                    '&.Mui-checked': {
-                                                        color: "#AB191F",
-                                                    },
-                                                }}
+                                                sx={checkboxSX}
                                             />}
                                         />
                                     </Container> {<br />}{<br />}
 
                                     {/* Sewage */}
                                     <Container style={{ float: "left", width: "100%", }}>
-                                        <FormControlLabel style={{ margin: "-80px 0 0 -30px" }} label={<Typography style={{ fontSize: "11pt" }}>Sewage</Typography>} control={
+                                        <FormControlLabel style={{ margin: "-80px 0 0 -30px" }} label={<Typography style={labelSX}>Sewage</Typography>} control={
                                             <Checkbox style={{}}
                                                 defaultChecked={editMode === true ? data.utilities.sewage : includeSewage}
                                                 onChange={() => {
@@ -710,19 +688,14 @@ const AddCoopView = ({setOpen, editMode, data}) => {
                                                 }}
                                                 disabled={disableButton}
                                                 inputProps={{ 'aria-label': 'controlled' }}
-                                                sx={{
-                                                    color: "#AB191F",
-                                                    '&.Mui-checked': {
-                                                        color: "#AB191F",
-                                                    },
-                                                }}
+                                                sx={checkboxSX}
                                             />}
                                         />
                                     </Container> {<br />}{<br />}
 
                                     {/* Internet */}
                                     <Container style={{ float: "left", width: "100%", }}>
-                                        <FormControlLabel style={{ margin: "-100px 0 0 -30px" }} label={<Typography style={{ fontSize: "11pt" }}>Internet</Typography>} control={
+                                        <FormControlLabel style={{ margin: "-100px 0 0 -30px" }} label={<Typography style={labelSX}>Internet</Typography>} control={
                                             <Checkbox style={{}}
                                                 defaultChecked={editMode === true ? data.utilities.internet : includeInternet}
                                                 onChange={() => {
@@ -736,12 +709,7 @@ const AddCoopView = ({setOpen, editMode, data}) => {
                                                 }}
                                                 disabled={disableButton}
                                                 inputProps={{ 'aria-label': 'controlled' }}
-                                                sx={{
-                                                    color: "#AB191F",
-                                                    '&.Mui-checked': {
-                                                        color: "#AB191F",
-                                                    },
-                                                }}
+                                                sx={checkboxSX}
                                             />}
                                         />
                                     </Container> {<br />}{<br />}

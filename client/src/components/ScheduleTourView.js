@@ -175,7 +175,7 @@ const ScheduleTourView = ({ data, userData, requestTourOpen, handleClose }) => {
                         <LocalizationProvider dateAdapter={AdapterDayjs} >
                             <DemoContainer
                                 components={['DateTimePicker']}
-                                sx={{
+                                sx={{ 
                                     input: {
                                         color: "textColor",
                                         "&::placeholder": {
@@ -195,7 +195,7 @@ const ScheduleTourView = ({ data, userData, requestTourOpen, handleClose }) => {
                                     width: "368px",
                                     height: "50px"
                                 }}>
-                                <DateTimePicker label="Select a tour date and time" value={DT} onChange={(newVal) => setDT(newVal)} />
+                                <DateTimePicker label="Select a tour date and time" slotProps={{openPickerButton: {sx:{color: 'textColor',} },}} value={DT} onChange={(newVal) => setDT(newVal)} />
                             </DemoContainer>
                         </LocalizationProvider>
                         <Button sx={{

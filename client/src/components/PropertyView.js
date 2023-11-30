@@ -745,11 +745,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
                 </DialogContent>
                 <DialogActions>
 
-                    <IconButton onClick={() => handleShare()}>
-                        <LinkIcon
-                            sx={{ color: "secondaryColor" }}
-                        />
-                    </IconButton>
+                    
 
                     {console.log(isVerified)}
                     {isVerified === true ?
@@ -781,13 +777,17 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
                                 border: "none",
                                 backgroundColor: "secondaryColor",
                                 color: theme.palette.type === "light" ? "primaryColor" : "textColor",
-                                width: "100px", height: "35px", fontWeight: 600, lineHeight: "11px", float: "right",
+                                width: "100px", height: "35px", fontWeight: 600, lineHeight: "11px", float: "left",
                             }}
                             onClick={handleEdit}
                             variant="outlined">{'EDIT'}
                         </Button>
                         : ''}
-
+                    <IconButton onClick={() => handleShare()}>
+                        <LinkIcon
+                            sx={{ color: "secondaryColor" }}
+                        />
+                    </IconButton>
                     {editMode === true ? <AddCoopView setOpen={setOpen} editMode={true} data={data}></AddCoopView> : ''}
                     {/* {loading && <CircularProgress />} */}
                     {loading ? (
@@ -853,12 +853,13 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
                                         onClick={handleOpenRequestTour}
                                         sx={{
                                             ":hover": {
-                                                borderColor: "#F6EBE1", bgcolor: "#F6EBE1", color: "#AB191F",
-                                                borderWidth: 1.5, width: "175px", fontWeight: 600, fontSize: "11pt", padding: "0"
+                                                bgcolor: "secondaryColor", color: "textColor", border: "none", fontWeight: "600",
+                                                width: "175px", fontSize: "11pt", padding: "0",
+                                                boxShadow: theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 3px rgba(245, 235, 224, .1)",
                                             },
-                                            borderColor: "#AB191F", bgcolor: "#AB191F", color: "#F6EBE1",
-                                            borderWidth: 1.5, width: "175px", fontWeight: 600, fontSize: "11pt", padding: "0",
-                                            boxShadow: 5, justifyContent: "center", maxHeight: "50px", position: "absolute", bottom: 15, left: 25
+                                            bgcolor: "secondaryColor", color: "textColor", border: "none",
+                                            width: "175px", fontSize: "11pt", padding: "0", fontWeight: "600",
+                                            justifyContent: "center", position: "absolute", bottom: 15, left: 25
                                         }}
                                         variant="outlined">REQUEST A TOUR
                                     </Button>
