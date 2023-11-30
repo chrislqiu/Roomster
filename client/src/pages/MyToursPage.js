@@ -73,16 +73,6 @@ const MyToursPage = ({ login }) => {
         },
     ];
 
-    const handleCancelClicked = (rowIndex) => {
-        setOpen(true)
-        setTourRowIdx(rowIndex)
-    }
-
-    const handleCancelConfirmed = (rowIndex) => {
-        setRows(() => { return [...rows.slice(0, rowIndex), ...rows.slice(rowIndex + 1)] })
-        handleClose()
-    }
-
     const handleClose = () => {
         setOpen(false)
     }
@@ -92,7 +82,12 @@ const MyToursPage = ({ login }) => {
         return { date, time, property, company, status };
     }
 
+    function unSplit(date, time) {
+        return date + ', ' + time
+    }
+
     const [tours, setTours] = React.useState([])
+    const [username, setUsername] = React.useState('')
 
     fetch('http://localhost:8000/auth/current-user', {
         method: 'GET',
@@ -110,6 +105,7 @@ const MyToursPage = ({ login }) => {
         .then(data => {
             // Handle the JSON response
             setTours(data.user.tours)
+            setUsername(data.user.username)
         })
         .catch(error => {
             // Handle errors
@@ -126,13 +122,12 @@ const MyToursPage = ({ login }) => {
         // Function to parse dateTime and separate date and time
         const parseDateTime = (dateTime) => {
             const [date, time] = dateTime.split(', '); // Split at the comma and space
-            return { date, time };
+            return { dateTime, date, time };
         };
 
         // Loop through tours and create rows using modified pullData function
         const newRows = tours.map(tour => {
             const { date, time } = parseDateTime(tour.dateTime);
-            console.log(tour)
             return pullData(date, time, tour.propertyName, tour.companyName, tour.status);
         });
 
@@ -140,7 +135,41 @@ const MyToursPage = ({ login }) => {
         setRows(newRows);
     }, [tours]);
 
-    console.log(rows)
+    const handleCancelClicked = (rowIndex) => {
+        setOpen(true)
+        setTourRowIdx(rowIndex)
+    }
+
+
+
+    const handleCancelConfirmed = async(rowIndex) => {
+        const delTour = rows[rowIndex]
+        handleClose()
+        const dataToSend = {
+            tour: {
+                username: username,
+                propertyName: delTour.property,
+                companyName: delTour.company,
+                dateTime: unSplit(delTour.date, delTour.time)
+            }
+        }
+        setRows(() => { return [...rows.slice(0, rowIndex), ...rows.slice(rowIndex + 1)] })
+         await fetch('http://localhost:8000/delTour', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(dataToSend)
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log('TOUR DEL', data.message)
+            })
+            .catch(error => {
+                console.error('TOUR NOT DEL', error)
+            })
+        
+    }
 
     return (
         <Grid container spacing={0} direction="column" alignItems="center" justify="center">
