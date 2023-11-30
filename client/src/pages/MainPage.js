@@ -5,6 +5,7 @@ import SearchBar from "../components/SearchBar";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useParams } from 'react-router-dom';
+import MapView from "../components/MapView";
 
 
 import { Container, Box, Typography } from "@mui/material";
@@ -20,6 +21,7 @@ const MainPage = ({ login }) => {
     const [numberSelected, setNumberSelected] = React.useState();
     const [sharedProperty, setSharedProperty] = React.useState();
     const { token } = useParams();
+    const [mapView, setMapView] = React.useState(false);
 
 
     React.useEffect(() => {
@@ -83,48 +85,57 @@ const MainPage = ({ login }) => {
             maxWidth: "1200px",
             flexWrap: "wrap",
         },
+        mapViewContainer: {
+            display: "flex",
+            justifyContent: "center",
+            marginTop: "20px",
+            marginBottom: "20px"
+        }
 
     }
     return (
         <Container sx={{ width: '100%' }}>
-            <SearchBar data={propertyInfo} setInput={setInput} setFilteredOptions={setFilteredProperties} setNumberSelected={setNumberSelected} setSortOptions={setSortOption} />
+            <SearchBar data={propertyInfo} setInput={setInput} setFilteredOptions={setFilteredProperties} setNumberSelected={setNumberSelected} setSortOptions={setSortOption} setMapView={setMapView} />
             {console.log(filteredProperties)}
             {/* {(input === '' && numberSelected === 0) && */}
-            <Box sx={{ m: 4 }} style={styles.feed}>
-                <FeaturedProperties data={filteredProperties} style={styles.feed} login={login} />
-            </Box>
-
-            <Box sx={{ m: 1 }} style={styles.feed}>
-                {
-                    /*
-                     * Maps each Property Information object to its own "card"
-                     */
-                    filteredProperties.length > 0 ?
-                        filteredProperties.map((cards) => {
-                            return (
-                                <React.Fragment key={cards._id}>
-                                    {token && token === cards._id ? (
-                                        <PropertyViewMore data={cards} login={login} autoOpen={true} />
-                                    ) : (
-                                        <PropertyViewMore data={cards} login={login} autoOpen={false} />
-                                    )}
-                                </React.Fragment>
-                            );
-                        }
-                        )
-                        :
-                        <Typography
-                            sx={{
-                                fontWeight: 600,
-                                fontSize: 25,
-                                color: "#AB191F",
-                            }}
-                        >
-                            No properties match your search!
-                        </Typography>
-                }
-            </Box>
+            {
+                !mapView ? (
+                    <React.Fragment>
+                        <Box sx={{ m: 4 }} style={styles.feed}>
+                            <FeaturedProperties data={filteredProperties} style={styles.feed} login={login} />
+                        </Box>
+                        <Box sx={{ m: 1 }} style={styles.feed}>
+                            {filteredProperties.length > 0 ? (
+                                filteredProperties.map((cards) => (
+                                    <React.Fragment key={cards._id}>
+                                        {token && token === cards._id ? (
+                                            <PropertyViewMore data={cards} login={login} autoOpen={true} />
+                                        ) : (
+                                            <PropertyViewMore data={cards} login={login} autoOpen={false} />
+                                        )}
+                                    </React.Fragment>
+                                ))
+                            ) : (
+                                <Typography
+                                    sx={{
+                                        fontWeight: 600,
+                                        fontSize: 25,
+                                        color: "#AB191F",
+                                    }}
+                                >
+                                    No properties match your search!
+                                </Typography>
+                            )}
+                        </Box>
+                    </React.Fragment>
+                ) : (
+                    <Box sx={styles.mapViewContainer}>
+                        <MapView propertyList={filteredProperties} />
+                    </Box>
+                )
+            }
         </Container>
-    )
+    );
+
 }
 export default MainPage;

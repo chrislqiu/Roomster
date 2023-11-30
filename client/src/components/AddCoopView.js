@@ -9,6 +9,9 @@ import PropertyView from "../components/PropertyView";
 import { useTheme } from '@mui/material/styles';
 
 
+const apiKey = '9a33030d18d9c0db7023221f2cc438c3';
+
+
 const AddCoopView = ({ setOpen, editMode, data }) => {
     const theme = useTheme();
     /* propertyInfo, setPropertyInfo to hold the card information from the server */
@@ -153,10 +156,23 @@ const AddCoopView = ({ setOpen, editMode, data }) => {
         if (propertyName === '' || propertyAddress === '' || price === '' || bed === -1 || bath === -1) {
             toast.error(`Please fill in all the textfileds and dropdown! ${propertyName} ${propertyAddress} ${price} ${bed} ${bath}`, { style: customToastStyle })
             return;
-        } 
-        else {
+        } else {
             loading = toast.loading('Updating Property...Please Be Patient')
         }
+
+        const refineSearch = `${propertyAddress}, Indiana`
+
+
+        const response = await fetch(
+            `http://api.positionstack.com/v1/forward?access_key=${apiKey}&query=${encodeURIComponent(
+                refineSearch
+            )}`
+        );
+
+        const result = await response.json();
+
+        console.log(result.data[0].latitude)
+
 
         const dataToSend = {
             propertyInfo: {
@@ -164,6 +180,8 @@ const AddCoopView = ({ setOpen, editMode, data }) => {
                 image: imageURLs,
                 propertyName: propertyName,
                 address: propertyAddress,
+                latitude: result.data[0].latitude,
+                longitude: result.data[0].longitude,
                 beds: bed,
                 baths: bath,
                 cost: price,
