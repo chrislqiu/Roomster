@@ -9,7 +9,7 @@ import PropertyView from "../components/PropertyView";
 import { createTheme, ThemeProvider, useTheme } from '@mui/material/styles';
 
 
-const AddCoopView = ({setOpen, editMode, data}) => {
+const AddCoopView = ({ setOpen, editMode, data }) => {
     const theme = useTheme();
     /* propertyInfo, setPropertyInfo to hold the card information from the server */
     const [propertyInfo, setPropertyInfo] = React.useState([])
@@ -97,7 +97,7 @@ const AddCoopView = ({setOpen, editMode, data}) => {
                 setInternet(true)
             }
         }
-    }, [data]);
+    }, []);
     /* Disabled button for Edit and Save */
     const [disableButton, setDisableButton] = React.useState(true)
 
@@ -128,7 +128,7 @@ const AddCoopView = ({setOpen, editMode, data}) => {
         color: 'white',
     };
 
-    const handleCheckboxChange = (amenity) => {
+    const handleAmenityChange = (amenity) => {
         if (amenitiesArr.includes(amenity)) {
             // If the amenity is already in the array, remove it
             setAmenitiesArr(amenitiesArr.filter((item) => item !== amenity));
@@ -149,7 +149,7 @@ const AddCoopView = ({setOpen, editMode, data}) => {
     };
 
     const handleAppCoop = async () => {
-        
+
         if (propertyName === '' || propertyAddress === '' || price === '' || bed === -1 || bath === -1) {
             toast.error(`Please fill in all the textfileds and dropdown! ${propertyName} ${propertyAddress} ${price} ${bed} ${bath}`, { style: customToastStyle })
             return;
@@ -172,23 +172,25 @@ const AddCoopView = ({setOpen, editMode, data}) => {
                 utilities: utilities
             }
         }
-        
-            await fetch('http://localhost:8000/sendProperty', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(dataToSend),
-                credentials: 'include'
+
+        await fetch('http://localhost:8000/sendProperty', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(dataToSend),
+            credentials: 'include'
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log('DATA SAVEDDDD: ', data.message);
+
             })
-                .then(response => response.json())
-                .then(data => {
-                    console.log('DATA SAVEDDDD: ', data.message);
-                })
-                .catch(error => {
-                    console.error('ERRORRR: ', error);
-                });
-        
+            .catch(error => {
+                console.error('ERRORRR: ', error);
+            });
+        window.location.reload();
+
     }
 
     /* Add photos */
@@ -249,12 +251,12 @@ const AddCoopView = ({setOpen, editMode, data}) => {
             borderColor: "secondaryColor",
             boxShadow: theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 3px rgba(245, 235, 224, .1)",
         },
-        
-        
+
+
     }
 
     const textfieldSX = {
-        width:"200px", 
+        width: "200px",
         borderRadius: "5px",
         border: "2px solid",
         borderColor: "secondaryColor",
@@ -263,10 +265,10 @@ const AddCoopView = ({setOpen, editMode, data}) => {
             "&::placeholder": {
                 opacity: 0.7,
                 color: "textColor",
-                },
+            },
         },
         "& fieldset": { border: 'none', },
-        "&:hover" : {boxShadow: theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 3px rgba(245, 235, 224, .1)",}       
+        "&:hover": { boxShadow: theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 3px rgba(245, 235, 224, .1)", }
     }
 
     const selectSX = {
@@ -293,606 +295,529 @@ const AddCoopView = ({setOpen, editMode, data}) => {
 
     }
 
-    return ( 
-            <Dialog
-                open={setOpen}
-                onClose={handleClose}
-                sx={{
-                    "& .MuiDialog-container": {
-                        "& .MuiPaper-root": {
-                            width: "70%",
-                            maxWidth: 750,
-                            maxHeight: 500,
-                            backgroundColor: "primaryColor",
-                            boxShadow: theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 3px rgba(245, 235, 224, .1)",
-                        },
+    return (
+        <Dialog
+            open={setOpen}
+            onClose={handleClose}
+            sx={{
+                "& .MuiDialog-container": {
+                    "& .MuiPaper-root": {
+                        width: "70%",
+                        maxWidth: 750,
+                        maxHeight: 500,
+                        backgroundColor: "primaryColor",
+                        boxShadow: theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 3px rgba(245, 235, 224, .1)",
                     },
-                }}
-            >
-                <DialogContent>
-                    <Container
-                        sx={{
-                            backgroundColor: "primaryColor",
-                            overflow: "hidden"
-                        }}
-                        style={{
-                            
-                        }}>
-                        {/* {!image &&
-                            <Box sx={{
-                                margin: "0",
-                                padding: "0",
-                                border: "3px dashed",
-                                borderColor: "secondaryColor", 
-                                minHeight: "150px", 
-                                maxHeight: "300px", 
-                                minWidth: "300px", 
-                                width: "650px"
-                            }}>
-                                <label id="imageLabel" for="imageFile" sx={{ color: "textColor" }}>
-                                    Click to Add A Photo
-                                    <input
-                                        accept="image/*"
-                                        type="file"
-                                        onChange={handleAddPhotos}
-                                        id="imageFile"
-                                        style={{ display: "none" }}
-                                    />
-                                </label>
-                            </Box>} */
-                             (
-                                [0, 1, 2].map((boxIndex) => (
-                                    <label key={boxIndex} htmlFor={`imageFile${boxIndex}`} style={{ position: 'relative', display: 'inline-block', marginRight: '10px' }}>
-                                      <Box
+                },
+            }}
+        >
+            <DialogContent>
+                <Container
+                    sx={{
+                        backgroundColor: "primaryColor",
+                        overflow: "hidden"
+                    }}
+                    style={{
+
+                    }}>
+                    {
+                        (
+                            [0, 1, 2].map((boxIndex) => (
+                                <label key={boxIndex} htmlFor={`imageFile${boxIndex}`} style={{ position: 'relative', display: 'inline-block', marginRight: '10px' }}>
+                                    <Box
                                         sx={{
-                                          //margin: '0',
-                                          padding: 1,
-                                          marginBottom: 2,
-                                          border: '3px dashed',
-                                          borderColor: 'secondaryColor',
-                                          minHeight: '150px',
-                                          maxHeight: '300px',
-                                          minWidth: '300px',
-                                          width: '650px',
-                                          cursor: 'pointer',
+                                            //margin: '0',
+                                            padding: 1,
+                                            marginBottom: 2,
+                                            border: '3px dashed',
+                                            borderColor: 'secondaryColor',
+                                            minHeight: '150px',
+                                            maxHeight: '300px',
+                                            minWidth: '300px',
+                                            width: '650px',
+                                            cursor: 'pointer',
                                         }}
-                                      >
+                                    >
                                         Click to Add Photo {boxIndex + 1}
                                         <input
-                                          accept="image/*"
-                                          type="file"
-                                          onChange={(e) => handleAddPhotos(e, boxIndex)}
-                                          id={`imageFile${boxIndex}`}
-                                          style={{ display: 'none' }}
-                                          multiple
-                                          disabled={disableButton} 
+                                            accept="image/*"
+                                            type="file"
+                                            onChange={(e) => handleAddPhotos(e, boxIndex)}
+                                            id={`imageFile${boxIndex}`}
+                                            style={{ display: 'none' }}
+                                            multiple
+                                            disabled={disableButton}
                                         />
-                                      </Box>
+                                    </Box>
 
-                                      {imageURLs[boxIndex] && (
+                                    {imageURLs[boxIndex] && (
                                         <div style={{ position: 'absolute', top: 0, left: 0 }}>
-                                          <img
-                                            src={imageURLs[boxIndex]}
-                                            alt={`Property Image ${boxIndex + 1}`}
-                                            style={{ objectFit: 'fill', height: '175px', width: '673px' }}
-                                          />
-                                          <Button
-                                            onClick={() => handleRemovePhotos(boxIndex)}
-                                            disabled={disableButton} 
-                                            sx={{
-                                                ":hover": {
-                                                    borderColor: "#F6EBE1", bgcolor: "#F6EBE1", color: "#AB191F",
-                                                    borderWidth: 1.5
-                                                },
-                                                borderColor: disableButton ? "light grey" : "#AB191F", 
-                                                bgcolor: disableButton ? "light grey" : "#AB191F", 
-                                                color: "#F6EBE1",
-                                                borderWidth: 1.5, width: "112px", height: "35px", fontWeight: 600, lineHeight: "11px",
-                                                boxShadow: 5, float: "right", bottom: 15, right: 10,
-                                                position: "absolute"
-                                            }}
-                                            variant="outlined"
-                                          >
-                                            Remove
-                                          </Button>
+                                            <img
+                                                src={imageURLs[boxIndex]}
+                                                alt={`Property Image ${boxIndex + 1}`}
+                                                style={{ objectFit: 'fill', height: '175px', width: '673px' }}
+                                            />
+                                            <Button
+                                                onClick={() => handleRemovePhotos(boxIndex)}
+                                                disabled={disableButton}
+                                                sx={{
+                                                    ":hover": {
+                                                        borderColor: "#F6EBE1", bgcolor: "#F6EBE1", color: "#AB191F",
+                                                        borderWidth: 1.5
+                                                    },
+                                                    borderColor: disableButton ? "light grey" : "#AB191F",
+                                                    bgcolor: disableButton ? "light grey" : "#AB191F",
+                                                    color: "#F6EBE1",
+                                                    borderWidth: 1.5, width: "112px", height: "35px", fontWeight: 600, lineHeight: "11px",
+                                                    boxShadow: 5, float: "right", bottom: 15, right: 10,
+                                                    position: "absolute"
+                                                }}
+                                                variant="outlined"
+                                            >
+                                                Remove
+                                            </Button>
                                         </div>
-                                      )}
-                                    </label>
-                                  ))
-                              )
-                            }
-                            {console.log(imageURLs)}
-                            {/* {propertyImage === "" || propertyImage === null ? "" : <img src={propertyImage} style={{ objectFit: 'fill', width: '700px', height: '200px'}}/>} */}
-                        {/*
-                        <AspectRatio minHeight={100} maxHeight={200} minWidth={300} maxWidth={400}
-                            style={{
-                                borderStyle: "dotted",
-                                borderColor: "black",
-                                marginBottom: "30px"
-                            }}>
+                                    )}
+                                </label>
+                            ))
+                        )
+                    }
 
-                            {!image &&
-                                <label id="imageLabel" for="imageFile" style={{ color: "#AB191F" }}>
-                                    Click to Add A Photo
-                                    <input
-                                        accept="image/*"
-                                        type="file"
-                                        onChange={handleAddPhotos}
-                                        id="imageFile"
-                                        style={{ display: "none" }}
-                                    />
-                                </label>}
+                    <Stack direction={{ '400px': "column", md: "row", lg: "row", xl: "row" }} spacing={5} sx={{ marginTop: 2, p: 1 }}>
 
-                            {propertyImage === "" || propertyImage === null ? "" : <img src={propertyImage} style={{ objectFit: 'fill', width: '700px', height: '200px'}}/>}
-                        </AspectRatio>
-                            */}
-                        <Stack direction={{ '400px': "column", md: "row", lg: "row", xl: "row" }} spacing={5} sx={{ marginTop: 2, p: 1 }}>
+                        {/* Property Details */}
+                        <Box width='600'>
+                            <InputBase
+                                placeholder="Enter property name"
+                                id="name-textfield"
+                                sx={inputBaseSX}
+                                disabled={disableButton}
+                                defaultValue={editMode === true ? data.propertyName : propertyName}
+                                onChange={(e) => setPropertyName(e.target.value)}
+                            /> {<br />}{<br />}
+                            <InputBase
+                                placeholder="Enter property address"
+                                id="addr-textfield"
+                                sx={inputBaseSX}
+                                disabled={disableButton}
+                                defaultValue={editMode === true ? data.address : propertyAddress}
+                                onChange={(e) => setPropertyAddress(e.target.value)}
+                            /> {<br />}{<br />}
+                            <InputBase
+                                placeholder="Enter property price"
+                                id="price-textfield"
+                                startAdornment={<InputAdornment position="start">$</InputAdornment>}
+                                sx={inputBaseSX}
+                                disabled={disableButton}
+                                defaultValue={editMode === true ? data.cost : price}
+                                onChange={(e) => setPrice(e.target.value)}
+                            /> {<br />}{<br />}
 
+                            <Select
+                                id="beds-input"
+                                defaultValue={editMode === true ? data.beds : bed}
+                                sx={selectSX}
+                                disabled={disableButton}
+                                onChange={(e) => setBed(e.target.value)}
+                            >
+                                <MenuItem value={-1}># beds</MenuItem>
+                                <MenuItem value={1} sx={menuItemSX}>1</MenuItem>
+                                <MenuItem value={2} sx={menuItemSX}>2</MenuItem>
+                                <MenuItem value={3} sx={menuItemSX}>3</MenuItem>
+                                <MenuItem value={4} sx={menuItemSX}>4</MenuItem>
+                                <MenuItem value={5} sx={menuItemSX}>5</MenuItem>
 
-                            {/* Property Details */}
-                            <Box width='600'>
-                                <InputBase
-                                    placeholder="Enter property name"
-                                    id="name-textfield"
-                                    sx={inputBaseSX}
-                                    disabled={disableButton}
-                                    defaultValue={editMode === true ? data.propertyName : propertyName}
-                                    onChange={(e) => setPropertyName(e.target.value)}
-                                /> {<br />}{<br />}
-                                <InputBase
-                                    placeholder="Enter property address"
-                                    id="addr-textfield"
-                                    sx={inputBaseSX}
-                                    disabled={disableButton}
-                                    defaultValue={editMode === true ? data.address : propertyAddress}
-                                    onChange={(e) => setPropertyAddress(e.target.value)}
-                                /> {<br />}{<br />}
-                                <InputBase
-                                    placeholder="Enter property price"
-                                    id="price-textfield"
-                                    startAdornment={<InputAdornment position="start">$</InputAdornment>}
-                                    sx={inputBaseSX}
-                                    disabled={disableButton}
-                                    defaultValue={editMode === true ? data.cost : price}
-                                    onChange={(e) => setPrice(e.target.value)}
-                                /> {<br />}{<br />}
-
-                                <Select
-                                    id="beds-input"
-                                    defaultValue={editMode === true ? data.beds : bed}
-                                    sx={selectSX}
-                                    disabled={disableButton}
-                                    onChange={(e) => setBed(e.target.value)}
-                                >
-                                    <MenuItem value={-1}># beds</MenuItem>
-                                    <MenuItem value={1} sx={menuItemSX}>1</MenuItem>
-                                    <MenuItem value={2} sx={menuItemSX}>2</MenuItem>
-                                    <MenuItem value={3} sx={menuItemSX}>3</MenuItem>
-                                    <MenuItem value={4} sx={menuItemSX}>4</MenuItem>
-                                    <MenuItem value={5} sx={menuItemSX}>5</MenuItem>
-
-                                </Select>
-                                <Select
-                                    id="baths-input"
-                                    defaultValue={editMode === true ? data.baths : bath}
-                                    disabled={disableButton}
-                                    sx={{
-                                        marginLeft: "-10px",
-                                        marginRight: "-50px",
-                                        marginTop: "-10px",
-                                        width: "100px", height: "35px", fontSize: "11pt",
-                                        '.MuiOutlinedInput-notchedOutline': {
-                                            border: "2px solid #AB191F"
-
-                                        },
-                                        '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                                            border: "2px solid #AB191F"
-                                        },
-                                    }}
-                                    onChange={(e) => setBath(e.target.value)}
-                                    >
-                                    <MenuItem value={-1}># baths</MenuItem>
-                                    <MenuItem value={1} sx={menuItemSX}>1</MenuItem>
-                                    <MenuItem value={1.5} sx={menuItemSX}>1.5</MenuItem>
-                                    <MenuItem value={2} sx={menuItemSX}>2</MenuItem>
-                                    <MenuItem value={2.5} sx={menuItemSX}>2.5</MenuItem>
-                                    <MenuItem value={3} sx={menuItemSX}>3</MenuItem>
-                                    <MenuItem value={3.5} sx={menuItemSX}>3.5</MenuItem>
-                                    <MenuItem value={4} sx={menuItemSX}>4</MenuItem>
-                                    <MenuItem value={4.5} sx={menuItemSX}>4.5</MenuItem>
-                                    <MenuItem value={5} sx={menuItemSX}>5</MenuItem>
-                                </Select>
-                            </Box>
-
-                            {/* Amenities */}
-                            <Divider orientation={{ xs: 'horizontal', md: 'vertical', lg: 'vertical', xl: 'vertical' }} width={3} sx={{ borderBottomWidth: 3, color: "#AB191F", backgroundColor: "#AB191F", marginY: 2, marginX: 0, maxHeight: "175px" }} />
-                            <Box height="175px" style={{ marginRight: "-45px", }}>
-                                <Box width='200px' height='600px' style={{ margin: "-10px 0 0 -30px", textAlign: "left", padding: "0" }}>
-                                    <Typography
-                                        sx={{
-                                            fontWeight: 600,
-                                            marginTop: "-30px",
-                                            marginBottom: "5px",
-                                            //marginLeft:"-25px",
-                                            variant: "body2"
-                                        }}
-                                    >
-                                        Amenities
-                                    </Typography>
-
-                                    {/* Furnished */}
-                                    <Container style={{ float: "left", width: "100%" }}>
-                                        <FormControlLabel style={{ margin: "-10px 0 0 -30px" }} label={<Typography style={{ fontSize: "11pt" }}>Furnished</Typography>} control={
-                                            <Checkbox style={{}}
-                                                defaultChecked={editMode === true ? (data.amenities.includes("Furnished") ? () => setIsFurnished(true) : isFurnished) : isFurnished}
-                                                onChange={() => {
-                                                    if (!isFurnished) {
-                                                        setIsFurnished(true)
-                                                        handleCheckboxChange("Furnished")
-                                                    } else {
-                                                        setIsFurnished(false)
-                                                        handleCheckboxChange("Furnished")
-                                                    }
-                                                }}
-                                                disabled={disableButton}
-                                                inputProps={{ 'aria-label': 'controlled' }}
-                                                sx={{
-                                                    color: "#AB191F",
-                                                    '&.Mui-checked': {
-                                                        color: "#AB191F",
-                                                    },
-                                                }}
-                                            />}
-                                        />
-                                    </Container> {<br />}{<br />}
-
-                                    {/* Kitchen Appliances */}
-                                    <Container style={{ float: "left", width: "100%" }}>
-                                        <FormControlLabel style={{ margin: "-20px 0 0 -30px" }} label={<Typography style={{ fontSize: "11pt" }}>Kitchen Appliances</Typography>} control={
-                                            <Checkbox style={{}}
-                                                defaultChecked={editMode === true ? (data.amenities.includes("Kitchen Appliance") ? () => setHasKitchenApp(true) : hasKitchenApp) : hasKitchenApp}
-                                                onChange={() => {
-                                                    if (!hasKitchenApp) {
-                                                        setHasKitchenApp(true)
-                                                        handleCheckboxChange("Kitchen Appliance")
-                                                    } else {
-                                                        setHasKitchenApp(false)
-                                                        handleCheckboxChange("Kitchen Appliance")
-                                                    }
-                                                }}
-                                                disabled={disableButton}
-                                                inputProps={{ 'aria-label': 'controlled' }}
-                                                sx={{
-                                                    color: "#AB191F",
-                                                    '&.Mui-checked': {
-                                                        color: "#AB191F",
-                                                    },
-                                                }}
-                                            />}
-                                        />
-                                    </Container> {<br />}{<br />}
-
-                                    {/* In-Unit Washer Dryer */}
-                                    <Container style={{ float: "left", width: "100%" }}>
-                                        <FormControlLabel style={{ margin: "-40px 0 0 -30px" }} label={<Typography style={{ fontSize: "11pt" }}>In-Unit Washer Dryer</Typography>} control={
-                                            <Checkbox style={{}}
-                                                defaultChecked={editMode === true ? (data.amenities.includes("In Unit W/D") ? () => setHasInUnitWD(true) : hasInUnitWD) : hasInUnitWD}
-                                                onChange={() => {
-                                                    if (!hasInUnitWD) {
-                                                        setHasInUnitWD(true)
-                                                        handleCheckboxChange("In Unit W/D")
-                                                    } else {
-                                                        setHasInUnitWD(false)
-                                                        handleCheckboxChange("In Unit W/D")
-                                                    }
-                                                }}
-                                                disabled={disableButton}
-                                                inputProps={{ 'aria-label': 'controlled' }}
-                                                sx={{
-                                                    color: "#AB191F",
-                                                    '&.Mui-checked': {
-                                                        color: "#AB191F",
-                                                    },
-                                                }}
-                                            />}
-                                        />
-                                    </Container> {<br />}{<br />}
-
-                                    {/* Parking */}
-                                    <Container style={{ float: "left", width: "50%" }}>
-                                        <FormControlLabel style={{ margin: "-60px 0 0 -30px" }} label={<Typography style={{ fontSize: "11pt" }}>Parking</Typography>} control={
-                                            <Checkbox style={{}}
-                                                defaultChecked={editMode === true ? (data.amenities.includes("Parking") ? () => setHasParking(true) : hasParking) : hasParking}
-                                                onChange={() => {
-                                                    if (!hasParking) {
-                                                        setHasParking(true)
-                                                        handleCheckboxChange("Parking")
-                                                    } else {
-                                                        setHasParking(false)
-                                                        handleCheckboxChange("Parking")
-                                                    }
-                                                }}
-                                                disabled={disableButton}
-                                                inputProps={{ 'aria-label': 'controlled' }}
-                                                sx={{
-                                                    color: "#AB191F",
-                                                    '&.Mui-checked': {
-                                                        color: "#AB191F",
-                                                    },
-                                                }}
-                                            />}
-                                        />
-                                    </Container> {<br />}{<br />}
-
-                                    {/* Pet Friendly */}
-                                    <Container style={{ float: "left", width: "100%" }}>
-                                        <FormControlLabel style={{ margin: "-80px 0 0 -30px" }} label={<Typography style={{ fontSize: "11pt" }}>Pet Friendly</Typography>} control={
-                                            <Checkbox style={{}}
-                                                defaultChecked={editMode === true ? (data.amenities.includes("Pet Friendly") ? () => setIsPetFriendly(true) : isPetFriendly) : isPetFriendly}
-                                                onChange={() => {
-                                                    if (!isPetFriendly) {
-                                                        setIsPetFriendly(true)
-                                                        handleCheckboxChange("Pet Friendly")
-                                                    } else {
-                                                        setIsPetFriendly(false)
-                                                        handleCheckboxChange("Pet Friendly")
-                                                    }
-                                                }}
-                                                disabled={disableButton}
-                                                inputProps={{ 'aria-label': 'controlled' }}
-                                                sx={{
-                                                    color: "#AB191F",
-                                                    '&.Mui-checked': {
-                                                        color: "#AB191F",
-                                                    },
-                                                }}
-                                            />}
-                                        />
-                                    </Container> {<br />}{<br />}
-
-                                    {/* Gym */}
-                                    <Container style={{ float: "left", width: "100%" }}>
-                                        <FormControlLabel style={{ margin: "-100px 0 0 -30px" }} label={<Typography style={{ fontSize: "11pt" }}>Gym</Typography>} control={
-                                            <Checkbox style={{}}
-                                            defaultChecked={editMode === true ? data.amenities.includes("Gym") : hasGym}
-                                                onChange={() => {
-                                                    if (!hasGym) {
-                                                        setHasGym(true)
-                                                        handleCheckboxChange("Gym")
-                                                    } else {
-                                                        setHasGym(false)
-                                                        handleCheckboxChange("Gym")
-                                                    }
-                                                }}
-                                                disabled={disableButton}
-                                                inputProps={{ 'aria-label': 'controlled' }}
-                                                sx={{
-                                                    color: "#AB191F",
-                                                    '&.Mui-checked': {
-                                                        color: "#AB191F",
-                                                    },
-                                                }}
-                                            />}
-                                        />
-                                    </Container>
-                                </Box>
-                            </Box>
-
-                            {/* Utilities */}
-                            <Divider orientation={{ xs: 'horizontal', md: 'vertical', lg: 'vertical', xl: 'vertical' }} width={3} sx={{ borderBottomWidth: 3, color: "#AB191F", backgroundColor: "#AB191F", marginY: 2, marginX: 0, maxHeight: "175px" }} />
-                            <Box height="175px" style={{ marginRight: "-25px", }}>
-                                <Box width='200px' height='600px' style={{ margin: "-10px 0 0 -30px", textAlign: "left", padding: "0" }}>
-                                    <Typography
-                                        sx={{
-                                            fontWeight: 600,
-                                            marginTop: "-30px",
-                                            marginBottom: "5px",
-                                            //marginLeft:"-25px",
-                                            variant: "body2"
-                                        }}
-                                    >
-                                        Utilities
-                                    </Typography>
-
-                                    {/* Water */}
-                                    <Container style={{ float: "left", width: "100%", }}>
-                                        <FormControlLabel style={{ margin: "-10px 0 0 -30px" }} label={<Typography style={{ fontSize: "11pt" }}>Water</Typography>} control={
-                                            <Checkbox style={{}}
-                                                defaultChecked={editMode === true ? data.utilities.includes("Water") : includeWater}
-                                                onChange={() => {
-                                                    setIncludeWater(prevState => {
-                                                        handleUtilChange("Water");
-                                                        return !prevState;
-                                                    });
-                                                }}
-                                                disabled={disableButton}
-                                                inputProps={{ 'aria-label': 'controlled' }}
-                                                sx={{
-                                                    color: "#AB191F",
-                                                    '&.Mui-checked': {
-                                                        color: "#AB191F",
-                                                    },
-                                                }}
-                                            />}
-                                        />
-                                    </Container> {<br />}{<br />}
-
-                                    {/* Electricity */}
-                                    <Container style={{ float: "left", width: "100%" }}>
-                                        <FormControlLabel style={{ margin: "-20px 0 0 -30px" }} label={<Typography style={{ fontSize: "11pt" }}>Electricity</Typography>} control={
-                                            <Checkbox style={{}}
-                                                defaultChecked={editMode === true ? data.utilities.includes("Electricity")  : includeElec}
-                                                onChange={() => {
-                                                    if (!includeElec) {
-                                                        setIncludeElec(!includeElec)
-                                                        handleUtilChange("Electricity")
-                                                    } else {
-                                                        setIncludeElec(!includeElec)
-                                                        handleUtilChange("Electricity")
-                                                    }
-                                                }}
-                                                disabled={disableButton}
-                                                inputProps={{ 'aria-label': 'controlled' }}
-                                                sx={{
-                                                    color: "#AB191F",
-                                                    '&.Mui-checked': {
-                                                        color: "#AB191F",
-                                                    },
-                                                }}
-                                            />}
-                                        />
-                                    </Container> {<br />}{<br />}
-
-                                    {/* Gas */}
-                                    <Container style={{ float: "left", width: "100%", }}>
-                                        <FormControlLabel style={{ margin: "-40px 0 0 -30px" }} label={<Typography style={{ fontSize: "11pt" }}>Gas</Typography>} control={
-                                            <Checkbox style={{}}
-                                                defaultChecked={editMode === true ? data.utilities.includes("Gas")  : includeGas}
-                                                onChange={() => {
-                                                    if (!includeGas) {
-                                                        setIncludeGas(!includeGas)
-                                                        handleUtilChange("Gas")
-                                                    } else {
-                                                        setIncludeGas(!includeGas)
-                                                        handleUtilChange("Gas")
-                                                    }
-                                                }}
-                                                disabled={disableButton}
-                                                inputProps={{ 'aria-label': 'controlled' }}
-                                                sx={{
-                                                    color: "#AB191F",
-                                                    '&.Mui-checked': {
-                                                        color: "#AB191F",
-                                                    },
-                                                }}
-                                            />}
-                                        />
-                                    </Container> {<br />}{<br />}
-
-                                    {/* Trash */}
-                                    <Container style={{ float: "left", width: "100%", }}>
-                                        <FormControlLabel style={{ margin: "-60px 0 0 -30px" }} label={<Typography style={{ fontSize: "11pt" }}>Trash</Typography>} control={
-                                            <Checkbox style={{}}
-                                                defaultChecked={editMode === true ? data.utilities.includes("Trash")  : includeTrash}
-                                                onChange={() => {
-                                                    if (!includeTrash) {
-                                                        setIncludeTrash(!includeTrash)
-                                                        handleUtilChange("Trash")
-                                                    } else {
-                                                        setIncludeTrash(!includeTrash)
-                                                        handleUtilChange("Trash")
-                                                    }
-                                                }}
-                                                disabled={disableButton}
-                                                inputProps={{ 'aria-label': 'controlled' }}
-                                                sx={{
-                                                    color: "#AB191F",
-                                                    '&.Mui-checked': {
-                                                        color: "#AB191F",
-                                                    },
-                                                }}
-                                            />}
-                                        />
-                                    </Container> {<br />}{<br />}
-
-                                    {/* Sewage */}
-                                    <Container style={{ float: "left", width: "100%", }}>
-                                        <FormControlLabel style={{ margin: "-80px 0 0 -30px" }} label={<Typography style={{ fontSize: "11pt" }}>Sewage</Typography>} control={
-                                            <Checkbox style={{}}
-                                                defaultChecked={editMode === true ? data.utilities.includes("Sewage")  : includeSewage}
-                                                onChange={() => {
-                                                    if (!includeSewage) {
-                                                        setIncludeSewage(!includeSewage)
-                                                        handleUtilChange("Sewage")
-                                                    } else {
-                                                        setIncludeSewage(!includeSewage)
-                                                        handleUtilChange("Sewage")
-                                                    }
-                                                }}
-                                                disabled={disableButton}
-                                                inputProps={{ 'aria-label': 'controlled' }}
-                                                sx={{
-                                                    color: "#AB191F",
-                                                    '&.Mui-checked': {
-                                                        color: "#AB191F",
-                                                    },
-                                                }}
-                                            />}
-                                        />
-                                    </Container> {<br />}{<br />}
-
-                                    {/* Internet */}
-                                    <Container style={{ float: "left", width: "100%", }}>
-                                        <FormControlLabel style={{ margin: "-100px 0 0 -30px" }} label={<Typography style={{ fontSize: "11pt" }}>Internet</Typography>} control={
-                                            <Checkbox style={{}}
-                                                defaultChecked={editMode === true ? data.utilities.includes("Internet")  : includeInternet}
-                                                onChange={() => {
-                                                    if (!includeInternet) {
-                                                        setInternet(!includeInternet)
-                                                        handleUtilChange("Internet")
-                                                    } else {
-                                                        setInternet(!includeInternet)
-                                                        handleUtilChange("Internet")
-                                                    }
-                                                }}
-                                                disabled={disableButton}
-                                                inputProps={{ 'aria-label': 'controlled' }}
-                                                sx={{
-                                                    color: "#AB191F",
-                                                    '&.Mui-checked': {
-                                                        color: "#AB191F",
-                                                    },
-                                                }}
-                                            />}
-                                        />
-                                    </Container> {<br />}{<br />}
-                                </Box>
-                            </Box>
-                            {console.log(amenitiesArr)}
-                            {console.log(propertyName,utilities)}
-                            {/* Add Coop button */}
-                            <Toaster
-                                toastOptions={{
-                                    success: {
-                                        style: {
-                                            background: 'green',
-                                        },
-                                    },
-                                    error: {
-                                        style: {
-                                            background: 'red',
-                                        },
-                                    },
-                                }} />
-                            <Button
+                            </Select>
+                            <Select
+                                id="baths-input"
+                                defaultValue={editMode === true ? data.baths : bath}
+                                disabled={disableButton}
                                 sx={{
-                                    ":hover": {
-                                        borderColor: "#F6EBE1", bgcolor: "#F6EBE1", color: "#AB191F",
-                                        borderWidth: 1.5
-                                    },
-                                    borderColor: "#AB191F", bgcolor: "#AB191F", color: "#F6EBE1",
-                                    borderWidth: 1.5, width: "112px", height: "35px", fontWeight: 600, lineHeight: "11px",
-                                    boxShadow: 5, float: "right", bottom: 20, right: 30,
-                                    marginBottom: "30px",
-                                    marginLeft: "210px",
-                                    position: "absolute"
-                                }}
-                                onClick={() => {
-                                    if (disableButton) {
-                                        editMode = false;
-                                        setDisableButton(false)
-                                    } else {
-                                        handleAppCoop()
-                                        setDisableButton(true)
-                                    }
-                                }}
-                                variant="outlined">{disableButton ? 'Edit' : 'Add Coop'}
-                            </Button>
-                        </Stack>
+                                    marginLeft: "-10px",
+                                    marginRight: "-50px",
+                                    marginTop: "-10px",
+                                    width: "100px", height: "35px", fontSize: "11pt",
+                                    '.MuiOutlinedInput-notchedOutline': {
+                                        border: "2px solid #AB191F"
 
-                    </Container>
-                </DialogContent>
-            </Dialog>
+                                    },
+                                    '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                                        border: "2px solid #AB191F"
+                                    },
+                                }}
+                                onChange={(e) => setBath(e.target.value)}
+                            >
+                                <MenuItem value={-1}># baths</MenuItem>
+                                <MenuItem value={1} sx={menuItemSX}>1</MenuItem>
+                                <MenuItem value={1.5} sx={menuItemSX}>1.5</MenuItem>
+                                <MenuItem value={2} sx={menuItemSX}>2</MenuItem>
+                                <MenuItem value={2.5} sx={menuItemSX}>2.5</MenuItem>
+                                <MenuItem value={3} sx={menuItemSX}>3</MenuItem>
+                                <MenuItem value={3.5} sx={menuItemSX}>3.5</MenuItem>
+                                <MenuItem value={4} sx={menuItemSX}>4</MenuItem>
+                                <MenuItem value={4.5} sx={menuItemSX}>4.5</MenuItem>
+                                <MenuItem value={5} sx={menuItemSX}>5</MenuItem>
+                            </Select>
+                        </Box>
+
+                        {/* Amenities */}
+                        <Divider orientation={{ xs: 'horizontal', md: 'vertical', lg: 'vertical', xl: 'vertical' }} width={3} sx={{ borderBottomWidth: 3, color: "#AB191F", backgroundColor: "#AB191F", marginY: 2, marginX: 0, maxHeight: "175px" }} />
+                        <Box height="175px" style={{ marginRight: "-45px", }}>
+                            <Box width='200px' height='600px' style={{ margin: "-10px 0 0 -30px", textAlign: "left", padding: "0" }}>
+                                <Typography
+                                    sx={{
+                                        fontWeight: 600,
+                                        marginTop: "-30px",
+                                        marginBottom: "5px",
+                                        //marginLeft:"-25px",
+                                        variant: "body2"
+                                    }}
+                                >
+                                    Amenities
+                                </Typography>
+
+                                {/* Furnished */}
+                                <Container style={{ float: "left", width: "100%" }}>
+                                    <FormControlLabel style={{ margin: "-10px 0 0 -30px" }} label={<Typography style={{ fontSize: "11pt" }}>Furnished</Typography>} control={
+                                        <Checkbox style={{}}
+                                            defaultChecked={editMode === true ? data.amenities.includes("Furnished") : isFurnished}
+                                            onChange={() => {
+                                                setIsFurnished(prevState => {
+                                                    handleAmenityChange("Furnished")
+                                                    return !prevState;
+                                                });
+                                            }}
+                                            disabled={disableButton}
+                                            inputProps={{ 'aria-label': 'controlled' }}
+                                            sx={{
+                                                color: "#AB191F",
+                                                '&.Mui-checked': {
+                                                    color: "#AB191F",
+                                                },
+                                            }}
+                                        />}
+                                    />
+                                </Container> {<br />}{<br />}
+
+                                {/* Kitchen Appliances */}
+                                <Container style={{ float: "left", width: "100%" }}>
+                                    <FormControlLabel style={{ margin: "-20px 0 0 -30px" }} label={<Typography style={{ fontSize: "11pt" }}>Kitchen Appliances</Typography>} control={
+                                        <Checkbox style={{}}
+                                            defaultChecked={editMode === true ? data.amenities.includes("Kitchen Appliance") : hasKitchenApp}
+                                            onChange={() => {
+                                                setHasKitchenApp(prevState => {
+                                                    handleAmenityChange("Kitchen Appliance")
+                                                    return !prevState;
+                                                });
+                                            }}
+                                            disabled={disableButton}
+                                            inputProps={{ 'aria-label': 'controlled' }}
+                                            sx={{
+                                                color: "#AB191F",
+                                                '&.Mui-checked': {
+                                                    color: "#AB191F",
+                                                },
+                                            }}
+                                        />}
+                                    />
+                                </Container> {<br />}{<br />}
+
+                                {/* In-Unit Washer Dryer */}
+                                <Container style={{ float: "left", width: "100%" }}>
+                                    <FormControlLabel style={{ margin: "-40px 0 0 -30px" }} label={<Typography style={{ fontSize: "11pt" }}>In-Unit Washer Dryer</Typography>} control={
+                                        <Checkbox style={{}}
+                                            defaultChecked={editMode === true ? data.amenities.includes("In Unit W/D") : hasInUnitWD}
+                                            onChange={() => {
+                                                setHasInUnitWD(prevState => {
+                                                    handleAmenityChange("In Unit W/D")
+                                                    return !prevState;
+                                                });
+                                            }}
+
+                                            disabled={disableButton}
+                                            inputProps={{ 'aria-label': 'controlled' }}
+                                            sx={{
+                                                color: "#AB191F",
+                                                '&.Mui-checked': {
+                                                    color: "#AB191F",
+                                                },
+                                            }}
+                                        />}
+                                    />
+                                </Container> {<br />}{<br />}
+
+                                {/* Parking */}
+                                <Container style={{ float: "left", width: "50%" }}>
+                                    <FormControlLabel style={{ margin: "-60px 0 0 -30px" }} label={<Typography style={{ fontSize: "11pt" }}>Parking</Typography>} control={
+                                        <Checkbox style={{}}
+                                            defaultChecked={editMode === true ? data.amenities.includes("Parking") : hasParking}
+                                            onChange={() => {
+                                                setHasParking(prevState => {
+                                                    handleAmenityChange("Parking")
+                                                    return !prevState;
+                                                });
+                                            }}
+
+                                            disabled={disableButton}
+                                            inputProps={{ 'aria-label': 'controlled' }}
+                                            sx={{
+                                                color: "#AB191F",
+                                                '&.Mui-checked': {
+                                                    color: "#AB191F",
+                                                },
+                                            }}
+                                        />}
+                                    />
+                                </Container> {<br />}{<br />}
+
+                                {/* Pet Friendly */}
+                                <Container style={{ float: "left", width: "100%" }}>
+                                    <FormControlLabel style={{ margin: "-80px 0 0 -30px" }} label={<Typography style={{ fontSize: "11pt" }}>Pet Friendly</Typography>} control={
+                                        <Checkbox style={{}}
+                                            defaultChecked={editMode === true ? data.amenities.includes("Pet Friendly") : isPetFriendly}
+                                            onChange={() => {
+                                                setIsPetFriendly(prevState => {
+                                                    handleAmenityChange("Pet Friendly")
+                                                    return !prevState;
+                                                });
+                                            }}
+                                            disabled={disableButton}
+                                            inputProps={{ 'aria-label': 'controlled' }}
+                                            sx={{
+                                                color: "#AB191F",
+                                                '&.Mui-checked': {
+                                                    color: "#AB191F",
+                                                },
+                                            }}
+                                        />}
+                                    />
+                                </Container> {<br />}{<br />}
+
+                                {/* Gym */}
+                                <Container style={{ float: "left", width: "100%" }}>
+                                    <FormControlLabel style={{ margin: "-100px 0 0 -30px" }} label={<Typography style={{ fontSize: "11pt" }}>Gym</Typography>} control={
+                                        <Checkbox style={{}}
+                                            defaultChecked={editMode === true ? data.amenities.includes("Gym") : hasGym}
+                                            onChange={() => {
+                                                setHasGym(prevState => {
+                                                    handleAmenityChange("Gym")
+                                                    return !prevState;
+                                                });
+                                            }}
+                                            disabled={disableButton}
+                                            inputProps={{ 'aria-label': 'controlled' }}
+                                            sx={{
+                                                color: "#AB191F",
+                                                '&.Mui-checked': {
+                                                    color: "#AB191F",
+                                                },
+                                            }}
+                                        />}
+                                    />
+                                </Container>
+                            </Box>
+                        </Box>
+
+                        {/* Utilities */}
+                        <Divider orientation={{ xs: 'horizontal', md: 'vertical', lg: 'vertical', xl: 'vertical' }} width={3} sx={{ borderBottomWidth: 3, color: "#AB191F", backgroundColor: "#AB191F", marginY: 2, marginX: 0, maxHeight: "175px" }} />
+                        <Box height="175px" style={{ marginRight: "-25px", }}>
+                            <Box width='200px' height='600px' style={{ margin: "-10px 0 0 -30px", textAlign: "left", padding: "0" }}>
+                                <Typography
+                                    sx={{
+                                        fontWeight: 600,
+                                        marginTop: "-30px",
+                                        marginBottom: "5px",
+                                        //marginLeft:"-25px",
+                                        variant: "body2"
+                                    }}
+                                >
+                                    Utilities
+                                </Typography>
+
+                                {/* Water */}
+                                <Container style={{ float: "left", width: "100%", }}>
+                                    <FormControlLabel style={{ margin: "-10px 0 0 -30px" }} label={<Typography style={{ fontSize: "11pt" }}>Water</Typography>} control={
+                                        <Checkbox style={{}}
+                                            defaultChecked={editMode === true ? data.utilities.includes("Water") : includeWater}
+                                            onChange={() => {
+                                                setIncludeWater(prevState => {
+                                                    handleUtilChange("Water");
+                                                    return !prevState;
+                                                });
+                                            }}
+                                            disabled={disableButton}
+                                            inputProps={{ 'aria-label': 'controlled' }}
+                                            sx={{
+                                                color: "#AB191F",
+                                                '&.Mui-checked': {
+                                                    color: "#AB191F",
+                                                },
+                                            }}
+                                        />}
+                                    />
+                                </Container> {<br />}{<br />}
+
+                                {/* Electricity */}
+                                <Container style={{ float: "left", width: "100%" }}>
+                                    <FormControlLabel style={{ margin: "-20px 0 0 -30px" }} label={<Typography style={{ fontSize: "11pt" }}>Electricity</Typography>} control={
+                                        <Checkbox style={{}}
+                                            defaultChecked={editMode === true ? data.utilities.includes("Electricity") : includeElec}
+                                            onChange={() => {
+                                                setIncludeElec(prevState => {
+                                                    handleUtilChange("Electricity");
+                                                    return !prevState;
+                                                });
+                                            }}
+                                            disabled={disableButton}
+                                            inputProps={{ 'aria-label': 'controlled' }}
+                                            sx={{
+                                                color: "#AB191F",
+                                                '&.Mui-checked': {
+                                                    color: "#AB191F",
+                                                },
+                                            }}
+                                        />}
+                                    />
+                                </Container> {<br />}{<br />}
+
+                                {/* Gas */}
+                                <Container style={{ float: "left", width: "100%", }}>
+                                    <FormControlLabel style={{ margin: "-40px 0 0 -30px" }} label={<Typography style={{ fontSize: "11pt" }}>Gas</Typography>} control={
+                                        <Checkbox style={{}}
+                                            defaultChecked={editMode === true ? data.utilities.includes("Gas") : includeGas}
+                                            onChange={() => {
+                                                setIncludeGas(prevState => {
+                                                    handleUtilChange("Gas");
+                                                    return !prevState;
+                                                });
+                                            }}
+                                            disabled={disableButton}
+                                            inputProps={{ 'aria-label': 'controlled' }}
+                                            sx={{
+                                                color: "#AB191F",
+                                                '&.Mui-checked': {
+                                                    color: "#AB191F",
+                                                },
+                                            }}
+                                        />}
+                                    />
+                                </Container> {<br />}{<br />}
+
+                                {/* Trash */}
+                                <Container style={{ float: "left", width: "100%", }}>
+                                    <FormControlLabel style={{ margin: "-60px 0 0 -30px" }} label={<Typography style={{ fontSize: "11pt" }}>Trash</Typography>} control={
+                                        <Checkbox style={{}}
+                                            defaultChecked={editMode === true ? data.utilities.includes("Trash") : includeTrash}
+                                            onChange={() => {
+                                                setIncludeTrash(prevState => {
+                                                    handleUtilChange("Trash");
+                                                    return !prevState;
+                                                });
+                                            }}
+                                            disabled={disableButton}
+                                            inputProps={{ 'aria-label': 'controlled' }}
+                                            sx={{
+                                                color: "#AB191F",
+                                                '&.Mui-checked': {
+                                                    color: "#AB191F",
+                                                },
+                                            }}
+                                        />}
+                                    />
+                                </Container> {<br />}{<br />}
+
+                                {/* Sewage */}
+                                <Container style={{ float: "left", width: "100%", }}>
+                                    <FormControlLabel style={{ margin: "-80px 0 0 -30px" }} label={<Typography style={{ fontSize: "11pt" }}>Sewage</Typography>} control={
+                                        <Checkbox style={{}}
+                                            defaultChecked={editMode === true ? data.utilities.includes("Sewage") : includeSewage}
+                                            onChange={() => {
+                                                setIncludeSewage(prevState => {
+                                                    handleUtilChange("Sewage");
+                                                    return !prevState;
+                                                });
+                                            }}
+                                            disabled={disableButton}
+                                            inputProps={{ 'aria-label': 'controlled' }}
+                                            sx={{
+                                                color: "#AB191F",
+                                                '&.Mui-checked': {
+                                                    color: "#AB191F",
+                                                },
+                                            }}
+                                        />}
+                                    />
+                                </Container> {<br />}{<br />}
+
+                                {/* Internet */}
+                                <Container style={{ float: "left", width: "100%", }}>
+                                    <FormControlLabel style={{ margin: "-100px 0 0 -30px" }} label={<Typography style={{ fontSize: "11pt" }}>Internet</Typography>} control={
+                                        <Checkbox style={{}}
+                                            defaultChecked={editMode === true ? data.utilities.includes("Internet") : includeInternet}
+                                            onChange={() => {
+                                                setInternet(prevState => {
+                                                    handleUtilChange("Internet");
+                                                    return !prevState;
+                                                });
+                                            }}
+                                            disabled={disableButton}
+                                            inputProps={{ 'aria-label': 'controlled' }}
+                                            sx={{
+                                                color: "#AB191F",
+                                                '&.Mui-checked': {
+                                                    color: "#AB191F",
+                                                },
+                                            }}
+                                        />}
+                                    />
+                                </Container> {<br />}{<br />}
+                            </Box>
+                        </Box>
+                        {console.log(amenitiesArr)}
+                        {console.log(propertyName, utilities, imageURLs)}
+                        {/* Add Coop button */}
+                        <Toaster
+                            toastOptions={{
+                                success: {
+                                    style: {
+                                        background: 'green',
+                                    },
+                                },
+                                error: {
+                                    style: {
+                                        background: 'red',
+                                    },
+                                },
+                            }} />
+                        <Button
+                            sx={{
+                                ":hover": {
+                                    borderColor: "#F6EBE1", bgcolor: "#F6EBE1", color: "#AB191F",
+                                    borderWidth: 1.5
+                                },
+                                borderColor: "#AB191F", bgcolor: "#AB191F", color: "#F6EBE1",
+                                borderWidth: 1.5, width: "112px", height: "35px", fontWeight: 600, lineHeight: "11px",
+                                boxShadow: 5, float: "right", bottom: 20, right: 30,
+                                marginBottom: "30px",
+                                marginLeft: "210px",
+                                position: "absolute"
+                            }}
+                            onClick={() => {
+                                if (disableButton) {
+                                    editMode = false;
+                                    setDisableButton(false)
+                                } else {
+                                    handleAppCoop()
+                                    setDisableButton(true)
+                                }
+                            }}
+                            variant="outlined">{disableButton ? 'Edit' : 'Add Coop'}
+                        </Button>
+                    </Stack>
+
+                </Container>
+            </DialogContent>
+        </Dialog>
     )
 }
 export default AddCoopView;
