@@ -464,7 +464,7 @@ const AddCoopView = ({ setOpen, editMode, data }) => {
                                 defaultValue={editMode === true ? data.baths : bath}
                                 disabled={disableButton}
                                 sx={{
-                                    marginLeft: "-10px",
+                                    marginLeft: "10px",
                                     marginRight: "-50px",
                                     marginTop: "-10px",
                                     width: "100px", height: "35px", fontSize: "11pt",
