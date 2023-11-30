@@ -155,6 +155,7 @@ const AddCoopView = ({ setOpen, editMode, data }) => {
             return;
         } else {
             toast.success("Save Success", { style: customToastStyle })
+            window.location.reload();
         }
 
         const dataToSend = {
@@ -189,7 +190,6 @@ const AddCoopView = ({ setOpen, editMode, data }) => {
             .catch(error => {
                 console.error('ERRORRR: ', error);
             });
-        window.location.reload();
 
     }
 
