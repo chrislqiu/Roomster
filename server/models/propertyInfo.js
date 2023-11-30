@@ -37,6 +37,10 @@ const propertyInfo = new Schema({
     saves: {
         type: Number,
         default: 0
+    },
+    featureRequest: {
+        type: Boolean,
+        default: false
     }
 });
 

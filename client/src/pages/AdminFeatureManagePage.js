@@ -3,7 +3,7 @@ import AdminLogin from "../components/AdminLogin";
 import { Container, Box, Typography } from "@mui/material";
 import PropertyViewMore from "../components/PropertyView";
 
-const AdminPage = () => {
+const AdminFeatureManagePage = () => {
     const [isAuthorized, setIsAuthorized] = useState(false);
 
     const [propertyInfo, setPropertyInfo] = React.useState([])
@@ -11,7 +11,8 @@ const AdminPage = () => {
 
     React.useEffect(() => {
         const getPropertyInfo = async () => {
-            const res = await fetch('http://localhost:8000/cards/unverified-cards')
+            const res = await fetch('http://localhost:8000/cards/featured-cards')
+            console.log(res)
             const getData = await res.json()
             const obj = JSON.parse(JSON.stringify(getData));
             setPropertyInfo(obj);
@@ -36,6 +37,7 @@ const AdminPage = () => {
                 });
 
                 if (response.ok) {
+                    console.log("authed")
                     setIsAuthorized(true);
                 } else {
                     setIsAuthorized(false);
@@ -66,7 +68,7 @@ const AdminPage = () => {
                     <Container sx={{ width: '100%' }}>
                         <div sx={{ width: "100%"}}>
                             <Typography sx={{ fontSize: "30px", textAlign: "center"}}>
-                                Unverified Properties
+                                Featured Properties
                             </Typography>
                         </div>
 
@@ -77,7 +79,7 @@ const AdminPage = () => {
                                 </Typography>
                             ) : (
                                 filteredPropertyInfo.map((cards) => (
-                                    <PropertyViewMore data={cards} login={true} verifyProperty={true} />
+                                    <PropertyViewMore data={cards} login={true} featureRequestManage={true} />
                                 ))
                             )}
                         </Box>
@@ -90,4 +92,4 @@ const AdminPage = () => {
     );
 };
 
-export default AdminPage;
+export default AdminFeatureManagePage;

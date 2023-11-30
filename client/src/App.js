@@ -28,6 +28,9 @@ import AdminPage from "./pages/AdminPage";
 import ResetPWPage from "./pages/ResetPWPage"
 import SetAdminPWPage from "./pages/SetAdminPWPage";
 import AdminDenyPage from "./pages/AdminDenyPage";
+import AdminFeaturePage from "./pages/AdminFeaturePage";
+import AdminFeatureManagePage from "./pages/AdminFeatureManagePage";
+import AdminUserPage from "./pages/AdminUserPage";
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -77,6 +80,9 @@ const lightTheme = {
     textColor: '#000000',
     hoverColor: "#F6EBE1",
     textFieldBorder: "black",
+    action: {
+      disabled: "rgba(171, 25, 31, 0.7)"
+    }
   },
   typography: {
     color: "#000000",
@@ -84,21 +90,14 @@ const lightTheme = {
   }
 }
 const darkTheme = {
-  overrides: {
-    MuiInput: {
-      input: {
-        '&::placeholder': {
-          color: "#F6EBE1",
-          opacity: "1",
-        }
-      }
-    }
-  },
   components: {
-
     MuiFormControlLabel: {
       styleOverrides: {
         label: {
+          "&.Mui-disabled": {
+            color: "#F6EBE1"
+          },
+          
           color: "#F6EBE1"
         }
       },
@@ -133,6 +132,9 @@ const darkTheme = {
     textColor: '#F6EBE1',
     hoverColor: "#F6EBE1",
     textFieldBorder: "#962c1e",
+    action: {
+      disabled: "rgba(150, 44, 30, 0.7)"
+    }
   },
   typography: {
     fontFamily: font,
@@ -205,9 +207,8 @@ class App extends React.Component {
       if (response.ok) {
         this.setState({ isAuthenticatedAdmin: true });
         const data = await response.json();
-        const userType = data.userType;
-        this.setState({ userType: userType });
-        console.log("user type: " + userType)
+        // this.setState({ userType: "admin" });
+        console.log("user type: admin")
       } else {
         console.log('Authentication check failed');
       }
@@ -248,9 +249,14 @@ class App extends React.Component {
     let theme = darkMode ? createTheme(darkTheme) : createTheme(lightTheme);
     //const theme = useTheme();
     const pathname = window.location.pathname
-    const showAppBar = pathname !== "/Admin" || isAuthenticatedAdmin;
-    const showAppBarAdmin = pathname === "/Admin" && isAuthenticatedAdmin;
-    const showAppBarMain = pathname !== "/Admin" && isAuthenticated;
+    const showAppBar = !pathname.startsWith("/Admin") || isAuthenticatedAdmin;
+
+    const showAppBarAdmin = pathname.startsWith("/Admin") && isAuthenticatedAdmin;
+    const showAppBarMain = !pathname.startsWith("/Admin") && isAuthenticated;
+
+    const updatedUser = showAppBarAdmin ? "admin" : userType;
+
+
     const faviconPath = "favicon.ico";
 
     const handleDarkMode = () => {
@@ -314,8 +320,7 @@ class App extends React.Component {
               }
             </IconButton>
 
-            {showAppBar ? <RoomsterAppBar login={showAppBarAdmin || showAppBarMain} userType={userType} /> : <div style={{ height: '64px' }}></div>}
-
+            {showAppBar ? <RoomsterAppBar login={showAppBarAdmin || showAppBarMain} userType={updatedUser} /> : <div style={{ height: '64px' }}></div>}
             <div style={{ textAlign: "center", zIndex: "3", position: "relative", marginBottom: "50px" }}>
               <Link href="/Home">
                 <img className="logo" src={darkMode ? logoDarkMode : logo} style={{ width: '35%', zIndex: "0", }} />
@@ -342,6 +347,9 @@ class App extends React.Component {
               <Route path="/Coopmates" element={<CoopmatesPage />} />
               <Route path="/CompanyPage" element={<PropertyManagerPublicPage />} />
               <Route path="/Admin" element={<AdminPage />} />
+              <Route path="/Admin/Featured" element={<AdminFeaturePage />} />
+              <Route path="/Admin/FeaturedManage" element={<AdminFeatureManagePage />} />
+              <Route path="/Admin/Users" element={<AdminUserPage />} />
               <Route path="/ResetPW/:token" element={<ResetPWPage />} />
               <Route path="/Property/:token" element={<MainPage login={isAuthenticated} />} />
               <Route path="/SetAdminPW/:token" element={<SetAdminPWPage />} />
@@ -365,9 +373,8 @@ class App extends React.Component {
                 // if login is true (for now), app bar with login buttons will show
                 // if login is false, appbar only has login/signup button
               }
-              <Layout>
-              {showAppBar ? <RoomsterAppBar login={showAppBarAdmin || showAppBarMain} userType={userType}/> : <div style={{ height: '64px' }}></div>}
-              {/*
+
+              {showAppBar ? <RoomsterAppBar login={showAppBarAdmin || showAppBarMain} userType={updatedUser}/> : <div style={{ height: '64px' }}></div>}
               <div style={{ textAlign: "center", zIndex: "3", position: "relative", marginBottom: "50px" }}>
                 <Link href="/Home">
                   <img className="logo" src={logo} style={styles.logo}></img>
@@ -393,6 +400,8 @@ class App extends React.Component {
                 <Route path="/Coopmates" element={<CoopmatesPage />} />
                 <Route path="/CompanyPage" element={<PropertyManagerPublicPage />} />
                 <Route path="/Admin" element={<AdminPage />} />
+                <Route path="/Admin/Featured" element={<AdminFeaturePage />} />
+                <Route path="/Admin/FeaturedManage" element={<AdminFeatureManagePage />} />
                 <Route path="/ResetPW/:token" element={<ResetPWPage />} />
                 <Route path="/SetAdminPW/:token" element={<SetAdminPWPage />} />
                 <Route path="/Property/:token" element={<MainPage login={isAuthenticated}  />} />

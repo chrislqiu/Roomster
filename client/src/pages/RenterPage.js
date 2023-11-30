@@ -14,6 +14,7 @@ import TransgenderIcon from '@mui/icons-material/Transgender';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMars } from '@fortawesome/free-solid-svg-icons'
 import { createTheme, ThemeProvider, useTheme } from '@mui/material/styles';
+import Female from "@mui/icons-material/Female";
 
 const RenterPage = () => {
     const theme = useTheme();
@@ -61,13 +62,36 @@ const RenterPage = () => {
             color: "textColor",
         },
         age: {
+            "& .MuiInputBase-input.Mui-disabled": {
+                color:"secondaryColor",
+                WebkitTextFillColor: "#AB191F" /*theme.palette.type === "dark" ? "#F6EBE1" : "",*/
+            },
+            input: {
+                color: "textColor",
+                fontWeight: "600",
+                fontSize: "14pt",
+                padding:"0",
+                // margin:"0",
+                "&::placeholder": {
+                    opacity: 1,
+                    color: "secondaryColor",
+                    },
+            },
             fontWeight: "600",
             fontSize: "14pt",
-            color: "secondaryColor",
+            padding:"0",
+            width:"50px",
+            "& fieldset": { border: 'none', },
+            "&:hover" : {"& fieldset": { border: 'none', },}
         },
         icon: {
             fontSize: "18pt",
             color: "secondaryColor",
+        },
+        gender: {
+            fontSize: "18pt",
+            color: "primaryColor",
+            backgroundColor: "secondaryColor",
         },
         subheader: {
             fontWeight: "600", 
@@ -88,65 +112,57 @@ const RenterPage = () => {
             }
         }
     }
-    const inputBaseSX = {
-        margin: "0 0 10px 25px",
-        width: "300px",
-        height: "35px",
-        borderRadius: "5px",
-        border: "2px solid",
-        borderColor: "secondaryColor",
-        padding: "5px",
-        "&:hover": {
-            border: "2px solid",
-            borderColor: "secondaryColor",
-            boxShadow:"0px 0px 3px 3px rgba(0, 0, 0, .1)", 
-        }
-    }
-    const sleepScheduleSX = {
-        margin: "0 0 10px 25px",
-        width: "50px",
-        height: "30px",
-        borderRadius: "5px",
-        border: "2px solid",
-        borderColor: "secondaryColor",
-        padding: "5px",
-        fontSize: "12pt",
-        "&:hover": {
-            border: "2px solid",
-            borderColor: "secondaryColor",
-            boxShadow:"0px 0px 3px 3px rgba(0, 0, 0, .1)", 
-        },
-        "& input::placeholder": {
-            fontSize: "11pt"
-        }
-    }
     const radioSX = {
         color: "secondaryColor",
         '&.Mui-checked': {
         color: "secondaryColor",
         },
+        '&.Mui-disabled': {
+            color: "secondaryColor",
+        },
+        
+    }
+    const sliderSX = {
+        color:"secondaryColor", width: "120px", height: "5px", marginLeft: "-70px",
+        "&.Mui-disabled .MuiSlider-track ": {
+            color: "secondaryColor",
+        },
+        "&.Mui-disabled .MuiSlider-thumb ": {
+            color: "secondaryColor",
+        } 
     }
     const selectSX = {
-        width: 90, height: 30, fontSize:"11pt", color: "textColor",
+        width: "70px",
+        color: "textColor",
+        "&.Mui-disabled": {
+            "& .MuiOutlinedInput-notchedOutline": {
+                borderColor: "textColor",
+                opacity: 0.5,
+            },
+            "& .MuiSelect-icon": {
+                color: "textColor",
+                opacity: 0.5,
+            }
+        },
+        "& .MuiSelect-icon": {
+            color: "secondaryColor",
+        },
+        "& .MuiInputBase-input.Mui-disabled": {
+            WebkitTextFillColor: theme.palette.type === "dark" ? "#F6EBE1" : "",
+            opacity: 0.7,
+        },
+        
         '.MuiOutlinedInput-notchedOutline': {
-            border: "2px solid",
-            borderColor: "secondaryColor",
-        },
-        '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-            border: "2px solid",
-            borderColor: "secondaryColor",
-        },
-        '&.Mui-hovered .MuiOutlinedInput-notchedOutline': {
-            border: "2px solid",
-            borderColor: "secondaryColor",
-        }
+            borderColor: 'secondaryColor',
+          },
+          '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+            borderColor: 'secondaryColor',
+          },
     }
     const textfieldSX = {
-        margin: "0 0 10px 25px", 
-        width:"280px", 
-        borderRadius: "5px",
-        border: "2px solid",
-        borderColor: "secondaryColor",
+        "& .MuiInputBase-input.Mui-disabled": {
+            WebkitTextFillColor: theme.palette.type === "dark" ? "#F6EBE1" : "",
+        },
         input: {
             color: "textColor",
             "&::placeholder": {
@@ -154,12 +170,19 @@ const RenterPage = () => {
                 color: "textColor",
                 },
         },
-        "& fieldset": { border: 'none', },
+        margin: "0 0 10px 25px", 
+        width:"280px", 
+        borderRadius: "5px",
+        border: "2px solid",
+        borderColor: "secondaryColor",
+        "& fieldset": { border: 'none', color: "textColor"},
+        "& label": {color: "textColor"},
         "&:hover" : {boxShadow: theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 3px rgba(245, 235, 224, .1)",}       
     }
     const [toggleOn, setToggleOn] = React.useState(false);
     const [name, setName] = React.useState('')
     const [age, setAge] = React.useState('')
+    const [gender, setGender] = React.useState('')
     const [hasPet, setHasPet] = React.useState(false);
     const [doesSmoke, setDoesSmoke] = React.useState(false);
     const [open, setOpen] = React.useState(false);
@@ -179,6 +202,8 @@ const RenterPage = () => {
     const [allRenterData, setAllRenterData] = React.useState('')
     const [data, setData] = React.useState('')
     var [pfp, setPfp] = useState('')
+    const [defAge, setDefAge] = useState('')
+    const [defGender, setDefGender] = useState('Female')
     const [defEmail, setDefEmail] = useState('')
     const [defPhone, setDefPhone] = useState('')
     const [defToggle, setDefToggle] = useState()
@@ -189,6 +214,12 @@ const RenterPage = () => {
     const [defGuest, setDefGuest] = useState('')
     const [defFrom, setDefFrom] = useState('')
     const [defTo, setDefTo] = useState('')
+
+    //Setting gender
+    const [openGender, setOpenGender] = React.useState(false)
+    const [isMale, setMale] = React.useState(false)
+    const [isFemale, setFemale] = React.useState(false)
+    const [isTransgender, setTransgender] = React.useState(false)
 
     useEffect(() => {
         fetch('http://localhost:8000/auth/current-user', {
@@ -211,7 +242,10 @@ const RenterPage = () => {
                 setToggleOn(data.user.findingCoopmates)
                 setPfp(data.user.renterInfo.pfp)
                 setName(data.user.renterInfo.name)
-                setAge(data.user.renterInfo.age)
+                //setAge(data.user.renterInfo.age)
+                setDefAge(data.user.renterInfo.age)
+                setGender(data.user.renterInfo.gender)
+                handleSetDefGender(data.user.renterInfo.gender)
                 setDefEmail(data.user.renterInfo.email)
                 setDefPhone(data.user.renterInfo.phone)
                 setDefPet(data.user.renterInfo.livingPreferences.pets)
@@ -265,6 +299,7 @@ const RenterPage = () => {
     useEffect(() => {
         // Check if data is available
         if (data) {
+            setAge(data.age)
             setEmail(data.email)
             setPhone(data.phone)
             setNewStudious(data.livingPreferences.studious);
@@ -279,6 +314,45 @@ const RenterPage = () => {
             setHasPet(data.livingPreferences.pets);
         }
     }, [data]);
+
+    const handleSetDefGender = (gender) => {
+        console.log('in helper')
+        console.log("male: " + isMale)
+        console.log("female:" + isFemale)
+        console.log("transgender:" + isTransgender)
+
+        console.log("gender: " + gender)
+        console.log("defGender: " + defGender)
+        if (/*defGender === 'Male' || */gender === 'Male' || !gender) {
+            setMale(true)
+            setFemale(false)
+            setTransgender(false)
+            //setDefGender('Male')
+            setGender('Male')
+        } else if (/*defGender === 'Female' ||*/ gender === 'Female') {
+            setFemale(true)
+            setMale(false)
+            setTransgender(false)
+            //setDefGender('Female')
+            setGender('Female')
+        } else if (/*defGender === 'Transgender'|| */gender === 'Transgender') {
+            setTransgender(true)
+            setMale(false)
+            setFemale(false)
+            //setDefGender('Transgender')
+            setGender('Transgender')
+        }
+    }
+
+    const handleOpenGender = () => {
+        if (!disableButton) {
+            setOpenGender(true)
+        }
+    }
+
+    const handleCloseGender = () => {
+        setOpenGender(false)
+    }
 
     const handleSleepFrom = (event) => {
         setSleepFrom(event.target.value);
@@ -308,6 +382,7 @@ const RenterPage = () => {
             renterInfo: {
                 name: name,
                 age: age,
+                gender: gender,
                 email: email,
                 phone: phone,
                 pfp: newImg === '' ? pfp : newImg,
@@ -361,6 +436,7 @@ const RenterPage = () => {
             renterInfo: {
                 name: name,
                 age: age,
+                gender: gender,
                 email: email,
                 phone: phone,
                 pfp: newImg === '' ? pfp : newImg,
@@ -448,22 +524,48 @@ const RenterPage = () => {
                         <Typography sx={styles.name} style={Object.assign(styles.boxPadding, {marginTop: "20px"})}> 
                             {name}
                         </Typography >
-                        <Typography sx={styles.age} style={{padding: "0 10px 0 20px", marginTop: "20px"}}> 
-                            {age}
-                        </Typography >
-                        <MaleIcon icon={faMars} sx={styles.icon} style={{marginTop: "22px"}}/>
+                        <Box sx={{display: "inline-flex", justifyContent:"center"}}>
+                        <Tooltip title="Change Age" disabled={disableButton}
+                        componentsProps={{
+                            tooltip: {
+                                sx: {
+                                    bgcolor: theme.palette.type === "light" ? 'rgba(171, 25, 31, 0.9)' : "rgba(245, 235, 224, .8)",
+                                    color: "primaryColor"
+                                },
+                            },
+                        }}>
+                            <TextField placeholder={defAge} sx={styles.age} style={{padding: "0px 0px 0px 0px", marginTop: "20px"}}
+                                onChange={(e) => setAge(e.target.value)}
+                            /> 
+                        </Tooltip>
+                        <Box sx={{ flexGrow: 0, }}>
+                            <Tooltip title="Change Gender" onClick={handleOpenGender} 
+                            componentsProps={{
+                                tooltip: {
+                                    sx: {
+                                        bgcolor: theme.palette.type === "light" ? 'rgba(171, 25, 31, 0.9)' : "rgba(245, 235, 224, .8)",
+                                        color: "primaryColor"
+                                    },
+                                },
+                            }}>
+                                {isMale && <IconButton sx={{ p: 0, }} disabled={disableButton}><MaleIcon icon={faMars} sx={styles.icon} style={{marginTop: "22px"}}/> </IconButton>}
+                                {isFemale && <IconButton sx={{ p: 0, }} disabled={disableButton}><FemaleIcon sx={styles.icon} style={{marginTop: "22px"}}/></IconButton>}
+                                {isTransgender && <IconButton sx={{ p: 0, }} disabled={disableButton}><TransgenderIcon  sx={styles.icon} style={{marginTop: "22px"}}/></IconButton>}
+                            </Tooltip>
+                        </Box>
+                        </Box>
                     </Container>
                     <Typography sx={styles.subheader}> 
                         {"Contact info"}
                     </Typography >
                     <TextField
-                            placeholder={defEmail} value={email} id="email-textfield" variant="outlined" 
+                            placeholder={defEmail} defaultValue={email} id="email-textfield" variant="outlined" 
                             sx={textfieldSX} size="small"
                             onChange={(e) => setEmail(e.target.value)}
                             disabled={disableButton}
                     />
                     <TextField
-                            placeholder={defPhone} defaultValue={phone} id="number-textfield" variant="outlined" 
+                            placeholder={defPhone} value={phone} id="number-textfield" variant="outlined" 
                             sx={textfieldSX} size="small"
                             onChange={(e) => setPhone(e.target.value)}
                             disabled={disableButton}
@@ -543,7 +645,7 @@ const RenterPage = () => {
                                 marks
                                 min={0}
                                 max={5}
-                                sx={{color:"secondaryColor", width: "120px", height: "5px", marginLeft: "-70px"}}
+                                sx={sliderSX}
                                 disabled={disableButton}
                             />
                             </Container>
@@ -557,7 +659,7 @@ const RenterPage = () => {
                                 marks
                                 min={0}
                                 max={5}
-                                sx={{color:"secondaryColor", width: "120px", height: "5px", marginLeft: "-70px"}}
+                                sx={sliderSX}
                                 disabled={disableButton}
                             />
                             </Container>
@@ -571,12 +673,12 @@ const RenterPage = () => {
                                 marks
                                 min={0}
                                 max={5}
-                                sx={{color:"secondaryColor", width: "120px", height: "5px", marginLeft: "-70px"}}
+                                sx={sliderSX}
                                 disabled={disableButton}
                             />
                             </Container>
                             <Container style={{display: "flex", gap: "1rem", width: "200px", margin:"0 0 10px -50px", padding:"0"}}>
-                                <Select displayEmpty defaultValue={defFrom} onChange={handleSleepFrom} sx={selectSX} disabled={disableButton} >
+                                <Select displayEmpty defaultValue={defFrom} onChange={handleSleepFrom} sx={selectSX} size="small" disabled={disableButton} >
                                     <MenuItem value=""> <em>From</em> </MenuItem> <MenuItem value={0}>0</MenuItem>
                                     <MenuItem value={1}>1</MenuItem> <MenuItem value={2}>2</MenuItem> <MenuItem value={3}>3</MenuItem>
                                     <MenuItem value={4}>4</MenuItem> <MenuItem value={5}>5</MenuItem> <MenuItem value={6}>6</MenuItem>
@@ -588,7 +690,7 @@ const RenterPage = () => {
                                     <MenuItem value={22}>22</MenuItem> <MenuItem value={23}>23</MenuItem>
                                 </Select>
                             
-                                <Select displayEmpty defaultValue={defTo} onChange={handleSleepTo} sx={selectSX} disabled={disableButton} >
+                                <Select displayEmpty defaultValue={defTo} onChange={handleSleepTo} sx={selectSX} size="small" disabled={disableButton} >
                                     <MenuItem value=""> <em>To</em> </MenuItem> <MenuItem value={0}>0</MenuItem>
                                     <MenuItem value={1}>1</MenuItem> <MenuItem value={2}>2</MenuItem> <MenuItem value={3}>3</MenuItem>
                                     <MenuItem value={4}>4</MenuItem> <MenuItem value={5}>5</MenuItem> <MenuItem value={6}>6</MenuItem>
@@ -827,6 +929,75 @@ const RenterPage = () => {
                 <DialogActions>
 
                 </DialogActions>
+            </Dialog>
+            <Dialog
+                open={openGender}
+                onClose={handleCloseGender}
+                sx={{
+                    "& .MuiDialog-container": {
+                        "& .MuiPaper-root": {
+                            width: "600px",
+                            height: "200px",
+                            backgroundColor: "primaryColor",
+                            boxShadow: theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 3px rgba(245, 235, 224, .1)", 
+                        },
+                    },
+                }}
+
+            ><DialogContent>
+                <Typography sx={{fontWeight: "600", fontSize: "15pt", color: "secondaryColor", textAlign:"center", margin:"10px 0 -10px 0"}}> 
+                        {"SELECT YOUR GENDER"}
+                    </Typography >
+                    <Container sx={{ display: "inline-flex", marginTop: "50px", justifyContent:"center" }}>
+                        <Tooltip title="Male" onClick={() => {handleSetDefGender('Male'); setGender('Male'); setDefGender('Male'); handleCloseGender() }}
+                        componentsProps={{
+                            tooltip: {
+                                sx: {
+                                    bgcolor: theme.palette.type === "light" ? 'rgba(171, 25, 31, 0.9)' : "rgba(245, 235, 224, .8)",
+                                    color: "primaryColor"
+                                },
+                            },
+                        }}>
+                            <IconButton sx={{ p: 0, marginRight: "50px", }} >
+                                <Avatar alt="male" sx={styles.gender} style={{ transform: `scale(1.90, 1.90)` }}>
+                                    <MaleIcon/>
+                                </Avatar>
+                            </IconButton>
+                        </Tooltip>
+                        <Tooltip title="Female" onClick={() => { handleSetDefGender('Female'); setGender('Female'); setDefGender('Female'); handleCloseGender() }}
+                        componentsProps={{
+                            tooltip: {
+                                sx: {
+                                    bgcolor: theme.palette.type === "light" ? 'rgba(171, 25, 31, 0.9)' : "rgba(245, 235, 224, .8)",
+                                    color: "primaryColor"
+                                },
+                            },
+                        }}>
+                            <IconButton sx={{ p: 0, marginRight: "50px", }} >
+                                <Avatar alt="female" sx={styles.gender} style={{ transform: `scale(1.90, 1.90)` }}>
+                                    <FemaleIcon/>
+                                </Avatar>
+                            </IconButton>
+                        </Tooltip>
+                        <Tooltip title="Transgender" onClick={() => { handleSetDefGender('Transgender'); setGender('Transgender'); setDefGender('Transgender'); handleCloseGender()}}
+                        componentsProps={{
+                            tooltip: {
+                                sx: {
+                                    bgcolor: theme.palette.type === "light" ? 'rgba(171, 25, 31, 0.9)' : "rgba(245, 235, 224, .8)",
+                                    color: "primaryColor"
+                                },
+                            },
+                        }}>
+                            <IconButton sx={{ p: 0, marginRight: "50px", }} >
+                                <Avatar alt="female" sx={styles.gender} style={{ transform: `scale(1.90, 1.90)` }}>
+                                    <TransgenderIcon/>
+                                </Avatar>
+                            </IconButton>
+                        </Tooltip>
+                    </Container>
+
+                </DialogContent>
+
             </Dialog>
         </Grid>
 
