@@ -20,9 +20,8 @@ import { Grow } from "@mui/material";
 import Settings from "../pages/Settings"
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-const pages = ["Home", "My Coops", "Fav Coops", "Coopmates", "Log Out"];
-const pagesManager = ["Home", "My Coops", "Log Out"];
-const pagesRenter = ["Home", "Fav Coops", "Coopmates", "Log Out"];
+const pagesManager = ["Home", "My Coops", "Tour Requests", "Log Out"];
+const pagesRenter = ["Home", "Fav Coops", "Coopmates", "My Tours", "Log Out"];
 const pagesAdmin = ["Unverified Properties", "Property Feature Requests", "Featured Properties", "Users", "Log Out"]
 
 //const routePage = ["/Home", "/FavCoops", "/Coopmates", "/Logout"]
@@ -32,8 +31,8 @@ const pagesAdmin = ["Unverified Properties", "Property Feature Requests", "Featu
  * login: boolean variable for now, keeps track if user is logged in or not
  */
 const RoomsterAppBar = ({ login, userType }) => {
-    const theme = useTheme();
-    
+  const theme = useTheme();
+
   console.log(login)
   let location = useLocation();
   console.log(location.pathname)
@@ -43,7 +42,7 @@ const RoomsterAppBar = ({ login, userType }) => {
    * hide the login stuff with a "Log In/ Sign Up Button"
    */
   const [anchorElNav, setAnchorElNav] = React.useState(null);
-    const [pfp, setPfp] = React.useState('')
+  const [pfp, setPfp] = React.useState('')
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -110,38 +109,38 @@ const RoomsterAppBar = ({ login, userType }) => {
     }
   };
 
-      React.useEffect(() => {
-        const getPFP = async () => {
-            try {
-                const res = await fetch('http://localhost:8000/auth/current-user', {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    credentials: 'include'
-                });
-                
-                const getData = await res.json();
-                
-                const obj = JSON.parse(JSON.stringify(getData));
-                console.log(obj.user)
-                if (obj.user.renterInfo) {
-                  setPfp(obj.user.renterInfo.pfp)
-                }
-             
-            } catch (e) {
-                console.log("error: " + e)
-                
-            }
-        };
+  React.useEffect(() => {
+    const getPFP = async () => {
+      try {
+        const res = await fetch('http://localhost:8000/auth/current-user', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          credentials: 'include'
+        });
 
-        getPFP();
-    }, []);
+        const getData = await res.json();
+
+        const obj = JSON.parse(JSON.stringify(getData));
+        console.log(obj.user)
+        if (obj.user.renterInfo) {
+          setPfp(obj.user.renterInfo.pfp)
+        }
+
+      } catch (e) {
+        console.log("error: " + e)
+
+      }
+    };
+
+    getPFP();
+  }, []);
 
   return (
     <AppBar
       position="static"
-      style={{ boxShadow: "none", height: "30px", zIndex: "5"}}
+      style={{ boxShadow: "none", height: "30px", zIndex: "5" }}
     >
       <Container maxWidth="xl">
         <Toolbar disableGutters>
@@ -196,7 +195,7 @@ const RoomsterAppBar = ({ login, userType }) => {
             </Menu>
           </Box>
           {login === true ?
-            <IconButton sx={{zIndex:"5"}}
+            <IconButton sx={{ zIndex: "5" }}
               size="large"
               aria-label="account of current user"
               aria-controls="menu-appbar"
@@ -223,10 +222,10 @@ const RoomsterAppBar = ({ login, userType }) => {
                           navigate("/FavCoops");
                         } else if (page === "Coopmates") {
                           navigate("/Coopmates");
-                                            } else if (page === "My Tours") {
-                                                navigate("/MyTours")
-                                            //} else if (page === "My Coopmates") {
-                                            //  navigate("/MyCoopmates")
+                        } else if (page === "My Tours") {
+                          navigate("/MyTours")
+                          //} else if (page === "My Coopmates") {
+                          //  navigate("/MyCoopmates")
                         } else if (page === "Log Out") {
                           handleLogout();
                         }
@@ -260,8 +259,8 @@ const RoomsterAppBar = ({ login, userType }) => {
                           navigate("/Home");
                         } else if (page === "My Coops") {
                           navigate("/MyCoops");
-                                          } else if (page == "Tour Requests") {
-                                              navigate("/TourRequests")
+                        } else if (page == "Tour Requests") {
+                          navigate("/TourRequests")
                         } else if (page === "Log Out") {
                           handleLogout();
                         }
@@ -332,13 +331,13 @@ const RoomsterAppBar = ({ login, userType }) => {
             <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}></Box>
           }
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}></Box>
-                    
+
           {login ?
             <Box sx={{ flexGrow: 0 }}>
 
-              <Tooltip title="Open Profile" sx={{ color: 'secondaryColor' }}  onClick={() => {userType === "renter" ? navigate("/RProfile") : navigate("/MProfile")}}> 
-                <IconButton sx={{ p: 0, mr: 1, ml: 1, zIndex: "5"}}>
-                   <Avatar alt="chickenpfp" src={pfp === undefined || pfp === '' ? chicken : pfp} style={{ transform: `scale(1.70, 1.70)` }} />
+              <Tooltip title="Open Profile" sx={{ color: 'secondaryColor' }} onClick={() => { userType === "renter" ? navigate("/RProfile") : navigate("/MProfile") }}>
+                <IconButton sx={{ p: 0, mr: 1, ml: 1, zIndex: "5" }}>
+                  <Avatar alt="chickenpfp" src={pfp === undefined || pfp === '' ? chicken : pfp} style={{ transform: `scale(1.70, 1.70)` }} />
 
                 </IconButton>
               </Tooltip>
