@@ -149,13 +149,13 @@ const AddCoopView = ({ setOpen, editMode, data }) => {
     };
 
     const handleAppCoop = async () => {
-
+       let loading;
         if (propertyName === '' || propertyAddress === '' || price === '' || bed === -1 || bath === -1) {
             toast.error(`Please fill in all the textfileds and dropdown! ${propertyName} ${propertyAddress} ${price} ${bed} ${bath}`, { style: customToastStyle })
             return;
-        } else {
-            toast.success("Save Success", { style: customToastStyle })
-            window.location.reload();
+        } 
+        else {
+            loading = toast.loading('Updating Property...')
         }
 
         const dataToSend = {
@@ -185,11 +185,17 @@ const AddCoopView = ({ setOpen, editMode, data }) => {
             .then(response => response.json())
             .then(data => {
                 console.log('DATA SAVEDDDD: ', data.message);
+                toast.success("Save Success!", { style: customToastStyle })
+                toast.dismiss(loading)
 
             })
             .catch(error => {
                 console.error('ERRORRR: ', error);
             });
+            //toast.success("Save Success!", { style: customToastStyle })
+            setTimeout(() => {
+                window.location.reload();
+            }, 3000);
 
     }
 
