@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Button from '@mui/material/Button';
-import { List, ListItem, Box, Card, CardContent, CardMedia, IconButton, Tooltip, } from '@mui/material';
+import { List, ListItem, Box, Card, CardContent, CardMedia, IconButton, Tooltip, CircularProgress, } from '@mui/material';
 import { CardActionArea } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
@@ -12,21 +12,25 @@ import { Stack } from '@mui/material';
 import { Link } from '@mui/material';
 import imgExample from "../images/apartment-pic.jpg"
 import StarIcon from '@mui/icons-material/Star';
+import StarIconOutlined from '@mui/icons-material/StarOutline';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import CheckIcon from "@mui/icons-material/Check";
 import SendIcon from '@mui/icons-material/Send';
+import LinkIcon from '@mui/icons-material/Link';
 import { useNavigate, createSearchParams } from 'react-router-dom';
 import AddCoopView from './AddCoopView';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBuildingCircleCheck } from '@fortawesome/free-solid-svg-icons'
+import { faBuildingCircleCheck, faStar } from '@fortawesome/free-solid-svg-icons'
 import { toast, ToastContainer } from 'react-toastify';
+import DoDisturbIcon from '@mui/icons-material/DoDisturb';
+import StarBorderOutlinedIcon from '@mui/icons-material/StarBorderOutlined';
 import 'react-toastify/dist/ReactToastify.css';
 import ImageGallery from './ImageGallery';
 import ScheduleTourView from './ScheduleTourView';
-import { createTheme, ThemeProvider, useTheme } from '@mui/material/styles';
+import { useTheme } from '@mui/material/styles';
 import amongus from '../images/amongusturkey.jpeg'
 
 
@@ -39,7 +43,7 @@ import amongus from '../images/amongusturkey.jpeg'
  * featured : Boolean to determine whether the card is featured or not
  * favCoops : Boolean to determine if card is on favCoops page
  */
-const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin, verifyProperty, featureRequest, featureRequestManage, autoOpen }) => {
+const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProperty, featureRequest, featureRequestManage, autoOpen }) => {
     var image, propertyName, address, beds, baths, cost, amenities, utilities
     if (myCoops) {
         image = data.image;
@@ -76,6 +80,8 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin, ver
     const [favCoopsArr, setFavCoopsArr] = React.useState([])
     const [myCoopsArr, setMyCoopsArr] = React.useState([])
     const [isVerified, setIsVerified] = React.useState(false)
+    const [isFeatured, setIsFeatured] = React.useState(false)
+    const [loading, setLoading] = React.useState(true);
     const coopFavorited = favCoopsArr.some(coops => coops._id.toString() === data._id.toString())
 
     /* Scheduling Tour */
@@ -90,42 +96,39 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin, ver
         setRequestTourOpen(false)
     }
 
-    React.useEffect(() => {
 
-        const getUserInfo = async () => {
-            try {
-                const res = await fetch('http://localhost:8000/auth/current-user', {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    credentials: 'include'
-                })
 
-                if (res.ok) {
-                    const getData = await res.json()
-                    if (getData.user_type == "renter") {
-                        setUserType("renter")
-                        const obj = JSON.parse(JSON.stringify(getData));
-                        setUserData(getData)
-                        setFavCoopsArr(obj.user.renterInfo.favCoops)
-                    } else if (getData.user_type == "manager") {
-                        setUserType("manager")
-                        //console.log("manager")
-                        const obj = JSON.parse(JSON.stringify(getData));
-                        setUserData(obj)
-                        setMyCoopsArr(obj.user.company.myCoops)
-                    }
+
+    const getUserInfo = async () => {
+        try {
+            const res = await fetch('http://localhost:8000/auth/current-user', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include'
+            })
+
+            if (res.ok) {
+                const getData = await res.json()
+                if (getData.user_type == "renter") {
+                    setUserType("renter")
+                    const obj = JSON.parse(JSON.stringify(getData));
+                    setUserData(getData)
+                    setFavCoopsArr(obj.user.renterInfo.favCoops)
+                } else if (getData.user_type == "manager") {
+                    setUserType("manager")
+                    const obj = JSON.parse(JSON.stringify(getData));
+                    setUserData(obj)
+                    setMyCoopsArr(obj.user.company.myCoops)
                 }
-
-            } catch (e) {
-                console.log("Error: " + e)
             }
-        }
 
-        getUserInfo()
-        //console.log(favCoopsArr);
-    }, [userData, favCoopsArr, myCoopsArr])
+        } catch (e) {
+            console.log("Error: " + e)
+        }
+    }
+
 
     const handleOpen = () => {
         setOpen(true)
@@ -134,7 +137,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin, ver
         setOpen(false)
     }
 
-    
+
     const [editMode, setEditMode] = React.useState(false);
 
     const handleEdit = () => {
@@ -153,7 +156,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin, ver
         setHovered(false)
     }
 
-    
+
     /*
     * Handle favorite button
     */
@@ -207,9 +210,9 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin, ver
         })
     }
 
-//    const pullUtilities = () => {
-//        setUtilities(Object.keys(utilities).filter(key => utilities[key] === true))
-//    }
+    //    const pullUtilities = () => {
+    //        setUtilities(Object.keys(utilities).filter(key => utilities[key] === true))
+    //    }
 
     const handleShare = async () => {
         const id = data._id;
@@ -303,6 +306,58 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin, ver
         }
     };
 
+    const handleAcceptFeature = async () => {
+        const id = data._id;
+        console.log("data: " + id);
+        try {
+            const response = await fetch('http://localhost:8000/auth/accept-feature', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: JSON.stringify({ id: id }),
+            });
+
+            console.log(response)
+
+            if (response.ok) {
+                console.log("good")
+                window.location.reload(true);
+            } else {
+                console.log("nope")
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    };
+
+    const handleDenyFeature = async () => {
+        const id = data._id;
+        console.log("data: " + id);
+        try {
+            const response = await fetch('http://localhost:8000/auth/deny-feature', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: JSON.stringify({ id: id }),
+            });
+
+            console.log(response)
+
+            if (response.ok) {
+                console.log("good")
+                window.location.reload(true);
+            } else {
+                console.log("nope")
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    };
+
     const getPropertyVerification = async () => {
         const id = data._id;
         //console.log("data: " + id);
@@ -329,6 +384,58 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin, ver
         }
     };
 
+    const getPropertyFeatured = async () => {
+        const id = data._id;
+        console.log("data: " + id);
+        try {
+            const response = await fetch('http://localhost:8000/cards/get-featured', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                // credentials: 'include',
+                body: JSON.stringify({ id: id }),
+            });
+
+            console.log(response)
+
+            if (response.ok) {
+                setIsFeatured(true)
+                console.log("Property featured")
+            } else {
+                console.log("Property not featured")
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    };
+
+    const handleFeatureProperty = async () => {
+        const id = data._id;
+        console.log("data: " + id);
+        try {
+            const response = await fetch('http://localhost:8000/cards/request-featured', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: JSON.stringify({ id: id }),
+            });
+
+            console.log(response)
+
+            if (response.ok) {
+                console.log("good")
+                window.location.reload(true);
+            } else {
+                console.log("nope")
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    };
+
     const checkOwner = async () => {
         const id = data._id;
         // console.log(id)
@@ -344,10 +451,13 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin, ver
 
             if (response.ok) {
                 const data = await response.json();
+                console.log("is a owner: " + data.match)
                 setIsOwner(data.match)
             } else {
                 console.log('Authentication check failed');
             }
+            setLoading(false);
+
         } catch (error) {
             console.error('Error during authentication check:', error);
         }
@@ -355,10 +465,11 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin, ver
 
 
     React.useEffect(() => {
-        checkOwner();
+        // checkOwner();
+        // getUserInfo();
         getPropertyVerification();
-        // getPropertyFeatured();
-        if(autoOpen === true){
+        getPropertyFeatured();
+        if (autoOpen === true) {
             handleOpen();
         }
     }, []);
@@ -366,11 +477,11 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin, ver
     React.useEffect(() => {
         const propertyDeleted = localStorage.getItem('propertyDeleted');
         if (propertyDeleted === 'true') {
-          toast.success('Property deleted successfully!', { position: toast.POSITION.TOP_CENTER });
-          localStorage.removeItem('propertyDeleted');
+            toast.success('Property deleted successfully!', { position: toast.POSITION.TOP_CENTER });
+            localStorage.removeItem('propertyDeleted');
         }
-      }, []);
-    
+    }, []);
+
     const theme = useTheme();
 
     return (
@@ -379,8 +490,13 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin, ver
             <Card
                 variant='contained'
                 onClick={() => {
+                    if (userType === '') {
+                        setLoading(true);
+                    }
                     handleOpen();
-                    // checkOwner();
+                    getUserInfo();
+                    checkOwner();
+
                 }}
                 onMouseEnter={handleHovered}
                 onMouseLeave={handleLeave}
@@ -400,7 +516,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin, ver
                     borderWidth: featured === true ? "3px" : "0",
                     borderColor: featured === true ? (theme.palette.type === 'light' ? "secondaryColor" : "textColor") : "",
                     borderRadius: "10px",
-                    boxShadow: !featured ? (theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 2px rgba(245, 235, 224, .3)") : "none" 
+                    boxShadow: !featured ? (theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 2px rgba(245, 235, 224, .3)") : "none"
                 }}>
                 <CardActionArea>
                     {/* {console.log(data.image)} */}
@@ -419,19 +535,19 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin, ver
                     <CardContent>
                         <div style={{ display: 'flex', alignItems: 'center', marginLeft: 0 }}>
 
-                            <Typography variant="h6" sx={{ margin: "-20px 0 0px 0"}}
+                            <Typography variant="h6" sx={{ margin: "-20px 0 0px 0" }}
                             > {propertyName.split(":")[0]} </Typography>
                             {/* {featured === true ? <StarIcon style={{margin: "-20px 0 0px 2.5"}} /> : ''} */}
                             {/* {favCoops === true ? <FavoriteIcon style={{margin: "-20px 0 0px 2.5"}} sx={{color: "#AB191F", ":hover": {color: "#F6EBE1",},}}/> : ''} */}
                             {/* <Typography variant="h6" style={{fontSize: "13pt", margin: "-20px 0 0px 0"}}> Property Name </Typography> */}
                             {featured === true ? <StarIcon style={{ margin: "-22px 0 0 5px", fontSize: "15pt" }} /> : ''}
-                            {favCoops === true ? <FavoriteIcon style={{ margin: "-22px 0 0 5px", fontSize: "15pt" }}  /> : ''}
+                            {favCoops === true ? <FavoriteIcon style={{ margin: "-22px 0 0 5px", fontSize: "15pt" }} /> : ''}
                             {myCoops === true ? <BookmarkIcon style={{ margin: "-22px 0 0 5px", fontSize: "15pt" }} /> : ''}
 
                         </div>
-                        <Typography variant="body2" sx={{ margin: "0 0 5px 0"}}>{address}</Typography>
+                        <Typography variant="body2" sx={{ margin: "0 0 5px 0" }}>{address}</Typography>
                         <Typography variant="body2">{beds} bedroom </Typography>
-                        <Typography variant="body2" sx={{ marginBottom: "5px"}}>{baths} bathroom</Typography>
+                        <Typography variant="body2" sx={{ marginBottom: "5px" }}>{baths} bathroom</Typography>
                         <Divider sx={{
                             height: "3px",
                             backgroundColor: hovered === true ? (theme.palette.type === 'light' ? "primaryColor" : "textColor") : "secondaryColor",
@@ -470,7 +586,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin, ver
                          * AspectRatio controls the size of the image
                          */
                     }
-                        {/* <img 
+                    {/* <img 
                             src={image}
                             srcSet={image}
                             alt=""
@@ -556,7 +672,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin, ver
                                         marginBottom: "-25px"
                                     }}
                                 >
-                                    <ListItem sx={{color: "textColor", display: 'list-item' }}>
+                                    <ListItem sx={{ color: "textColor", display: 'list-item' }}>
                                         {amenity}
                                     </ListItem>
                                 </List>
@@ -629,14 +745,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin, ver
                 </DialogContent>
                 <DialogActions>
 
-                    <IconButton
-                        style={{ position: "BottomLeft", position: "sticky", top: 70, left: 0 }}
-                        onClick={() => handleShare()}
-                    >
-                        <SendIcon
-                            sx={{ color: "textColor" }}
-                        />
-                    </IconButton>
+                    
 
                     {/* {console.log(isVerified)} */}
                     {isVerified === true ?
@@ -651,13 +760,13 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin, ver
                             }}
                         >
                             <IconButton sx={{ color: "secondaryColor" }}>
-                                <FontAwesomeIcon icon={faBuildingCircleCheck} />
+                                <FontAwesomeIcon icon={faBuildingCircleCheck} style={{color: theme.palette.type === "light" ? "#AB191F" : "#962c1e"}}/>
                             </IconButton>
                         </Tooltip>
                         :
                         ''}
 
-                    {myCoops === true ? 
+                    {myCoops === true ?
                         <Button
                             sx={{
                                 ":hover": {
@@ -666,140 +775,164 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, admin, ver
                                     boxShadow: theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 3px rgba(245, 235, 224, .1)",
                                 },
                                 border: "none",
-                                backgroundColor: "secondaryColor", 
+                                backgroundColor: "secondaryColor",
                                 color: theme.palette.type === "light" ? "primaryColor" : "textColor",
-                                width: "100px", height: "35px", fontWeight: 600, lineHeight: "11px", float: "right", 
+                                width: "100px", height: "35px", fontWeight: 600, lineHeight: "11px", float: "left",
                             }}
                             onClick={handleEdit}
                             variant="outlined">{'EDIT'}
-                        </Button>    
-                    : ''}
-
+                        </Button>
+                        : ''}
+                    <IconButton onClick={() => handleShare()}>
+                        <LinkIcon
+                            sx={{ color: "secondaryColor" }}
+                        />
+                    </IconButton>
                     {editMode === true ? <AddCoopView setOpen={setOpen} editMode={true} data={data}></AddCoopView> : ''}
-                    {login === true ? (
-                        admin === true ? (
-                            // Admin view
-                            <div sx={{ display: "flex", width: "100%" }}>
-                                <Tooltip title="Delete Property"
+                    {/* {loading && <CircularProgress />} */}
+                    {loading ? (
+                        <CircularProgress size={20} sx={{ color: "secondaryColor", marginRight: 2 }} />
+                    ) : (
+                        login === true ? (
+                            verifyProperty === true ? (
+                                // Admin view
+                                <div sx={{ display: "flex", width: "100%" }}>
+                                    <Tooltip title="Delete Property">
+                                        <IconButton onClick={handleDeletePropertyAdmin}>
+                                            <DeleteOutlineIcon sx={{ color: "secondaryColor" }} />                                        </IconButton>
+                                    </Tooltip>
+                                    <Tooltip title="Verify Property">
+                                        <IconButton onClick={handleVerifyProperty}>
+                                            <CheckIcon sx={{ color: "green" }} />
+                                        </IconButton>
+                                    </Tooltip>
+                                </div>
+                            ) : featureRequest === true ? (
+                                <div sx={{ display: "flex", width: "100%" }}>
+                                    <Tooltip title="Deny Feature Request">
+                                        <IconButton onClick={handleDenyFeature}>
+                                            <DoDisturbIcon sx={{ color: "secondaryColor" }} />
+                                        </IconButton>
+                                    </Tooltip>
+                                    <Tooltip title="Accept Feature Request">
+                                        <IconButton onClick={handleAcceptFeature}>
+                                            <CheckIcon sx={{ color: "green" }} />
+                                        </IconButton>
+                                    </Tooltip>
+                                </div>
+                            ) : featureRequestManage === true ? (
+                                <div sx={{ display: "flex", width: "100%" }}>
+                                    <Tooltip title="Remove Feature">
+                                        <IconButton onClick={handleDenyFeature}>
+                                            <DoDisturbIcon sx={{ color: "secondaryColor" }} />
+                                        </IconButton>
+                                    </Tooltip>
+                                </div>
+                            ) : isOwner === false && userType !== "manager" ? (
+                                // User view (not owner)
+                                <div>
+                                    <Tooltip
+                                        title="Add to FAV COOPS"
+                                        componentsProps={{
+                                            tooltip: {
+                                                sx: {
+                                                    bgcolor: theme.palette.type === "light" ? 'rgba(171, 25, 31, 0.9)' : "rgba(245, 235, 224, .8)",
+                                                    color: "primaryColor"
+                                                },
+                                            },
+                                        }}
+                                    >
+                                        <IconButton size="large" onClick={handleFavorite}>
+                                            {coopFavorited ? (
+                                                <FavoriteIcon sx={{ color: "secondaryColor" }} />
+                                            ) : (
+                                                <FavoriteBorderIcon sx={{ color: "secondaryColor" }} />)}
+                                        </IconButton>
+                                    </Tooltip>
+                                    <Button
+                                        onClick={handleOpenRequestTour}
+                                        sx={{
+                                            ":hover": {
+                                                bgcolor: "secondaryColor", color: "textColor", border: "none", fontWeight: "600",
+                                                width: "175px", fontSize: "11pt", padding: "0",
+                                                boxShadow: theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 3px rgba(245, 235, 224, .1)",
+                                            },
+                                            bgcolor: "secondaryColor", color: "textColor", border: "none",
+                                            width: "175px", fontSize: "11pt", padding: "0", fontWeight: "600",
+                                            justifyContent: "center", position: "absolute", bottom: 15, left: 25
+                                        }}
+                                        variant="outlined">REQUEST A TOUR
+                                    </Button>
+                                    {requestTourOpen && <ScheduleTourView data={data} userData={userData} requestTourOpen={requestTourOpen} handleClose={handleCloseRequestTour} />}
+                                </div>
+                            ) : isOwner === true && userType === "manager" ? (
+                                // Owner view
+                                <div>
+                                    {!isFeatured ?
+                                        <Tooltip title="Request Property Feature">
+                                            <IconButton onClick={handleFeatureProperty} >
+                                                <StarIconOutlined sx={{ color: "secondaryColor" }} />
+                                            </IconButton>
+                                        </Tooltip>
+                                        : ''}
+                                    <Tooltip title="Delete Property">
+                                        <IconButton onClick={handleDeleteProperty}>
+                                            <DeleteOutlineIcon sx={{ color: "secondaryColor" }} />
+                                        </IconButton>
+                                    </Tooltip>
+                                    <IconButton size="large" disabled={true}>
+                                        <FavoriteIcon/>
+                                    </IconButton>
+                                </div>
+                            ) :
+                                (
+                                    <Tooltip title="Saves"
+                                        componentsProps={{
+                                            tooltip: {
+                                                sx: {
+                                                    bgcolor: 'rgba(171, 25, 31, 0.9)',
+                                                    color: "primaryColor"
+                                                },
+                                            },
+                                        }}
+                                    >
+                                        <IconButton size="large" disabled={true}>
+                                            <FavoriteIcon/>
+                                        </IconButton>
+                                    </Tooltip>
+                                )
+                        ) : (
+                            // Not logged in view
+                            <Tooltip title="Saves"
                                 componentsProps={{
                                     tooltip: {
                                         sx: {
-                                            bgcolor: theme.palette.type === "light" ? 'rgba(171, 25, 31, 0.9)' : "rgba(245, 235, 224, .8)",
+                                            bgcolor: 'rgba(171, 25, 31, 0.9)',
                                             color: "primaryColor"
                                         },
                                     },
-                                }}>
-                                    <IconButton onClick={handleDeletePropertyAdmin}>
-                                        <DeleteOutlineIcon sx={{ color: "secondaryColor" }} />
-                                    </IconButton>
-                                </Tooltip>
-                                <Tooltip title="Verify Property">
-                                    <IconButton onClick={handleVerifyProperty}>
-                                        <CheckIcon sx={{ color: "green" }} />
-                                    </IconButton>
-                                </Tooltip>
-                            </div>
-                        ) : isOwner === false && userType !== "manager" ? (
-                            // User view (not owner)
-                            <div>
-                                <Tooltip
-                                    title= {coopFavorited ? "Remove from FAV COOPS" : "Add to FAV COOPS"}
-                                    componentsProps={{
-                                        tooltip: {
-                                            sx: {
-                                                bgcolor: theme.palette.type === "light" ? 'rgba(171, 25, 31, 0.9)' : "rgba(245, 235, 224, .8)",
-                                                color: "primaryColor"
-                                            },
-                                        },
-                                    }}
-                                >
-                                    <IconButton size="large" onClick={handleFavorite}>
-                                        {coopFavorited ? (
-                                            <FavoriteIcon sx={{ color: "secondaryColor" }} />
-                                        ) : (
-                                            <FavoriteBorderIcon sx={{ color: "secondaryColor" }} />
-                                        )}
-                                    </IconButton>
-                                </Tooltip>
-
-                                {/* Schedule Tour */}
-                                <Button
-                                    onClick={handleOpenRequestTour}
-                                    sx={{
-                                        ":hover": {
-                                            borderColor: "#F6EBE1", bgcolor: "#F6EBE1", color: "#AB191F",
-                                            borderWidth: 1.5, width: "175px", fontWeight: 600, fontSize:"11pt", padding:"0"
-                                        },
-                                        borderColor: "#AB191F", bgcolor: "#AB191F", color: "#F6EBE1",
-                                        borderWidth: 1.5, width: "175px", fontWeight: 600, fontSize:"11pt", padding:"0",
-                                        boxShadow: 5, justifyContent: "center", maxHeight: "50px", position:"absolute", bottom:15, left:25
-                                    }}
-                                    variant="outlined">REQUEST A TOUR
-                                </Button>
-                                {requestTourOpen && <ScheduleTourView data={data} userData={userData} requestTourOpen={requestTourOpen} handleClose={handleCloseRequestTour}/>}
-                            </div>
-
-                        ) : isOwner === true && userType === "manager" ? (
-                            // Owner view
-                            <div>
-                            <Tooltip title="Delete Property"
-                            componentsProps={{
-                                tooltip: {
-                                    sx: {
-                                        bgcolor: theme.palette.type === "light" ? 'rgba(171, 25, 31, 0.9)' : "rgba(245, 235, 224, .8)",
-                                        color: "primaryColor"
-                                    },
-                                },
-                            }}>
-                                <IconButton onClick={handleDeleteProperty}>
-                                    <DeleteOutlineIcon sx={{ color: "secondaryColor" }} />
+                                }}
+                            >
+                                <IconButton size="large" disabled={true}>
+                                    <FavoriteIcon/>
                                 </IconButton>
                             </Tooltip>
-                            <IconButton size="large" disabled={true}>
-                                <FavoriteIcon  sx={{color: theme.palette.type === "dark" ? "rgba(245, 235, 224, .8)" : ""}}/>
-                            </IconButton>
-                            </div>
-                        ) : 
-                        (
-                            <Tooltip title="Saves"
-                            componentsProps={{
-                                tooltip: {
-                                    sx: {
-                                        bgcolor: theme.palette.type === "light" ? 'rgba(171, 25, 31, 0.9)' : "rgba(245, 235, 224, .8)",
-                                        color: "primaryColor"
-                                    },
-                                },
-                            }}
-                        >
-                            <IconButton size="large" disabled={true}>
-                                <FavoriteIcon sx={{color: theme.palette.type === "dark" ? "rgba(245, 235, 224, .8)" : ""}}/>
-                            </IconButton>
-                        </Tooltip>
-                        )
-                    ) : (
-                        // Not logged in view
-                        <Tooltip title="Saves">
-                        <IconButton size="large" disabled={true} >
-                                <FavoriteIcon sx={{color: theme.palette.type === "dark" ? "rgba(245, 235, 224, .8)" : ""}}/>
-                            </IconButton>
-                        </Tooltip>
-                    )}
-                    
+                        ))}
+
                     <Typography
-                        style={{ 
+                        sx={{
                             color: "textColor",
-                            display: "flex",     
+                            display: "flex",
                             alignItems: "center",
                             margin: "0 5px 0 -10px",
                             padding: "0 5px 0 5px",
-                            fontWeight: 600
-                          }}
+                        }}
                     >
-                        {saves} 
+                        {saves}
                     </Typography>
                 </DialogActions>
             </Dialog>
-            
+
         </React.Fragment>
 
     )

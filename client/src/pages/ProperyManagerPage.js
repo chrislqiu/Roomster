@@ -70,6 +70,9 @@ const PropertyManagerPage = () => {
             borderRadius: "5px",
             border: "2px solid",
             borderColor: "secondaryColor",
+            "& .MuiInputBase-input.Mui-disabled": {
+                WebkitTextFillColor: theme.palette.type === "dark" ? "#F6EBE1" : "",
+            },
             input: {
                 color: "textColor",
                 "&::placeholder": {
@@ -234,23 +237,35 @@ const PropertyManagerPage = () => {
                     </Typography>
                         
                     <TextField
+                    placeholder={bioHolder}
+                   // defaultValue={bio}
+                    value={bio}
+                    variant="outlined"
                     type="text"
                     name="bio"
-                    placeholder={bioHolder}
-                    defaultValue={bio}
                     onChange={(e) => setBio(e.target.value)}
                     multiline rows={3} maxRows={3} 
-                    disabled={disableButton}
-                    width="500px"
+                    inputProps={{sx: {color: "textColor"}}}
                     sx={{
-                        width:"300px",
-                        borderRadius: "7px",
+                        margin: "0 0 10px 0px", 
+                        width:"280px", 
+                        borderRadius: "5px",
                         border: "2px solid",
                         borderColor: "secondaryColor",
-                        "&:hover": {
-                            boxShadow: theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 3px rgba(245, 235, 224, .1)", 
-                        }
+                        "& .MuiInputBase-input.Mui-disabled": {
+                            WebkitTextFillColor: theme.palette.type === "dark" ? "#F6EBE1" : "",
+                        },
+                        input: {
+                            color: "textColor",
+                            "&::placeholder": {
+                                opacity: 0.7,
+                                color: "textColor",
+                                },
+                        },
+                        "& fieldset": { border: 'none', },
+                        "&:hover" : {boxShadow: theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 3px rgba(245, 235, 224, .1)",}        
                     }}
+                    disabled={disableButton}
                     />         
                 </Box>
             

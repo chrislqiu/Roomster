@@ -6,7 +6,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { AspectRatio } from "@mui/joy";
 import toast, { Toaster } from 'react-hot-toast'
 import PropertyView from "../components/PropertyView";
-import { createTheme, ThemeProvider, useTheme } from '@mui/material/styles';
+import { useTheme } from '@mui/material/styles';
 
 
 const AddCoopView = ({ setOpen, editMode, data }) => {
@@ -244,28 +244,34 @@ const AddCoopView = ({ setOpen, editMode, data }) => {
     }
 
     const inputBaseSX = {
-        marginLeft: "-10px",
-        marginTop: "-10px",
+        margin: "0 0 10px 0",
         width: "205px",
         height: "35px",
         borderRadius: "5px",
         border: "2px solid",
         borderColor: "secondaryColor",
         padding: "5px",
+        "& .MuiInputBase-input.Mui-disabled": {
+            WebkitTextFillColor: theme.palette.type === "dark" ? "#F6EBE1" : "",
+        },
+        input: {
+            color: "textColor",
+            "&::placeholder": {
+                opacity: 0.7,
+                color: "textColor",
+                },
+        },
         "&:hover": {
             border: "2px solid",
             borderColor: "secondaryColor",
             boxShadow: theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 3px rgba(245, 235, 224, .1)",
         },
-
-
     }
 
     const textfieldSX = {
-        width: "200px",
-        borderRadius: "5px",
-        border: "2px solid",
-        borderColor: "secondaryColor",
+        "& .MuiInputBase-input.Mui-disabled": {
+            WebkitTextFillColor: theme.palette.type === "dark" ? "#F6EBE1" : "",
+        },
         input: {
             color: "textColor",
             "&::placeholder": {
@@ -273,29 +279,48 @@ const AddCoopView = ({ setOpen, editMode, data }) => {
                 color: "textColor",
             },
         },
-        "& fieldset": { border: 'none', },
-        "&:hover": { boxShadow: theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 3px rgba(245, 235, 224, .1)", }
+        margin: "0 0 10px 25px", 
+        width:"280px", 
+        borderRadius: "5px",
+        border: "2px solid",
+        borderColor: "secondaryColor",
+        "& fieldset": { border: 'none', color: "textColor"},
+        "& label": {color: "textColor"},
+        "&:hover" : {boxShadow: theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 3px rgba(245, 235, 224, .1)",}       
     }
 
     const selectSX = {
-        marginLeft: "-10px",
-        marginRight: "15px",
-        marginTop: "-10px",
-        width: "100px", height: "35px", fontSize: "11pt",
-        '.MuiOutlinedInput-notchedOutline': {
-            border: "2px solid #AB191F"
-
+        color: "textColor",
+        width: "95px", height: "35px", fontSize: "11pt",
+        "&.Mui-disabled": {
+            "& .MuiOutlinedInput-notchedOutline": {
+                borderColor: "secondaryColor",
+                borderWidth: "2px",
+            },
+            "& .MuiSelect-icon": {
+                color: "secondaryColor",
+            }
+        },
+        "& .MuiOutlinedInput-notchedOutline": {
+            borderColor: "secondaryColor",
+            borderWidth: "2px",
         },
         '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-            border: "2px solid #AB191F"
+            borderColor: 'secondaryColor',
+        },
+        "& .MuiSelect-icon": {
+            color: "secondaryColor",
+        },
+        "& .MuiInputBase-input.Mui-disabled": {
+            WebkitTextFillColor: theme.palette.type === "dark" ? "#F6EBE1" : "",
+            opacity: 0.7,
         },
     }
-
+    
     const menuItemSX = {
         borderRadius: "5px",
         padding: "5px",
         "&:hover": {
-
             boxShadow: "0px 0px 3px 3px rgba(0, 0, 0, .1)",
         }
 
