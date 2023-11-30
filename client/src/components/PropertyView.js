@@ -65,8 +65,9 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
         utilities = data.propertyInfo.utilities;
     }
 
-    const testimages = [image, amongus]
-
+    //const testimages = [image, amongus]
+    const imageArr = image[0] === 'link1' ? [amongus, amongus] : image
+    
     /*
      * open, setOpen : controls the state of the dialogue popup
      */
@@ -87,7 +88,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
     const [requestTourOpen, setRequestTourOpen] = React.useState(false)
 
     const handleOpenRequestTour = () => {
-        console.log("request = " + requestTourOpen)
+       // console.log("request = " + requestTourOpen)
         setRequestTourOpen(true)
     }
 
@@ -216,9 +217,9 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
     const handleShare = async () => {
         const id = data._id;
 
-        console.log("data: " + id);
+        //("data: " + id);
         const link = window.location.href + "Property/" + id
-        console.log(link)
+        //console.log(link)
         //window.location.assign(link) //redirects to link
         navigator.clipboard.writeText(link)
         toast.success('Link copied to clipboard!', { position: toast.POSITION.TOP_CENTER });
@@ -226,7 +227,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
 
     const handleDeleteProperty = async () => {
         const id = data._id;
-        console.log("data: " + id);
+        //console.log("data: " + id);
         try {
             const response = await fetch('http://localhost:8000/auth/delete-property', {
                 method: 'POST',
@@ -237,7 +238,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
                 body: JSON.stringify({ id: id }),
             });
 
-            console.log(response)
+            //console.log(response)
 
             if (response.ok) {
                 console.log("good")
@@ -359,7 +360,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
 
     const getPropertyVerification = async () => {
         const id = data._id;
-        console.log("data: " + id);
+        //console.log("data: " + id);
         try {
             const response = await fetch('http://localhost:8000/auth/property-verification', {
                 method: 'POST',
@@ -370,14 +371,13 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
                 body: JSON.stringify({ id: id }),
             });
 
-            console.log(response)
+            //console.log(response)
 
             if (response.ok) {
                 setIsVerified(true)
-
-                console.log("Property verified")
+                //console.log("Property verified")
             } else {
-                console.log("Property not verified")
+                //console.log("Property not verified")
             }
         } catch (error) {
             console.log(error)
@@ -519,11 +519,11 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
                     boxShadow: !featured ? (theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 2px rgba(245, 235, 224, .3)") : "none"
                 }}>
                 <CardActionArea>
-                    {console.log(data.image)}
+                    {/* {console.log(data.image)} */}
                     <CardMedia
                         component="img"
                         //image={data.propertyInfo.image === undefined ? data.image : data.propertyInfo.image}
-                        image={imgExample}
+                        image={imageArr[0] === 'link1' ? imgExample : imageArr[0]}
                         //height="140px"
                         style={{
                             height: featured === true ? "120px" : "130px",
@@ -592,7 +592,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
                             alt=""
                             style={{ objectFit: 'fill', width: '700px', height: '200px', borderRadius: '5px'}}
                         /> */}
-                    <ImageGallery images={testimages} />
+                        <ImageGallery images={imageArr}/>
                     {
                         /*
                          * Stack direction row has each text 'chunk'
@@ -747,7 +747,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
 
                     
 
-                    {console.log(isVerified)}
+                    {/* {console.log(isVerified)} */}
                     {isVerified === true ?
                         <Tooltip title="Verified Property"
                             componentsProps={{

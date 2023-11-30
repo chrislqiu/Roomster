@@ -167,7 +167,7 @@ const MyCoopsPage = ({ login }) => {
                 sqft: '',
                 distance: '',
                 amenities: amenitiesArr,
-                //utilities: Object.fromEntries(utilities)
+                utilities: utilitiesArr
             }
         }
 

@@ -1,7 +1,7 @@
 import { InputBase, Card, Box, Typography, Grid, CardContent, Input, Divider, TextField, Link, Button } from "@mui/material";
 import toast, { Toaster } from 'react-hot-toast';
 import React from "react"
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { createTheme, ThemeProvider, useTheme } from '@mui/material/styles';
 
 const PropertyManagerPage = () => {
@@ -43,14 +43,20 @@ const PropertyManagerPage = () => {
         })
         .then(data => {
             // Handle the JSON response
-            setNameHolder(data.user.name)
-            setPhoneHolder(data.user.phone)
-            setEmailHolder(data.user.email)
-            setBioHolder(data.user.bio)
-            setCompanyNameHolder(data.user.company.companyInfo.name)
-            setAddressHolder(data.user.company.companyInfo.address)
-            setOPhoneHolder(data.user.company.companyInfo.phone)
-            setSite(data.user.company.companyInfo.site)
+            console.log(data)
+            setUserData(data)
+            // setNameHolder(data.user.name)
+            // setEmail(data.user.email)
+            // setPhoneHolder(data.user.phone)
+            // setPhoneNumber(data.user.phone)
+            // setEmailHolder(data.user.email)
+            // setBio(data.user.bio)
+            // setBioHolder(data.user.bio)
+            // setCompanyNameHolder(data.user.company.companyInfo.name)
+            // setAddressHolder(data.user.company.companyInfo.address)
+            // setOPhoneHolder(data.user.company.companyInfo.phone)
+            // setSite(data.user.company.companyInfo.site)
+
             // Access user data, e.g., data.user
         })
         .catch(error => {
@@ -90,6 +96,26 @@ const PropertyManagerPage = () => {
         }
     }*/
 
+    useEffect(() => {
+        // autofill data
+
+        if (userData) {
+            setNameHolder(userData.user.name)
+            setEmail(userData.user.email)
+            setPhoneHolder(userData.user.phone)
+            setPhoneNumber(userData.user.phone)
+            setOfficeNum(userData.user.company.companyInfo.phone)
+            setAddr(userData.user.company.companyInfo.address)
+            setEmailHolder(userData.user.email)
+            setBio(userData.user.bio)
+            setBioHolder(userData.user.bio)
+            setCompanyNameHolder(userData.user.company.companyInfo.name)
+            setAddressHolder(userData.user.company.companyInfo.address)
+            setOPhoneHolder(userData.user.company.companyInfo.phone)
+            //setSite(userData.user.company.companyInfo.site)
+        }
+    }, [userData]);
+
     const customToastStyles = {
         color: 'white', // Set the desired text color
       };
@@ -98,7 +124,7 @@ const PropertyManagerPage = () => {
         const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9]+\.[a-zA-Z]+$/;
         
         if (phoneNumber === '' || email === '' || addr === '' || officeNum === '') {
-            toast.error("Please fill in all the fields!", {style: customToastStyles})
+            toast.error(`Please fill in all the fields! ${phoneNumber}`, {style: customToastStyles})
             return;
         } else if (!emailRegex.test(email)) {
             toast.error("Please enter a valid email address", {style: customToastStyles})
@@ -108,6 +134,7 @@ const PropertyManagerPage = () => {
         }
         
         const dataToSend ={
+            username: userData.username,
             name: nameHolder,
             phone: phoneNumber,
             email: email,
@@ -115,7 +142,8 @@ const PropertyManagerPage = () => {
             company: {
                 name: CompanyNameHolder,
                 address: addr,
-                phone: officeNum
+                phone: officeNum,
+                site: site
             }
         };
 
@@ -176,14 +204,24 @@ const PropertyManagerPage = () => {
                         {"Manager Info:"}
                     </Typography>    
                     <TextField
-                        placeholder={phoneHolder} value={phoneNumber} variant="outlined" 
-                        sx={textfieldSX} size="small" name="phoneNum" type="text"
+
+                        placeholder={phoneHolder} defaultValue={phoneNumber} variant="outlined" 
+                        sx={textfieldSX} 
+                        size="small" 
+                        name="phoneNum" 
+                        type="text"
                         onChange={(e) => setPhoneNumber(e.target.value)}
                         disabled={disableButton}
                     />
                     <TextField
-                        placeholder={emailHolder} value={email} variant="outlined" 
-                        sx={textfieldSX} size="small" name="email" type="text"
+  
+                        placeholder={emailHolder} 
+                        defaultValue={email} 
+                        variant="outlined" 
+                        sx={textfieldSX} 
+                        size="small" 
+                        name="email" 
+                        type="text"
                         onChange={(e) => setEmail(e.target.value)}
                         disabled={disableButton}
                     />
@@ -200,6 +238,7 @@ const PropertyManagerPage = () => {
                         
                     <TextField
                     placeholder={bioHolder}
+                   // defaultValue={bio}
                     value={bio}
                     variant="outlined"
                     type="text"
@@ -251,14 +290,21 @@ const PropertyManagerPage = () => {
                         </Typography>
                 
                         <TextField
-                            placeholder={addressHolder} value={addr} id="email-textfield" variant="outlined" 
-                            sx={textfieldSX} size="small" type="text" name="addr"
+                            placeholder={addressHolder}
+                            defaultValue={addr}
+                            id="email-textfield"
+                            variant="outlined"
+                            sx={textfieldSX}
+                            size="small"
+                            type="text"
+                            name="addr"
                             onChange={(e) => setAddr(e.target.value)}
                             disabled={disableButton}
                         />
                         
                         <TextField
-                            placeholder={OPhoneHolder} value={officeNum} variant="outlined" 
+                            placeholder={OPhoneHolder} 
+                            defaultValue={officeNum} variant="outlined" 
                             sx={textfieldSX}size="small" type="text" name="officeNum"
                             onChange={(e) => setOfficeNum(e.target.value)}
                             disabled={disableButton}

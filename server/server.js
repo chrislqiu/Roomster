@@ -31,7 +31,7 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-app.use(express.json());
+app.use(express.json({limit: '1mb'}));
 app.use(cookieParser())
 const secretKey = "E.3AvP1]&r7;-vBSAL|3AyetV%H*fIEy";
 
@@ -64,13 +64,13 @@ app.get("/message", (req, res) => {
 app.use("/auth", authRouter);
 app.use('/cards', cardRoutes);
 app.post('/sendManagerProfile', async (req, res) => {
-  var manager = await Manager.findOne({ username: req.body.username })
-
+  var manager = await Manager.findOne({username: req.body.username})
+  console.log(req.body)
   const updatedCompanyInfo = new CompanyInfo({
     name: req.body.company.name,
     address: req.body.company.address,
-    site: manager.company.companyInfo.site,
-    email: manager.company.companyInfo.email,
+    site: req.body.company.site,
+    email: req.body.company.email,
     phone: req.body.company.phone
   })
 
@@ -171,8 +171,8 @@ app.post('/sendProperty', async (req, res) => {
     utilities: data.propertyInfo.utilities
   }
   var newProperty;
-
-  const company = await Company.findOne({ "companyInfo.name": manager.company.companyInfo.name })
+  console.log(data)
+  const company = await Company.findOne({"companyInfo.name": manager.company.companyInfo.name})
   if (data.propertyInfo._id != '') {
     const updatePropertyInfo = await PropertyInfo.findByIdAndUpdate(data.propertyInfo._id, newInfo, { new: true })
     //updatePropertyInfo.save();
@@ -183,7 +183,8 @@ app.post('/sendProperty', async (req, res) => {
   } else {
     //console.log(req.body)
     const newPropertyInfo = new PropertyInfo(newInfo)
-    const existingCompanyInfo = await CompanyInfo.findOne({ name: manager.company.companyInfo.name })
+    console.log(newPropertyInfo)
+    const existingCompanyInfo = await CompanyInfo.findOne({name: manager.company.companyInfo.name})
     newPropertyInfo.save()
     // console.log(existingCompanyInfo)
     newProperty = new Property({
