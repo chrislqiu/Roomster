@@ -10,9 +10,11 @@ import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useTheme } from '@mui/material/styles';
 
 
 const AdminLogin = () => {
+    const theme = useTheme();
     const [email, setEmail] = React.useState('')
     const [password, setPassword] = React.useState('')
     const [loginStatus, setLoginStatus] = React.useState(null)
@@ -51,14 +53,14 @@ const AdminLogin = () => {
             } else {
                 setLoginStatus({
                     message: 'Incorrect username/password',
-                    color: '#AB191F',
+                    color: theme.palette.type === "light" ? '#AB191F' : "#962c1e",
                 });
 
             }
         } catch (error) {
             setLoginStatus({
                 message: 'Error logging in',
-                color: '#AB191F',
+                color: theme.palette.type === "light" ? '#AB191F' : "#962c1e",
             });
         }
 
@@ -87,8 +89,8 @@ const AdminLogin = () => {
                     pauseOnHover: true,
                     draggable: false,
                     style: {
-                        background: "#F6EBE1", 
-                      },
+                        background: theme.palette.type === "light" ? "#F6EBE1" : '#18100e' , 
+                    },
                 });
                 handleRequestClose();
             } else {
@@ -100,20 +102,40 @@ const AdminLogin = () => {
                     pauseOnHover: true,
                     draggable: false,
                     style: {
-                        background: "#F6EBE1", 
-                      },
+                        background: theme.palette.type === "light" ? "#F6EBE1" : '#18100e' ,
+                    },
                 });
 
             }
         } catch (error) {
             setLoginStatus({
                 message: 'Error logging in',
-                color: '#AB191F',
+                color: theme.palette.type === "light" ? '#AB191F' : "#962c1e",
             });
         }
         
     };
 
+    const textfieldSX = {
+        "& .MuiInputBase-input.Mui-disabled": {
+            WebkitTextFillColor: theme.palette.type === "dark" ? "#F6EBE1" : "",
+        },
+        input: {
+            color: "textColor",
+            "&::placeholder": {
+                opacity: 0.7,
+                color: "textColor",
+                },
+        },
+        margin: "0 0 10px 25px", 
+        width:"280px", 
+        borderRadius: "5px",
+        border: "2px solid",
+        borderColor: "secondaryColor",
+        "& fieldset": { border: 'none', color: "textColor"},
+        "& label": {color: "textColor"},
+        "&:hover" : {boxShadow: theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 3px rgba(245, 235, 224, .1)",}       
+    }
     return (
         <div
             style={{
@@ -129,7 +151,7 @@ const AdminLogin = () => {
                 </DialogTitle>
                 <Divider
                     variant="middle"
-                    sx={{ borderBottomWidth: 3, color: "#AB191F", backgroundColor: "#AB191F", marginY: 1, marginLeft: 0, width: "100%", }}
+                    sx={{ borderBottomWidth: 3, backgroundColor: "secondaryColor", marginY: 1, marginLeft: 0, width: "100%", }}
                 />
             </div>
 

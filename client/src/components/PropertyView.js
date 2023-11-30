@@ -19,6 +19,7 @@ import BookmarkIcon from '@mui/icons-material/Bookmark';
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import CheckIcon from "@mui/icons-material/Check";
 import SendIcon from '@mui/icons-material/Send';
+import LinkIcon from '@mui/icons-material/Link';
 import { useNavigate, createSearchParams } from 'react-router-dom';
 import AddCoopView from './AddCoopView';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -29,7 +30,7 @@ import StarBorderOutlinedIcon from '@mui/icons-material/StarBorderOutlined';
 import 'react-toastify/dist/ReactToastify.css';
 import ImageGallery from './ImageGallery';
 import ScheduleTourView from './ScheduleTourView';
-import { createTheme, ThemeProvider, useTheme } from '@mui/material/styles';
+import { useTheme } from '@mui/material/styles';
 import amongus from '../images/amongusturkey.jpeg'
 
 
@@ -744,14 +745,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
                 </DialogContent>
                 <DialogActions>
 
-                    <IconButton
-                        style={{ position: "BottomLeft", position: "sticky", top: 70, left: 0 }}
-                        onClick={() => handleShare()}
-                    >
-                        <SendIcon
-                            sx={{ color: "textColor" }}
-                        />
-                    </IconButton>
+                    
 
                     {console.log(isVerified)}
                     {isVerified === true ?
@@ -766,7 +760,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
                             }}
                         >
                             <IconButton sx={{ color: "secondaryColor" }}>
-                                <FontAwesomeIcon icon={faBuildingCircleCheck} />
+                                <FontAwesomeIcon icon={faBuildingCircleCheck} style={{color: theme.palette.type === "light" ? "#AB191F" : "#962c1e"}}/>
                             </IconButton>
                         </Tooltip>
                         :
@@ -783,17 +777,21 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
                                 border: "none",
                                 backgroundColor: "secondaryColor",
                                 color: theme.palette.type === "light" ? "primaryColor" : "textColor",
-                                width: "100px", height: "35px", fontWeight: 600, lineHeight: "11px", float: "right",
+                                width: "100px", height: "35px", fontWeight: 600, lineHeight: "11px", float: "left",
                             }}
                             onClick={handleEdit}
                             variant="outlined">{'EDIT'}
                         </Button>
                         : ''}
-
+                    <IconButton onClick={() => handleShare()}>
+                        <LinkIcon
+                            sx={{ color: "secondaryColor" }}
+                        />
+                    </IconButton>
                     {editMode === true ? <AddCoopView setOpen={setOpen} editMode={true} data={data}></AddCoopView> : ''}
                     {/* {loading && <CircularProgress />} */}
                     {loading ? (
-                        <CircularProgress size={20} sx={{ color: "#AB191F", marginRight: 2 }} />
+                        <CircularProgress size={20} sx={{ color: "secondaryColor", marginRight: 2 }} />
                     ) : (
                         login === true ? (
                             verifyProperty === true ? (
@@ -813,7 +811,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
                                 <div sx={{ display: "flex", width: "100%" }}>
                                     <Tooltip title="Deny Feature Request">
                                         <IconButton onClick={handleDenyFeature}>
-                                            <DoDisturbIcon sx={{ color: "#AB191F" }} />
+                                            <DoDisturbIcon sx={{ color: "secondaryColor" }} />
                                         </IconButton>
                                     </Tooltip>
                                     <Tooltip title="Accept Feature Request">
@@ -826,7 +824,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
                                 <div sx={{ display: "flex", width: "100%" }}>
                                     <Tooltip title="Remove Feature">
                                         <IconButton onClick={handleDenyFeature}>
-                                            <DoDisturbIcon sx={{ color: "#AB191F" }} />
+                                            <DoDisturbIcon sx={{ color: "secondaryColor" }} />
                                         </IconButton>
                                     </Tooltip>
                                 </div>
@@ -855,12 +853,13 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
                                         onClick={handleOpenRequestTour}
                                         sx={{
                                             ":hover": {
-                                                borderColor: "#F6EBE1", bgcolor: "#F6EBE1", color: "#AB191F",
-                                                borderWidth: 1.5, width: "175px", fontWeight: 600, fontSize: "11pt", padding: "0"
+                                                bgcolor: "secondaryColor", color: "textColor", border: "none", fontWeight: "600",
+                                                width: "175px", fontSize: "11pt", padding: "0",
+                                                boxShadow: theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 3px rgba(245, 235, 224, .1)",
                                             },
-                                            borderColor: "#AB191F", bgcolor: "#AB191F", color: "#F6EBE1",
-                                            borderWidth: 1.5, width: "175px", fontWeight: 600, fontSize: "11pt", padding: "0",
-                                            boxShadow: 5, justifyContent: "center", maxHeight: "50px", position: "absolute", bottom: 15, left: 25
+                                            bgcolor: "secondaryColor", color: "textColor", border: "none",
+                                            width: "175px", fontSize: "11pt", padding: "0", fontWeight: "600",
+                                            justifyContent: "center", position: "absolute", bottom: 15, left: 25
                                         }}
                                         variant="outlined">REQUEST A TOUR
                                     </Button>
@@ -872,7 +871,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
                                     {!isFeatured ?
                                         <Tooltip title="Request Property Feature">
                                             <IconButton onClick={handleFeatureProperty} >
-                                                <StarIconOutlined sx={{ color: "#AB191F" }} />
+                                                <StarIconOutlined sx={{ color: "secondaryColor" }} />
                                             </IconButton>
                                         </Tooltip>
                                         : ''}
@@ -882,7 +881,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
                                         </IconButton>
                                     </Tooltip>
                                     <IconButton size="large" disabled={true}>
-                                        <FavoriteIcon />
+                                        <FavoriteIcon/>
                                     </IconButton>
                                 </div>
                             ) :
@@ -892,13 +891,13 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
                                             tooltip: {
                                                 sx: {
                                                     bgcolor: 'rgba(171, 25, 31, 0.9)',
-                                                    color: "#F6EBE1"
+                                                    color: "primaryColor"
                                                 },
                                             },
                                         }}
                                     >
                                         <IconButton size="large" disabled={true}>
-                                            <FavoriteIcon />
+                                            <FavoriteIcon/>
                                         </IconButton>
                                     </Tooltip>
                                 )
@@ -909,25 +908,24 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
                                     tooltip: {
                                         sx: {
                                             bgcolor: 'rgba(171, 25, 31, 0.9)',
-                                            color: "#F6EBE1"
+                                            color: "primaryColor"
                                         },
                                     },
                                 }}
                             >
                                 <IconButton size="large" disabled={true}>
-                                    <FavoriteIcon />
+                                    <FavoriteIcon/>
                                 </IconButton>
                             </Tooltip>
                         ))}
 
                     <Typography
-                        style={{
+                        sx={{
                             color: "textColor",
                             display: "flex",
                             alignItems: "center",
                             margin: "0 5px 0 -10px",
                             padding: "0 5px 0 5px",
-                            fontWeight: 600
                         }}
                     >
                         {saves}

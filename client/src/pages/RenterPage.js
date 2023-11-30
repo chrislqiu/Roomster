@@ -112,38 +112,6 @@ const RenterPage = () => {
             }
         }
     }
-    const inputBaseSX = {
-        margin: "0 0 10px 25px",
-        width: "300px",
-        height: "35px",
-        borderRadius: "5px",
-        border: "2px solid",
-        borderColor: "secondaryColor",
-        padding: "5px",
-        "&:hover": {
-            border: "2px solid",
-            borderColor: "secondaryColor",
-            boxShadow:"0px 0px 3px 3px rgba(0, 0, 0, .1)", 
-        }
-    }
-    const sleepScheduleSX = {
-        margin: "0 0 10px 25px",
-        width: "50px",
-        height: "30px",
-        borderRadius: "5px",
-        border: "2px solid",
-        borderColor: "secondaryColor",
-        padding: "5px",
-        fontSize: "12pt",
-        "&:hover": {
-            border: "2px solid",
-            borderColor: "secondaryColor",
-            boxShadow:"0px 0px 3px 3px rgba(0, 0, 0, .1)", 
-        },
-        "& input::placeholder": {
-            fontSize: "11pt"
-        }
-    }
     const radioSX = {
         color: "secondaryColor",
         '&.Mui-checked': {
@@ -165,7 +133,6 @@ const RenterPage = () => {
     }
     const selectSX = {
         width: "70px",
-        borderColor: "blue",
         color: "textColor",
         "&.Mui-disabled": {
             "& .MuiOutlinedInput-notchedOutline": {
@@ -592,7 +559,7 @@ const RenterPage = () => {
                         {"Contact info"}
                     </Typography >
                     <TextField
-                            placeholder={defEmail} value={email} id="email-textfield" variant="outlined" 
+                            placeholder={defEmail} defaultValue={email} id="email-textfield" variant="outlined" 
                             sx={textfieldSX} size="small"
                             onChange={(e) => setEmail(e.target.value)}
                             disabled={disableButton}

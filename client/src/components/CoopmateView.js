@@ -23,7 +23,7 @@ import MaleIcon from '@mui/icons-material/Male';
 import FemaleIcon from '@mui/icons-material/Female';
 import TransgenderIcon from '@mui/icons-material/Transgender';
 import { faTruckPlane } from '@fortawesome/free-solid-svg-icons';
-import { createTheme, ThemeProvider, useTheme } from '@mui/material/styles';
+import { useTheme } from '@mui/material/styles';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const CoopmatesView = ({ coopmate, coopmatesArr, username, userData }) => {
@@ -191,6 +191,18 @@ const CoopmatesView = ({ coopmate, coopmatesArr, username, userData }) => {
         '&.Mui-checked': {
         color: "secondaryColor",
         },
+        '&.Mui-disabled': {
+            color: "secondaryColor",
+        },
+    }
+    const sliderSX = {
+        color:"secondaryColor", width: "120px", height: "5px", marginLeft: "-70px",
+        "&.Mui-disabled .MuiSlider-track ": {
+            color: "secondaryColor",
+        },
+        "&.Mui-disabled .MuiSlider-thumb ": {
+            color: "secondaryColor",
+        } 
     }
 
     const selectSX = {
@@ -361,7 +373,7 @@ const CoopmatesView = ({ coopmate, coopmatesArr, username, userData }) => {
                                         marks
                                         min={0}
                                         max={5}
-                                        sx={{color:"#AB191F", width: "120px", height: "5px", marginLeft: "-70px"}}
+                                        sx={sliderSX}
                                         disabled={true}
                                     />
                                 </Container>
@@ -375,7 +387,7 @@ const CoopmatesView = ({ coopmate, coopmatesArr, username, userData }) => {
                                         marks
                                         min={0}
                                         max={5}
-                                        sx={{color:"#AB191F", width: "120px", height: "5px", marginLeft: "-70px"}}
+                                        sx={sliderSX}
                                         disabled={true}
                                     />
                                 </Container>
@@ -389,7 +401,7 @@ const CoopmatesView = ({ coopmate, coopmatesArr, username, userData }) => {
                                         marks
                                         min={0}
                                         max={5}
-                                        sx={{color:"#AB191F", width: "120px", height: "5px", marginLeft: "-70px"}}
+                                        sx={sliderSX}
                                         disabled={true}
                                     />
                                 </Container>
@@ -397,23 +409,23 @@ const CoopmatesView = ({ coopmate, coopmatesArr, username, userData }) => {
                                     {/* <InputBase placeholder="From" sx={inputBaseSX} disabled="true"/> */}
                                     <Typography
                                         //variant='button'
-                                        style={styles.body}>
+                                        sx={styles.body}>
                                         From
                                     </Typography>
                                     {/* From time */}
                                     <Typography
                                         //variant='button'
-                                        style={styles.times}>
+                                        sx={styles.times}>
                                         {fromTime}
                                     </Typography>
                                     <Typography
                                         //variant='button'
-                                        style={styles.body}>
+                                        sx={styles.body}>
                                         To
                                     </Typography>
                                     {/* To time */}
                                     <Typography
-                                        style={styles.times}>
+                                        sx={styles.times}>
                                         {toTime}
                                     </Typography>
 

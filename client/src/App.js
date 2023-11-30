@@ -80,6 +80,9 @@ const lightTheme = {
     textColor: '#000000',
     hoverColor: "#F6EBE1",
     textFieldBorder: "black",
+    action: {
+      disabled: "rgba(171, 25, 31, 0.7)"
+    }
   },
   typography: {
     color: "#000000",
@@ -129,6 +132,9 @@ const darkTheme = {
     textColor: '#F6EBE1',
     hoverColor: "#F6EBE1",
     textFieldBorder: "#962c1e",
+    action: {
+      disabled: "rgba(150, 44, 30, 0.7)"
+    }
   },
   typography: {
     fontFamily: font,
