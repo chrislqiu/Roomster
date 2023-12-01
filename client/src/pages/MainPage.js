@@ -35,7 +35,7 @@ const MainPage = ({ login }) => {
             setLoading(false);
         }
         getPropertyInfo()
-        
+
     }, [])
     const [filteredProperties, setFilteredProperties] = React.useState(propertyInfo);
     //const [sortedProperties, setSortedProperties] = React.useState(propertyInfo);
@@ -101,63 +101,66 @@ const MainPage = ({ login }) => {
             <SearchBar data={propertyInfo} setInput={setInput} setFilteredOptions={setFilteredProperties} setNumberSelected={setNumberSelected} setSortOptions={setSortOption} setMapView={setMapView} />
             {console.log(filteredProperties)}
             {/* {(input === '' && numberSelected === 0) && */}
-
+            {/* 
             
             <Box sx={{ m: 4 }} style={styles.feed}>
                 <FeaturedProperties data={filteredProperties} style={styles.feed} login={login} loading={loading}/>
-            </Box>
+            </Box> */}
 
             <Box sx={{ m: 1 }} style={styles.feed}>
                 {
                     /*
                      * Maps each Property Information object to its own "card"
                      */
-                    loading ? 
-                    <>
-                        <CardPlaceholder isCoopmateCard={false}/>
-                        <CardPlaceholder isCoopmateCard={false}/>
-                        <CardPlaceholder isCoopmateCard={false}/>
-                        <CardPlaceholder isCoopmateCard={false}/>
-                        <CardPlaceholder isCoopmateCard={false}/>
-                        <CardPlaceholder isCoopmateCard={false}/>
-                        <CardPlaceholder isCoopmateCard={false}/>
-                        <CardPlaceholder isCoopmateCard={false}/>
-                    </>
-                    :
-                    !mapView ? (
-                        <React.Fragment>
+                    loading ?
+                        <>
                             <Box sx={{ m: 4 }} style={styles.feed}>
-                                <FeaturedProperties data={filteredProperties} style={styles.feed} login={login} />
+                                <FeaturedProperties data={filteredProperties} style={styles.feed} login={login} loading={loading} />
                             </Box>
-                            <Box sx={{ m: 1 }} style={styles.feed}>
-                                {filteredProperties.length > 0 ? (
-                                    filteredProperties.map((cards) => (
-                                        <React.Fragment key={cards._id}>
-                                            {token && token === cards._id ? (
-                                                <PropertyViewMore data={cards} login={login} autoOpen={true} />
-                                            ) : (
-                                                <PropertyViewMore data={cards} login={login} autoOpen={false} />
-                                            )}
-                                        </React.Fragment>
-                                    ))
-                                ) : (
-                                    <Typography
-                                        sx={{
-                                            fontWeight: 600,
-                                            fontSize: 25,
-                                            color: "#AB191F",
-                                        }}
-                                    >
-                                        No properties match your search!
-                                    </Typography>
-                                )}
+                            <CardPlaceholder isCoopmateCard={false} />
+                            <CardPlaceholder isCoopmateCard={false} />
+                            <CardPlaceholder isCoopmateCard={false} />
+                            <CardPlaceholder isCoopmateCard={false} />
+                            <CardPlaceholder isCoopmateCard={false} />
+                            <CardPlaceholder isCoopmateCard={false} />
+                            <CardPlaceholder isCoopmateCard={false} />
+                            <CardPlaceholder isCoopmateCard={false} />
+                        </>
+                        :
+                        !mapView ? (
+                            <React.Fragment>
+                                <Box sx={{ m: 4 }} style={styles.feed}>
+                                    <FeaturedProperties data={filteredProperties} style={styles.feed} login={login} loading={loading} />
+                                </Box>
+                                <Box sx={{ m: 1 }} style={styles.feed}>
+                                    {filteredProperties.length > 0 ? (
+                                        filteredProperties.map((cards) => (
+                                            <React.Fragment key={cards._id}>
+                                                {token && token === cards._id ? (
+                                                    <PropertyViewMore data={cards} login={login} autoOpen={true} />
+                                                ) : (
+                                                    <PropertyViewMore data={cards} login={login} autoOpen={false} />
+                                                )}
+                                            </React.Fragment>
+                                        ))
+                                    ) : (
+                                        <Typography
+                                            sx={{
+                                                fontWeight: 600,
+                                                fontSize: 25,
+                                                color: "#AB191F",
+                                            }}
+                                        >
+                                            No properties match your search!
+                                        </Typography>
+                                    )}
+                                </Box>
+                            </React.Fragment>
+                        ) : (
+                            <Box sx={styles.mapViewContainer}>
+                                <MapView propertyList={filteredProperties} />
                             </Box>
-                        </React.Fragment>
-                    ) : (
-                        <Box sx={styles.mapViewContainer}>
-                            <MapView propertyList={filteredProperties} />
-                        </Box>
-                    )
+                        )
                 }
             </Box>
 
