@@ -91,7 +91,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
 
         fetchImages(id)
 
-    });
+    }, []);
 
     // console.log(newImage)
 
