@@ -416,6 +416,9 @@ const RenterPage = () => {
             .catch(error => {
                 console.error('ERRORRR: ', error);
             });
+            setTimeout(() => {
+                window.location.reload();
+            }, 1500);
     }
 
     const handleSaveLeft = () => {
@@ -469,6 +472,9 @@ const RenterPage = () => {
             .catch(error => {
                 console.error('ERRORRR: ', error);
             });
+            setTimeout(() => {
+                window.location.reload();
+            }, 1500);
 
     }
     const handleOpen = () => {
