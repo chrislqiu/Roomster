@@ -798,19 +798,44 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
                             >
                                 Contact Info
                             </Typography>
+                            {data.companyInfo ?
+                            <>
                             <Typography
                                 sx={{
                                     color: "textColor",
                                     fontWeight: 300,
                                     marginLeft: "-25px",
                                     variant: "body2",
+                                    //textOverflow: "ellipsis",
+                                    //overflow: "hidden",
+                                    overflowWrap: "anywhere",
+                                    width: "10rem"
                                 }}
                             >
-                                Company Name {<br />}
+                                {data.companyInfo.name} {<br />}
+                                {data.companyInfo.phone} {<br />}
+                                {data.companyInfo.email} {<br />}
                             </Typography>
-                            <Link href="https://riseonchauncey.com/" underline="always" color="secondaryColor" marginLeft="-25px">
+                            <Link href= {"https://" + data.companyInfo.site} underline="always" color="secondaryColor" marginLeft="-25px">
                                 {'Website'}
                             </Link>
+                            </>
+                            :
+                            <Typography
+                                sx={{
+                                    color: "textColor",
+                                    fontWeight: 300,
+                                    marginLeft: "-25px",
+                                    variant: "body2",
+                                    //textOverflow: "ellipsis",
+                                    //overflow: "hidden",
+                                    overflowWrap: "anywhere",
+                                    width: "10rem"
+                                }}
+                            >
+                                Our Company {<br />}
+                            </Typography>
+                            }
                         </Box>
 
                     </Stack>
@@ -821,11 +846,13 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
 
                     
 
+                    {data.companyInfo ?
                     <Tooltip title="Map View" componentsProps={toolTipSX}>
                         <IconButton onClick={handleOpenMap}>
                             <MapIcon sx={{ color: "secondaryColor" }} />
                         </IconButton>
                     </Tooltip>
+                    : ''}
 
                     {/* {console.log(isVerified)} */}
                     {isVerified === true ?
