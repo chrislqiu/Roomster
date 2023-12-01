@@ -217,6 +217,15 @@ const CoopmatesView = ({ coopmate, coopmatesArr, username, userData }) => {
         }
     }
 
+    const toolTipSX = {
+        tooltip: {
+            sx: {
+                bgcolor: theme.palette.type === "light" ? 'rgba(171, 25, 31, 0.9)' : "rgba(245, 235, 224, .8)",
+                color: "primaryColor"
+            },
+        },
+    }
+
     return (
         <React.Fragment>
             {/* Coopmate Card View */}
@@ -442,23 +451,20 @@ const CoopmatesView = ({ coopmate, coopmatesArr, username, userData }) => {
 
                 </DialogContent>
                 <DialogActions>
-                    {isVerified === true ? <FontAwesomeIcon icon={faUserCheck} style={{ color: "#AB191F", margin: "0px 0px 0px -12px", fontSize: "14pt" }} /> : ''}
+                    {isVerified === true ? 
+                    <Tooltip title="Verified User" componentsProps={toolTipSX}>
+                    <FontAwesomeIcon icon={faUserCheck} style={{ color: theme.palette.type === "light" ? "#AB191F" : "#962c1e", margin: "0px 0px 0px -12px", fontSize: "14pt" }} /> 
+                    </Tooltip>
+                    : ''}
                     <Tooltip
                         title={coopmateFavorited ? "Remove from My Coopmates" : "Add to My Coopmates"}
-                        componentsProps={{
-                            tooltip: {
-                                sx: {
-                                    bgcolor: 'rgba(171, 25, 31, 0.9)',
-                                    color: '#F6EBE1'
-                                },
-                            },
-                        }}
+                        componentsProps={toolTipSX}
                     >
                         <IconButton size="large" onClick={handleFavorite}>
                             {coopmateFavorited ? (
-                                <FavoriteIcon sx={{ color: "#AB191F" }} />
+                                <FavoriteIcon sx={{ color: "secondaryColor" }} />
                             ) : (
-                                <FavoriteBorderIcon sx={{ color: "#AB191F" }} />
+                                <FavoriteBorderIcon sx={{ color: "secondaryColor" }} />
                             )}
                         </IconButton>
                     </Tooltip>

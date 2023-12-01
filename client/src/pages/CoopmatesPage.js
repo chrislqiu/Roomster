@@ -91,7 +91,7 @@ const CoopmatesPage = ({ }) => {
                        
                         <Typography
                     variant="h5"
-                    color="#AB191F"
+                    color="secondaryColor"
                     sx={{ m: 10, textAlign: 'center' }}
                     fontWeight={500}
                 >

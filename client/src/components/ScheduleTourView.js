@@ -69,9 +69,12 @@ const ScheduleTourView = ({ data, userData, requestTourOpen, handleClose }) => {
         input: {
             color: "textColor",
             "&::placeholder": {
-                opacity: 0.7,
+                opacity: 1,
                 color: "textColor",
             },
+            "&:hover": {
+                cursor: "default"
+            }
         },
         "& fieldset": { border: 'none', },
         boxShadow: theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 3px rgba(245, 235, 224, .1)",
