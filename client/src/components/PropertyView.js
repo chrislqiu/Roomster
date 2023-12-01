@@ -34,7 +34,7 @@ import { useTheme } from '@mui/material/styles';
 import amongus from '../images/amongusturkey.jpeg'
 import MapIcon from '@mui/icons-material/Map';
 import MapView from "../components/MapView"
-
+import { Buffer } from "buffer";
 
 /* 
  * Property Card (Rachel La)
@@ -46,9 +46,13 @@ import MapView from "../components/MapView"
  * favCoops : Boolean to determine if card is on favCoops page
  */
 const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProperty, featureRequest, featureRequestManage, autoOpen }) => {
-    var image, propertyName, address, beds, baths, cost, amenities, utilities
+    const [newImage, setImage] = React.useState([]);
+
+
+    var image, propertyName, address, beds, baths, cost, amenities, utilities, id
     if (myCoops) {
         image = data.image;
+        id = data._id
         propertyName = data.propertyName;
         address = data.address;
         beds = data.beds;
@@ -58,6 +62,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
         utilities = data.utilities;
     } else {
         image = data.propertyInfo.image;
+        id = data.propertyInfo._id
         propertyName = data.propertyInfo.propertyName;
         address = data.propertyInfo.address;
         beds = data.propertyInfo.beds;
@@ -66,10 +71,56 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
         amenities = data.propertyInfo.amenities;
         utilities = data.propertyInfo.utilities;
     }
+    React.useEffect(() => {
+        const fetchImages = async (objectId) => {
+            try {
+                const response = await fetch(`http://localhost:8000/images/${objectId}`);
+                const data = await response.json();
+                // console.log(data.images)
+
+                if (data.success) {
+                    setImage(data.images)
+                } else {
+                    console.error('Error fetching images:', data.message);
+                    setImage([])
+                }
+            } catch (error) {
+                console.error('Error fetching images:', error.message);
+                setImage([])
+            }
+        }
+
+        fetchImages(id)
+
+    });
+
+    // console.log(newImage)
+
+    for (let i = 0; i < newImage.length; i++) {
+        const imageDataObject = newImage[i].image;
+        // console.log(Buffer.from)
+        
+        // Assuming imageDataObject has a 'data' property that is a Buffer
+        const base64String = Buffer.from(imageDataObject.data).toString("base64")
+        console.log(base64String)
+        
+        // Now store the base64 string in the image array
+        image[i] = `data:image/jpeg;base64,${base64String}`;
+        console.log(image[i])
+      }
+
+
+    if (image.length > 0) {
+        console.log(image[0])
+    }
+
+
+
+
 
     //const testimages = [image, amongus]
-    const imageArr = image[0] === 'link1' ? [amongus, amongus] : image
-    
+    const imageArr = image
+
     /*
      * open, setOpen : controls the state of the dialogue popup
      */
@@ -91,7 +142,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
     const [requestTourOpen, setRequestTourOpen] = React.useState(false)
 
     const handleOpenRequestTour = () => {
-       // console.log("request = " + requestTourOpen)
+        // console.log("request = " + requestTourOpen)
         setRequestTourOpen(true)
     }
 
@@ -529,12 +580,12 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
                     boxShadow: !featured ? (theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 2px rgba(245, 235, 224, .3)") : "none"
                 }}>
                 <CardActionArea>
-                    {console.log(data.image)}
-
+                    {/* {console.log(data.image)} */}
+                    
                     <CardMedia
                         component="img"
                         //image={data.propertyInfo.image === undefined ? data.image : data.propertyInfo.image}
-                        image={imageArr[0] === 'link1' ? imgExample : imageArr[0]}
+                        src={imageArr[0] !== undefined ? imageArr[0] : amongus}
                         //height="140px"
                         style={{
                             height: featured === true ? "120px" : "130px",
@@ -606,7 +657,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
                             alt=""
                             style={{ objectFit: 'fill', width: '700px', height: '200px', borderRadius: '5px'}}
                         /> */}
-                        <ImageGallery images={imageArr}/>
+                    <ImageGallery images={imageArr} />
                     {
                         /*
                          * Stack direction row has each text 'chunk'
@@ -794,7 +845,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
                             }}
                         >
                             <IconButton sx={{ color: "secondaryColor" }}>
-                                <FontAwesomeIcon icon={faBuildingCircleCheck} style={{color: theme.palette.type === "light" ? "#AB191F" : "#962c1e"}}/>
+                                <FontAwesomeIcon icon={faBuildingCircleCheck} style={{ color: theme.palette.type === "light" ? "#AB191F" : "#962c1e" }} />
                             </IconButton>
                         </Tooltip>
                         :
@@ -916,7 +967,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
                                         </IconButton>
                                     </Tooltip>
                                     <IconButton size="large" disabled={true}>
-                                        <FavoriteIcon/>
+                                        <FavoriteIcon />
                                     </IconButton>
                                 </div>
                             ) :
@@ -932,7 +983,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
                                         }}
                                     >
                                         <IconButton size="large" disabled={true}>
-                                            <FavoriteIcon/>
+                                            <FavoriteIcon />
                                         </IconButton>
                                     </Tooltip>
                                 )
@@ -949,7 +1000,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
                                 }}
                             >
                                 <IconButton size="large" disabled={true}>
-                                    <FavoriteIcon/>
+                                    <FavoriteIcon />
                                 </IconButton>
                             </Tooltip>
                         ))}
