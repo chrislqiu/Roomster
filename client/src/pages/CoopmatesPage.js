@@ -46,7 +46,7 @@ const CoopmatesPage = ({ }) => {
                 setMyCoopmates(obj.user.coopmates);
 
                 const favCoopmates = allCoopmates.filter(coopmateUnsaved =>
-                    obj.user.coopmates.some(coopmateSaved => coopmateUnsaved._id.toString() === coopmateSaved._id.toString())
+                    obj.user.coopmates.some(coopmateSaved => coopmateUnsaved.renterInfo._id.toString() === coopmateSaved._id.toString())
                 );
                 
                 setMyCoopmates(favCoopmates);

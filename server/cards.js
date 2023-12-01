@@ -225,14 +225,15 @@ router.post('/update-coopmates', async (req, res) => {
         renter.coopmates.map(mate => console.log(mate._id.toString()))
 
         /* checks if coopmate exists in the renter array */
-        const coopmateExists = renter.coopmates.some(mate => mate._id.toString() === coopmate._id.toString());
+        const coopmateExists = renter.coopmates.some(mate => mate._id.toString() === coopmate.renterInfo._id.toString());
         if (!coopmateExists) {
             console.log("ok doesnt exist")
             /* add coopmate */
-            renter.coopmates.push(req.body.coopmate);
+            renter.coopmates.push(req.body.coopmate.renterInfo);
         } else {
             console.log("ok no duplicates pls")
             /* if coopmate exists, remove */
+            renter.coopmates.pull(coopmate.renterInfo._id)
             renter.coopmates = renter.coopmates.filter(mate => mate._id.toString() !== coopmate._id.toString());
         }
         await renter.save();
@@ -342,6 +343,72 @@ router.get('/link-coops', async (req, res) => {
         });
     });
     res.status(200).send("Linked Coops")
+})
+
+router.get('/update-schema', async (req,res) => {
+//    await Renter.deleteMany({})
+//    await RenterInfo.deleteMany({})
+//    await Property.deleteMany({})
+//    await Company.deleteMany({"companyInfo.site": "site"})
+//    await CompanyInfo.deleteMany({site: "site"})
+
+//    await PropertyInfo.updateMany({}, {$unset: ["image", "utilities"]})
+//    await PropertyInfo.updateMany({}, {$set: { "image": ["link1", "link2"], "utilities": ["Electricity", "Water", "Gas", "Trash", "Sewage", "Internet"]}})
+//    await Property.updateMany({}, {$unset: ["propertyInfo.image", "propertyInfo.utilities"]})
+//    await Property.updateMany({}, {$set: { "propertyInfo.image": ["link1", "link2"], "propertyInfo.utilities": ["Electricity", "Water", "Gas", "Trash", "Sewage", "Internet"]}})
+//    await Company.updateMany({}, {$set: { "myCoops": [], "tours": []}})
+
+//    const companyInfo = await CompanyInfo.find({})
+//    companyInfo.forEach(async function(info) {
+//        const newCompany = new Company({
+//            companyInfo: info,
+//            myCoops: [],
+//            tours: []
+//        });
+//        await newCompany.save()
+//    })
+
+//    const propertyInfo = await PropertyInfo.find({})
+//    propertyInfo.forEach(async function (info) {
+//        var company = await Company.findOneAndUpdate({'companyInfo.address': info.address}, {$push: {myCoops: info}})
+//        if (company == null) {
+//            const newName = info.propertyName + " Company"
+//            var existingCompany = await CompanyInfo.findOne({name: newName})
+//            if (existingCompany != null) {
+//
+//            }
+//            const newCompanyInfo = new CompanyInfo({
+//                name: info.propertyName + " Company",
+//                address: info.address,
+//                site: "site",
+//                email: "email",
+//                phone: "phone"
+//            });
+//            await newCompanyInfo.save()
+//
+//            const newCompany = new Company({
+//                companyInfo: newCompanyInfo,
+//                myCoops: [info],
+//                tours: []
+//            });
+//            await newCompany.save()
+//            company = newCompany
+//        }
+//
+//        const newProperty = new Property({
+//            propertyInfo: info,
+//            companyInfo: company.companyInfo
+//        });
+//
+//        await newProperty.save()
+//    })
+
+//    await Manager.updateMany({}, {$unset: company})
+//    await Manager.updateMany({}, {$set: {phone: "1234567890"}})
+//    const rise = await Company.findOne({'companyInfo.name': "RISE"})
+//    const ce = await Company.findOne({'companyInfo.name': "Campus Edge"})
+//    await Manager.updateOne({username: "donahue.ethanj@gmail.com"}, {$set: {company: ce}})
+//    await Manager.updateOne({username: "test@"}, {$set: {company: ce}})
 })
 
 module.exports = router;

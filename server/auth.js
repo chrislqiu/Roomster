@@ -8,6 +8,7 @@ const Company = require('./models/company.js');
 const CompanyInfo = require('./models/companyInfo.js');
 const Admin = require("./models/admin.js")
 const Property = require('./models/property.js')
+const PropertyInfo = require('./models/propertyInfo.js')
 const cookieParser = require("cookie-parser");
 const sendVerificationEmail = require("./emailVerify.js");
 const changePasswordEmail = require("./changePasswordEmail.js")
@@ -273,11 +274,15 @@ router.post("/manager-signup", async (req, res) => {
             const newCompanyInfo = new CompanyInfo({
                 name: req.body.companyName,
                 address: req.body.address,
+                site: "",
                 email: req.body.companyEmail,
+                phone: ""
             }); // the managers personal email and phone are separate from the company ones
 
             const newCompany = new Company({
-                companyInfo: newCompanyInfo
+                companyInfo: newCompanyInfo,
+                myCoops: [],
+                tours: []
             });
 
             newCompanyInfo.save();
@@ -375,8 +380,15 @@ router.post("/delete", authorization, async (req, res) => {
 
         if (isPasswordValid) {
             if (userType === "renter") {
+                const mates = await Renter.find({'coopmates': {$elemMatch: {'_id': user.renterInfo._id.toString().toLowerCase()}}})
+                console.log(mates)
+                mates.forEach(async function(mate) {
+                    mate.coopmates.pull(user.renterInfo._id)
+                    await mate.save()
+                })
+                console.log(mates)
                 await RenterInfo.deleteOne({ _id: user.renterInfo._id });
-                await Renter.deleteOne({ username: req.body.username });
+                await Renter.deleteOne({  _id: user._id });
             } else if (userType === "manager") {
                 await Manager.deleteOne({ username: req.body.username });
             }
@@ -759,9 +771,31 @@ router.post("/admin/pw-set/:token", async (req, res) => {
 router.post("/delete-property", authorization, async (req, res) => {
     try {
         const propertyId = req.body.id
+        const property = await Property.findOne({_id: propertyId})
         console.log(propertyId);
-        const result = await Property.deleteOne(
-            { _id: propertyId },)
+        const renters = await Renter.find({'renterInfo.favCoops': {$elemMatch: {'_id': propertyId}}})
+        console.log(renters)
+        renters.forEach(async function(renter) {
+            renter.renterInfo.favCoops.pull(property._id)
+            await renter.save()
+            const mates = await Renter.find({'coopmates': {$elemMatch: {'_id': renter.renterInfo._id.toString().toLowerCase()}}})
+            mates.forEach(async function(mate) {
+                mate.coopmates.pull(renter.renterInfo._id)
+                await mate.save()
+                mate.coopmates.push(renter.renterInfo)
+                mate.save()
+            })
+        })
+        const company = await Company.findOne({'companyInfo.name': property.companyInfo.name})
+        company.myCoops.pull(property.propertyInfo._id)
+        await company.save()
+        const managers = await Manager.find({'company.companyInfo.name': company.companyInfo.name})
+        managers.forEach(async function(manager) {
+            manager.company = company
+            manager.save()
+        })
+        await PropertyInfo.deleteOne({_id: property.propertyInfo._id})
+        await Property.deleteOne({ _id: propertyId })
         return res.status(200).send("Property deleted");
 
     } catch (err) {
