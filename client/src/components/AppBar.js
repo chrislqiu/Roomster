@@ -241,6 +241,9 @@ const RoomsterAppBar = ({ login, userType }) => {
                           color: "primaryColor",
                           cursor: "pointer"
                         },
+                        "&.Mui-disabled": {
+                          display: "none",
+                        },
                         color: "secondaryColor",
                         backgroundColor: "primaryColor",
                         display: "block",
