@@ -64,7 +64,7 @@ const RenterPage = () => {
         age: {
             "& .MuiInputBase-input.Mui-disabled": {
                 color:"secondaryColor",
-                WebkitTextFillColor: "#AB191F" /*theme.palette.type === "dark" ? "#F6EBE1" : "",*/
+                WebkitTextFillColor: theme.palette.type === "dark" ? "#962c1e" : "#AB191F",
             },
             input: {
                 color: "textColor",
@@ -166,7 +166,7 @@ const RenterPage = () => {
         input: {
             color: "textColor",
             "&::placeholder": {
-                opacity: 0.7,
+                opacity: 1,
                 color: "textColor",
                 },
         },
@@ -531,7 +531,7 @@ const RenterPage = () => {
                             {name}
                         </Typography >
                         <Box sx={{display: "inline-flex", justifyContent:"center"}}>
-                        <Tooltip title="Change Age" disabled={disableButton}
+                        <Tooltip title="Change Age"
                         componentsProps={{
                             tooltip: {
                                 sx: {
@@ -540,7 +540,7 @@ const RenterPage = () => {
                                 },
                             },
                         }}>
-                            <TextField placeholder={defAge} sx={styles.age} style={{padding: "0px 0px 0px 0px", marginTop: "20px"}}
+                            <TextField disabled={disableButton} placeholder={defAge} sx={styles.age} style={{padding: "0px 0px 0px 0px", marginTop: "20px"}}
                                 onChange={(e) => setAge(e.target.value)}
                             /> 
                         </Tooltip>
@@ -571,7 +571,7 @@ const RenterPage = () => {
                             disabled={disableButton}
                     />
                     <TextField
-                            placeholder={defPhone} value={phone} id="number-textfield" variant="outlined" 
+                            placeholder={defPhone} defaultValue={phone} id="number-textfield" variant="outlined" 
                             sx={textfieldSX} size="small"
                             onChange={(e) => setPhone(e.target.value)}
                             disabled={disableButton}
