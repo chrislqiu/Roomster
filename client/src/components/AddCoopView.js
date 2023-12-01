@@ -93,10 +93,10 @@ const AddCoopView = ({ setOpen, editMode, data }) => {
             if (data.utilities.includes("Trash")) {
                 setIncludeTrash(true)
             }
-            if (data.amenities.includes("Sewage")) {
+            if (data.utilities.includes("Sewage")) {
                 setIncludeSewage(true)
             }
-            if (data.amenities.includes("Internet")) {
+            if (data.utilities.includes("Internet")) {
                 setInternet(true)
             }
         }
@@ -171,7 +171,7 @@ const AddCoopView = ({ setOpen, editMode, data }) => {
 
         const result = await response.json();
 
-        console.log(result.data[0].latitude)
+        //console.log(result.data[0].latitude)
 
 
         const dataToSend = {
@@ -180,8 +180,8 @@ const AddCoopView = ({ setOpen, editMode, data }) => {
                 image: imageURLs,
                 propertyName: propertyName,
                 address: propertyAddress,
-                latitude: result.data[0].latitude,
-                longitude: result.data[0].longitude,
+                //latitude: result.data[0].latitude,
+                //longitude: result.data[0].longitude,
                 beds: bed,
                 baths: bath,
                 cost: price,
