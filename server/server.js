@@ -209,7 +209,7 @@ const updateOrCreateObject = async (objectId, file) => {
     Body: file.buffer,
   };
 
-  await s3.upload(params).promise();
+  await s3.putObject(params).promise();
 }
 
 async function uploadToS3(images, objectId) {
