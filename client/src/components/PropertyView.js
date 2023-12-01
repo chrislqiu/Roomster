@@ -769,14 +769,14 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
 
                 <DialogActions>
 
-                    <IconButton
+                    {/*<IconButton
                         style={{ position: "BottomLeft", position: "sticky", top: 70, left: 0 }}
                         onClick={() => handleShare()}
                     >
                         <SendIcon
                             sx={{ color: "textColor" }}
                         />
-                    </IconButton>
+                            </IconButton>*/}
 
                     <Tooltip title="Map View">
                         <IconButton onClick={handleOpenMap}>
