@@ -43,6 +43,7 @@ const RoomsterAppBar = ({ login, userType }) => {
    */
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [pfp, setPfp] = React.useState('')
+  const [findingCoopmates, setFindingCoopmates] = React.useState(false)
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -126,6 +127,7 @@ const RoomsterAppBar = ({ login, userType }) => {
         console.log(obj.user)
         if (obj.user.renterInfo) {
           setPfp(obj.user.renterInfo.pfp)
+          setFindingCoopmates(obj.user.findingCoopmates)
         }
 
       } catch (e) {
@@ -215,6 +217,7 @@ const RoomsterAppBar = ({ login, userType }) => {
                   pagesRenter.map((page, i) => (
                     <Button
                       key={page}
+                      disabled={page === "Coopmates" && !findingCoopmates}
                       onClick={() => {
                         if (page === "Home") {
                           navigate("/Home");
