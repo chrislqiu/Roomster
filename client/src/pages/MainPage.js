@@ -4,6 +4,7 @@ import React from "react"
 import SearchBar from "../components/SearchBar";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import CardPlaceholder from "../components/CardPlaceholder";
 import { useParams } from 'react-router-dom';
 
 
@@ -19,6 +20,7 @@ const MainPage = ({ login }) => {
     const [propertyInfo, setPropertyInfo] = React.useState([])
     const [numberSelected, setNumberSelected] = React.useState();
     const [sharedProperty, setSharedProperty] = React.useState();
+    const [loading, setLoading] = React.useState(true);
     const { token } = useParams();
 
 
@@ -28,9 +30,10 @@ const MainPage = ({ login }) => {
             const getData = await res.json()
             const obj = JSON.parse(JSON.stringify(getData));
             setPropertyInfo(obj);
+            setLoading(false);
         }
         getPropertyInfo()
-
+        
     }, [])
     const [filteredProperties, setFilteredProperties] = React.useState(propertyInfo);
     //const [sortedProperties, setSortedProperties] = React.useState(propertyInfo);
@@ -91,7 +94,9 @@ const MainPage = ({ login }) => {
             {console.log(filteredProperties)}
             {/* {(input === '' && numberSelected === 0) && */}
             <Box sx={{ m: 4 }} style={styles.feed}>
-                <FeaturedProperties data={filteredProperties} style={styles.feed} login={login} />
+                
+                    <FeaturedProperties data={filteredProperties} style={styles.feed} login={login} loading={loading}/>
+               
             </Box>
 
             <Box sx={{ m: 1 }} style={styles.feed}>
@@ -99,7 +104,19 @@ const MainPage = ({ login }) => {
                     /*
                      * Maps each Property Information object to its own "card"
                      */
-                    filteredProperties.length > 0 ?
+                    loading ? 
+                    <>
+                        <CardPlaceholder isCoopmateCard={false}/>
+                        <CardPlaceholder isCoopmateCard={false}/>
+                        <CardPlaceholder isCoopmateCard={false}/>
+                        <CardPlaceholder isCoopmateCard={false}/>
+                        <CardPlaceholder isCoopmateCard={false}/>
+                        <CardPlaceholder isCoopmateCard={false}/>
+                        <CardPlaceholder isCoopmateCard={false}/>
+                        <CardPlaceholder isCoopmateCard={false}/>
+                    </>
+                    :
+                    (filteredProperties.length > 0 ?
                         filteredProperties.map((cards) => {
                             return (
                                 <React.Fragment key={cards._id}>
@@ -121,7 +138,7 @@ const MainPage = ({ login }) => {
                             }}
                         >
                             No properties match your search!
-                        </Typography>
+                        </Typography>)
                 }
             </Box>
         </Container>

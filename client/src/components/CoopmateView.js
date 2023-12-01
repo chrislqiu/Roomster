@@ -22,7 +22,7 @@ import sheep from "../images/chickens/sheep.png"
 import MaleIcon from '@mui/icons-material/Male';
 import FemaleIcon from '@mui/icons-material/Female';
 import TransgenderIcon from '@mui/icons-material/Transgender';
-import { faTruckPlane } from '@fortawesome/free-solid-svg-icons';
+import { faTruckPlane, faUserCheck } from '@fortawesome/free-solid-svg-icons';
 import { useTheme } from '@mui/material/styles';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
@@ -46,6 +46,8 @@ const CoopmatesView = ({ coopmate, coopmatesArr, username, userData }) => {
     const fromTime = coopmate.renterInfo.livingPreferences.sleepSchedule.from
     const toTime = coopmate.renterInfo.livingPreferences.sleepSchedule.to
     const pfp = coopmate.renterInfo.pfp
+    const isVerified = coopmate.isVerified
+    console.log(isVerified)
 
     //console.log(coopmatesArr)
     //console.log(userData)
@@ -276,6 +278,7 @@ const CoopmatesView = ({ coopmate, coopmatesArr, username, userData }) => {
                             {gender === 'Male' ? <MaleIcon style={{margin:"-22px 15px 0px -10px", fontSize: "22pt"}}/> : ''}
                             {gender === 'Female' ? <FemaleIcon style={{margin:"-22px 0px 0px -20px", fontSize: "22pt"}}/> : ''}
                             {gender === 'Transgender' ? <TransgenderIcon style={{margin:"-22px 0px 0px -20px", fontSize: "22pt"}}/> : ''}
+                            {isVerified === true ? <FontAwesomeIcon icon={faUserCheck} style={{margin:"-22px 0px 0px -12px", fontSize: "14pt"}}/> : ''}  
                         </Box>
                     </CardContent>
                 </CardActionArea>
@@ -439,6 +442,8 @@ const CoopmatesView = ({ coopmate, coopmatesArr, username, userData }) => {
 
                 </DialogContent>
                 <DialogActions>
+                {isVerified === true ? <FontAwesomeIcon icon={faUserCheck} style={{color: "#AB191F",margin:"0px 0px 0px -12px", fontSize: "14pt"}}/> : ''}
+                {userData.findingCoopmates ?
                 <Tooltip
                         title={coopmateFavorited ? "Remove from My Coopmates" : "Add to My Coopmates"}
                         componentsProps={{
@@ -458,6 +463,9 @@ const CoopmatesView = ({ coopmate, coopmatesArr, username, userData }) => {
                             )}
                         </IconButton>
                     </Tooltip>
+                    :
+                    ''
+                    }
                 </DialogActions>
 
             </Dialog>

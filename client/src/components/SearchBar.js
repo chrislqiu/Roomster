@@ -9,6 +9,7 @@ const SearchBar = ({ data, setInput, setFilteredOptions, setNumberSelected, setS
     const [selectBed, setSelectBed] = React.useState([]);
     const [selectBath, setSelectedBath] = React.useState([]);
     const [selectAmenities, setSelectedAmenities] = React.useState([]);
+    const [selectUtilities, setSelectedUtilities] = React.useState([]);
     const [searchText, setSearchText] = React.useState('')
 
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -39,6 +40,17 @@ const SearchBar = ({ data, setInput, setFilteredOptions, setNumberSelected, setS
             setSelectedAmenities(selectAmenities.filter((item) => item !== value));
         } else {
             setSelectedAmenities([...selectAmenities, value]);
+        }
+    };
+
+    const handleUtility = (event) => {
+        const value = event.target.value;
+        console.log(value)
+        if (selectUtilities.includes(value)) {
+            setSelectedUtilities(selectUtilities.filter((item) => item !== value));
+            console.log(selectUtilities)
+        } else {
+            setSelectedUtilities([...selectUtilities, value]);
         }
     };
 
@@ -73,6 +85,7 @@ const SearchBar = ({ data, setInput, setFilteredOptions, setNumberSelected, setS
         setSelectBed([])
         setSelectedBath([])
         setSelectedAmenities([])
+        setSelectedUtilities([])
       };
 
     const sortData = (data, sortingOption) => {    
@@ -97,14 +110,17 @@ const SearchBar = ({ data, setInput, setFilteredOptions, setNumberSelected, setS
 
             const amenityFilter = selectAmenities.length === 0 || selectAmenities.every((amenity) => property.propertyInfo.amenities.includes(amenity));
 
-            return bedroomFilter && bathroomFilter && amenityFilter && searchTextFilter;
+            const utilityFilter = selectUtilities.length === 0 || selectUtilities.every((util) => property.propertyInfo.utilities.includes(util));
+            console.log(`utility filter ${utilityFilter}`)
+
+            return bedroomFilter && bathroomFilter && amenityFilter && searchTextFilter && utilityFilter;
         });
         /* setFilteredOptions is the final combined list of the filtered options */
         setFilteredOptions(filteredPropertyInfo);
-        setNumberSelected(selectBed.length + selectBath.length + selectAmenities.length)
+        setNumberSelected(selectBed.length + selectBath.length + selectAmenities.length + selectUtilities.length)
 
         /* */
-    }, [selectBed, selectBath, selectAmenities]);
+    }, [selectBed, selectBath, selectAmenities, selectUtilities]);
 
 
     const [open, setOpen] = React.useState(false);
@@ -209,7 +225,7 @@ const SearchBar = ({ data, setInput, setFilteredOptions, setNumberSelected, setS
                                 >
                                     Filter by:
                                 </Typography>
-                                <Box sx={{ paddingY: 5 }}>
+                                {/* <Box sx={{ paddingY: 5 }}>
                                     <FormGroup sx={{color: "textColor"}}>
                                         Distance
                                         <FormControlLabel
@@ -243,7 +259,7 @@ const SearchBar = ({ data, setInput, setFilteredOptions, setNumberSelected, setS
                                             }
                                         />
                                     </FormGroup>
-                                </Box>
+                                </Box> */}
                                 <FormGroup sx={{color: "textColor"}}>
                                     Bedroom
                                     <FormControlLabel
@@ -379,6 +395,60 @@ const SearchBar = ({ data, setInput, setFilteredOptions, setNumberSelected, setS
                                                 sx={checkboxSX}/>
                                         }
                                         label="Kitchen Appliances"
+                                    />
+                                </FormGroup>
+                                <FormGroup>
+                                    Utilities
+                                    <FormControlLabel
+                                        control={<Checkbox
+                                            value="Internet"
+                                            onChange={handleUtility}
+                                            sx={checkboxSX} />}
+                                        label="Internet"
+                                    />
+                                    <FormControlLabel
+                                        control={<Checkbox
+                                            value="Sewage"
+                                            onChange={handleUtility}
+                                            sx={checkboxSX} />
+                                        }
+                                        label="Sewage"
+                                    />
+                                    <FormControlLabel
+                                        control={
+                                            <Checkbox
+                                                value="Trash"
+                                                onChange={handleUtility}
+                                                sx={checkboxSX} />
+                                        }
+                                        label="Trash"
+                                    />
+                                    <FormControlLabel
+                                        control={
+                                            <Checkbox
+                                                value="Electricity"
+                                                onChange={handleUtility}
+                                                sx={checkboxSX}/>
+                                        }
+                                        label="Electricity"
+                                    />
+                                    <FormControlLabel
+                                        control={
+                                            <Checkbox
+                                                value="Gas"
+                                                onChange={handleUtility}
+                                                sx={checkboxSX}/>
+                                        }
+                                        label="Gas"
+                                    />
+                                    <FormControlLabel
+                                        control={
+                                            <Checkbox
+                                                value="Water"
+                                                onChange={handleUtility}
+                                                sx={checkboxSX}/>
+                                        }
+                                        label="Water"
                                     />
                                 </FormGroup>
                             </Stack>
