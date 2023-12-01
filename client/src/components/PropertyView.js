@@ -115,8 +115,6 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
 
 
 
-
-
     //const testimages = [image, amongus]
     const imageArr = image
 
@@ -665,8 +663,10 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
                             srcSet={image}
                             alt=""
                             style={{ objectFit: 'fill', width: '700px', height: '200px', borderRadius: '5px'}}
+                            src={imageArr[0] !== undefined ? imageArr[0] : amongus}
                         /> */}
-                    <ImageGallery images={imageArr} />
+                    <ImageGallery images={imageArr[0] !== undefined ? imageArr : [amongus]} />
+
                     {
                         /*
                          * Stack direction row has each text 'chunk'
