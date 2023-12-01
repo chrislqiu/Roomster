@@ -6,6 +6,7 @@ import { faAddressCard } from '@fortawesome/free-solid-svg-icons'
 import PropertyViewMore from "../components/PropertyView"
 import { createTheme, ThemeProvider, useTheme } from '@mui/material/styles';
 import Contacts from '@mui/icons-material/Contacts';
+import CardPlaceholder from "../components/CardPlaceholder";
 
 
 
@@ -16,6 +17,7 @@ const PropertyManagerPublicPage = () => {
     const [property, setProperty] = React.useState([])
     const [filteredProperty, setFilteredProperty] = React.useState([]);
     const [input, setInput] = React.useState('')
+    const [loading, setLoading] = React.useState(true)
     
     React.useEffect(() => {
         const sendCompanyName = async () => {
@@ -27,6 +29,7 @@ const PropertyManagerPublicPage = () => {
                 })
             }).then(res => res.json())
             .then(data => setProperty(data))
+            setLoading(false)
         }
         const getCompanyInfo = async () => {
             await fetch('http://localhost:8000/cards/getCompanyInfo', {
@@ -128,7 +131,18 @@ const PropertyManagerPublicPage = () => {
                 {
                    <Box style={{ margin: "10px" }} sx={styles.feed}>
                         {
-                            property.map((cards) => {
+                            loading ? 
+                            <>
+                            <CardPlaceholder isCoopmateCard={false}/>
+                        <CardPlaceholder isCoopmateCard={false}/>
+                        <CardPlaceholder isCoopmateCard={false}/>
+                        <CardPlaceholder isCoopmateCard={false}/>
+                        <CardPlaceholder isCoopmateCard={false}/>
+                        <CardPlaceholder isCoopmateCard={false}/>
+                        <CardPlaceholder isCoopmateCard={false}/>
+                        <CardPlaceholder isCoopmateCard={false}/>
+                            </>
+                            : property.map((cards) => {
                                 return <PropertyViewMore data={cards}/>
                                 }
                             )
