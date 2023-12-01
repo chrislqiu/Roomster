@@ -76,7 +76,7 @@ const PropertyManagerPage = () => {
             input: {
                 color: "textColor",
                 "&::placeholder": {
-                    opacity: 0.7,
+                    opacity: 1,
                     color: "textColor",
                     },
             },
@@ -112,7 +112,7 @@ const PropertyManagerPage = () => {
             setCompanyNameHolder(userData.user.company.companyInfo.name)
             setAddressHolder(userData.user.company.companyInfo.address)
             setOPhoneHolder(userData.user.company.companyInfo.phone)
-            //setSite(userData.user.company.companyInfo.site)
+            setSite(userData.user.company.companyInfo.site)
         }
     }, [userData]);
 
@@ -310,7 +310,7 @@ const PropertyManagerPage = () => {
                             disabled={disableButton}
                         />
                         <Box>
-                        <Link href={`http://${site}`} underline="always" color="secondaryColor" fontWeight={600}
+                        <Link href={`https://${site}`} underline="always" color="secondaryColor" fontWeight={600}
                         sx={{":hover": {color: "textColor"}}}>
                                 {'Leasing Site'} 
                         </Link>
