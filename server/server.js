@@ -103,7 +103,6 @@ app.post('/sendRenterProfile', async (req, res) => {
   const username = decoded.username
   var renter = await Renter.findOne({ username: username })
 
-
   const updatedLivingPref = {
     pets: data.livingPreferences.pets,
     smoke: data.livingPreferences.smoke,
@@ -114,30 +113,22 @@ app.post('/sendRenterProfile', async (req, res) => {
       from: data.livingPreferences.sleepSchedule.from,
       to: data.livingPreferences.sleepSchedule.to
     }
-
   }
 
-  const oldRenterInfo = renter
-  const updatedRenterInfo = new RenterInfo({
-    name: data.name,
-    age: data.age,
-    gender: data.gender,
-    email: data.email,
-    phone: data.phone,
-    pfp: data.pfp,
-    livingPreferences: updatedLivingPref,
-    favCoops: renter.renterInfo.favCoops
-  })
+  const updatedRenterInfo = await RenterInfo.findOneAndUpdate({_id: renter.renterInfo._id}, {name: data.name, age: data.age, gender: data.gender, email: data.email, phone: data.phone, pfp: data.pfp, livingPreferences: updatedLivingPref}, {new: true})
 
-  const update = await Renter.findOneAndUpdate({ username: username }, { findingCoopmates: req.body.findingCoopmates, renterInfo: updatedRenterInfo, coopmates: renter.coopmates }, { new: true })
+  const update = await Renter.findOneAndUpdate({ username: username }, { findingCoopmates: req.body.findingCoopmates, renterInfo: updatedRenterInfo}, { new: true })
+  console.log(update)
 
-  // renter = updatedRenter
+  const mates = await Renter.find({'coopmates': {$elemMatch: {'_id': updatedRenterInfo._id.toString().toLowerCase()}}})
 
-  const coopmates = await Renter.find({ 'coopmates': { $elemMatch: { 'renterInfo.name': update.renterInfo.name, 'renterInfo.email': update.renterInfo.email } } })
-  coopmates.forEach(async function (mate) {
-    mate.coopmates.pull(oldRenterInfo._id)
-    mate.coopmates.addToSet(update.renterInfo)
+  mates.forEach(async function(mate) {
+    console.log(mate)
+    mate.coopmates.pull(updatedRenterInfo._id)
     await mate.save()
+    mate.coopmates.push(updatedRenterInfo)
+    await mate.save()
+    console.log(mate)
   })
 
   await update.save()

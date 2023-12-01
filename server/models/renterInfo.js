@@ -14,6 +14,7 @@ const renterInfo = new Schema({
     },
     gender: {
         type: String,
+        enum: ['Male', 'Female', 'Transgender', 'Non-Binary', 'Other'],
         required: false
     },
     email: {
