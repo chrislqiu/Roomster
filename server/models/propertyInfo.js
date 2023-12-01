@@ -14,6 +14,14 @@ const propertyInfo = new Schema({
         type: String,
         required: true
     },
+    latitude: {
+        type: Number,
+        required: false
+    },
+    longitude: {
+        type: Number,
+        required: false
+    },
     beds: {
         type: Number,
         required: true

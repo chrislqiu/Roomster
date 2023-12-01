@@ -32,6 +32,8 @@ import ImageGallery from './ImageGallery';
 import ScheduleTourView from './ScheduleTourView';
 import { useTheme } from '@mui/material/styles';
 import amongus from '../images/amongusturkey.jpeg'
+import MapIcon from '@mui/icons-material/Map';
+import MapView from "../components/MapView"
 
 
 /* 
@@ -83,6 +85,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
     const [isFeatured, setIsFeatured] = React.useState(false)
     const [loading, setLoading] = React.useState(true);
     const coopFavorited = favCoopsArr.some(coops => coops._id.toString() === data._id.toString())
+    const [mapOpen, setMapOpen] = React.useState(false)
 
     /* Scheduling Tour */
     const [requestTourOpen, setRequestTourOpen] = React.useState(false)
@@ -97,6 +100,13 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
     }
 
 
+    const handleOpenMap = () => {
+        if (!mapOpen) {
+            setMapOpen(true)
+        } else {
+            setMapOpen(false)
+        }
+    }
 
 
     const getUserInfo = async () => {
@@ -218,9 +228,12 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
         const id = data._id;
 
         //("data: " + id);
-        const link = window.location.href + "Property/" + id
+        var link = window.location.href + "Property/" + id
         //console.log(link)
         //window.location.assign(link) //redirects to link
+        if (link.includes("Home")) {
+            link = link.replace("Home", '')
+        }
         navigator.clipboard.writeText(link)
         toast.success('Link copied to clipboard!', { position: toast.POSITION.TOP_CENTER });
     };
@@ -519,7 +532,8 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
                     boxShadow: !featured ? (theme.palette.type === 'light' ? "0px 0px 3px 3px rgba(0, 0, 0, .1)" : "0px 0px 3px 2px rgba(245, 235, 224, .3)") : "none"
                 }}>
                 <CardActionArea>
-                    {/* {console.log(data.image)} */}
+                    {console.log(data.image)}
+
                     <CardMedia
                         component="img"
                         //image={data.propertyInfo.image === undefined ? data.image : data.propertyInfo.image}
@@ -545,6 +559,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
                             {myCoops === true ? <BookmarkIcon style={{ margin: "-22px 0 0 5px", fontSize: "15pt" }} /> : ''}
 
                         </div>
+
                         <Typography variant="body2" sx={{ margin: "0 0 5px 0" }}>{address}</Typography>
                         <Typography variant="body2">{beds} bedroom </Typography>
                         <Typography variant="body2" sx={{ marginBottom: "5px" }}>{baths} bathroom</Typography>
@@ -564,6 +579,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
                  * The dialogue box
                  */
             }
+
             <Dialog
                 open={open}
                 onClose={handleClose}
@@ -580,6 +596,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
                 }}
             >
                 <DialogContent>
+
                     {
                         /*
                          * The dialogue box content
@@ -598,9 +615,13 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
                          * Stack direction row has each text 'chunk'
                          */
                     }
+                    <Box width='600px' style={{ marginTop: "25px", marginRight: "-25px" }} >
+                        {mapOpen && <MapView propertyList={data} />}
+                    </Box>
                     <Stack direction={{ '400px': "column", md: "row", lg: "row", xl: "row" }} spacing={5} sx={{ marginTop: 2, p: 1 }} >
                         {/* Basic Property Info */}
                         <Box width='600px' style={{ marginTop: "5px", marginRight: "-25px" }}>
+
                             <Tooltip title="Go to Company Page"
                                 componentsProps={{
                                     tooltip: {
@@ -741,11 +762,27 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
                                 {'Website'}
                             </Link>
                         </Box>
+
                     </Stack>
+
                 </DialogContent>
+
                 <DialogActions>
 
-                    
+                    <IconButton
+                        style={{ position: "BottomLeft", position: "sticky", top: 70, left: 0 }}
+                        onClick={() => handleShare()}
+                    >
+                        <SendIcon
+                            sx={{ color: "textColor" }}
+                        />
+                    </IconButton>
+
+                    <Tooltip title="Map View">
+                        <IconButton onClick={handleOpenMap}>
+                            <MapIcon sx={{ color: "#AB191F" }} />
+                        </IconButton>
+                    </Tooltip>
 
                     {/* {console.log(isVerified)} */}
                     {isVerified === true ?
@@ -799,7 +836,8 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
                                 <div sx={{ display: "flex", width: "100%" }}>
                                     <Tooltip title="Delete Property">
                                         <IconButton onClick={handleDeletePropertyAdmin}>
-                                            <DeleteOutlineIcon sx={{ color: "secondaryColor" }} />                                        </IconButton>
+                                            <DeleteOutlineIcon sx={{ color: "secondaryColor" }} />
+                                        </IconButton>
                                     </Tooltip>
                                     <Tooltip title="Verify Property">
                                         <IconButton onClick={handleVerifyProperty}>
