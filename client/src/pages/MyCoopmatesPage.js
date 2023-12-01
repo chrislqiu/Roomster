@@ -25,7 +25,7 @@ const MyCoopmatesPage = () => {
            // console.log(obj)
            // console.log(myCoopmates.map(coopmate => console.log(`myCoopmates: ${coopmate._id}`)))
            // console.log(obj.map(coopmate => console.log(`allCoopmates: ${coopmate._id}`)))
-            const filteredCoopmates = obj.filter(coopmate => myCoopmates.includes(coopmate.renterInfo._id));
+           // const filteredCoopmates = obj.filter(coopmate => myCoopmates.includes(coopmate.renterInfo._id));
             setAllCoopmates(obj);
         }
         //console.log(allCoopmates.map(coopmate => console.log(coopmate._id)))

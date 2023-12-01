@@ -285,9 +285,9 @@ const CoopmatesView = ({ coopmate, coopmatesArr, username, userData }) => {
                                 </Typography>
                                 {/* Renter Gender */}
                                 {gender === 'Male' ? <MaleIcon style={{ margin: "-22px 15px 0px -10px", fontSize: "22pt" }} /> : ''}
-                                {gender === 'Female' ? <FemaleIcon style={{ margin: "-22px 0px 0px -20px", fontSize: "22pt" }} /> : ''}
-                                {gender === 'Transgender' ? <TransgenderIcon style={{ margin: "-22px 0px 0px -20px", fontSize: "22pt" }} /> : ''}
-                                {isVerified === true ? <FontAwesomeIcon icon={faUserCheck} style={{ margin: "-22px 0px 0px -12px", fontSize: "14pt" }} /> : ''}
+                                {gender === 'Female' ? <FemaleIcon style={{ margin: "-22px 0px 0px -15px", fontSize: "22pt" }} /> : ''}
+                                {gender === 'Transgender' ? <TransgenderIcon style={{ margin: "-22px 0px 0px -15px", fontSize: "22pt" }} /> : ''}
+                                {isVerified === true ? <FontAwesomeIcon icon={faUserCheck} style={{ margin: "-22px 0px 0px 5px", fontSize: "14pt" }} /> : ''}
                             </Box>
                         </CardContent>
                     </CardActionArea>
