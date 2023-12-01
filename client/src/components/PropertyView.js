@@ -228,9 +228,12 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
         const id = data._id;
 
         //("data: " + id);
-        const link = window.location.href + "Property/" + id
+        var link = window.location.href + "Property/" + id
         //console.log(link)
         //window.location.assign(link) //redirects to link
+        if (link.includes("Home")) {
+            link = link.replace("Home", '')
+        }
         navigator.clipboard.writeText(link)
         toast.success('Link copied to clipboard!', { position: toast.POSITION.TOP_CENTER });
     };
