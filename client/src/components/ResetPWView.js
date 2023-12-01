@@ -129,7 +129,7 @@ const ChangePasswordView = ({ text }) => {
                         Reset Password
                     </Typography>
                 </DialogTitle>
-                <Divider variant="middle" sx={{ borderBottomWidth: 3, color: "#AB191F", backgroundColor: "#AB191F", marginY: 1 }} />
+                <Divider variant="middle" sx={{ borderBottomWidth: 3, backgroundColor: "secondaryColor", marginY: 1 }} />
 
                 <DialogContent sx={{ maxWidth: "400px" }}>
                     <Box style={{ maxWidth: "400px", justifyContent: "center" }} >
