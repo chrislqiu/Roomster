@@ -125,7 +125,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
      */
     const [open, setOpen] = React.useState(false)
     //const [utilities, setUtilities] = React.useState('')
-    const [saves, setSaves] = React.useState(myCoops === true ? data.saves : data.propertyInfo.saves)
+    const [saves, setSaves] = React.useState(myCoops === true ? (data.saves < 0 ? 0 : data.saves) : (data.propertyInfo.saves < 0 ? 0 : data.propertyInfo.saves))
     const [updateOrRemove, setUpdateOrRemove] = React.useState('')
     const [userData, setUserData] = React.useState('')
     const [userType, setUserType] = React.useState('')
@@ -248,7 +248,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
             console.error(`Error: ${error}`);
         }
 
-        setSaves(data.propertyInfo.saves);
+        setSaves(data.propertyInfo.saves < 0 ? 0 : data.propertyInfo.saves );
         window.location.reload(true)
     }
     const styles = {
