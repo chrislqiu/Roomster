@@ -343,7 +343,7 @@ const PropertyManagerPage = () => {
                             {disableButton ? 'Edit' : 'Save'}
                         </Button>
                 </Box>
-                <Divider orientation="vertical" width={3} sx={{ borderBottomWidth: 3, color: "#AB191F", backgroundColor: "#AB191F", marginX: 48, marginY:-50, height: 270}} />
+                <Divider orientation="vertical" width={3} sx={{ borderBottomWidth: 3, backgroundColor: "secondaryColor", marginX: 48, marginY:-50, height: 270}} />
                 </CardContent>
                 <Toaster
                     toastOptions={{

@@ -43,6 +43,7 @@ import 'leaflet/dist/leaflet.css';
 import 'leaflet.markercluster/dist/MarkerCluster.css';
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
 import 'leaflet.markercluster';
+import ChickenIcon from "./favicon.ico"
 
 
 const font = "'Lato', sans-serif";
@@ -277,10 +278,9 @@ class App extends React.Component {
 
       <HelmetProvider>
         <Helmet>
-          <title>Roomster</title>
+          {/*<title>Roomster</title>*/}
           {/* <link rel="icon" type="image/png" href={favicon} /> */}
-          <link rel="icon" href="https://i.ibb.co/NF8X7Vx/favicon.png" />
-
+          {/*<link rel="icon" type="image/png" href={ChickenIcon} />*/}
         </Helmet>
 
         <ThemeProvider theme={theme}>

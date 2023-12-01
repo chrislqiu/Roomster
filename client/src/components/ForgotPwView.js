@@ -48,7 +48,7 @@ const ForgotPwView = () => {
                         <CloseIcon style={{ color: "black" }} />
                     </IconButton>
                     <DialogTitle sx={{fontWeight: 600, fontSize:25, marginBottom: "-15px"}}>Forgot Your Password?</DialogTitle>
-                    <Divider variant="middle" sx = {{borderBottomWidth: 3, color:"#AB191F", backgroundColor:"#AB191F", marginY:1}}/>
+                    <Divider variant="middle" sx = {{borderBottomWidth: 3, backgroundColor:"secondaryColor", marginY:1}}/>
                     <Typography sx={{
                         fontWeight: 400, 
                         fontSize:"10pt", 
