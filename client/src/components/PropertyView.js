@@ -18,7 +18,6 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import CheckIcon from "@mui/icons-material/Check";
-import SendIcon from '@mui/icons-material/Send';
 import LinkIcon from '@mui/icons-material/Link';
 import { useNavigate, createSearchParams } from 'react-router-dom';
 import AddCoopView from './AddCoopView';
@@ -769,14 +768,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
 
                 <DialogActions>
 
-                    {/*<IconButton
-                        style={{ position: "BottomLeft", position: "sticky", top: 70, left: 0 }}
-                        onClick={() => handleShare()}
-                    >
-                        <SendIcon
-                            sx={{ color: "textColor" }}
-                        />
-                            </IconButton> */}
+                    
 
                     <Tooltip title="Map View">
                         <IconButton onClick={handleOpenMap}>

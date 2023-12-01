@@ -121,7 +121,7 @@ app.post('/sendRenterProfile', async (req, res) => {
   const update = await Renter.findOneAndUpdate({ username: username }, { findingCoopmates: req.body.findingCoopmates, renterInfo: updatedRenterInfo}, { new: true })
   console.log(update)
 
-  const mates = await Renter.find({'coopmates': {$elemMatch: {'_id': updatedRenterInfo._id.toString().toLowerCase()}}})
+  const mates = await Renter.find({'coopmates': {$elemMatch: {_id: renter.renterInfo._id.toString().toLowerCase()}}})
 
   mates.forEach(async function(mate) {
     console.log(mate)
