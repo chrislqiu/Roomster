@@ -236,7 +236,7 @@ const RenterPage = () => {
     const [data, setData] = React.useState('')
     var [pfp, setPfp] = useState('')
     const [defAge, setDefAge] = useState('')
-    const [defGender, setDefGender] = useState('Female')
+    const [defGender, setDefGender] = useState('')
     const [defEmail, setDefEmail] = useState('')
     const [defPhone, setDefPhone] = useState('')
     const [defToggle, setDefToggle] = useState()
@@ -277,7 +277,8 @@ const RenterPage = () => {
                 setName(data.user.renterInfo.name)
                 //setAge(data.user.renterInfo.age)
                 setDefAge(data.user.renterInfo.age)
-                setGender(data.user.renterInfo.gender)
+                setDefGender(data.user.renterInfo.gender)
+                //setGender(data.user.renterInfo.gender)
                 handleSetDefGender(data.user.renterInfo.gender)
                 setDefEmail(data.user.renterInfo.email)
                 setDefPhone(data.user.renterInfo.phone)
@@ -356,19 +357,49 @@ const RenterPage = () => {
 
         console.log("gender: " + gender)
         console.log("defGender: " + defGender)
-        if (/*defGender === 'Male' || */gender === 'Male' || !gender) {
+        if (defGender === 'Male' || !defGender) {
+            setMale(true)
+            setFemale(false)
+            setTransgender(false)
+            //setDefGender('Male')
+            //setGender('Male')
+        } else if (defGender === 'Female' ) {
+            setFemale(true)
+            setMale(false)
+            setTransgender(false)
+            //setDefGender('Female')
+            //setGender('Female')
+        } else if (defGender === 'Transgender') {
+            setTransgender(true)
+            setMale(false)
+            setFemale(false)
+            //setDefGender('Transgender')
+            //setGender('Transgender')
+        }
+    }
+
+    const handleSetGender = (gender) => {
+        setGender(gender);
+        console.log('in set gender')
+        console.log("male: " + isMale)
+        console.log("female:" + isFemale)
+        console.log("transgender:" + isTransgender)
+
+        console.log("gender: " + gender)
+        console.log("defGender: " + defGender)
+        if (gender === 'Male') {
             setMale(true)
             setFemale(false)
             setTransgender(false)
             //setDefGender('Male')
             setGender('Male')
-        } else if (/*defGender === 'Female' ||*/ gender === 'Female') {
+        } else if (gender === 'Female') {
             setFemale(true)
             setMale(false)
             setTransgender(false)
             //setDefGender('Female')
             setGender('Female')
-        } else if (/*defGender === 'Transgender'|| */gender === 'Transgender') {
+        } else if (gender === 'Transgender') {
             setTransgender(true)
             setMale(false)
             setFemale(false)
@@ -469,6 +500,7 @@ const RenterPage = () => {
             renterInfo: {
                 name: name,
                 age: age,
+                gender: gender,
                 email: email,
                 phone: phone,
                 pfp: newImg === '' ? pfp : newImg,
@@ -981,7 +1013,7 @@ const RenterPage = () => {
                         {"SELECT YOUR GENDER"}
                     </Typography >
                     <Container sx={{ display: "inline-flex", marginTop: "50px", justifyContent:"center" }}>
-                        <Tooltip title="Male" onClick={() => {handleSetDefGender('Male'); setGender('Male'); setDefGender('Male'); handleCloseGender() }}
+                        <Tooltip title="Male" onClick={() => {handleSetGender('Male'); /*setGender('Male'); setDefGender('Male'); */handleCloseGender() }}
                         componentsProps={{
                             tooltip: {
                                 sx: {
@@ -996,7 +1028,7 @@ const RenterPage = () => {
                                 </Avatar>
                             </IconButton>
                         </Tooltip>
-                        <Tooltip title="Female" onClick={() => { handleSetDefGender('Female'); setGender('Female'); setDefGender('Female'); handleCloseGender() }}
+                        <Tooltip title="Female" onClick={() => { handleSetGender('Female'); /*setGender('Female'); setDefGender('Female'); */handleCloseGender() }}
                         componentsProps={{
                             tooltip: {
                                 sx: {
@@ -1011,7 +1043,7 @@ const RenterPage = () => {
                                 </Avatar>
                             </IconButton>
                         </Tooltip>
-                        <Tooltip title="Transgender" onClick={() => { handleSetDefGender('Transgender'); setGender('Transgender'); setDefGender('Transgender'); handleCloseGender()}}
+                        <Tooltip title="Transgender" onClick={() => { handleSetGender('Transgender'); /*setGender('Transgender'); setDefGender('Transgender'); */handleCloseGender()}}
                         componentsProps={{
                             tooltip: {
                                 sx: {
