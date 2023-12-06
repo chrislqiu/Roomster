@@ -212,7 +212,27 @@ const updateOrCreateObject = async (objectId, file) => {
   await s3.putObject(params).promise();
 }
 
+const deletePictures = async (folderPath) => {
+  const params = {
+    Bucket: 'roomster',
+    Prefix: folderPath,
+  };
+
+  const objects = await s3.listObjectsV2(params).promise();
+
+  if (objects.Contents.length > 0) {
+    const deleteParams = {
+      Bucket: 'roomster',
+      Delete: { Objects: objects.Contents.map(obj => ({ Key: obj.Key })) },
+    };
+
+    await s3.deleteObjects(deleteParams).promise();
+  }
+}
+
+
 async function uploadToS3(images, objectId) {
+  await deletePictures(`${objectId}/`);
   for (let i = 0; i < images.length; i++) {
     const image = images[i];
     const buffer = Buffer.from(image.replace(/^data:image\/\w+;base64,/, ''), 'base64');
