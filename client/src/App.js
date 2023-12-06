@@ -309,7 +309,7 @@ class App extends React.Component {
                 position: "absolute",
                 zIndex: 5,
                 textALign: "right",
-                margin: "15px 0 0 1075px",
+                margin: "15px 0 0 1250px",
                 color: 'primaryColor',
                 ":hover":
                 {
