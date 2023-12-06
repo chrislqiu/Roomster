@@ -592,7 +592,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
                     <CardMedia
                         component="img"
                         //image={data.propertyInfo.image === undefined ? data.image : data.propertyInfo.image}
-                        src={imageArr[0] !== undefined ? imageArr[0] : amongus}
+                        src={imageArr[0] !== undefined ? imageArr[0] : imgExample}
                         //height="140px"
                         style={{
                             height: featured === true ? "120px" : "130px",
@@ -665,7 +665,7 @@ const PropertyViewMore = ({ data, featured, favCoops, myCoops, login, verifyProp
                             style={{ objectFit: 'fill', width: '700px', height: '200px', borderRadius: '5px'}}
                             src={imageArr[0] !== undefined ? imageArr[0] : amongus}
                         /> */}
-                    <ImageGallery images={imageArr[0] !== undefined ? imageArr : [amongus]} />
+                    <ImageGallery images={imageArr[0] !== undefined ? imageArr : [imgExample]} />
 
                     {
                         /*
