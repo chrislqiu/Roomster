@@ -6,5 +6,29 @@ The overall objective of this project is to make a web application that makes th
 ## Features
 * Listing of available housing options in the West Lafayette area with relevant information such as location, pricing, and floor layouts
 * Ability to save housing options to a favorites section
-* Allow users who are looking for roommates to find and connect with other users
 * Ability for landlords/management companies to post their housing options on our website
+* Allow users who are looking for roommates to find and connect with other users
+* Allow users to schedule a tour with the property manager
+
+## Mockups
+<img src="mockups/OT12YY1 white.jpg">
+
+### Log-in Portal
+<img src="mockups/Log in pop-up.jpg">
+
+### Home Page
+<img src="mockups/Home Page.jpg">
+<img src="mockups/Nav Bar (Renter) + Filter expand.jpg">
+
+### View Property
+<img src="mockups/View Property.jpg">
+
+### Profile Page
+<img src="mockups/Profile Page (Renter) Toggle off.jpg">
+
+### Coopmates Page
+<img src="mockups/Coopmate Page.jpg">
+<img src="mockups/Coopmate Detail View.jpg">
+
+### Dark Mode
+<img src="mockups/Dark mode.jpg">
